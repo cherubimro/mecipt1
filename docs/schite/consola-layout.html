@@ -1,0 +1,130 @@
+<style>
+  .m-panel{background:#2b2d2a;border-radius:8px;padding:12px;color:#d9d4c3;font-family:"Courier New",monospace;font-size:12px}
+  .m-row{display:flex;align-items:center;gap:6px;margin:6px 0;flex-wrap:nowrap}
+  .m-lbl{width:44px;text-align:right;color:#b8b29c;font-weight:bold}
+  .m-lamps{display:flex;gap:3px}
+  .lamp{width:9px;height:9px;border-radius:50%;background:#4a3a1c;box-shadow:inset 0 0 2px #000}
+  .lamp.on{background:#ffcf5a;box-shadow:0 0 6px #ffb300}
+  .grp{margin-right:5px}
+  .sw{width:9px;height:12px;background:#9a958a;border-radius:2px;border:1px solid #222}
+  .sw.up{background:#e8e3d4}
+  .gauge{width:46px;height:46px;border-radius:50%;background:radial-gradient(#f4f1e8 55%,#777 57%);display:inline-flex;align-items:center;justify-content:center;color:#333;font-size:9px;margin:3px}
+  .btn{display:inline-block;background:#555;color:#eee;border-radius:4px;padding:3px 7px;margin:2px;font-size:11px}
+  .btn.red{background:#8b2b22}
+  .paper{background:#fbf3c8;color:#333;font-family:"Courier New",monospace;font-size:12px;padding:8px 10px;border-radius:4px;line-height:1.5;white-space:pre}
+  .tape{background:#f3ead0;height:26px;border-radius:3px;position:relative;overflow:hidden;font-size:0}
+  .hole{display:inline-block;width:6px;height:6px;border-radius:50%;background:#2b2d2a;margin:1px 2px}
+  .mem{background:#111;color:#7fe08a;font-family:monospace;font-size:11px;padding:8px;border-radius:4px;white-space:pre;line-height:1.35}
+  .src{background:#1e1e1e;color:#ddd;font-family:monospace;font-size:11px;padding:8px;border-radius:4px;white-space:pre;line-height:1.35}
+  .src .c{color:#8a8}
+  .tiny{font-size:11px;color:#888;margin-top:4px}
+</style>
+
+<h2>Cum să arate pagina web MECIPT-1?</h2>
+<p class="subtitle">Două direcții. Ambele folosesc același emulator în spate. Diferă ce vezi întâi: pupitrul real, sau un loc de lucru pentru programe. Click pe cea mai apropiată de ce vrei (sau spune-mi în terminal ce ai combina).</p>
+
+<div class="options">
+<div class="option" data-choice="a" onclick="toggleSelect(this)">
+<div class="letter">A</div>
+<div class="content">
+<h3>Pupitrul fidel — „ca în poza Agerpres din 1963”</h3>
+<p>Pagina e pupitrul în trei părți, cum îl descriu Farcaș și Baltac: stânga = execuție pas cu pas (inclusiv pașii microprogramați), mijloc = voltmetre, dreapta = becurile registrelor dublate de comutatoare. Dedesubt: cititorul de bandă și coala mașinii de scris. Programele se încarcă exact ca atunci: tastezi preîncărcătorul la comutatoare (în octal), pui banda, pornești de la 0010.</p>
+
+<div class="mockup"><div class="mockup-header">Schiță A — pupitrul</div><div class="mockup-body" style="padding:10px;background:#cfcabb">
+<div style="display:flex;gap:10px">
+  <div class="m-panel" style="flex:0 0 150px">
+    <div style="color:#b8b29c;margin-bottom:6px">PAS CU PAS</div>
+    <span class="btn">PORNIRE</span><span class="btn red">OPRIRE</span><br>
+    <span class="btn">INSTRUCȚIUNE</span><br><span class="btn">MICROPAS</span><br>
+    <span class="btn">CITIRE MEM.</span><span class="btn">SCRIERE MEM.</span>
+    <div style="margin-top:8px">DCR <span class="lamp on" style="display:inline-block;background:#ff4b3a;box-shadow:0 0 6px #f00"></span> &nbsp; BANDĂ <span class="lamp" style="display:inline-block"></span></div>
+  </div>
+  <div class="m-panel" style="flex:0 0 120px;text-align:center">
+    <div style="color:#b8b29c;margin-bottom:4px">ALIMENTARE</div>
+    <span class="gauge">+250V</span><span class="gauge">-150V</span><br><span class="gauge">6,3V~</span><span class="gauge">+185</span>
+  </div>
+  <div class="m-panel" style="flex:1">
+    <div style="color:#b8b29c;margin-bottom:4px">REGISTRE</div>
+    <div class="m-row"><span class="m-lbl">M</span><div class="m-lamps">
+      <span class="lamp on grp"></span>
+      <span class="lamp"></span><span class="lamp on"></span><span class="lamp grp"></span>
+      <span class="lamp on"></span><span class="lamp"></span><span class="lamp grp"></span>
+      <span class="lamp"></span><span class="lamp"></span><span class="lamp on grp"></span>
+      <span class="lamp on"></span><span class="lamp on"></span><span class="lamp grp"></span>
+      <span class="lamp"></span><span class="lamp on"></span><span class="lamp grp"></span>
+      <span class="lamp"></span><span class="lamp"></span><span class="lamp grp"></span>
+      <span class="lamp on"></span><span class="lamp"></span><span class="lamp on grp"></span>
+      <span class="lamp"></span><span class="lamp on"></span><span class="lamp grp"></span>
+      <span class="lamp"></span><span class="lamp"></span><span class="lamp on grp"></span>
+      <span class="lamp on"></span><span class="lamp"></span><span class="lamp"></span>
+    </div></div>
+    <div class="m-row"><span class="m-lbl"></span><div class="m-lamps">
+      <span class="sw grp"></span>
+      <span class="sw"></span><span class="sw up"></span><span class="sw grp"></span>
+      <span class="sw up"></span><span class="sw"></span><span class="sw grp"></span>
+      <span class="sw"></span><span class="sw"></span><span class="sw up grp"></span>
+      <span class="sw up"></span><span class="sw up"></span><span class="sw grp"></span>
+      <span class="sw"></span><span class="sw up"></span><span class="sw grp"></span>
+      <span class="sw"></span><span class="sw"></span><span class="sw grp"></span>
+      <span class="sw up"></span><span class="sw"></span><span class="sw up grp"></span>
+      <span class="sw"></span><span class="sw up"></span><span class="sw grp"></span>
+      <span class="sw"></span><span class="sw"></span><span class="sw up grp"></span>
+      <span class="sw up"></span><span class="sw"></span><span class="sw"></span>
+    </div></div>
+    <div class="m-row"><span class="m-lbl">RI</span><div class="m-lamps">
+      <span class="lamp on"></span><span class="lamp grp"></span><span class="lamp on"></span><span class="lamp on"></span><span class="lamp on grp"></span>
+      <span class="lamp"></span><span class="lamp"></span><span class="lamp grp"></span><span class="lamp"></span><span class="lamp"></span><span class="lamp grp"></span><span class="lamp"></span><span class="lamp"></span><span class="lamp on grp"></span><span class="lamp"></span>
+    </div><span style="margin-left:8px;color:#ffcf5a">27 0000</span></div>
+    <div class="m-row"><span class="m-lbl">RAI</span><div class="m-lamps">
+      <span class="lamp"></span><span class="lamp"></span><span class="lamp grp"></span><span class="lamp"></span><span class="lamp"></span><span class="lamp grp"></span><span class="lamp on"></span><span class="lamp"></span><span class="lamp grp"></span><span class="lamp"></span>
+    </div><span style="margin-left:8px;color:#ffcf5a">0010</span></div>
+  </div>
+</div>
+<div style="display:flex;gap:10px;margin-top:10px">
+  <div style="flex:0 0 260px"><div class="tiny" style="color:#444">cititor bandă perforată (5 coloane)</div>
+    <div class="tape"><span class="hole"></span><span class="hole"></span><span class="hole" style="visibility:hidden"></span><span class="hole"></span><span class="hole"></span>&nbsp;<span class="hole" style="visibility:hidden"></span><span class="hole"></span><span class="hole"></span><span class="hole" style="visibility:hidden"></span><span class="hole"></span>&nbsp;<span class="hole"></span><span class="hole" style="visibility:hidden"></span><span class="hole"></span><span class="hole"></span><span class="hole" style="visibility:hidden"></span></div></div>
+  <div style="flex:1"><div class="tiny" style="color:#444">mașina de scris</div>
+<div class="paper">o,o17452406 o,o34899496 o,o52335954 o,o69756471
+o,o87155741 o,1o4528461 o,121869341 o,139173o98</div></div>
+</div>
+</div></div>
+</div></div>
+
+<div class="option" data-choice="b" onclick="toggleSelect(this)">
+<div class="letter">B</div>
+<div class="content">
+<h3>Atelier de programare — pupitru compact + unelte</h3>
+<p>Becurile registrelor rămân sus (mai mici), iar restul paginii e pentru lucrul cu programe: editor cu mnemonicele din 1961 (U, A, ME, CIT, AC…) care asamblează în octal, vederea tamburului (1024 de cuvinte, adresa curentă evidențiată), coala mașinii de scris. Butoane: Încarcă exemplu (tabelul de sinus din 1962, retipărirea programelor), Pas, Rulează, Viteză reală 50/80 instr/s sau „rapid”.</p>
+
+<div class="mockup"><div class="mockup-header">Schiță B — atelier</div><div class="mockup-body" style="padding:10px;background:#e9e6dd">
+<div class="m-panel" style="padding:8px">
+  <div class="m-row"><span class="m-lbl">S</span><div class="m-lamps"><span class="lamp on grp"></span><span class="lamp"></span><span class="lamp on"></span><span class="lamp"></span><span class="lamp on"></span><span class="lamp"></span><span class="lamp"></span><span class="lamp on"></span><span class="lamp"></span><span class="lamp"></span><span class="lamp on"></span><span class="lamp"></span><span class="lamp"></span><span class="lamp"></span><span class="lamp on"></span><span class="lamp"></span></div><span style="margin-left:8px">+0,4999 99995</span>
+  <span class="m-lbl" style="margin-left:14px">RAI</span><span style="color:#ffcf5a">1512</span>
+  <span class="m-lbl">RI</span><span style="color:#ffcf5a">01 1556</span>
+  <span style="margin-left:auto"><span class="btn">⏮ Reset</span><span class="btn">⏯ Pas</span><span class="btn">▶ Rulează</span><span class="btn">⏱ 80/s</span></span></div>
+</div>
+<div style="display:flex;gap:10px;margin-top:10px">
+<div style="flex:1.1"><div class="tiny" style="color:#444">program (mnemonice → octal)</div>
+<div class="src"><span class="c">; retipărirea programelor, 6.09.1962</span>
+1477  UI   0000   CU   0000
+1500  U    1512   IL   1600
+1501  A    1626   ME   1512
+1502  DLS  0025   DLD  0003
+1503  AC   0136   DLS  0004   <span class="c">; imprimă cifre</span>
+...</div></div>
+<div style="flex:0.9"><div class="tiny" style="color:#444">tambur (octal)</div>
+<div class="mem">1474  00 0000  00 0000
+1475  00 0000  00 0000
+1476  00 0000  00 0000
+1477  27 0000  30 0000
+<span style="background:#2f5a35">1500  01 1512  31 1600</span> ◀
+1501  05 1626  25 1512
+1502  21 0025  22 0003</div></div>
+</div>
+<div class="tiny" style="color:#444;margin-top:8px">mașina de scris</div>
+<div class="paper">o,o17452406 o,o34899496 o,o52335954 o,o69756471</div>
+</div></div>
+</div></div>
+</div>
+
+<p class="tiny">Detaliile sunt aproximative: textele de pe butoane și valorile voltmetrelor sunt inventate de mine pentru schiță. Mnemonicele sunt din tabelul Geier (1961); codul din dreapta e din Facsimilul 4. Coala reproduce stilul tabelului de sinus din februarie 1962 (cu „o” în loc de „0”, ca pe mașina de scris reală).</p>

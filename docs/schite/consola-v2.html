@@ -1,0 +1,116 @@
+<style>
+  .tabs{display:flex;gap:6px;margin:8px 0 12px}
+  .tab{padding:6px 14px;border-radius:6px 6px 0 0;background:#d9d4c3;color:#333;cursor:pointer;font-weight:600;border:1px solid #b9b3a0;border-bottom:none}
+  .tab.act{background:#4f8fc9;color:#fff;border-color:#3d74a6}
+  .view{display:none}.view.act{display:block}
+  /* pupitru albastru */
+  .desk{background:#5d9ad1;border-radius:10px;padding:14px;border:4px solid #b9c2c9;box-shadow:inset 0 0 0 2px #8fa3b3}
+  .desk-row{display:flex;gap:10px;align-items:stretch}
+  .alu{border:5px solid #c9d0d6;border-radius:6px;box-shadow:inset 0 0 0 1px #8c969e}
+  .cream{background:#efe9d6;padding:10px;color:#333;font-family:Arial,sans-serif;font-size:9px}
+  .bluep{background:#5d9ad1;padding:10px}
+  .lp{display:inline-block;width:10px;height:10px;border-radius:50%;margin:1px;box-shadow:inset 0 0 2px rgba(0,0,0,.6)}
+  .g{background:#1f5a2a}.g.on{background:#5dff7a;box-shadow:0 0 6px #3f3}
+  .r{background:#5a1f1f}.r.on{background:#ff5a4a;box-shadow:0 0 6px #f33}
+  .w{background:#c9c4b2;border-radius:2px;width:12px;height:8px}.w.on{background:#fffbe0;box-shadow:0 0 6px #ffe}
+  .tg{display:inline-block;width:10px;height:13px;margin:1px;background:radial-gradient(#ddd,#777);border-radius:50% 50% 3px 3px}
+  .tg.up{background:radial-gradient(#fff,#999);transform:translateY(-2px)}
+  .grpl{display:inline-block;border-top:1px solid #333;text-align:center;margin:2px 3px 0;font-size:8px;letter-spacing:1px}
+  .rowl{display:inline-block;width:24px;font-weight:bold;font-size:10px}
+  .meter{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:radial-gradient(#fbfaf4 58%,#111 60%);color:#222;font-size:9px;margin:4px}
+  .pbtn{display:inline-block;width:14px;height:14px;border-radius:50%;margin:2px;border:2px solid #777}
+  .box{display:inline-block;border:1px solid #888;border-radius:3px;padding:3px 5px;margin:3px;text-align:center;vertical-align:top}
+  .paper{background:#fbf3c8;color:#333;font-family:"Courier New",monospace;font-size:12px;padding:8px 10px;border-radius:4px;line-height:1.5;white-space:pre}
+  .tape{background:#f3ead0;height:24px;border-radius:3px;overflow:hidden;padding:2px 4px}
+  .hole{display:inline-block;width:6px;height:6px;border-radius:50%;background:#333;margin:0 1px}
+  .mem{background:#111;color:#7fe08a;font-family:monospace;font-size:11px;padding:8px;border-radius:4px;white-space:pre;line-height:1.35}
+  .src{background:#1e1e1e;color:#ddd;font-family:monospace;font-size:11px;padding:8px;border-radius:4px;white-space:pre;line-height:1.35}
+  .src .c{color:#8a8}
+  .btn2{display:inline-block;background:#4f8fc9;color:#fff;border-radius:4px;padding:3px 8px;margin:2px;font-size:11px}
+  .tiny{font-size:11px;color:#666;margin-top:4px}
+</style>
+
+<h2>MECIPT-1 — o singură pagină, două moduri</h2>
+<p class="subtitle">Comuți oricând între <b>Pupitru</b> (fidel pozei din 2011 de pe Wikipedia) și <b>Atelier</b> (unelte de programare). Emulatorul rulează mai departe când schimbi tabul — e aceeași mașină, văzută altfel. Click pe taburi ca să vezi.</p>
+
+<div class="tabs">
+  <div class="tab act" onclick="for(const e of document.querySelectorAll('.tab,.view'))e.classList.remove('act');this.classList.add('act');document.getElementById('v-pup').classList.add('act')">🎛 Pupitru</div>
+  <div class="tab" onclick="for(const e of document.querySelectorAll('.tab,.view'))e.classList.remove('act');this.classList.add('act');document.getElementById('v-at').classList.add('act')">🧰 Atelier</div>
+  <div class="tab" onclick="for(const e of document.querySelectorAll('.tab,.view'))e.classList.remove('act');this.classList.add('act');document.getElementById('v-pup').classList.add('act');document.getElementById('v-at').classList.add('act')">⧉ Ambele</div>
+</div>
+
+<div id="v-pup" class="view act">
+<div class="desk">
+ <div class="desk-row">
+  <!-- STÂNGA: pas cu pas / microprogram -->
+  <div class="alu cream" style="flex:0 0 190px">
+   <div style="font-weight:bold;margin-bottom:4px">PAȘI MICROPROGRAM</div>
+   <div><span class="lp w on"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w on"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span></div>
+   <div><span class="lp w"></span><span class="lp w"></span><span class="lp w on"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span></div>
+   <div><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w on"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span><span class="lp w"></span></div>
+   <div class="box" style="margin-top:8px">GENERATOR PRINCIPAL<br><span class="tg"></span> 🔑 <span class="tg up"></span></div>
+   <div style="margin-top:4px">MOD: <b>CONTINUU</b> · instr. · micropas</div>
+   <div style="margin-top:4px"><span class="lp r on"></span><span class="lp r"></span><span class="lp r"></span><span class="lp r"></span><span class="lp r"></span><span class="lp r"></span><span class="lp r"></span> &nbsp;DCR ‑ BANDĂ ‑ …</div>
+  </div>
+  <!-- MIJLOC: alimentare -->
+  <div class="alu bluep" style="flex:0 0 230px;text-align:center">
+   <span class="meter" style="width:58px;height:58px">V</span><span class="meter" style="width:42px;height:42px">V</span><span class="meter" style="width:42px;height:42px">V</span><span class="meter" style="width:42px;height:42px">V</span><br>
+   <span class="meter" style="width:44px;height:44px">V</span><span class="meter" style="width:44px;height:44px;background:#5d9ad1;border:4px solid #111"></span><span class="meter" style="width:44px;height:44px">V</span><span class="meter" style="width:44px;height:44px">V</span><br>
+   <span class="meter" style="width:30px;height:30px">V</span><span class="meter" style="width:30px;height:30px">V</span><span class="meter" style="width:30px;height:30px">V</span>
+   <div style="color:#fff;font-size:10px;margin-top:4px">ac ‑ se mișcă la pornire și „tresar” la sarcină</div>
+  </div>
+  <!-- DREAPTA: registre -->
+  <div class="alu cream" style="flex:1;min-width:0">
+   <div style="font-size:8px;letter-spacing:2px">0 &nbsp;1 &nbsp;2 &nbsp;3 &nbsp;4 &nbsp;5 &nbsp;6 &nbsp;7 &nbsp;8 &nbsp;9 &nbsp;… &nbsp;30</div>
+   <div><span class="rowl">M</span><span class="lp g on"></span><span class="lp g"></span><span class="lp g on"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g on"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g on"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g on"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g on"></span><span class="lp g on"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g on"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g on"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g"></span></div>
+   <div><span class="rowl"></span><span class="tg"></span><span class="tg up"></span><span class="tg"></span><span class="tg"></span><span class="tg up"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span><span class="tg up"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span><span class="tg up"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span><span class="tg"></span></div>
+   <div><span class="rowl"></span><span class="grpl" style="width:12px">±</span><span class="grpl" style="width:58px">CODUL 2</span><span class="grpl" style="width:58px">CODUL 1</span><span class="grpl" style="width:120px">ADRESA 2</span><span class="grpl" style="width:120px">ADRESA 1</span></div>
+   <div style="margin-top:6px"><span class="rowl">RI</span><span class="lp r on"></span><span class="lp r"></span><span class="lp r on"></span><span class="lp r on"></span><span class="lp r on"></span> &nbsp; <span class="lp g"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g"></span> <b style="margin-left:6px">27 0000</b></div>
+   <div><span class="rowl">RAI</span><span class="lp r"></span><span class="lp r"></span><span class="lp r"></span><span class="lp r"></span><span class="lp r"></span><span class="lp r"></span><span class="lp r on"></span><span class="lp r"></span><span class="lp r"></span><span class="lp r"></span> <b style="margin-left:6px">0010</b> &nbsp; <span style="font-size:8px">512 256 128 64 32 16 8 4 2 1</span></div>
+   <div style="margin-top:6px">
+    <span class="box">MEMORIE<br><span class="pbtn" style="background:#c22"></span><span class="pbtn" style="background:#23c"></span><br>citire · scriere</span>
+    <span class="box">IMPULSURI<br><span class="pbtn" style="background:#c22"></span><span class="pbtn" style="background:#2a2"></span></span>
+    <span class="box">AFIȘARE<br><span class="tg"></span><span class="tg up"></span><span class="tg"></span><br>RAI · M · S</span>
+    <span class="box">OPRIT<br><span class="pbtn" style="background:#c22"></span></span>
+    <span class="box">CALCULEAZĂ<br><span class="pbtn" style="background:#2a2"></span></span>
+   </div>
+  </div>
+ </div>
+ <div class="desk-row" style="margin-top:12px">
+  <div style="flex:0 0 300px"><div class="tiny" style="color:#fff">cititor bandă (5 coloane, perforație = „0”)</div>
+   <div class="tape"><span class="hole"></span><span class="hole"></span><span class="hole" style="opacity:0"></span><span class="hole"></span><span class="hole"></span> &nbsp;<span class="hole" style="opacity:0"></span><span class="hole"></span><span class="hole"></span><span class="hole" style="opacity:0"></span><span class="hole"></span> &nbsp;<span class="hole"></span><span class="hole" style="opacity:0"></span><span class="hole"></span><span class="hole"></span><span class="hole" style="opacity:0"></span></div></div>
+  <div style="flex:1"><div class="tiny" style="color:#fff">mașina de scris</div>
+<div class="paper">o,o17452406 o,o34899496 o,o52335954 o,o69756471
+o,o87155741 o,1o4528461 o,121869341 o,139173o98</div></div>
+ </div>
+</div>
+<p class="tiny">Așezarea copiază poza: stânga crem cu 3 rânduri de becuri albe + „Generator principal” cu cheie + rând de becuri roșii; mijloc albastru cu 10 aparate (unul lipsă, ca în poză) și comutatoare; dreapta crem cu rândul M de 31 becuri verzi numerotate 0–30 cu comutator sub fiecare, grupate CODUL 2 / CODUL 1 / ADRESA 2 / ADRESA 1, apoi RI, RAI (512…1) și grupurile de butoane. Ce scrie exact pe etichetele mici nu se citește în poză — le-am ghicit (le verificăm în Lucrările de laborator).</p>
+</div>
+
+<div id="v-at" class="view">
+<div style="background:#e9e6dd;border-radius:8px;padding:10px">
+ <div style="background:#efe9d6;border:3px solid #c9d0d6;border-radius:6px;padding:6px;font-family:monospace;font-size:11px">
+  <b>M</b> <span class="lp g on"></span><span class="lp g"></span><span class="lp g on"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g on"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g on"></span><span class="lp g"></span><span class="lp g"></span><span class="lp g on"></span><span class="lp g"></span>…
+  &nbsp; <b>S</b> +0,4999 99995 &nbsp; <b>RAI</b> 1500 &nbsp; <b>RI</b> 01 1512
+  <span style="float:right"><span class="btn2">⏮ Reset</span><span class="btn2">⏯ Pas</span><span class="btn2">▶ Rulează</span><span class="btn2">⏱ 80 instr/s</span></span>
+ </div>
+ <div style="display:flex;gap:10px;margin-top:10px">
+  <div style="flex:1.1"><div class="tiny">program (mnemonice ↔ octal)</div>
+<div class="src"><span class="c">; retipărirea programelor, 6.09.1962 (Facsimil 4)</span>
+1477  UI   0000   CU   0000
+1500  U    1512   IL   1600
+1501  A    1626   ME   1512
+1502  DLS  0025   DLD  0003
+1503  AC   0136   DLS  0004   <span class="c">; imprimă cifre</span>
+…</div></div>
+  <div style="flex:0.9"><div class="tiny">tambur (octal)</div>
+<div class="mem">1476  00 0000  00 0000
+1477  27 0000  30 0000
+<span style="background:#2f5a35">1500  01 1512  31 1600</span> ◀
+1501  05 1626  25 1512
+1502  21 0025  22 0003</div></div>
+ </div>
+ <div class="tiny">mașina de scris</div>
+ <div class="paper">o,o17452406 o,o34899496 o,o52335954 o,o69756471</div>
+</div>
+</div>

@@ -1,0 +1,6 @@
+build/
+*.o
+*.drum
+.superpowers/
+# materiale de cercetare cu licențe mixte (facsimile Baltac etc.) — nu intră în depozit
+surse/
