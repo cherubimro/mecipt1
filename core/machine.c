@@ -147,8 +147,10 @@ static mec_halt exec(mecipt *m, int code, int y, int *jumped) {
     case 10: multiply(m, mec_drum_read(m, y), 1); break;
     case 11: return overflow(m, divide(m, mec_drum_read(m, y)));
     case 17: case 18: case 19: case 20: shift(m, code, y); break;
-    case 12: /* MS: y ← s + y. GHICIT: S rămâne neschimbat. */
+    case 12: /* MS: S ← s + y și y ← S. DEDUS (oracolul retipăririi 1962): saltul de după
+                MS 1625 testează contorul abia scăzut, deci rezultatul rămâne și în S. */
         val = mec_add(s, mec_drum_read(m, y), &ovf);
+        m->S = val;
         mec_drum_write(m, y, val);
         return overflow(m, ovf);
     case 13: jump(m, y); *jumped = 1; break;

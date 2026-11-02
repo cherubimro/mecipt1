@@ -16,7 +16,7 @@ Fiecare alegere fără sursă explicită e listată aici, cu motivul și, unde e
 |---|---|---|
 | `O y`: oprire, RAI ← y (repornirea continuă de la y) | SIGUR | tabelul Geier: „La repornire reluare de la y” |
 | −0 contează drept zero la TPO, TN, TO | GHICIT | complementul față de unu are două zerouri; un vizitator care scade x − x trebuie să vadă „zero” |
-| `MS y`: y ← s + y, S neschimbat | GHICIT (efectul asupra lui S) | tabelul spune doar „Y ← s + y” |
+| `MS y`: S ← s + y și y ← S | DEDUS — oracolul retipăririi | tabelul spune „Y ← s + y”; programul din 1962 testează S imediat după `MS 1625` |
 | `UI y`: I ← biții m1–m30 ai lui y | GHICIT | I are 30 de biți |
 | Codurile 29–31: oprire cu OPRIT | GHICIT | nu apar în tabel |
 | Instrucțiunea se citește de pe tambur în momentul execuției (codul care se modifică singur funcționează) | DEDUS | INEX-1 folosește `MS 0014` pe propria instrucțiune |
@@ -45,7 +45,7 @@ Fiecare alegere fără sursă explicită e listată aici, cu motivul și, unde e
 | CIT: un rând de bandă, inversat (perforație = 0), aliniat la dreapta, restul cuvântului 0 | SIGUR / DEDUS (restul 0) | Wikipedia RO (Baltac, L5); tabelul Geier |
 | Sfârșitul benzii sau lipsa cititorului → HÂRTIA AGĂȚATĂ, oprire | DEDUS | becul „HÂRTIA AGĂȚATĂ” de pe pupitru |
 | AC 0136 tipărește cifra din s0 s1 s2 s3; AC 0133 litera din s0 … s4 | SIGUR (biții) / GHICIT (glifele) | tabelul Geier; 16 caractere numerice, 30 alfabetice cu ă î ș ț |
-| Glifele cifrelor 10–15: spațiu , - rând-nou . + | GHICIT | Task 10 (retipărirea) le poate fixa |
+| Glifele cifrelor 10–15: spațiu , - rând-nou . + | GHICIT | retipărirea folosește două coduri din 10–15 (spațiu și rând nou); care cod e care nu se poate deduce |
 | Literele: A Ă B C D E F G H I Î J K L M N O P Q R S Ș T Ț U V W X Y Z, apoi spațiu, rând nou | GHICIT | 30 de litere = alfabetul românesc fără Â |
 | AC 0151: S ← I (pozitiv) | GHICIT (semnul) | tabelul: „S ← i” |
 | Un caracter la cititor/mașina de scris ≈ 0,1 s | GHICIT | ordinul de mărime al unui teleimprimator |
@@ -81,3 +81,17 @@ Concluzii (DEDUS, confirmate de codul original):
 - se execută întâi instrucțiunea 1 (cod 1 = m6–m10, adresă 1 = m21–m30, tipărită prima în listing);
 - **codul 14 (octal 16) sare când S e negativ**, iar codul 15 (octal 17) când S ≥ 0 — invers față de tabelul Geier așa cum apare pe Wikipedia (14 = TPO „s ≥ 0”, 15 = TN „s < 0”). Fie rândurile tabelului sunt inversate în transcriere, fie convenția de semn diferă. **Problemă deschisă de verificat în Geier 1961 / lucrările de laborator.** Mnemonicele rămân cele din tabel; varianta `branch14_on_negative` controlează sensul.
 - Mecanismul preîncărcătorului: S pornește cu −1 (santinelă), primește câte 5 biți pe caracter și se deplasează cu 5; după 6 caractere santinela (bitul 0) ajunge în poziția de semn și S devine pozitiv → bucla se oprește, cuvântul (m0 = 0, m1–m30 = cele 6 caractere) se memorează, iar `MS 0014` mărește adresa de memorare.
+
+## Oracolul retipăririi (programul din 6.09.1962, Facsimil 4)
+Programul original, cu 7 constante reconstruite (1551, 1556, 1557, 1600, 1625, 1626, 1675), pornit de la 1477, **își tipărește propriul listing (1477–1545, 39 de linii) caracter cu caracter identic cu facsimilul**, în ≈ 114 s de timp simulat (`tests/test_retiparire.c`).
+
+Confirmă independent:
+- deplasarea cu n = câmpul: fiecare cifră octală se scoate cu `DLD 1` / tipărește s0…s3 / `DLS 4`;
+- **codul 15 (octal 17) sare pe s ≥ 0**: bucla `MS 1625` / `17 1477` continuă cât timp contorul e ≥ 0 — aceeași inversare 14/15 ca la INEX-1;
+- AC 0136 tipărește cifra din s0…s3 (cu s0 = 0 pentru cifrele octale);
+- formatul listingurilor de epocă `AAAA  c1 aaaa  c2 aaaa` era chiar ieșirea acestui program.
+
+Aduce în plus:
+- **MS lasă rezultatul și în S** (altfel bucla se oprește după primul rând).
+
+Rămân ghicite: codurile exacte ale spațiului și rândului nou (10 și 13 aici) și masca 1600 (aleasă să golească adresa 1).

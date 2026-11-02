@@ -1,0 +1,72 @@
+; SPDX-License-Identifier: CC-BY-SA-4.0
+; „Program pentru retipărirea programelor” — MECIPT-1, 6.09.1962
+; Transcris din: V. Baltac, „MECIPT – Evocări și Documente” (2011), Facsimil 4.
+; Tipărește la mașina de scris, în octal, cuvintele de la adresa din 1626, câte (1625)+1 cuvinte,
+; în formatul „AAAA  c1 aaaa  c2 aaaa”. Pornire de la 1477.
+;
+; Cum lucrează (DEDUS din cod):
+;  1477–1501  pune în instrucțiunea de la 1512 adresa curentă (masca 1600 golește adresa 1, 1626 o adaugă)
+;  1502–1507  tipărește adresa curentă: DLD 1 / tipărește s0…s3 / DLS 4 pentru fiecare cifră octală
+;  1510–1511  două spații (constanta 1556)
+;  1512       ia cuvântul de tipărit (instrucțiunea modificată) și îl păstrează la 1551
+;  1513–1542  codul 1, adresa 1, codul 2, adresa 2, cu spațiile dintre ele; 1557 = rând nou
+;  1543–1545  mărește adresa curentă, scade contorul 1625 și reia cât timp contorul ≥ 0
+
+@prov ORIGINAL Facsimil 4, Baltac, 6.09.1962
+1477  27 0000  30 0000
+1500  01 1512  31 1600
+1501  05 1626  25 1512
+1502  21 0025  22 0003
+1503  32 0136  21 0004
+1504  22 0001  32 0136
+1505  21 0004  22 0001
+1506  32 0136  21 0004
+1507  22 0001  32 0136
+1510  01 1556  32 0136
+1511  01 1556  32 0136
+1512  01 1512  25 1551
+1513  21 0006  22 0002
+1514  32 0136  21 0004
+1515  22 0001  32 0136
+1516  01 1556  32 0136
+1517  01 1551  21 0025
+1520  22 0003  32 0136
+1521  21 0004  22 0001
+1522  32 0136  21 0004
+1523  22 0001  32 0136
+1524  21 0004  22 0001
+1525  32 0136  01 1556
+1526  32 0136  01 1556
+1527  32 0136  01 1551
+1530  22 0001  32 0136
+1531  21 0004  22 0001
+1532  32 0136  01 1556
+1533  32 0136  01 1551
+1534  21 0013  22 0003
+1535  32 0136  21 0004
+1536  22 0001  32 0136
+1537  21 0004  22 0001
+1540  32 0136  21 0004
+1541  22 0001  32 0136
+1542  01 1557  32 0136
+1543  01 1675  14 1626
+1544  02 1675  14 1625
+1545  17 1477  00 0000
+
+; Constantele citite de program din afara listingului — nu s-au păstrat.
+@prov RECONSTRUCTIE dedus din logica programului (Facsimil 4); glifele 10 = spațiu, 13 = rând nou sunt GHICITE
+; 1551: locul unde se păstrează cuvântul tipărit (scris de program)
+1551 = o00000000000
+; 1556: caracterul „spațiu” în s0…s3 (cod 10 = 1010)
+1556 = o12000000000
+; 1557: caracterul „rând nou” în s0…s3 (cod 13 = 1101)
+1557 = o15000000000
+; 1600: masca ce golește adresa 1 (m21–m30) a instrucțiunii de la 1512
+1600 = o17777776000
+; 1675: unitatea de adresă (1 în adresa 1)
+1675 = o00000000001
+@prov RECONSTRUCTIE parametri de rulare: tipărește chiar acest program (1477–1545 = 39 de cuvinte)
+; 1625: contorul = numărul de cuvinte − 1
+1625 = o00000000046
+; 1626: adresa primului cuvânt de tipărit
+1626 = o00000001477
