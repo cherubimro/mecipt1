@@ -50,3 +50,12 @@ Fiecare alegere fără sursă explicită e listată aici, cu motivul și, unde e
 | AC 0151: S ← I (pozitiv) | GHICIT (semnul) | tabelul: „S ← i” |
 | Un caracter la cititor/mașina de scris ≈ 0,1 s | GHICIT | ordinul de mărime al unui teleimprimator |
 | Banda pentru programe: un cuvânt = 6 caractere de 5 biți (m1–m30) | DEDUS | Geier: „două instrucțiuni de 15 biți … prin doar șase caractere” |
+
+## Pupitrul
+| Alegere | Statut | Justificare |
+|---|---|---|
+| Comutatoarele de sub M încarcă direct registrul M | DEDUS | becurile M sunt dublate de comutatoare (Farcaș; Wikipedia RO) |
+| MEMORIE SCRIERE: tambur[RAI] ← M; CITIRE: M ← tambur[RAI]; imediat | DEDUS | inscripțiile grupului MEMORIE; RAI are comutatoare |
+| „INTRODUCE 7 CATEG. DIN RA ÎN R I”: R I ← 7 biți din RA | DEDUS | „7 categorii” = 7 biți = lățimea lui R I |
+| „INTRODUCE M ÎN RI”: RI ← instrucțiunea curentă din M | DEDUS | inscripție |
+| CALCULEAZĂ AUTOMAT / INSTRUCȚIE UNICĂ | SIGUR (existența) / DEDUS (efectul) | inscripție; Lucrarea 7 p.6 |
