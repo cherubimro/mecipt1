@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 #include "machine.h"
 #include "isa.h"
+#include "periph.h"
 #include <string.h>
 
 void mec_init(mecipt *m, mec_variants_t v) {
@@ -104,6 +105,18 @@ static int divide(mecipt *m, mword y) {
     return 0;
 }
 
+/* AC: subcodul e în câmpul de adresă (tabelul Geier, valori zecimale 73/91/92/94/105). */
+static mec_halt ac(mecipt *m, int sub) {
+    switch (sub) {
+    case AC_PRINT_DIGITS:  if (m->io) mec_type_digits(m->io, m->S);  m->ticks += MEC_TYPE_TICKS; return RUN_OK;
+    case AC_PRINT_LETTERS: if (m->io) mec_type_letters(m->io, m->S); m->ticks += MEC_TYPE_TICKS; return RUN_OK;
+    case AC_S_FROM_I:      m->S = m->I & MEC_MASK30; return RUN_OK;   /* GHICIT: I pozitiv, fără semn */
+    case AC_ICR_START:     if (m->io) m->io->icr_on = 1; return RUN_OK;
+    case AC_ICR_STOP:      if (m->io) m->io->icr_on = 0; return RUN_OK;
+    default: m->oprit = 1; m->unknown_code = 26; return HALT_UNKNOWN_OPCODE;
+    }
+}
+
 static void jump(mecipt *m, int y) { m->RAI = (uint16_t)(y & 01777); m->phase = 1; }
 
 /* Execută instrucțiunea (cod, adresă). Întoarce RUN_OK sau motivul opririi; *jumped = 1 la salt. */
@@ -138,6 +151,15 @@ static mec_halt exec(mecipt *m, int code, int y, int *jumped) {
     case 22: mec_drum_write(m, y, m->I & MEC_MASK30); break;
     case 23: m->I = mec_drum_read(m, y) & MEC_MASK30; break; /* GHICIT: biții m1–m30 ai lui y */
     case 24: break;                                           /* CU */
+    case 26: return ac(m, y);
+    case 27: {                                                /* CIT */
+        int v;
+        if (mec_tape_read(m->io, &v)) { m->hirtie_agatata = 1; m->oprit = 1; return HALT_TAPE_JAM; }
+        m->ticks += MEC_TAPE_TICKS;
+        mec_drum_write(m, y, (mword)v);
+        break;
+    }
+    case 28: { mword w = mec_drum_read(m, y); if (m->io) m->io->icr = w; break; }  /* TICR */
     case 25: m->S = s & mec_drum_read(m, y); break;
     default:
         m->oprit = 1; m->unknown_code = code; return HALT_UNKNOWN_OPCODE;
