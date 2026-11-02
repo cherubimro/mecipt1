@@ -40,7 +40,7 @@ mword mec_from_double(double x) {
 
 double mec_to_double(mword w) {
     double m = (double)mec_abs(w) / (double)(1u << 30);
-    return mec_is_neg(w) ? -m : m;
+    return (mec_is_neg(w) && m != 0.0) ? -m : m;   /* −0 se afișează 0 */
 }
 
 int mec_fmt_octal(mword w, char out[12]) {

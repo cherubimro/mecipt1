@@ -126,7 +126,7 @@ static void uop(mecipt *m, int id) {
     if (t && t->n < MEC_TRACE_MAX) { t->ids[t->n] = id; t->r1[t->n] = m->R1; t->r2[t->n] = m->R2; t->n++; }
 }
 
-static void jump(mecipt *m, int y) { m->RAI = (uint16_t)(y & 01777); m->phase = 1; }
+static void jump(mecipt *m, int y) { m->RAI = (uint16_t)(y & 01777); m->phase = 1; uop(m, UOP_RA_TO_RAI); }
 
 /* Execută instrucțiunea (cod, adresă). Întoarce RUN_OK sau motivul opririi; *jumped = 1 la salt. */
 static mec_halt exec(mecipt *m, int code, int y, int *jumped) {

@@ -19,8 +19,9 @@ static const mec_opinfo OPS[29] = {
     { 11, "D",    ADDR_Y,     "I ← s : y, S ← rest" },
     { 12, "MS",   ADDR_Y,     "Y ← s + y" },
     { 13, "T",    ADDR_Y,     "salt (transfer) la y" },
-    { 14, "TPO",  ADDR_Y,     "salt la y dacă s ≥ 0" },
-    { 15, "TN",   ADDR_Y,     "salt la y dacă s < 0" },
+    /* Textul din tabel; efectul REAL depinde de varianta branch14_on_negative → mec_op_effect(). */
+    { 14, "TPO",  ADDR_Y,     "salt la y dacă s ≥ 0 (după tabel)" },
+    { 15, "TN",   ADDR_Y,     "salt la y dacă s < 0 (după tabel)" },
     { 16, "TO",   ADDR_Y,     "salt la y dacă s ≠ 0" },
     { 17, "DLS",  ADDR_SHIFT, "deplasare logică stânga S & I cu „n” poziții" },
     { 18, "DLD",  ADDR_SHIFT, "deplasare logică dreapta S & I cu „n” poziții" },
@@ -44,6 +45,16 @@ const mec_opinfo *mec_op_by_mnemonic(const char *m) {
     for (int i = 0; i < 29; i++)
         if (strcmp(OPS[i].mnemonic, m) == 0) return &OPS[i];
     return NULL;
+}
+
+const char *mec_op_effect(int code, const mec_variants_t *v) {
+    const mec_opinfo *op = mec_op_by_code(code);
+    if (!op) return NULL;
+    if ((code == 14 || code == 15) && v && v->branch14_on_negative)
+        return code == 14
+            ? "salt la y dacă s < 0 (dedus din programele originale; tabelul Geier spune s ≥ 0)"
+            : "salt la y dacă s ≥ 0 (dedus din programele originale; tabelul Geier spune s < 0)";
+    return op->effect_ro;
 }
 
 mec_pair mec_unpack(mword w) {

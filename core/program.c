@@ -66,13 +66,20 @@ static int parse_data(char **tok, int ntok, mword *w) {
     if (ntok != 1) return -1;
     const char *t = tok[0];
     if (t[0] == 'o') return mec_parse_octal(t + 1, w);
-    char buf[64]; size_t n = strlen(t);
-    if (n >= sizeof buf) return -1;
-    memcpy(buf, t, n + 1);
-    for (char *p = buf; *p; p++) if (*p == ',') *p = '.';
-    char *end; double d = strtod(buf, &end);
-    if (*end || d <= -1.0 || d >= 1.0) return -1;
-    *w = mec_from_double(d);
+    /* Fracție zecimală: [+-] 0 [ (,|.) cifre ] — scrisă de mână, independentă de localizare
+       (strtod ar citi greșit sub ro_RO/de_DE și ar accepta nan, inf, 0x…, 1e…). */
+    int neg = 0;
+    if (*t == '+' || *t == '-') neg = (*t++ == '-');
+    if (*t != '0') return -1;
+    t++;
+    double d = 0.0, scale = 0.1;
+    if (*t == ',' || *t == '.') {
+        t++;
+        if (!isdigit((unsigned char)*t)) return -1;
+        for (; isdigit((unsigned char)*t); t++, scale /= 10.0) d += (*t - '0') * scale;
+    }
+    if (*t) return -1;
+    *w = mec_from_double(neg ? -d : d);
     return 0;
 }
 

@@ -50,4 +50,15 @@ TEST(test_variants_default) {
     CHECK_EQ_U(v.exec_ticks, 3);
 }
 
+TEST(test_effect_text_follows_variant) {
+    mec_variants_t v = mec_variants_default();            /* oracolul: 14 sare pe s < 0 */
+    CHECK(strstr(mec_op_effect(14, &v), "s < 0") != NULL);
+    CHECK(strstr(mec_op_effect(15, &v), "s ≥ 0") != NULL);
+    v.branch14_on_negative = 0;                           /* ca în tabelul Geier */
+    CHECK(strstr(mec_op_effect(14, &v), "s ≥ 0") != NULL);
+    CHECK(strstr(mec_op_effect(15, &v), "s < 0") != NULL);
+    CHECK_EQ_S(mec_op_effect(5, &v), mec_op_by_code(5)->effect_ro);
+    CHECK(mec_op_effect(30, &v) == NULL);
+}
+
 RUN_ALL()

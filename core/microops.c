@@ -38,7 +38,7 @@ int mec_uop_id(int grid, int row, int col) {
    4/5/6/7 = deplasări, 17/18/19 = numărătorul de pași, 22/11/12/13/23 = semne. */
 #define E -1
 const signed char MEC_UOP_SEQ[29][24] = {
-    /*  0 O    */ {15, E},
+    /*  0 O    */ {E},          /* „2(ra) trece în RAI” se emite din jump(), doar la salt efectiv */
     /*  1 U    */ {16, 5, E},
     /*  2 UN   */ {16, 5, 8, E},
     /*  3 UM   */ {16, 5, 9, E},
@@ -51,10 +51,10 @@ const signed char MEC_UOP_SEQ[29][24] = {
     /* 10 INR  */ {16, 22, 11, 9, 17, 19, 7, 5, 18, 12, E},
     /* 11 D    */ {16, 22, 11, 9, 17, 19, 4, 6, 18, 23, 13, E},
     /* 12 MS   */ {16, 0, E},
-    /* 13 T    */ {15, E},
-    /* 14 TPO  */ {15, E},
-    /* 15 TN   */ {15, E},
-    /* 16 TO   */ {15, E},
+    /* 13 T    */ {E},
+    /* 14 TPO  */ {E},
+    /* 15 TN   */ {E},
+    /* 16 TO   */ {E},
     /* 17 DLS  */ {19, 4, 6, 18, E},
     /* 18 DLD  */ {19, 7, 5, 18, E},
     /* 19 DS   */ {19, 4, 18, E},

@@ -6,15 +6,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-static char *slurp(const char *path) {
+static char *slurp(const char *path, size_t *len) {
     FILE *f = fopen(path, "rb");
     if (!f) return NULL;
-    fseek(f, 0, SEEK_END); long n = ftell(f); fseek(f, 0, SEEK_SET);
+    long n = -1;
+    if (fseek(f, 0, SEEK_END) == 0) n = ftell(f);
+    if (n <= 0 || n > (1L << 24) || fseek(f, 0, SEEK_SET) != 0) { fclose(f); return NULL; }
     char *b = malloc((size_t)n + 1);
+    if (!b) { fclose(f); return NULL; }
     size_t r = fread(b, 1, (size_t)n, f); b[r] = 0; fclose(f);
+    if (r == 0) { free(b); return NULL; }
+    if (len) *len = r;
     return b;
 }
-
 int main(int argc, char **argv) {
     const char *in = NULL, *out = NULL; long from = -1, to = -1;
     for (int i = 1; i < argc; i++) {
@@ -24,10 +28,13 @@ int main(int argc, char **argv) {
         } else in = argv[i];
     }
     if (!in) { fprintf(stderr, "utilizare: mecasm PROGRAM.mec [-o X.drum] [--listing DE_LA PÂNĂ_LA]\n"); return 2; }
-    char *t = slurp(in);
-    if (!t) { fprintf(stderr, "mecasm: nu pot citi %s\n", in); return 1; }
+    char *t = slurp(in, NULL);
+    if (!t) { fprintf(stderr, "mecasm: nu pot citi %s (lipsă, gol sau nu e un fișier)\n", in); return 1; }
     static mec_image img;
     if (mec_program_parse(t, &img)) { fprintf(stderr, "mecasm: %s: %s\n", in, img.error); return 1; }
+    int nwords = 0;
+    for (int a = 0; a < 1024; a++) nwords += img.prov[a] != PROV_NONE;
+    if (!nwords) { fprintf(stderr, "mecasm: %s: programul nu conține niciun cuvânt\n", in); return 1; }
     if (from >= 0) {
         static char buf[1 << 16];
         mec_listing(&img, (int)from, (int)to, buf, sizeof buf);

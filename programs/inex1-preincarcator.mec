@@ -14,8 +14,11 @@
 @prov ORIGINAL Facsimil 5, Baltac
 0000  00 0000  00 0000
 ; Ultima cifră a cuvântului 0001 e corectată de mână în facsimil; citită „0”.
-; DEDUS: doar cu 0000 instrucțiunea MS 0014 mărește corect adresa lui ME la fiecare cuvânt.
+; Doar cu 0000 instrucțiunea MS 0014 mărește corect adresa lui ME la fiecare cuvânt.
+@prov DEDUS Facsimil 5, Baltac; cifra corectată de mână citită 0
 0001  00 0001  00 0000
+
+@prov ORIGINAL Facsimil 5, Baltac
 
 0010  27 0000  02 0001
 0011  21 0005  33 0044

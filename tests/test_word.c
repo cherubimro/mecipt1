@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 #include "test.h"
 #include "word.h"
+#include <math.h>
 
 TEST(test_bit_numbering) {
     CHECK_EQ_U(mec_bit(0x40000000u, 0), 1);
@@ -60,6 +61,11 @@ TEST(test_octal_roundtrip) {
     CHECK_EQ_U(back, MEC_MASK31);
     CHECK(mec_parse_octal("27777777777", &back) != 0); /* peste 31 biți */
     CHECK(mec_parse_octal("1238", &back) != 0);        /* cifră neoctală */
+}
+
+TEST(test_minus_zero_displays_as_zero) {
+    CHECK(!signbit(mec_to_double(MEC_MASK31)));           /* −0 se afișează „0”, nu „−0” */
+    CHECK(mec_to_double(MEC_MASK31) == 0.0);
 }
 
 RUN_ALL()

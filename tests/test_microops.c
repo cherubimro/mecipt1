@@ -62,4 +62,17 @@ TEST(test_trace_records_R1_R2) {
     CHECK_EQ_U(m.R1, tr.r1[tr.n - 1]);
 }
 
+TEST(test_not_taken_branch_no_rai_lamp) {
+    /* S = 0,5; codul 14 (implicit: sare pe s < 0) nu sare → becul „2(ra) trece în RAI” nu se aprinde */
+    run("@prov GHICIT t\n0000  U 0100  16 0005\n0001  O 0001  O 0001\n0005  O 0005  O 0005\n0100 = 0,5\n");
+    mec_step(&m); tr.n = 0; mec_step(&m);
+    CHECK_EQ_U(m.RAI, 01);
+    CHECK(!contains(mec_uop_id(0, 1, 16)));
+    /* S = −0,5: saltul se face → becul se aprinde */
+    run("@prov GHICIT t\n0000  U 0100  16 0005\n0001  O 0001  O 0001\n0005  O 0005  O 0005\n0100 = -0,5\n");
+    mec_step(&m); tr.n = 0; mec_step(&m);
+    CHECK_EQ_U(m.RAI, 05);
+    CHECK(contains(mec_uop_id(0, 1, 16)));
+}
+
 RUN_ALL()

@@ -3,6 +3,7 @@
 #include "program.h"
 #include "isa.h"
 #include <stdlib.h>
+#include <locale.h>
 
 static char *slurp(const char *path) {
     FILE *f = fopen(path, "rb");
@@ -85,6 +86,32 @@ TEST(test_data_words) {
     CHECK_EQ_U(a.word[5], mec_from_double(-0.25));
     CHECK_EQ_U(a.word[6], MEC_MASK31);
     CHECK_EQ_U(a.prov[4], PROV_RECONSTRUCTIE);
+}
+
+TEST(test_fraction_parser_locale_and_rejects) {
+    mec_image a;
+    int have = setlocale(LC_NUMERIC, "de_DE.utf8") != NULL;   /* virgula zecimală, ca wxWidgets sub ro_RO */
+    if (!have) printf("  (fără localizarea de_DE; se testează doar respingerile)\n");
+    CHECK_EQ_U(mec_program_parse("@prov GHICIT t\n0001 = 0,5\n0002 = -0.25\n0003 = 0,017452406\n", &a), 0);
+    CHECK_EQ_U(a.word[1], mec_from_double(0.5));
+    CHECK_EQ_U(a.word[2], mec_from_double(-0.25));
+    CHECK_EQ_U(a.word[3], mec_from_double(0.017452406));
+    setlocale(LC_NUMERIC, "C");
+    const char *bad[] = { "nan", "inf", "0x1p-3", "1e-3", "1,0", "-1", ",5", "0,", "0,5x", "+-0,5" };
+    for (unsigned i = 0; i < sizeof bad / sizeof *bad; i++) {
+        char src[64]; snprintf(src, sizeof src, "@prov GHICIT t\n0001 = %s\n", bad[i]);
+        if (mec_program_parse(src, &a) == 0) { printf("  acceptat greșit: %s\n", bad[i]); CHECK(0); }
+    }
+}
+
+TEST(test_inex_word1_is_dedus) {
+    char *t = slurp("../programs/inex1-preincarcator.mec");
+    if (!t) { CHECK(0); return; }
+    CHECK_EQ_U(mec_program_parse(t, &img), 0);
+    CHECK_EQ_U(img.prov[01], PROV_DEDUS);                 /* cifra corectată de mână e o citire dedusă */
+    CHECK_EQ_U(img.prov[00], PROV_ORIGINAL);
+    CHECK_EQ_U(img.prov[010], PROV_ORIGINAL);
+    free(t);
 }
 
 RUN_ALL()

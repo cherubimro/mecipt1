@@ -95,3 +95,10 @@ Aduce în plus:
 - **MS lasă rezultatul și în S** (altfel bucla se oprește după primul rând).
 
 Rămân ghicite: codurile exacte ale spațiului și rândului nou (10 și 13 aici) și masca 1600 (aleasă să golească adresa 1).
+
+## După verificarea finală
+- `mec_op_effect(cod, variante)` dă efectul **real** al codurilor 14/15 sub varianta activă; interfețele trebuie să-l folosească în locul textului din tabel.
+- −0 se afișează „0” (`mec_to_double`).
+- Becul „2(ra) trece în RAI” se aprinde doar când saltul chiar se face.
+- Fracțiile din fișierele `.mec` se citesc cu un parser propriu (`0,5` sau `0.5`), independent de localizare; `nan`, `inf`, `0x…`, `1e…` sunt respinse.
+- Cuvântul 0001 al INEX-1 are proveniența DEDUS (cifra corectată de mână).

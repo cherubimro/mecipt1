@@ -17,5 +17,15 @@ echo "$tr" | grep -q "^1477 1 27 0000" && echo "OK   e2e_trace_format" || { echo
 build/mecrun programs/retiparire-1962.mec --variants shift=32-field,pair=1,interleave=0 --start 1477 --max 10 >/dev/null 2>&1 \
   && echo "OK   e2e_variants_parse" || { echo "FAIL e2e_variants_parse"; fail=1; }
 
+build/mecrun programs >/dev/null 2>&1; rc=$?
+[ $rc -ne 0 ] && echo "OK   e2e_mecrun_rejects_directory" || { echo "FAIL e2e_mecrun_rejects_directory: exit $rc"; fail=1; }
+
+: > build/gol.mec; build/mecasm build/gol.mec --listing 0 1777 >/dev/null 2>&1; rc=$?
+[ $rc -ne 0 ] && echo "OK   e2e_mecasm_rejects_empty" || { echo "FAIL e2e_mecasm_rejects_empty: exit $rc"; fail=1; }
+
+printf '@prov GHICIT t\n0000  U 0100  A 0100\n0001  O 0001  O 0001\n0100 = 0,75\n' > build/dcr.mec
+build/mecrun build/dcr.mec >/dev/null 2>&1; rc=$?
+[ $rc -eq 3 ] && echo "OK   e2e_mecrun_exit_on_dcr" || { echo "FAIL e2e_mecrun_exit_on_dcr: exit $rc"; fail=1; }
+
 echo "tests/e2e.sh: gata"
 exit $fail

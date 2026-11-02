@@ -2,6 +2,7 @@
 // mecrun PROGRAM.mec [--tape FIȘIER.bin | --tape-words FIȘIER.mec] [--start AAAA] [--max N]
 //        [--trace] [--variants shift=field|32-field,pair=1|2,interleave=0|1,cod14=neg|poz]
 // Ieșirea mașinii de scris pe stdout; motivul opririi pe stderr.
+// Cod de ieșire: 0 = oprire normală (O, limită, sfârșitul benzii); 1 = eroare la citire; 2 = utilizare; 3 = DCR / cod necunoscut.
 #include "console.h"
 #include "periph.h"
 #include "microops.h"
@@ -13,13 +14,16 @@
 static char *slurp(const char *path, size_t *len) {
     FILE *f = fopen(path, "rb");
     if (!f) return NULL;
-    fseek(f, 0, SEEK_END); long n = ftell(f); fseek(f, 0, SEEK_SET);
+    long n = -1;
+    if (fseek(f, 0, SEEK_END) == 0) n = ftell(f);
+    if (n <= 0 || n > (1L << 24) || fseek(f, 0, SEEK_SET) != 0) { fclose(f); return NULL; }
     char *b = malloc((size_t)n + 1);
+    if (!b) { fclose(f); return NULL; }
     size_t r = fread(b, 1, (size_t)n, f); b[r] = 0; fclose(f);
+    if (r == 0) { free(b); return NULL; }
     if (len) *len = r;
     return b;
 }
-
 static int parse_variants(const char *s, mec_variants_t *v) {
     char buf[256]; snprintf(buf, sizeof buf, "%s", s);
     for (char *t = strtok(buf, ","); t; t = strtok(NULL, ",")) {
@@ -70,7 +74,7 @@ int main(int argc, char **argv) {
     }
     static mec_image img, timg; static mecipt m; static mec_periph io; static mec_uop_trace tr;
     char *src = slurp(prog, NULL);
-    if (!src) { fprintf(stderr, "mecrun: nu pot citi %s\n", prog); return 1; }
+    if (!src) { fprintf(stderr, "mecrun: nu pot citi %s (lipsă, gol sau nu e un fișier)\n", prog); return 1; }
     if (mec_program_parse(src, &img)) { fprintf(stderr, "mecrun: %s: %s\n", prog, img.error); return 1; }
 
     static uint8_t tape[65536]; size_t tlen = 0;
@@ -112,5 +116,6 @@ int main(int argc, char **argv) {
     fprintf(stderr, "oprit: %s RAI=%04o S=%011o timp=%.1f s (%.1f instr/s)\n",
             reason(h, &m), m.RAI, (unsigned)m.S, s, s > 0 ? (double)done / s : 0.0);
     free(src);
-    return 0;
+    /* 0 = oprire normală (O, limită, sfârșitul benzii); 3 = depășire sau cod necunoscut */
+    return (h == HALT_DCR || h == HALT_UNKNOWN_OPCODE) ? 3 : 0;
 }

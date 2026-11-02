@@ -18,6 +18,8 @@ typedef struct {
 
 const mec_opinfo *mec_op_by_code(int code);           /* NULL pentru 29–31 */
 const mec_opinfo *mec_op_by_mnemonic(const char *m);
+/* Efectul real al codului sub variantele date (diferă de tabel la 14/15). NULL pentru coduri necunoscute. */
+const char *mec_op_effect(int code, const mec_variants_t *v);
 
 typedef struct { int code1, addr1, code2, addr2; } mec_pair;
 mec_pair mec_unpack(mword w);
