@@ -28,3 +28,13 @@ Fiecare alegere fără sursă explicită e listată aici, cu motivul și, unde e
 | Fiecare acces așteaptă poziția cuvântului, apoi `exec_ticks` = 3 | GHICIT (valoarea 3) | — |
 | Intercalare: adresele pare în sloturile 0–511, impare în 512–1023 | DEDUS | Baltac, Facsimil 8 („adresele pare pe jumătate de tambur și cele impare pe cealaltă”) |
 | **Verificare:** un program tipic (însumarea unui tabel) rulează cu **50,6 instr/s** fără intercalare și **60,7** cu intercalare | — | sursele: 50, respectiv 70–80 (pentru programe așezate anume); modelul nu a fost reglat după aceste cifre |
+
+## Deplasări, înmulțire, împărțire
+| Alegere | Statut | Justificare |
+|---|---|---|
+| Deplasare logică: semnul participă, biții care ies se pierd, intră zerouri | GHICIT (tratamentul semnului) | tabelul: „deplasare logică” |
+| DLS/DLD pe S & I ca un registru de 61 de biți (S sus, I jos) | DEDUS | tabelul: „S & I”; IN pune produsul dublu în S & I |
+| Numărul de poziții: câmpul sau 32 − câmpul | DESCHIS | variantă `shift_field`; Geier spune „32-n”, dar logica INEX-1 cere n = câmpul → oracolul din Task 9 decide |
+| IN: semnul și partea de sus în S, partea de jos în I, ambele complementate pentru rezultat negativ | GHICIT | — |
+| INR: rotunjire la jumătate în sus | GHICIT | — |
+| D: I ← cât (30 de biți), S ← rest cu semnul lui s; \|s\| ≥ \|y\| → depășire (DCR) | GHICIT (forma restului) | tabelul: „I ← s : y, S ← rest” |

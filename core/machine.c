@@ -54,6 +54,56 @@ static mec_halt overflow(mecipt *m, int ovf) {
     return RUN_OK;
 }
 
+int mec_shift_count(const mecipt *m, int field) {
+    return m->v.shift_field == SHIFT_N_IS_FIELD ? field : 32 - field;
+}
+
+#define MASK61 ((1ull << 61) - 1)
+
+/* GHICIT: deplasare logică — semnul participă, biții care ies se pierd, intră zerouri. */
+static void shift(mecipt *m, int code, int field) {
+    int n = mec_shift_count(m, field);
+    if (n < 0) n = 0;
+    if (code == 19 || code == 20) {                 /* DS / DD: doar S (31 de biți) */
+        uint64_t s = m->S;
+        s = (n >= 31) ? 0 : (code == 19 ? (s << n) : (s >> n));
+        m->S = (mword)(s & MEC_MASK31);
+        return;
+    }
+    uint64_t x = ((uint64_t)m->S << 30) | (m->I & MEC_MASK30);   /* S & I: 61 de biți */
+    x = (n >= 61) ? 0 : (code == 17 ? (x << n) : (x >> n));
+    x &= MASK61;
+    m->S = (mword)(x >> 30) & MEC_MASK31;
+    m->I = (uint32_t)(x & MEC_MASK30);
+}
+
+/* GHICIT: produsul dublu pune semnul și partea de sus în S, partea de jos în I,
+   ambele complementate pentru rezultat negativ. */
+static void multiply(mecipt *m, mword y, int rounded) {
+    int neg = mec_is_neg(m->S) != mec_is_neg(y);
+    uint64_t p = (uint64_t)mec_abs(m->S) * (uint64_t)mec_abs(y);
+    if (rounded) {
+        mword r = (mword)((p + (1ull << 29)) >> 30) & MEC_MASK30;
+        m->S = neg ? mec_neg(r) : r;
+        return;
+    }
+    mword hi = (mword)(p >> 30) & MEC_MASK30;
+    uint32_t lo = (uint32_t)(p & MEC_MASK30);
+    m->S = neg ? mec_neg(hi) : hi;
+    m->I = neg ? (~lo & MEC_MASK30) : lo;
+}
+
+/* I ← s : y (30 de biți), S ← restul cu semnul lui s. |s| ≥ |y| → depășire. GHICIT: forma restului. */
+static int divide(mecipt *m, mword y) {
+    uint64_t ms = mec_abs(m->S), my = mec_abs(y);
+    if (my == 0 || ms >= my) return 1;
+    uint64_t q = (ms << 30) / my, r = (ms << 30) % my;
+    int neg = mec_is_neg(m->S) != mec_is_neg(y);
+    m->I = neg ? (uint32_t)(~q & MEC_MASK30) : (uint32_t)(q & MEC_MASK30);
+    m->S = mec_is_neg(m->S) ? mec_neg((mword)r) : (mword)r;
+    return 0;
+}
+
 static void jump(mecipt *m, int y) { m->RAI = (uint16_t)(y & 01777); m->phase = 1; }
 
 /* Execută instrucțiunea (cod, adresă). Întoarce RUN_OK sau motivul opririi; *jumped = 1 la salt. */
@@ -71,6 +121,10 @@ static mec_halt exec(mecipt *m, int code, int y, int *jumped) {
     case 6:  m->S = mec_add(s, mec_neg(mec_drum_read(m, y)), &ovf); return overflow(m, ovf);
     case 7:  m->S = mec_add(s, mec_abs(mec_drum_read(m, y)), &ovf); return overflow(m, ovf);
     case 8:  m->S = mec_add(s, mec_neg(mec_abs(mec_drum_read(m, y))), &ovf); return overflow(m, ovf);
+    case 9:  multiply(m, mec_drum_read(m, y), 0); break;
+    case 10: multiply(m, mec_drum_read(m, y), 1); break;
+    case 11: return overflow(m, divide(m, mec_drum_read(m, y)));
+    case 17: case 18: case 19: case 20: shift(m, code, y); break;
     case 12: /* MS: y ← s + y. GHICIT: S rămâne neschimbat. */
         val = mec_add(s, mec_drum_read(m, y), &ovf);
         mec_drum_write(m, y, val);

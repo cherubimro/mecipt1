@@ -38,6 +38,7 @@ mec_halt mec_step(mecipt *m);                    /* O instrucțiune (jumătate d
 mec_halt mec_run(mecipt *m, uint64_t max_instr);
 double   mec_seconds(const mecipt *m);
 int      mec_drum_slot(const mecipt *m, int addr);
+int      mec_shift_count(const mecipt *m, int field);  /* n = câmp sau 32 − câmp (variantă) */
 /* Citire/scriere pe tambur cu așteptarea poziției (folosite și de periferice). */
 mword    mec_drum_read(mecipt *m, int addr);
 void     mec_drum_write(mecipt *m, int addr, mword w);
