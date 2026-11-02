@@ -2,6 +2,7 @@
 #include "machine.h"
 #include "isa.h"
 #include "periph.h"
+#include "microops.h"
 #include <string.h>
 
 void mec_init(mecipt *m, mec_variants_t v) {
@@ -117,6 +118,14 @@ static mec_halt ac(mecipt *m, int sub) {
     }
 }
 
+/* Fiecare microoperație: R I trece în R II, noua adresă intră în R I (Lucrarea 7 p.3). */
+static void uop(mecipt *m, int id) {
+    m->R2 = m->R1;
+    m->R1 = (uint8_t)(id & 0177);
+    mec_uop_trace *t = m->trace;
+    if (t && t->n < MEC_TRACE_MAX) { t->ids[t->n] = id; t->r1[t->n] = m->R1; t->r2[t->n] = m->R2; t->n++; }
+}
+
 static void jump(mecipt *m, int y) { m->RAI = (uint16_t)(y & 01777); m->phase = 1; }
 
 /* Execută instrucțiunea (cod, adresă). Întoarce RUN_OK sau motivul opririi; *jumped = 1 la salt. */
@@ -181,9 +190,10 @@ mec_halt mec_step(mecipt *m) {
     int phase = m->phase;
     mec_halt h = exec(m, code, y, &jumped);
     if (h == HALT_UNKNOWN_OPCODE) return h;
+    for (int i = 0; MEC_UOP_SEQ[code][i] >= 0; i++) uop(m, MEC_UOP_SEQ[code][i]);
     if (!jumped) {
-        if (phase == 1) m->phase = 2;                       /* „Instrucția 2 trece în locul 1” */
-        else { m->phase = 1; m->RAI = (uint16_t)((rai + 1) & 01777); }
+        if (phase == 1) { m->phase = 2; uop(m, UOP_INSTR2_IN_LOC1); }   /* „Instrucția 2 trece în locul 1” */
+        else { m->phase = 1; m->RAI = (uint16_t)((rai + 1) & 01777); uop(m, UOP_MUTA_RAI); }
     }
     return h;
 }

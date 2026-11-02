@@ -59,3 +59,11 @@ Fiecare alegere fără sursă explicită e listată aici, cu motivul și, unde e
 | „INTRODUCE 7 CATEG. DIN RA ÎN R I”: R I ← 7 biți din RA | DEDUS | „7 categorii” = 7 biți = lățimea lui R I |
 | „INTRODUCE M ÎN RI”: RI ← instrucțiunea curentă din M | DEDUS | inscripție |
 | CALCULEAZĂ AUTOMAT / INSTRUCȚIE UNICĂ | SIGUR (existența) / DEDUS (efectul) | inscripție; Lucrarea 7 p.6 |
+
+## Microoperații (becurile panoului stâng)
+| Alegere | Statut | Justificare |
+|---|---|---|
+| Cele 39 de microoperații și textele lor | SIGUR (unde nu e `[?]`) | inscripțiile panoului (texturile modelului 3D) |
+| La fiecare microoperație: R I → R II, noua adresă în R I | DEDUS | Lucrarea 7 p.3: „impulsurile de ritm impar produc trecerea conținutului registrului R1 în R2” |
+| Secvențele de microoperații pe instrucțiune (`MEC_UOP_SEQ`) | DEDUS | compuse din microoperațiile panoului; ordinea reală nu s-a păstrat (Lucrarea 7 p.2–4 lipsă). Adunarea era cablată și nu are bec propriu |
+| Microprogramele AC (94 → 90 → 24, 91 → 90 → 24) | SIGUR (Lucrarea 7 p.6) | sunt adrese de microprogram, nu celule ale grilei; nu sunt încă emise ca urmă |
