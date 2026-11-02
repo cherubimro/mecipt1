@@ -13,6 +13,9 @@ typedef struct {
     enum { PAIR_FIRST_IS_1, PAIR_FIRST_IS_2 } pair_order;
     /* 0 = adresare simplă; 1 = adrese pare pe o jumătate de tambur, impare pe cealaltă (Baltac). */
     int interleave_even_odd;
+    /* Ipoteză din oracolul INEX-1: codurile 14 (TPO) și 15 (TN) au sensurile inversate față de
+       tabelul Geier (14 sare pe s < 0, 15 pe s ≥ 0). 0 = ca în tabel. */
+    int branch14_on_negative;
     /* timp de execuție după un acces la tambur, în „timpi de cuvânt” (1024 pe rotație). GHICIT. */
     int exec_ticks;
 } mec_variants_t;

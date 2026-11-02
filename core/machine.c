@@ -153,8 +153,12 @@ static mec_halt exec(mecipt *m, int code, int y, int *jumped) {
         return overflow(m, ovf);
     case 13: jump(m, y); *jumped = 1; break;
     /* GHICIT: −0 contează drept zero la toate salturile condiționate. */
-    case 14: if (!mec_is_neg(s) || mec_is_zero(s)) { jump(m, y); *jumped = 1; } break;
-    case 15: if (mec_is_neg(s) && !mec_is_zero(s)) { jump(m, y); *jumped = 1; } break;
+    case 14: case 15: {
+        int nonneg = !mec_is_neg(s) || mec_is_zero(s);
+        int jump_on_nonneg = (code == 14) != (m->v.branch14_on_negative != 0);
+        if (jump_on_nonneg ? nonneg : !nonneg) { jump(m, y); *jumped = 1; }
+        break;
+    }
     case 16: if (!mec_is_zero(s)) { jump(m, y); *jumped = 1; } break;
     case 21: mec_drum_write(m, y, m->S); break;
     case 22: mec_drum_write(m, y, m->I & MEC_MASK30); break;

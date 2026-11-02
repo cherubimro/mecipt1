@@ -43,7 +43,8 @@ TEST(test_ac_subcodes_octal) {
 
 TEST(test_variants_default) {
     mec_variants_t v = mec_variants_default();
-    CHECK_EQ_U(v.shift_field, SHIFT_N_IS_32_MINUS_FIELD);
+    CHECK_EQ_U(v.shift_field, SHIFT_N_IS_FIELD);          /* oracolul INEX-1 */
+    CHECK_EQ_U(v.branch14_on_negative, 1);                /* oracolul INEX-1 */
     CHECK_EQ_U(v.pair_order, PAIR_FIRST_IS_1);
     CHECK_EQ_U(v.interleave_even_odd, 1);
     CHECK_EQ_U(v.exec_ticks, 3);

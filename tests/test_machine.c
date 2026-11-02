@@ -34,6 +34,13 @@ TEST(test_pair_order) {
     CHECK_EQ_U(m.drum[0101], mec_from_double(0.5));
 }
 
+/* Variantele „ca în tabelul Geier” (14 = TPO sare pe s ≥ 0). */
+static mec_variants_t table_v(void) {
+    mec_variants_t v = mec_variants_default();
+    v.branch14_on_negative = 0;
+    return v;
+}
+
 static int branch_taken(int op, double s) {
     char src[256];
     snprintf(src, sizeof src,
@@ -43,7 +50,7 @@ static int branch_taken(int op, double s) {
              "0003  O 0003  O 0003\n"
              "0100 = %s%s\n", op == 14 ? "TPO" : op == 15 ? "TN" : "TO",
              s < 0 ? "-" : "", s == 0.5 || s == -0.5 ? "0,5" : "0");
-    load(src, mec_variants_default());
+    load(src, table_v());
     mec_run(&m, 100);
     return m.RAI == 03;
 }
@@ -55,6 +62,18 @@ TEST(test_branches) {
     CHECK(!branch_taken(16, 0.0));
 }
 
+TEST(test_default_code14_jumps_on_negative) {
+    /* Oracolul INEX-1: implicit, codul 14 (octal 16) sare pe s < 0, codul 15 (octal 17) pe s ≥ 0. */
+    mec_variants_t v = mec_variants_default();
+    char src[256];
+    snprintf(src, sizeof src, "@prov GHICIT test\n0000  U 0100  16 0003\n0001  O 0001  O 0001\n"
+             "0003  O 0003  O 0003\n0100 = -0,5\n");
+    load(src, v); mec_run(&m, 100); CHECK_EQ_U(m.RAI, 03);
+    snprintf(src, sizeof src, "@prov GHICIT test\n0000  U 0100  17 0003\n0001  O 0001  O 0001\n"
+             "0003  O 0003  O 0003\n0100 = 0,5\n");
+    load(src, v); mec_run(&m, 100); CHECK_EQ_U(m.RAI, 03);
+}
+
 TEST(test_minus_zero_branches) {
     load("@prov GHICIT test\n"
          "0000  U 0100  SC 0100\n"        /* S = x − x = −0 în complement față de unu */
@@ -62,7 +81,7 @@ TEST(test_minus_zero_branches) {
          "0002  TPO 0004  O 0002\n"
          "0004  O 0004  O 0004\n"
          "0005  O 0005  O 0005\n"
-         "0100 = 0,3\n", mec_variants_default());
+         "0100 = 0,3\n", table_v());
     mec_run(&m, 100);
     CHECK_EQ_U(m.RAI, 04);
 }

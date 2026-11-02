@@ -19,7 +19,8 @@ static mec_variants_t field_n(void) {
 }
 
 TEST(test_shift_count_variants) {
-    mec_init(&m, mec_variants_default());       /* SHIFT_N_IS_32_MINUS_FIELD */
+    mec_init(&m, mec_variants_default());
+    m.v.shift_field = SHIFT_N_IS_32_MINUS_FIELD;
     CHECK_EQ_U(mec_shift_count(&m, 033), 5);    /* exemplul din Wikipedia: DS 0033 = 5 poziții */
     m.v.shift_field = SHIFT_N_IS_FIELD;
     CHECK_EQ_U(mec_shift_count(&m, 033), 27);

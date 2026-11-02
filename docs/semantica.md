@@ -34,7 +34,7 @@ Fiecare alegere fără sursă explicită e listată aici, cu motivul și, unde e
 |---|---|---|
 | Deplasare logică: semnul participă, biții care ies se pierd, intră zerouri | GHICIT (tratamentul semnului) | tabelul: „deplasare logică” |
 | DLS/DLD pe S & I ca un registru de 61 de biți (S sus, I jos) | DEDUS | tabelul: „S & I”; IN pune produsul dublu în S & I |
-| Numărul de poziții: câmpul sau 32 − câmpul | DESCHIS | variantă `shift_field`; Geier spune „32-n”, dar logica INEX-1 cere n = câmpul → oracolul din Task 9 decide |
+| Numărul de poziții = câmpul (nu 32 − câmpul) | DEDUS — oracol INEX-1 | vezi „Oracolul INEX-1” mai jos; nota „32-n” din Geier/Wikipedia rămâne neexplicată (poate notația în baza 32, poate doar DS/DD) |
 | IN: semnul și partea de sus în S, partea de jos în I, ambele complementate pentru rezultat negativ | GHICIT | — |
 | INR: rotunjire la jumătate în sus | GHICIT | — |
 | D: I ← cât (30 de biți), S ← rest cu semnul lui s; \|s\| ≥ \|y\| → depășire (DCR) | GHICIT (forma restului) | tabelul: „I ← s : y, S ← rest” |
@@ -67,3 +67,17 @@ Fiecare alegere fără sursă explicită e listată aici, cu motivul și, unde e
 | La fiecare microoperație: R I → R II, noua adresă în R I | DEDUS | Lucrarea 7 p.3: „impulsurile de ritm impar produc trecerea conținutului registrului R1 în R2” |
 | Secvențele de microoperații pe instrucțiune (`MEC_UOP_SEQ`) | DEDUS | compuse din microoperațiile panoului; ordinea reală nu s-a păstrat (Lucrarea 7 p.2–4 lipsă). Adunarea era cablată și nu are bec propriu |
 | Microprogramele AC (94 → 90 → 24, 91 → 90 → 24) | SIGUR (Lucrarea 7 p.6) | sunt adrese de microprogram, nu celule ale grilei; nu sunt încă emise ca urmă |
+
+## Oracolul INEX-1 (preîncărcătorul original, Facsimil 5)
+`build/mecvariants inex` rulează preîncărcătorul original pe o bandă cu 3 cuvinte cunoscute, sub toate cele 8 combinații:
+
+| deplasare | ordinea perechii | codul 14 | rezultat |
+|---|---|---|---|
+| **n = câmpul** | **1 întâi** | **sare pe s < 0** | **REUȘEȘTE** |
+| celelalte 7 combinații | | | eșuează |
+
+Concluzii (DEDUS, confirmate de codul original):
+- numărul de poziții al deplasării este chiar câmpul de adresă;
+- se execută întâi instrucțiunea 1 (cod 1 = m6–m10, adresă 1 = m21–m30, tipărită prima în listing);
+- **codul 14 (octal 16) sare când S e negativ**, iar codul 15 (octal 17) când S ≥ 0 — invers față de tabelul Geier așa cum apare pe Wikipedia (14 = TPO „s ≥ 0”, 15 = TN „s < 0”). Fie rândurile tabelului sunt inversate în transcriere, fie convenția de semn diferă. **Problemă deschisă de verificat în Geier 1961 / lucrările de laborator.** Mnemonicele rămân cele din tabel; varianta `branch14_on_negative` controlează sensul.
+- Mecanismul preîncărcătorului: S pornește cu −1 (santinelă), primește câte 5 biți pe caracter și se deplasează cu 5; după 6 caractere santinela (bitul 0) ajunge în poziția de semn și S devine pozitiv → bucla se oprește, cuvântul (m0 = 0, m1–m30 = cele 6 caractere) se memorează, iar `MS 0014` mărește adresa de memorare.

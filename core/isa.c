@@ -62,9 +62,10 @@ mword mec_pack(mec_pair p) {
 
 mec_variants_t mec_variants_default(void) {
     mec_variants_t v;
-    v.shift_field = SHIFT_N_IS_32_MINUS_FIELD;
+    v.shift_field = SHIFT_N_IS_FIELD;          /* DEDUS: oracolul INEX-1 (docs/semantica.md) */
     v.pair_order = PAIR_FIRST_IS_1;
     v.interleave_even_odd = 1;
     v.exec_ticks = 3;
+    v.branch14_on_negative = 1;                /* DEDUS: oracolul INEX-1 */
     return v;
 }
