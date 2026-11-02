@@ -1,0 +1,25 @@
+; SPDX-License-Identifier: CC-BY-SA-4.0
+; Preîncărcătorul programului INEX-1 — MECIPT-1
+; Transcris din: V. Baltac, „MECIPT – Evocări și Documente” (2011), Facsimil 5,
+;               „INSTRUCȚIUNI LA PROGRAMUL INEX-1 — Se introduce manual”.
+; Procedura originală: „după care se pune banda INEX-1 în cititor de la primul
+; caracter perforat și se pornește calculatorul de la 0010.”
+; Alte puncte de intrare INEX-1 (din același facsimil, codul lor nu s-a păstrat):
+;   citirea benzilor de la pupitru 0040 (sau 0026); ca program 0025 (revine la V);
+;   tipăriri: format 0133, numere întregi 0134, numere subunitare 0135 (146 VF),
+;   trece peste n rânduri 0132, trece peste n spații 0136, tipărește de la A la B 0246.
+;
+; Format: AAAA  c1 a1  c2 a2   (octal, ca în facsimil)
+
+@prov ORIGINAL Facsimil 5, Baltac
+0000  00 0000  00 0000
+; Ultima cifră a cuvântului 0001 e corectată de mână în facsimil; citită „0”.
+; DEDUS: doar cu 0000 instrucțiunea MS 0014 mărește corect adresa lui ME la fiecare cuvânt.
+0001  00 0001  00 0000
+
+0010  27 0000  02 0001
+0011  21 0005  33 0044
+0012  05 0044  16 0011
+0013  15 0014  00 0000
+0014  25 0002  01 0001
+0015  14 0014  15 0010
