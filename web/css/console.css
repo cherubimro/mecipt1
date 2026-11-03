@@ -1,0 +1,84 @@
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
+@font-face { font-family: 'Barlow Semi Condensed'; src: url(../fonts/BarlowSemiCondensed-Medium.ttf) format('truetype'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Courier Prime'; src: url(../fonts/CourierPrime-Regular.ttf) format('truetype'); font-display: swap; }
+
+:root {
+  --wall: #353b40;          /* peretele sălii: gri-ardezie, să nu concureze cu pupitrul */
+  --wall-text: #c9cdc8;
+  --strip: #dfe2de;         /* banda de comenzi moderne: aluminiu deschis */
+  --strip-line: #a9aeaa;
+  --strip-ink: #1f2a33;
+  --desk: #2f5c8c;          /* corpul albastru al mesei, după fotografia din 2011 */
+  --desk-dark: #24496f;
+  --alu-hi: #e4e7e5;
+  --alu-lo: #8c9290;
+  --paper: #f4f0e3;
+  --ink: #27313a;
+  --focus: #f2c230;
+  --ui: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--wall); color: var(--wall-text); font-family: var(--ui); font-size: 16px; line-height: 1.4; min-width: 1100px; }
+
+/* ---- banda de comenzi moderne ---- */
+.bar { display: grid; grid-template-columns: auto 1fr auto; gap: 28px; align-items: center;
+  background: var(--strip); color: var(--strip-ink); padding: 10px 24px; border-bottom: 1px solid var(--strip-line); }
+.bar h1 { margin: 0; font-size: 22px; font-weight: 500; letter-spacing: 0.01em; }
+.bar-title p { margin: 0; font-size: 14px; color: #55606a; }
+.bar-program { display: grid; grid-template-columns: auto minmax(220px, 420px); column-gap: 10px; row-gap: 2px; align-items: center; }
+.bar-program label { font-size: 15px; }
+.bar select, .bar button { font: inherit; font-size: 15px; color: var(--strip-ink); background: #f6f7f5;
+  border: 1px solid #8f969a; border-radius: 3px; padding: 3px 8px; }
+.bar button { cursor: pointer; }
+.bar button:hover { background: #fff; }
+.provenance { grid-column: 1 / -1; margin: 0; font-size: 13.5px; color: #3c4852; }
+.provenance .kind { font-weight: 500; }
+.provenance .kind-ORIGINAL { color: #22612f; }
+.provenance .kind-DEDUS { color: #4a5a1e; }
+.provenance .kind-RECONSTRUCTIE { color: #7a4a10; }
+.provenance .kind-GHICIT { color: #8a2c2c; }
+.bar-controls { display: flex; gap: 18px; align-items: center; }
+.speed { border: 0; margin: 0; padding: 0; display: flex; gap: 12px; align-items: center; font-size: 15px; }
+.speed legend { float: left; padding: 0 6px 0 0; }
+.speed label { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+.hint { margin: 14px 24px 0; font-size: 16px; color: var(--wall-text); }
+.status { color: #e7e2c9; margin-left: 1.2em; }
+
+/* ---- masa și panourile ---- */
+.room { padding: 14px 24px 28px; }
+.desk { background: linear-gradient(180deg, var(--desk) 0%, var(--desk-dark) 100%); padding: 22px 26px 34px;
+  border-radius: 4px 4px 2px 2px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35); }
+.frame { padding: 10px; background: linear-gradient(180deg, var(--alu-hi), var(--alu-lo) 55%, #b4b9b6);
+  border-radius: 3px; box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 #6d7270; }
+.panels { display: grid; grid-template-columns: 2048fr 2600fr 2048fr; gap: 10px; }
+.panel-slot { background: #6d7270; padding: 2px; }
+.panel-slot svg { display: block; width: 100%; height: auto; }
+
+.switch { cursor: pointer; outline: none; }
+.switch .lever { transition: transform 70ms linear; }
+.switch.down .lever, .decor.down .lever { transform: rotate(180deg); }
+.switch .focus-ring { stroke: none; stroke-width: 4; }
+.switch:focus-visible .focus-ring { stroke: var(--focus); }
+.lamp .glow { transition: none; }
+@media (prefers-reduced-motion: reduce) { .switch .lever { transition: none; } }
+
+/* ---- perifericele ---- */
+.peripherals { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; align-items: start; }
+.device { background: #4a4f52; border-radius: 4px; padding: 12px 16px 14px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); }
+.device h2 { margin: 0 0 8px; font-size: 17px; font-weight: 500; color: #e3e5e2; }
+.device-note { margin: 6px 0 0; font-size: 14px; color: #c4c8c4; }
+.tape svg { display: block; width: 100%; height: auto; border-radius: 2px; }
+
+.typewriter { background: #3e4245; }
+.sheet { position: relative; --sheet-pad: 1.5ch; font-family: 'Courier Prime', 'Courier New', monospace; font-size: 15px; }
+.sheet-paper { background: var(--paper); color: #1d1d1b; padding: 10px var(--sheet-pad) 6px; height: calc(16 * 1.35em + 16px);
+  overflow: hidden; box-shadow: inset 0 8px 10px -8px rgba(0, 0, 0, 0.35); }
+.sheet-text { margin: 0; font: inherit; line-height: 1.35em; white-space: pre; }
+.carriage { position: relative; height: 18px; background: linear-gradient(180deg, #9ea3a1, #5f6462); }
+.carriage-mark { position: absolute; top: 0; width: 1ch; height: 6px; background: #e8d36a; }
+
+.credits { padding: 0 24px 24px; font-size: 13.5px; color: #9aa19c; max-width: 80ch; }

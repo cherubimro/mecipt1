@@ -1,0 +1,57 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MECIPT-1 — pupitrul de comandă</title>
+<link rel="stylesheet" href="css/console.css">
+</head>
+<body>
+<header class="bar">
+  <div class="bar-title">
+    <h1 id="title">MECIPT-1 — pupitrul de comandă</h1>
+    <p id="subtitle"></p>
+  </div>
+  <div class="bar-program">
+    <label for="program" id="program-label">Programul</label>
+    <select id="program"></select>
+    <p id="provenance" class="provenance"></p>
+  </div>
+  <div class="bar-controls">
+    <fieldset class="speed">
+      <legend id="speed-label">Viteza</legend>
+      <label><input type="radio" name="speed" value="epoca" checked> <span id="speed-epoca">ca în 1962</span></label>
+      <label><input type="radio" name="speed" value="rapid"> <span id="speed-rapid">rapid</span></label>
+    </fieldset>
+    <button id="reload" type="button">Reîncarcă</button>
+  </div>
+</header>
+<p class="hint"><span id="hint"></span> <span id="status" class="status" aria-live="polite"></span></p>
+
+<main class="room">
+  <div class="desk">
+    <div class="frame">
+      <div class="panels">
+        <div class="panel-slot" id="panel-left"></div>
+        <div class="panel-slot" id="panel-middle"></div>
+        <div class="panel-slot" id="panel-right"></div>
+      </div>
+    </div>
+  </div>
+  <div class="peripherals">
+    <section class="device reader">
+      <h2 id="reader-label">Cititorul de bandă perforată</h2>
+      <div id="tape" class="tape"></div>
+      <p id="tape-info" class="device-note"></p>
+    </section>
+    <section class="device typewriter">
+      <h2 id="typewriter-label">Mașina de scris</h2>
+      <div id="sheet" class="sheet"></div>
+    </section>
+  </div>
+</main>
+<footer class="credits"><p id="attribution"></p></footer>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

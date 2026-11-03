@@ -9,7 +9,7 @@ CORE_OBJ := $(CORE_SRC:core/%.c=$(B)/core/%.o)
 TESTS    := $(patsubst tests/%.c,$(B)/tests/%,$(wildcard tests/test_*.c))
 TOOLS    := $(patsubst tools/%.c,$(B)/%,$(wildcard tools/*.c))
 
-.PHONY: all check clean e2e wasm web-check
+.PHONY: all check clean e2e wasm web-check site serve
 all: $(B)/libmecipt.a $(TOOLS)
 
 $(B)/core/%.o: core/%.c $(wildcard core/*.h)
@@ -42,8 +42,20 @@ $(B)/mecipt.wasm: $(CORE_SRC) $(wildcard core/*.h) tools/fetch-wasi.sh
 	  -nostartfiles -nodefaultlibs -Wl,--no-entry -Wl,--export-dynamic $(CORE_SRC) -lc \
 	  $(WASI)/lib/wasi/libclang_rt.builtins-wasm32.a -o $@
 
-web-check: $(B)/mecipt.wasm
+web-check: site
 	node --test tests/web/
+	sh tests/web-smoke.sh
+
+# Site-ul static: web/ fără package.json, plus nucleul WASM și programele.
+site: $(B)/mecipt.wasm
+	rm -rf $(B)/site
+	cp -r web $(B)/site
+	rm -f $(B)/site/package.json
+	cp $(B)/mecipt.wasm $(B)/site/
+	cp programs/*.mec tests/data/inex-banda-3-cuvinte.mec $(B)/site/programs/
+
+serve: site
+	cd $(B)/site && python3 -m http.server 8000 --bind 127.0.0.1
 
 clean:
 	rm -rf $(B)

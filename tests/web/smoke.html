@@ -1,0 +1,47 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
+<!-- Scenariul de fum al pupitrului: rulat de tests/web-smoke.sh în Chrome fără ecran. -->
+<html lang="ro">
+<meta charset="utf-8">
+<title>smoke</title>
+<p id="result">SMOKE RUNNING</p>
+<iframe id="f" src="../index.html" width="1600" height="1000"></iframe>
+<script type="module">
+const out = document.getElementById('result');
+const fail = (why) => { out.textContent = 'SMOKE FAIL: ' + why; throw new Error(why); };
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+// rAF nu rulează sub timpul virtual al Chrome: cadrele paginii se avansează explicit, câte 50 ms.
+let P = null;
+async function until(cond, ms, why) {
+  for (let t = 0; t < ms; t += 50) { if (cond()) return; if (P && P.advance) P.advance(50); await sleep(50); }
+  fail(typeof why === 'function' ? why() : why);
+}
+const f = document.getElementById('f');
+const errors = [];
+f.addEventListener('load', () => {
+  f.contentWindow.addEventListener('error', (e) => errors.push(String(e.message)));
+  f.contentWindow.addEventListener('unhandledrejection', (e) => errors.push(String(e.reason)));
+});
+(async () => {
+  await until(() => f.contentWindow && f.contentWindow.__pupitru, 10000, 'pagina nu expune __pupitru');
+  const w = f.contentWindow, d = f.contentDocument;
+  P = w.__pupitru;
+  await P.ready;
+  const lamps = d.querySelectorAll('.lamp').length, sw = d.querySelectorAll('.switch').length;
+  if (lamps !== 161 || sw !== 63) fail(`becuri ${lamps} (161), comutatoare ${sw} (63)`);
+  const prov = d.getElementById('provenance').textContent;
+  if (!prov.includes('ORIGINAL') || !prov.includes('39')) fail('eticheta de proveniență: ' + prov);
+  const glow = (id) => parseFloat(d.querySelector('#' + id + ' .glow').style.opacity || '0');
+  P.setSpeed('rapid');
+  d.getElementById('switch-compute-0').dispatchEvent(new w.MouseEvent('click', { bubbles: true }));
+  await until(() => P.sheet.lines()[0] === '1477  27 0000  30 0000' && glow('lamp-indicators-2') > 0.5, 20000,
+    () => `retipărirea: mod ${P.runner.mode}, timp ${P.runner.machine.seconds().toFixed(2)} s, coala ${JSON.stringify(P.sheet.lines().slice(0, 2))}, OPRIT ${glow('lamp-indicators-2')}`);
+  await P.select('inex1');
+  d.getElementById('switch-compute-0').dispatchEvent(new w.MouseEvent('click', { bubbles: true }));
+  await until(() => glow('lamp-indicators-1') > 0.5 && P.runner.machine.tapePos() === 18, 20000,
+    () => `INEX: HIRTIA ${glow('lamp-indicators-1')}, banda ${P.runner.machine.tapePos()}, mod ${P.runner.mode}`);
+  if (errors.length) fail('erori în pagină: ' + errors.join(' | '));
+  out.textContent = 'SMOKE OK';
+})().catch((e) => { if (!out.textContent.startsWith('SMOKE FAIL')) out.textContent = 'SMOKE FAIL: ' + e; });
+</script>
+</html>
