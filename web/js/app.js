@@ -19,6 +19,7 @@ import { formatWord, rowsFor, provLabel } from './atelier/editor.js';
 import { setupSound } from './sound/page.js';
 import { catalogNote } from './catalog.js';
 import { drumSvg, drumPhase, streaksOffset } from './drum.js';
+import { createView3D } from './view3d.js';
 
 const $ = (id) => document.getElementById(id);
 const storage = (() => { try { return window.localStorage; } catch { return null; } })();
@@ -307,7 +308,7 @@ async function main() {
     // pasul așteaptă text pe coală, dar mașina s-a oprit fără să scrie (alt program, altă adresă)
     if (st && st.waitFor === 'typed' && ev.type === 'halted' && !tourStuck) { tourStuck = true; renderTour(); }
   };
-  const startTour = () => { help.close(); tour.start(); tourStuck = false; renderTour(); $('tour-card').focus(); };
+  const startTour = () => { set3D(false); help.close(); tour.start(); tourStuck = false; renderTour(); $('tour-card').focus(); };
   const stopTour = () => { tour.stop(); renderTour(); $('tour-start').focus(); };
   $('tour-start').addEventListener('click', startTour);
   $('tour-next').addEventListener('click', () => { tour.next(); tourStuck = false; renderTour(); if (!tour.active) $('tour-start').focus(); });
@@ -336,7 +337,7 @@ async function main() {
   // înaintea ascultătorilor butoanelor).
   document.addEventListener('click', (e) => {
     if (!explaining || !e.target.closest) return;
-    const el = e.target.closest('#atelier [data-help], #provenance [data-help], #provenance, #sound[data-help]');
+    const el = e.target.closest('#atelier [data-help], #provenance [data-help], #provenance, #sound[data-help], #view-3d[data-help]');
     if (!el) return;
     e.preventDefault();
     e.stopPropagation();
@@ -415,6 +416,36 @@ async function main() {
   document.body.dataset.mode = mode;
   for (const x of MODES) $(`mode-${x}`).setAttribute('aria-pressed', String(x === mode));
 
+  // vederea 3D: modelul se încarcă la prima cerere; becurile urmează aceeași strălucire ca în 2D
+  let view3d = null, v3state = 'off', show3d = false;
+  const label3d = () => {
+    const b = $('view-3d'), V = T().view3d;
+    b.textContent = show3d ? '2D' : '3D';
+    b.setAttribute('aria-pressed', String(show3d));
+    b.setAttribute('aria-label', show3d ? V.to2d : V.to3d);
+    b.title = show3d ? V.to2d : V.to3d;
+    $('desk-3d-msg').textContent = v3state === 'loading' ? V.loading : v3state === 'unavailable' ? V.unavailable : V.note;
+  };
+  const set3D = (on) => {
+    show3d = on && v3state !== 'unavailable';
+    $('desk-3d').hidden = !show3d;
+    document.querySelector('#desk .frame').hidden = show3d;
+    if (show3d && v3state === 'off') {
+      v3state = 'loading';
+      createView3D($('desk-3d'), { positions, colors })
+        .then((v) => { view3d = v; v3state = 'ready'; label3d(); })
+        .catch((e) => {
+          console.warn('vederea 3D:', e);
+          v3state = 'unavailable'; set3D(false);
+          $('status').textContent = T().view3d.unavailable;
+        });
+    }
+    label3d();
+  };
+  $('view-3d').addEventListener('click', () => { if (!explaining) set3D(!show3d); });
+  langListeners.push(label3d);
+  label3d();
+
   const setView = (name) => {
     $('panels').dataset.view = name;
     $('view').value = name;
@@ -460,6 +491,7 @@ async function main() {
     const pv = machine.provVersion();
     if (pv !== lastProvVersion) { lastProvVersion = pv; describeProgram(); atelier.markDirty(); }
     atelier.onFrame(snap, dt, mode !== 'console');
+    if (show3d && view3d) { view3d.setLamps(lamps.map((l) => [l.id, l.b])); view3d.render(); }
   }
   let last = null;
   function frame(now) {
@@ -471,7 +503,7 @@ async function main() {
   await select(catalog[0].id);
   requestAnimationFrame(frame);
   return { runner, select, setSpeed, setView, setLang, sheet, advance, explain, explainMode, closeHelp: () => help.close(), tour: tourApi,
-    setMode, atelier, sound };
+    setMode, atelier, sound, set3D, view3d: () => view3d, view3dState: () => v3state };
 }
 
 const api = {};

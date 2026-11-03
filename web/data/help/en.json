@@ -501,6 +501,16 @@
     "semantica"
    ]
   },
+  "view3d": {
+   "title": "3D view",
+   "short": "The 3D button shows the console as a three-dimensional model you can rotate and zoom; its lamps light up following the emulated machine, just like on the drawn panels. The 2D button takes you back to the drawn console.",
+   "more": "- **The model**: “MECIPT-1” by marius0198 (Sketchfab, 2020, CC BY 4.0), the same one the panels were redrawn from; the side panels’ textures are the model’s own.\n- The model’s **lamps** (161, one for every lamp of the emulator) light up from the same machine state and with the same inertia as in 2D. The lamp–object link comes from `positions.json`, where each lamp keeps the name of its object in the model.\n- In 3D the console is **only looked at**: the model’s switches do not move and cannot be pressed; the controls stay in the 2D view.\n- Rotate: the mouse or a finger; zoom: the wheel or two fingers.\n- The model and the three.js library (MIT) load only at the first press on 3D (about 4.5 MB). If the browser has no WebGL, the page says so and stays in 2D.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
   "drum": {
    "title": "Magnetic drum",
    "short": "The machine’s only memory: a drum spinning 50 times a second, with 1024 words of 31 bits written magnetically around it. The hum comes from it.",

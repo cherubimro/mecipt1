@@ -26,6 +26,14 @@ def problems(site):
         for name in files:
             path = os.path.join(dirpath, name)
             total += os.path.getsize(path)
+            if name.endswith('.gltf'):              # modelul 3D: fișierele la care trimite
+                rel = os.path.relpath(path, site)
+                g = json.load(open(path, encoding='utf-8'))
+                for item in g.get('buffers', []) + g.get('images', []):
+                    uri = item.get('uri', '')
+                    if uri and not uri.startswith('data:') and not os.path.exists(os.path.join(dirpath, uri)):
+                        out.append(f'{rel}: lipsește {uri}')
+                continue
             if not name.endswith(('.html', '.css', '.js')):
                 continue
             rel = os.path.relpath(path, site)
@@ -66,8 +74,10 @@ def selftest():
         open(os.path.join(d, 'index.html'), 'w').write(
             '<link rel="stylesheet" href="css/lipsa.css"><script src="/abs.js"></script>'
             '<script src="https://cdn.example.org/x.js"></script><a href="https://ro.wikipedia.org/">ok</a>')
+        json.dump({'buffers': [{'uri': 'scene.bin'}], 'images': [{'uri': 'textures/t.png'}]}, open(os.path.join(d, 'm.gltf'), 'w'))
         found, _ = problems(d)
-        want = ['lipsește css/lipsa.css', 'cale absolută', 'resursă de pe alt server', 'lipsește programs/x.mec']
+        want = ['lipsește css/lipsa.css', 'cale absolută', 'resursă de pe alt server', 'lipsește programs/x.mec',
+                'm.gltf: lipsește scene.bin', 'm.gltf: lipsește textures/t.png']
         missing = [w for w in want if not any(w in f for f in found)]
         extra = [f for f in found if 'wikipedia' in f]
         if missing or extra:

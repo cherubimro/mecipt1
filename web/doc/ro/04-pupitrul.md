@@ -37,6 +37,14 @@ Sub grilă: **GENERATOR PRINCIPAL** (IMPULSURI, FRECVENȚĂ FIN, FRECVENȚĂ TRE
 ## Panoul din mijloc — aparatele de măsură
 Unsprezece voltmetre (unul lipsește azi, se vede doar rama), un selector, un comutator rotativ mare și comutatoare mici. Arătau, probabil, tensiunile de alimentare ale tuburilor; ce măsura fiecare și scalele sunt GHICITE. Cele patru voltmetre de sus sunt desenate cu scala 0–250 V (GHICIT).
 
+## Vederea 3D
+Butonul **3D** din bara de sus arată pupitrul ca model tridimensional: „MECIPT-1” de marius0198 (Sketchfab, 2020, CC BY 4.0), modelul din care s-au redesenat panourile.
+
+- Pupitrul se rotește cu mouse-ul sau cu degetul și se apropie cu rotița sau cu două degete.
+- **Becurile modelului se aprind după mașina emulată**, la fel ca pe panourile desenate. Fiecare dintre cele 161 de becuri e legat de obiectul lui din model.
+- În 3D pupitrul doar se privește: comutatoarele modelului nu se mișcă. Comenzile se apasă în vederea 2D (butonul **2D**).
+- Modelul și biblioteca three.js se încarcă abia la prima apăsare pe 3D, cam 4,5 MB. Fără WebGL, pagina rămâne în 2D și spune de ce.
+
 ## Tamburul magnetic
 Sub pupitru, lângă cititorul de bandă și mașina de scris, e desenat tamburul magnetic. A fost singura memorie a mașinii: **1024 de cuvinte de 31 de biți**, scrise jur-împrejurul unui cilindru care se rotea de **50 de ori pe secundă**. Mașina aștepta ca fiecare cuvânt să ajungă sub capete. De aceea făcea cam 50 de instrucțiuni pe secundă. Tot de aici vine zumzetul de 50 Hz.
 
