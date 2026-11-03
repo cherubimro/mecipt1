@@ -9,7 +9,7 @@ CORE_OBJ := $(CORE_SRC:core/%.c=$(B)/core/%.o)
 TESTS    := $(patsubst tests/%.c,$(B)/tests/%,$(wildcard tests/test_*.c))
 TOOLS    := $(patsubst tools/%.c,$(B)/%,$(wildcard tools/*.c))
 
-.PHONY: all check clean e2e
+.PHONY: all check clean e2e wasm
 all: $(B)/libmecipt.a $(TOOLS)
 
 $(B)/core/%.o: core/%.c $(wildcard core/*.h)
@@ -30,6 +30,17 @@ check: $(TESTS) $(TOOLS)
 	@fail=0; for t in $(TESTS); do (cd tests && ../$$t) || fail=1; done; \
 	if [ -n "$(wildcard tests/e2e.sh)" ]; then sh tests/e2e.sh || fail=1; fi; \
 	exit $$fail
+
+# WebAssembly: același nucleu, compilat cu clang + wasi-sysroot 21 (fără Emscripten).
+WASM_CC ?= clang-17
+WASI    := third_party/wasi
+wasm: $(B)/mecipt.wasm
+$(B)/mecipt.wasm: $(CORE_SRC) $(wildcard core/*.h) tools/fetch-wasi.sh
+	sh tools/fetch-wasi.sh
+	@mkdir -p $(B)
+	$(WASM_CC) --target=wasm32-wasi --sysroot=$(WASI)/wasi-sysroot -std=c11 -O2 -Wall -Wextra -Werror -Icore \
+	  -nostartfiles -nodefaultlibs -Wl,--no-entry -Wl,--export-dynamic $(CORE_SRC) -lc \
+	  $(WASI)/lib/wasi/libclang_rt.builtins-wasm32.a -o $@
 
 clean:
 	rm -rf $(B)
