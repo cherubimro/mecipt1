@@ -100,6 +100,8 @@ body { background: var(--wall); color: var(--wall-text); font-family: var(--ui);
 .credits { padding: 0 24px 24px; font-size: 13.5px; color: #9aa19c; max-width: 80ch; }
 
 /* ---- explicațiile ---- */
+#sound { min-width: 2.4em; font-size: 1.05em; line-height: 1; }
+#sound:disabled { opacity: 0.55; cursor: not-allowed; }
 #explain[aria-pressed="true"] { background: var(--strip-ink); color: var(--strip); }
 .explain-banner { margin: 6px 24px 0; padding: 6px 10px; background: #e8d36a; color: #1f2a33; border-radius: 3px; max-width: 110ch; }
 body.explaining .room, body.explaining .room * { cursor: help !important; }

@@ -158,6 +158,21 @@ f.addEventListener('load', () => {
     fail('eticheta în engleză: ' + d.getElementById('switch-compute-0').getAttribute('aria-label'));
   P.setLang('ro');
   if (!d.getElementById('hint').textContent.startsWith('Apăsați')) fail('înapoi la română');
+  stage('sunet');
+  // butonul de sunet: pornit implicit, comutarea se ține minte, fără erori (Chrome fără ecran nu face niciun gest real)
+  const snd = d.getElementById('sound');
+  if (!snd || snd.getAttribute('aria-pressed') !== 'true' || !snd.textContent.includes('🔊') || snd.disabled)
+    fail('butonul de sunet la pornire: ' + (snd && snd.outerHTML));
+  click('sound');
+  if (snd.getAttribute('aria-pressed') !== 'false' || !snd.textContent.includes('🔇') || w.localStorage.getItem('mecipt.sound') !== 'off')
+    fail('sunetul nu se oprește: ' + snd.outerHTML + ' ' + w.localStorage.getItem('mecipt.sound'));
+  P.setLang('en');
+  if (!snd.getAttribute('aria-label').startsWith('Sound is off')) fail('eticheta sunetului în engleză: ' + snd.getAttribute('aria-label'));
+  P.setLang('ro');
+  click('sound');
+  if (snd.getAttribute('aria-pressed') !== 'true' || w.localStorage.getItem('mecipt.sound') !== 'on' || P.sound.on !== true)
+    fail('sunetul nu repornește');
+  if (errors.length) fail('erori după sunet: ' + errors.join(' | '));
   P.setSpeed('rapid');
   click('switch-compute-0');
   await until(() => P.sheet.lines()[0] === '1477  27 0000  30 0000' && glow('lamp-indicators-2') > 0.5, 20000,

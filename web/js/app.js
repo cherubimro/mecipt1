@@ -16,6 +16,7 @@ import { renderMarkdown } from './md.js';
 import { Tour } from './tour.js';
 import { describeValue } from './values.js';
 import { formatWord, rowsFor, provLabel } from './atelier/editor.js';
+import { setupSound } from './sound/page.js';
 
 const $ = (id) => document.getElementById(id);
 const storage = (() => { try { return window.localStorage; } catch { return null; } })();
@@ -96,6 +97,9 @@ async function main() {
   const HELP = { ro: helpRo, en: helpEn };
   const machine = await loadMecipt(wasm);
   const runner = new Runner(machine, new Clock('epoca'));
+  const sound = setupSound({ button: $('sound'), storage, T });
+  $('sound').addEventListener('click', () => sound.toggle());
+  $('at-reset').addEventListener('click', () => sound.reset());   // Reset din Atelier: tac clicurile programate
   const uopIndex = uopIndexForGrid(machine);
   const sheet = new Sheet();
 
@@ -135,6 +139,7 @@ async function main() {
   // original: încarcă programul din catalog fără modificările vizitatorului (pupitrul, turul, „Revino la original”);
   // empty: tambur gol (fișier deschis care nu vine din catalog).
   async function select(id, { fromTour = false, original = false, empty = false } = {}) {
+    sound.reset();
     if (!fromTour) loadedFor = -1;   // vizitatorul a ales alt program: pasul turului care încarcă se reface
     let p, text, tape;
     if (empty) {
@@ -178,6 +183,7 @@ async function main() {
     lang = l;
     saveLang(l, storage);
     setTexts();
+    sound.setLang();
     labelSwitches();
     describeProgram();
     $('status').textContent = '';
@@ -304,6 +310,7 @@ async function main() {
   const EXPLAINABLE = '[data-help], .switch, .lamp, .knob, .meter, .decor[id], #tape, #sheet, #provenance, .panel-slot';
 
   function press(id) {
+    sound.control(id);
     if (id === 'switch-compute-0') $(id).classList.remove('cue');
     const a = actionFor(id, switches);
     if (id.startsWith('switch-M-')) showSwitchWord('M', switches.M);
@@ -317,7 +324,7 @@ async function main() {
   // înaintea ascultătorilor butoanelor).
   document.addEventListener('click', (e) => {
     if (!explaining || !e.target.closest) return;
-    const el = e.target.closest('#atelier [data-help], #provenance [data-help]');
+    const el = e.target.closest('#atelier [data-help], #provenance [data-help], #sound[data-help]');
     if (!el) return;
     e.preventDefault();
     e.stopPropagation();
@@ -409,6 +416,7 @@ async function main() {
   function advance(dt) {
     const snap = runner.frame(dt);
     lastSnap = snap;
+    sound.onFrame(snap, dt);
     if (snap.typed) { sheet.add(snap.typed); tourEvent({ type: 'typed' }); }
     if (snap.halted !== null) { lastHalt = snap.halted; tourEvent({ type: 'halted' }); }
     const targets = lampTargets(snap, runner, uopIndex);
@@ -443,7 +451,7 @@ async function main() {
   await select(catalog[0].id);
   requestAnimationFrame(frame);
   return { runner, select, setSpeed, setView, setLang, sheet, advance, explain, explainMode, closeHelp: () => help.close(), tour: tourApi,
-    setMode, atelier };
+    setMode, atelier, sound };
 }
 
 const api = {};
