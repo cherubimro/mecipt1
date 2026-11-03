@@ -27,6 +27,9 @@ printf '@prov GHICIT t\n0000  U 0100  A 0100\n0001  O 0001  O 0001\n0100 = 0,75\
 build/mecrun build/dcr.mec >/dev/null 2>&1; rc=$?
 [ $rc -eq 3 ] && echo "OK   e2e_mecrun_exit_on_dcr" || { echo "FAIL e2e_mecrun_exit_on_dcr: exit $rc"; fail=1; }
 
+python3 tools/ref/check_f3.py tests/data/facsimil3-sinus.txt >/dev/null 2>&1 \
+  && echo "OK   e2e_f3_transcription" || { echo "FAIL e2e_f3_transcription"; fail=1; }
+
 build/mecdoc 2>/dev/null | cmp -s - web/data/core-tables.json \
   && echo "OK   e2e_core_tables_up_to_date" || { echo "FAIL e2e_core_tables_up_to_date: rulați make tables"; fail=1; }
 
