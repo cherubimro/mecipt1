@@ -116,3 +116,15 @@ test('loading stops the run', async () => {
   assert.equal(s.state.RAI, 0o10);
   assert.equal(r.machine.instructions(), 0);
 });
+
+test('încărcarea readuce impulsurile', async () => {
+  const r = await runner();
+  r.enqueue({ ui: 'toggle-pulses' });
+  r.frame(16);
+  assert.equal(r.pulsesOff, true);
+  r.load(RETIPARIRE(), null, 0o1477);
+  assert.equal(r.pulsesOff, false);
+  r.enqueue({ ui: 'automat' });
+  r.frame(500);
+  assert.ok(r.machine.instructions() > 0);
+});

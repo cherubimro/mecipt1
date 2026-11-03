@@ -32,12 +32,41 @@ f.addEventListener('load', () => {
   const prov = d.getElementById('provenance').textContent;
   if (!prov.includes('ORIGINAL') || !prov.includes('39')) fail('eticheta de proveniență: ' + prov);
   const glow = (id) => parseFloat(d.querySelector('#' + id + ' .glow').style.opacity || '0');
+  const click = (id) => d.getElementById(id).dispatchEvent(new w.MouseEvent('click', { bubbles: true }));
+  // accesibilitate: nume pentru fiecare comutator, starea celor cu reținere, inel de focus vizibil
+  const unnamed = [...d.querySelectorAll('.switch')].filter((s) => !(s.getAttribute('aria-label') || '').trim());
+  if (unnamed.length) fail('comutatoare fără nume: ' + unnamed.slice(0, 3).map((s) => s.id).join(', '));
+  for (const id of ['switch-M-0', 'switch-RAI-0', 'switch-pulses-0'])
+    if (!d.getElementById(id).hasAttribute('aria-pressed')) fail('fără aria-pressed: ' + id);
+  if (d.getElementById('switch-RAI-0').getAttribute('aria-pressed') !== 'true') fail('RAI 0 ar trebui ridicat la 1477');
+  const ring = d.querySelector('#switch-compute-0 .focus-ring');
+  if (w.getComputedStyle(ring).vectorEffect !== 'non-scaling-stroke') fail('inelul de focus se scalează cu panoul');
+  const status = d.getElementById('status');
+  if (status.getAttribute('aria-live') !== 'polite' || !d.getElementById('machine-time')) fail('timpul de mașină trebuie scos din zona anunțată');
+  await until(() => d.getElementById('machine-time').textContent.includes('s'), 2000, 'timpul de mașină lipsește');
+  if (/\d/.test(status.textContent)) fail('starea anunțată conține timpul: ' + status.textContent);
+  // indiciul vizibil pe butonul din îndrumare și mărirea unui panou
+  if (!d.getElementById('switch-compute-0').classList.contains('cue')) fail('AUTOMAT nu e marcat de îndrumare');
+  P.setView('right');
+  const wR = d.getElementById('switch-compute-0').getBoundingClientRect().width;
+  if (wR < 24) fail('panoul drept mărit: comutatorul are ' + wR.toFixed(1) + ' px');
+  P.setView('all');
+  // capcana IMPULSURI: mașina oprită de la pupitru spune de ce, iar Reîncarcă o repune în funcțiune
+  click('switch-pulses-0');
+  P.advance(50);
+  click('switch-compute-0');
+  P.advance(50);
+  if (!status.textContent.includes('IMPULSURI')) fail('impulsuri întrerupte, starea: ' + status.textContent);
+  if (d.getElementById('switch-compute-0').classList.contains('cue')) fail('marcajul rămâne după apăsare');
+  await P.select('retiparire-1962');
+  if (P.runner.pulsesOff || d.getElementById('switch-pulses-0').getAttribute('aria-pressed') !== 'false')
+    fail('Reîncarcă nu readuce impulsurile');
   P.setSpeed('rapid');
-  d.getElementById('switch-compute-0').dispatchEvent(new w.MouseEvent('click', { bubbles: true }));
+  click('switch-compute-0');
   await until(() => P.sheet.lines()[0] === '1477  27 0000  30 0000' && glow('lamp-indicators-2') > 0.5, 20000,
     () => `retipărirea: mod ${P.runner.mode}, timp ${P.runner.machine.seconds().toFixed(2)} s, coala ${JSON.stringify(P.sheet.lines().slice(0, 2))}, OPRIT ${glow('lamp-indicators-2')}`);
   await P.select('inex1');
-  d.getElementById('switch-compute-0').dispatchEvent(new w.MouseEvent('click', { bubbles: true }));
+  click('switch-compute-0');
   await until(() => glow('lamp-indicators-1') > 0.5 && P.runner.machine.tapePos() === 18, 20000,
     () => `INEX: HIRTIA ${glow('lamp-indicators-1')}, banda ${P.runner.machine.tapePos()}, mod ${P.runner.mode}`);
   if (errors.length) fail('erori în pagină: ' + errors.join(' | '));

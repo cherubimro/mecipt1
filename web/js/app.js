@@ -26,6 +26,8 @@ function setTexts() {
   $('speed-epoca').textContent = S.speedEpoca;
   $('speed-rapid').textContent = S.speedRapid;
   $('reload').textContent = S.reload;
+  $('view-label').textContent = S.view;
+  for (const o of $('view').options) o.textContent = S.views[o.value];
   $('hint').textContent = S.hint;
   $('reader-label').textContent = S.tapeReader;
   $('typewriter-label').textContent = S.typewriter;
@@ -66,10 +68,17 @@ async function main() {
   // becurile: elementul de lumină și strălucirea curentă
   const lamps = [...document.querySelectorAll('.lamp')].map((g) => ({ id: g.id, glow: g.querySelector('.glow'), b: 0, shown: -1 }));
   const switches = { M: new Uint8Array(31), RAI: new Uint8Array(10) };
+  const LATCHING = /^switch-(M|RAI|pulses)-/;
   const setLever = (id, up) => {
     const el = $(id);
-    if (el) { el.classList.toggle('up', up); el.classList.toggle('down', !up); }
+    if (!el) return;
+    el.classList.toggle('up', up);
+    el.classList.toggle('down', !up);
+    if (LATCHING.test(id)) el.setAttribute('aria-pressed', String(up));
   };
+  for (const el of document.querySelectorAll('.switch')) el.setAttribute('aria-label', S.switchLabel(el.id));
+  setLever('switch-pulses-0', false);
+  $('switch-compute-0').classList.add('cue');   // îndrumarea arată butonul de pornire până la prima apăsare
   const showSwitchWord = (group, bits) => bits.forEach((v, i) => setLever(`switch-${group}-${i}`, v === 1));
 
   for (const p of catalog) {
@@ -95,12 +104,14 @@ async function main() {
     switches.M.fill(0);
     showSwitchWord('RAI', switches.RAI);
     showSwitchWord('M', switches.M);
+    setLever('switch-pulses-0', false);
     provenanceLabel(machine, !!p.tape);
-    $('tape-info').textContent = p.tape ? `${tapeRows.length} rânduri · ${S.tapeTest}` : S.tapeEmpty;
+    $('tape-info').textContent = p.tape ? `${S.tapeRows(tapeRows.length)} · ${S.tapeTest}` : S.tapeEmpty;
     $('status').textContent = S.idle;
   }
 
   function press(id) {
+    if (id === 'switch-compute-0') $(id).classList.remove('cue');
     const a = actionFor(id, switches);
     if (id.startsWith('switch-M-')) showSwitchWord('M', switches.M);
     else if (id.startsWith('switch-RAI-')) showSwitchWord('RAI', switches.RAI);
@@ -124,6 +135,11 @@ async function main() {
     if (r) r.checked = true;
   };
   document.querySelectorAll('input[name=speed]').forEach((r) => r.addEventListener('change', () => setSpeed(r.value)));
+  const setView = (name) => {
+    $('panels').dataset.view = name;
+    $('view').value = name;
+  };
+  $('view').addEventListener('change', () => setView($('view').value));
   $('program').addEventListener('change', () => select($('program').value));
   $('reload').addEventListener('click', () => select(current ? current.id : catalog[0].id));
 
@@ -143,10 +159,12 @@ async function main() {
     if (Math.abs(snap.tapePos - smoothTape) < 0.01) smoothTape = snap.tapePos;
     renderTape($('tape'), tapeRows, snap.tapePos, smoothTape);
     renderSheet($('sheet'), sheet);
-    const st = runner.mode === 'automat' && !runner.pulsesOff ? S.running
-      : lastHalt !== null && lastHalt !== HALT.OK ? S.halt[lastHalt] : S.idle;
-    const msg = `${st} (${S.machineTime}: ${machine.seconds().toFixed(1)} s)`;
-    if ($('status').textContent !== msg) $('status').textContent = msg;
+    const st = runner.pulsesOff ? S.pulsesOff
+      : runner.mode === 'automat' ? S.running
+        : lastHalt !== null && lastHalt !== HALT.OK ? S.halt[lastHalt] : S.idle;
+    if ($('status').textContent !== st) $('status').textContent = st;   // anunțat doar la schimbare
+    const t = `${S.machineTime}: ${machine.seconds().toFixed(1)} s`;
+    if ($('machine-time').textContent !== t) $('machine-time').textContent = t;
   }
   let last = null;
   function frame(now) {
@@ -157,7 +175,7 @@ async function main() {
 
   await select(catalog[0].id);
   requestAnimationFrame(frame);
-  return { runner, select, setSpeed, sheet, advance };
+  return { runner, select, setSpeed, setView, sheet, advance };
 }
 
 const api = {};

@@ -18,6 +18,7 @@ export class Runner {
 
   load(programText, tapeText, startRai) {
     this.mode = 'idle';
+    this.pulsesOff = false;
     this.queue = [];
     this.machine.loadProgram(programText);
     if (tapeText) this.machine.setTapeWords(tapeText);

@@ -121,3 +121,5 @@ Alegerile făcute pentru pagina pupitrului (`web/js/bindings.js`, `web/js/glow.j
 | Inerția becurilor: aprindere τ = 25 ms, stingere τ = 70 ms | GHICIT | Un bec mic cu filament. |
 | Aparatul de măsură al doilea din rândul 2 (lipsă azi) e desenat | DEDUS | Rama goală din 2011; fotografia din 1961 îl arată. Scalele și acele sunt GHICITE. |
 | Un bec de microoperație se aprinde dacă microoperația a rulat cel puțin o dată de la cadrul precedent | GHICIT | Ochiul vede, la 50 instr/s, becurile pulsând; vezi și inerția. |
+| Încărcarea unui program (și Reîncarcă) readuce impulsurile (IMPULSURI pe RESTABILESTE) | GHICIT | O pornire curată; altfel vizitatorul rămâne cu mașina oprită fără să știe de ce. |
+| Comutatoarele M și RAI țin poziția și pun tot cuvântul în registru la fiecare mutare | GHICIT, în tensiune cu sursele | Existența butoanelor ANULEAZA M / RAI și introducerea „cu trei degete” sugerează că, poate, comutatoarele adăugau biți într-un registru golit înainte. De hotărât înainte ca turul ghidat (Planul 4) să predea procedura de lucru. |

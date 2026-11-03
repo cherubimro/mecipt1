@@ -45,8 +45,15 @@ body { background: var(--wall); color: var(--wall-text); font-family: var(--ui);
 .speed label { cursor: pointer; }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 
-.hint { margin: 14px 24px 0; font-size: 16px; color: var(--wall-text); }
-.status { color: #e7e2c9; margin-left: 1.2em; }
+.hint { margin: 14px 24px 0; font-size: 16px; color: var(--wall-text); max-width: 110ch; }
+.state { margin: 4px 24px 0; font-size: 16px; }
+.status { color: #e7e2c9; }
+.machine-time { color: #aab1ac; margin-left: 0.6em; }
+.view { font-size: 15px; display: flex; gap: 6px; align-items: center; }
+.panels[data-view="left"], .panels[data-view="middle"], .panels[data-view="right"] { grid-template-columns: 1fr; }
+.panels[data-view="left"] .panel-slot:not(#panel-left),
+.panels[data-view="middle"] .panel-slot:not(#panel-middle),
+.panels[data-view="right"] .panel-slot:not(#panel-right) { display: none; }
 
 /* ---- masa și panourile ---- */
 .room { padding: 14px 24px 28px; }
@@ -61,8 +68,11 @@ body { background: var(--wall); color: var(--wall-text); font-family: var(--ui);
 .switch { cursor: pointer; outline: none; }
 .switch .lever { transition: transform 70ms linear; }
 .switch.down .lever, .decor.down .lever { transform: rotate(180deg); }
-.switch .focus-ring { stroke: none; stroke-width: 4; }
+.switch .focus-ring { stroke: none; stroke-width: 3px; vector-effect: non-scaling-stroke; }
 .switch:focus-visible .focus-ring { stroke: var(--focus); }
+.switch.cue .focus-ring { stroke: var(--focus); stroke-dasharray: 4 3; animation: cue 1.6s linear infinite; }
+@keyframes cue { to { stroke-dashoffset: -14; } }
+@media (prefers-reduced-motion: reduce) { .switch.cue .focus-ring { animation: none; } }
 .lamp .glow { transition: none; }
 @media (prefers-reduced-motion: reduce) { .switch .lever { transition: none; } }
 

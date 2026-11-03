@@ -24,15 +24,21 @@
       <label><input type="radio" name="speed" value="epoca" checked> <span id="speed-epoca">ca în 1962</span></label>
       <label><input type="radio" name="speed" value="rapid"> <span id="speed-rapid">rapid</span></label>
     </fieldset>
+    <label class="view"><span id="view-label">Vedere</span>
+      <select id="view">
+        <option value="all">tot pupitrul</option><option value="left">panoul stâng</option>
+        <option value="middle">panoul din mijloc</option><option value="right">panoul drept</option>
+      </select></label>
     <button id="reload" type="button">Reîncarcă</button>
   </div>
 </header>
-<p class="hint"><span id="hint"></span> <span id="status" class="status" aria-live="polite"></span></p>
+<p class="hint"><span id="hint"></span></p>
+<p class="state"><span id="status" class="status" aria-live="polite"></span> <span id="machine-time" class="machine-time"></span></p>
 
 <main class="room">
   <div class="desk">
     <div class="frame">
-      <div class="panels">
+      <div class="panels" id="panels" data-view="all">
         <div class="panel-slot" id="panel-left"></div>
         <div class="panel-slot" id="panel-middle"></div>
         <div class="panel-slot" id="panel-right"></div>
