@@ -98,3 +98,26 @@ body { background: var(--wall); color: var(--wall-text); font-family: var(--ui);
 .carriage-mark { position: absolute; top: 0; width: 1ch; height: 6px; background: #e8d36a; }
 
 .credits { padding: 0 24px 24px; font-size: 13.5px; color: #9aa19c; max-width: 80ch; }
+
+/* ---- explicațiile ---- */
+#explain[aria-pressed="true"] { background: var(--strip-ink); color: var(--strip); }
+.explain-banner { margin: 6px 24px 0; padding: 6px 10px; background: #e8d36a; color: #1f2a33; border-radius: 3px; max-width: 110ch; }
+body.explaining .room, body.explaining .room * { cursor: help !important; }
+.help-panel { position: fixed; top: 0; right: 0; width: min(380px, 92vw); height: 100vh; overflow-y: auto; z-index: 20;
+  background: var(--strip); color: var(--strip-ink); border-left: 1px solid var(--strip-line); padding: 16px 18px 24px;
+  box-shadow: -6px 0 18px rgba(0, 0, 0, 0.25); font-size: 15.5px; line-height: 1.45; }
+.help-panel h2 { font-size: 21px; font-weight: 500; margin: 4px 0 6px; padding-right: 70px; }
+.help-panel h3 { font-size: 16px; font-weight: 500; margin: 14px 0 4px; }
+.help-close { position: absolute; top: 12px; right: 14px; }
+.help-status { display: inline-block; margin: 0 0 8px; padding: 1px 8px; border-radius: 2px; font-size: 13px; border: 1px solid currentColor; }
+.status-SIGUR { color: #22612f; } .status-DEDUS { color: #4a5a1e; } .status-GHICIT { color: #8a2c2c; } .status-MIXT { color: #5b4a1a; }
+.help-short { margin: 0 0 8px; }
+.help-value { margin: 0 0 10px; padding: 6px 8px; background: #f6f7f5; border-left: 3px solid #8f969a; font-variant-numeric: tabular-nums; }
+.help-panel button { font: inherit; font-size: 14.5px; color: var(--strip-ink); background: #f6f7f5; border: 1px solid #8f969a; border-radius: 3px; padding: 2px 8px; cursor: pointer; }
+.help-more { margin-top: 8px; }
+.help-more .plain { white-space: pre-wrap; }
+.help-more table { border-collapse: collapse; font-size: 14px; }
+.help-more td, .help-more th { border: 1px solid #b4b9b6; padding: 2px 6px; text-align: left; }
+.help-sources { padding-left: 18px; font-size: 14px; }
+.help-sources a { color: #24496f; word-break: break-all; }
+@media (min-width: 1400px) { body.help-open { padding-right: 396px; } }

@@ -10,6 +10,8 @@ import { renderTape } from './tape.js';
 import { Sheet, renderSheet } from './typewriter.js';
 import { S } from './strings.js';
 import { pickLang, saveLang } from './lang.js';
+import { HelpPanel } from './help.js';
+import { describeValue } from './values.js';
 
 const $ = (id) => document.getElementById(id);
 const storage = (() => { try { return window.localStorage; } catch { return null; } })();
@@ -35,6 +37,8 @@ function setTexts() {
   $('speed-epoca').textContent = T().speedEpoca;
   $('speed-rapid').textContent = T().speedRapid;
   $('reload').textContent = T().reload;
+  $('explain').textContent = T().explain;
+  $('explain-banner').textContent = T().explainOn;
   $('view-label').textContent = T().view;
   for (const o of $('view').options) o.textContent = T().views[o.value];
   $('hint').textContent = T().hint;
@@ -60,11 +64,13 @@ function provenanceLabel(machine, hasTape) {
 
 async function main() {
   setTexts();
-  const [wasm, catalog, positions, colors, artL, artM, artR] = await Promise.all([
+  const [wasm, catalog, positions, colors, artL, artM, artR, tables, helpRo, helpEn] = await Promise.all([
     fetchOk('mecipt.wasm').then((r) => r.arrayBuffer()), getJson('programs/catalog.json'),
     getJson('data/positions.json'), getJson('data/lamp-colors.json'),
     getJson('data/art-left.json'), getJson('data/art-middle.json'), getJson('data/art-right.json'),
+    getJson('data/core-tables.json'), getJson('data/help/ro.json'), getJson('data/help/en.json'),
   ]);
+  const HELP = { ro: helpRo, en: helpEn };
   const machine = await loadMecipt(wasm);
   const runner = new Runner(machine, new Clock('epoca'));
   const uopIndex = uopIndexForGrid(machine);
@@ -142,6 +148,31 @@ async function main() {
   const langListeners = [];
   for (const l of ['ro', 'en']) $(`lang-${l}`).addEventListener('click', () => setLang(l));
 
+  // ---- explicațiile ----
+  let lastSnap = null, explaining = false;
+  const help = new HelpPanel({
+    panel: $('help-panel'), title: $('help-title'), status: $('help-status'), short: $('help-short'),
+    value: $('help-value'), moreBtn: $('help-more-btn'), more: $('help-more'), close: $('help-close'),
+  }, { onClose: () => document.body.classList.remove('help-open') });
+  const valueOf = (id) => (lastSnap ? describeValue(id, lastSnap.state, {
+    tables, wordValue: (w) => machine.wordValue(w), uopIndex, uops: lastSnap.uops, lang,
+    mode: runner.mode, pulsesOff: runner.pulsesOff,
+    uopName: (i) => helpEn.uops[String(i)], opText: (c) => helpEn.ops[String(c)],
+  }) : null);
+  function explain(id, from = null) {
+    help.show(id, HELP[lang], T(), valueOf(id), from);
+    document.body.classList.add('help-open');   // pe ecrane late pagina se strânge, ca panoul să nu acopere pupitrul
+  }
+  function explainMode(on) {
+    explaining = on;
+    $('explain').setAttribute('aria-pressed', String(on));
+    $('explain-banner').hidden = !on;
+    document.body.classList.toggle('explaining', on);
+  }
+  $('explain').addEventListener('click', () => explainMode(!explaining));
+  langListeners.push(() => { if (help.open) explain(help.target); });
+  const EXPLAINABLE = '.switch, .lamp, .knob, .meter, .decor[id], #tape, #sheet, #provenance, .panel-slot';
+
   function press(id) {
     if (id === 'switch-compute-0') $(id).classList.remove('cue');
     const a = actionFor(id, switches);
@@ -153,12 +184,26 @@ async function main() {
     if (a && a.ui === 'automat') lastHalt = null;
   }
   document.addEventListener('click', (e) => {
-    const sw = e.target.closest && e.target.closest('.switch');
-    if (sw) press(sw.id);
+    if (!e.target.closest || e.target.closest('#help-panel, header')) return;
+    const el = e.target.closest(EXPLAINABLE);
+    if (!el || !el.id) return;
+    if (explaining) { explain(el.id, el); return; }
+    if (el.classList.contains('switch')) press(el.id);
+    else if (!el.classList.contains('panel-slot')) explain(el.id, el);
   });
   document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (explaining) explainMode(false);
+      else help.close();
+      return;
+    }
     const sw = e.target.closest && e.target.closest('.switch');
-    if (sw && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); press(sw.id); }
+    if (!sw) return;
+    if (e.key === '?') { e.preventDefault(); explain(sw.id, sw); return; }
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      if (explaining) explain(sw.id, sw); else press(sw.id);
+    }
   });
 
   const setSpeed = (name) => {
@@ -179,6 +224,7 @@ async function main() {
   // testul de fum îl cheamă direct (în Chrome cu timp virtual rAF nu rulează).
   function advance(dt) {
     const snap = runner.frame(dt);
+    lastSnap = snap;
     if (snap.typed) sheet.add(snap.typed);
     if (snap.halted !== null) lastHalt = snap.halted;
     const targets = lampTargets(snap, runner, uopIndex);
@@ -197,6 +243,7 @@ async function main() {
     if ($('status').textContent !== st) $('status').textContent = st;   // anunțat doar la schimbare
     const t = `${T().machineTime}: ${machine.seconds().toFixed(1)} s`;
     if ($('machine-time').textContent !== t) $('machine-time').textContent = t;
+    if (help.open) help.setValue(valueOf(help.target));
   }
   let last = null;
   function frame(now) {
@@ -207,7 +254,7 @@ async function main() {
 
   await select(catalog[0].id);
   requestAnimationFrame(frame);
-  return { runner, select, setSpeed, setView, setLang, sheet, advance };
+  return { runner, select, setSpeed, setView, setLang, sheet, advance, explain, explainMode, closeHelp: () => help.close() };
 }
 
 const api = {};

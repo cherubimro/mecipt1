@@ -8,6 +8,7 @@
 <iframe id="f" src="../index.html" width="1600" height="1000"></iframe>
 <script type="module">
 const out = document.getElementById('result');
+const stage = (name) => { out.textContent = 'SMOKE RUNNING: ' + name; };
 const fail = (why) => { out.textContent = 'SMOKE FAIL: ' + why; throw new Error(why); };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // rAF nu rulează sub timpul virtual al Chrome: cadrele paginii se avansează explicit, câte 50 ms.
@@ -33,6 +34,7 @@ f.addEventListener('load', () => {
   if (!prov.includes('ORIGINAL') || !prov.includes('39')) fail('eticheta de proveniență: ' + prov);
   const glow = (id) => parseFloat(d.querySelector('#' + id + ' .glow').style.opacity || '0');
   const click = (id) => d.getElementById(id).dispatchEvent(new w.MouseEvent('click', { bubbles: true }));
+  stage('accesibilitate');
   // accesibilitate: nume pentru fiecare comutator, starea celor cu reținere, inel de focus vizibil
   const unnamed = [...d.querySelectorAll('.switch')].filter((s) => !(s.getAttribute('aria-label') || '').trim());
   if (unnamed.length) fail('comutatoare fără nume: ' + unnamed.slice(0, 3).map((s) => s.id).join(', '));
@@ -51,6 +53,40 @@ f.addEventListener('load', () => {
   const wR = d.getElementById('switch-compute-0').getBoundingClientRect().width;
   if (wR < 24) fail('panoul drept mărit: comutatorul are ' + wR.toFixed(1) + ' px');
   P.setView('all');
+  stage('explicatii');
+  // explicațiile: modul Explică nu acționează comutatoarele; valoarea se actualizează; limba se schimbă pe loc
+  const helpRO = await (await fetch('../data/help/ro.json')).json();
+  const helpEN = await (await fetch('../data/help/en.json')).json();
+  const panel = d.getElementById('help-panel');
+  const shown = () => !panel.hidden && w.getComputedStyle(panel).display !== 'none';
+  const rai9 = d.getElementById('switch-RAI-9');
+  const pressed0 = rai9.getAttribute('aria-pressed');
+  P.explainMode(true);
+  click('switch-RAI-9');
+  if (!shown() || !d.getElementById('help-title').textContent.includes('RAI')) fail('Explică pe RAI 9: ' + d.getElementById('help-title').textContent);
+  if (rai9.getAttribute('aria-pressed') !== pressed0) fail('în modul Explică comutatorul s-a mișcat');
+  const pr = panel.getBoundingClientRect(), ra9 = d.getElementById('lamp-RA-9');
+  if (ra9.getBoundingClientRect().right > pr.left) fail('panoul de explicații acoperă pupitrul');
+  if (!d.getElementById('explain-banner') || d.getElementById('explain-banner').hidden) fail('rândul „Mod explicații” lipsește');
+  d.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  if (d.getElementById('explain').getAttribute('aria-pressed') !== 'false') fail('Esc nu iese din modul Explică');
+  click('switch-RAI-9');                  // acum chiar mută bitul: 1477 → 1476
+  P.explain('switch-RAI-9');
+  P.advance(50);
+  const val = d.getElementById('help-value').textContent;
+  if (!val.includes('1476') || !val.includes('830')) fail('valoarea RAI: ' + val);
+  click('lamp-uop-19');                   // celula ⎍ rândul 2, coloana 1 = microoperația 16
+  if (d.getElementById('help-title').textContent !== helpRO.entries['lamp-uop'].title) fail('becul de microoperație: ' + d.getElementById('help-title').textContent);
+  if (!d.getElementById('help-value').textContent.includes('(ra)/2 trece în RA')) fail('numele microoperației: ' + d.getElementById('help-value').textContent);
+  P.setLang('en');
+  P.advance(50);
+  if (d.getElementById('help-title').textContent !== helpEN.entries['lamp-uop'].title) fail('explicația în engleză: ' + d.getElementById('help-title').textContent);
+  if (!d.getElementById('help-value').textContent.includes('(ra)/2 goes into RA')) fail('valoarea în engleză: ' + d.getElementById('help-value').textContent);
+  P.setLang('ro');
+  click('switch-RAI-9');                  // înapoi la 1477
+  P.closeHelp();
+  if (shown()) fail('panoul de explicații nu se închide');
+  stage('impulsuri');
   // capcana IMPULSURI: mașina oprită de la pupitru spune de ce, iar Reîncarcă o repune în funcțiune
   click('switch-pulses-0');
   P.advance(50);
@@ -61,6 +97,7 @@ f.addEventListener('load', () => {
   await P.select('retiparire-1962');
   if (P.runner.pulsesOff || d.getElementById('switch-pulses-0').getAttribute('aria-pressed') !== 'false')
     fail('Reîncarcă nu readuce impulsurile');
+  stage('limba');
   // limba: engleza se aplică fără reîncărcare, inscripțiile rămân în română
   P.setLang('en');
   if (d.documentElement.lang !== 'en' || !d.getElementById('hint').textContent.startsWith('Press'))
@@ -73,6 +110,7 @@ f.addEventListener('load', () => {
   click('switch-compute-0');
   await until(() => P.sheet.lines()[0] === '1477  27 0000  30 0000' && glow('lamp-indicators-2') > 0.5, 20000,
     () => `retipărirea: mod ${P.runner.mode}, timp ${P.runner.machine.seconds().toFixed(2)} s, coala ${JSON.stringify(P.sheet.lines().slice(0, 2))}, OPRIT ${glow('lamp-indicators-2')}`);
+  stage('inex');
   await P.select('inex1');
   click('switch-compute-0');
   await until(() => glow('lamp-indicators-1') > 0.5 && P.runner.machine.tapePos() === 18, 20000,
