@@ -18,6 +18,7 @@ import { describeValue } from './values.js';
 import { formatWord, rowsFor, provLabel } from './atelier/editor.js';
 import { setupSound } from './sound/page.js';
 import { catalogNote } from './catalog.js';
+import { drumSvg, drumActive, drumPhase, cellsOffset } from './drum.js';
 
 const $ = (id) => document.getElementById(id);
 const storage = (() => { try { return window.localStorage; } catch { return null; } })();
@@ -58,6 +59,8 @@ function setTexts() {
   $('hint').textContent = T().hint;
   $('reader-label').textContent = T().tapeReader;
   $('typewriter-label').textContent = T().typewriter;
+  $('drum-label').textContent = T().drumLabel;
+  $('drum-info').textContent = T().drumInfo;
   $('attribution').textContent = T().attribution;
   $('status').textContent = T().loading;
 }
@@ -109,6 +112,11 @@ async function main() {
   $('panel-left').innerHTML = renderPanel('left', artL, positions, colors);
   $('panel-middle').innerHTML = renderPanel('middle', artM, positions, colors);
   $('panel-right').innerHTML = renderPanel('right', artR, positions, colors);
+  // tamburul: desenat o dată; la fiecare cadru se rotește (în timp real) și capetele se aprind cât mașina lucrează
+  $('drum').innerHTML = drumSvg();
+  const drumCells = $('drum').querySelector('.cells'), drumGlow = $('drum').querySelector('.heads-glow');
+  const reducedMotion = globalThis.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  let drumLight = 0, drumShown = -1;
 
   // becurile: elementul de lumină și strălucirea curentă
   const lamps = [...document.querySelectorAll('.lamp')].map((g) => ({ id: g.id, glow: g.querySelector('.glow'), b: 0, shown: -1 }));
@@ -312,7 +320,7 @@ async function main() {
     next: () => { tour.next(); renderTour(); }, step: () => tour.step(), get active() { return tour.active; },
   };
 
-  const EXPLAINABLE = '[data-help], .switch, .lamp, .knob, .meter, .decor[id], #tape, #sheet, #provenance, .panel-slot';
+  const EXPLAINABLE = '[data-help], .switch, .lamp, .knob, .meter, .decor[id], #drum, #tape, #sheet, #provenance, .panel-slot';
 
   function press(id) {
     sound.control(id);
@@ -434,6 +442,10 @@ async function main() {
     if (Math.abs(snap.tapePos - smoothTape) < 0.01) smoothTape = snap.tapePos;
     renderTape($('tape'), tapeRows, snap.tapePos, smoothTape);
     renderSheet($('sheet'), sheet);
+    drumCells.setAttribute('transform', `translate(0 ${cellsOffset(drumPhase(performance.now(), { reducedMotion: reducedMotion.matches })).toFixed(2)})`);
+    drumLight = glowStep(drumLight, drumActive(snap) ? 1 : 0, Math.min(dt, 100));
+    const dv = Math.round(drumLight * 50) / 50;
+    if (dv !== drumShown) { drumGlow.setAttribute('opacity', String(dv)); drumShown = dv; }
     const st = runner.pulsesOff ? T().pulsesOff
       : runner.mode === 'automat' ? T().running
         : lastHalt !== null && lastHalt !== HALT.OK ? T().halt[lastHalt] : T().idle;

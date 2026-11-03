@@ -501,6 +501,17 @@
     "semantica"
    ]
   },
+  "drum": {
+   "title": "Magnetic drum",
+   "short": "The machine’s only memory: a drum spinning 50 times a second, with 1024 words of 31 bits written magnetically around it. The hum comes from it.",
+   "more": "- **1024 words of 31 bits**, laid out around the drum; **50 revolutions a second**. That is why the machine did about 50 instructions a second: it waited for each word to come under the heads — CERTAIN (Farcaș; Baltac).\n- It was the internal and external memory at once: programs, the “rudiment of an operating system” and the data all lived here. It usually kept its contents overnight, after power-off — CERTAIN (Farcaș).\n- It came free of charge from Hungary, from the Cybernetics Research Institute of the Hungarian Academy, built under the licence of the Soviet M-3 computer: “an installation the size of a small cabinet”. The control electronics, with 200 valves, were made in Timișoara — CERTAIN (Farcaș; Baltac, facsimile 8).\n- Even addresses on one half of the drum, odd ones on the other, so programs did not wait a whole revolution — DEDUCED (Baltac, facsimile 8).\n- **What it looked like** — GUESSED: no photograph of the drum has been found. The drawing shows a period drum, lying on its side, with one track and one head per bit. The rotation is slowed down in the drawing (at 50 revolutions a second the eye would see only a blur). The heads light up while the machine reads or writes, that is at every instruction and at the console’s memory commands.\n\nThe 50 Hz hum (the 🔊 button) is the sound of this drum.",
+   "status": "MIXT",
+   "sources": [
+    "farcas2005",
+    "baltac2011",
+    "semantica"
+   ]
+  },
   "tape": {
    "title": "Punched-tape reader",
    "short": "Programs and data came in on 5-channel telex tape. A hole means 0. One word takes 6 rows of tape.",

@@ -37,6 +37,13 @@ Sub grilă: **GENERATOR PRINCIPAL** (IMPULSURI, FRECVENȚĂ FIN, FRECVENȚĂ TRE
 ## Panoul din mijloc — aparatele de măsură
 Unsprezece voltmetre (unul lipsește azi, se vede doar rama), un selector, un comutator rotativ mare și comutatoare mici. Arătau, probabil, tensiunile de alimentare ale tuburilor; ce măsura fiecare și scalele sunt GHICITE. Cele patru voltmetre de sus sunt desenate cu scala 0–250 V (GHICIT).
 
+## Tamburul magnetic
+Sub pupitru, deasupra cititorului de bandă și a mașinii de scris, e desenat tamburul magnetic. A fost singura memorie a mașinii: **1024 de cuvinte de 31 de biți**, scrise jur-împrejurul unui cilindru care se rotea de **50 de ori pe secundă**. Mașina aștepta ca fiecare cuvânt să ajungă sub capete. De aceea făcea cam 50 de instrucțiuni pe secundă. Tot de aici vine zumzetul de 50 Hz.
+
+- Tamburul a venit gratuit din Ungaria, de la un institut al Academiei Ungare, fabricat după licența calculatorului sovietic M-3. Electronica lui de comandă, cu 200 de tuburi, s-a făcut la Timișoara (Farcaș; Baltac).
+- **Desenul e GHICIT**: nu s-a găsit nicio fotografie a tamburului. Are o pistă și un cap pentru fiecare bit. Rotația e încetinită: la 50 de rotații pe secundă ochiul n-ar vedea decât o pată.
+- Capetele se aprind cât mașina citește sau scrie: la orice instrucțiune și la comenzile de memorie ale pupitrului.
+
 ## Sunetul
 Nu există înregistrări ale MECIPT-1, așa că sunetele pupitrului sunt **reconstruite** (GHICIT) și sintetizate în browser. Ele urmează exact ce face mașina emulată:
 

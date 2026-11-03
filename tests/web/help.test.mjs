@@ -9,7 +9,7 @@ const POS = readJson('web/data/positions.json');
 const RO = readJson('web/data/help/ro.json');
 const EN = readJson('web/data/help/en.json');
 const TARGETS = [...lampIds(POS), ...switchIds(POS), 'knob', ...Array.from({ length: 11 }, (_, i) => `meter-${i}`),
-  'selector', 'power', 'toggle-0', 'toggle-1', 'panel-left', 'panel-middle', 'panel-right', 'tape', 'sheet', 'provenance'];
+  'selector', 'power', 'toggle-0', 'toggle-1', 'panel-left', 'panel-middle', 'panel-right', 'drum', 'tape', 'sheet', 'provenance'];
 const STATUS = ['SIGUR', 'DEDUS', 'GHICIT', 'MIXT'];
 
 test('helpKey falls back from id to group', () => {
