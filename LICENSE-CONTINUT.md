@@ -15,3 +15,5 @@ https://creativecommons.org/licenses/by-sa/4.0/
 - **Setul de instrucțiuni** — A. Geier, *Programarea calculatorului electronic cifric MECIPT I în regimul virgulă mobilă*, Buletinul Științific și Tehnic al IPT, 1961 (via Wikipedia RO, articolul „MECIPT”).
 - **Descrieri** — Dan D. Farcaș, *MECIPT, o istorie subiectivă* (2005); Ștefan Mărușter, *Povestea unei lucrări*.
 - **Pozițiile becurilor și comutatoarelor** (`web/data/positions.json`) — proiectate de `tools/dae_layout.py` din modelul 3D de mai sus (MECIPT-1_V4.dae), deci derivate din opera lui marius0198 (CC BY 4.0); publicate aici sub CC BY-SA 4.0.
+- **Desenul panourilor** (`web/data/art-*.json`, `web/data/lamp-colors.json`) — trasat după texturile modelului 3D de mai sus (CC BY 4.0), cu culorile becurilor și ale feței luate din fotografia din 2011 (CC BY-SA 4.0); publicat sub CC BY-SA 4.0.
+- **Fonturi** (`web/fonts/`) — Barlow Semi Condensed (The Barlow Project Authors) și Courier Prime (The Courier Prime Project Authors), ambele sub **SIL Open Font License 1.1**; textul licenței e alături, în `OFL-*.txt`.
