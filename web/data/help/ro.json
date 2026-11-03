@@ -1,0 +1,585 @@
+{
+ "entries": {
+  "panel-right": {
+   "title": "Panoul drept — registrele și comenzile",
+   "short": "Aici lucra operatorul: becurile arată registrele mașinii, iar comutatoarele și butoanele introduc cuvinte și adrese și pornesc calculul.",
+   "more": "De sus în jos:\n\n- **M** — registrul de memorie, 31 de becuri verzi numerotate 0–30, cu câte un comutator dedesubt;\n- **RI** — registrul de instrucțiuni (codul și adresa instrucțiunii în execuție), sub inscripțiile CODUL 2, CODUL 1, ADRESA 2, ADRESA 1;\n- **R I** — registrul de microinstrucțiuni (7 becuri) și **RA** — registrul de adresă;\n- **RAI** — registrul de adresă al instrucțiunii, cu comutatoare, apoi INSTRUCTIA 1/2 și MEMORIE TAMBUR/FERITE;\n- comenzile ANULEAZA și INTRODUCE;\n- jos: MEMORIE, IMPULSURI, ce face mașina la depășire, becurile de stare și CALCULEAZA.\n\nInscripțiile sunt redesenate literă cu literă după texturile modelului 3D; culorile becurilor după fotografia din 2011.",
+   "status": "SIGUR",
+   "sources": [
+    "model3d",
+    "photo2011"
+   ]
+  },
+  "panel-left": {
+   "title": "Panoul stâng — microoperațiile și generatorul",
+   "short": "Fiecare bec din grilă poartă numele unei microoperații, pașii mărunți din care e făcută o instrucțiune. Dedesubt: generatorul principal și registrul R II.",
+   "more": "MECIPT-1 era **microprogramat**: doar adunarea era cablată, restul instrucțiunilor se făceau din pași elementari (schema Wilkes), SIGUR după Wikipedia RO și Lucrarea 7.\n\n- Grila mare are antetul ⎍ (impuls pozitiv), 16 × 3 celule, din care 35 au inscripție; grila mică ⊔ (impuls negativ), 3 × 3, are 4.\n- Numele de pe celule sunt SIGURE acolo unde se citesc; câteva sunt nesigure (marcate în transcriere).\n- Ordinea microoperațiilor din fiecare instrucțiune nu s-a păstrat; emulatorul o compune din aceste nume — DEDUS.\n- **R II** (7 becuri, 64 … 1) primește la fiecare pas conținutul lui R I de pe panoul drept (Lucrarea 7, p. 3).",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "panel-middle": {
+   "title": "Panoul din mijloc — aparatele de măsură",
+   "short": "Voltmetre pentru tensiunile de alimentare ale celor aproximativ 2000 de tuburi electronice. Ce măsura fiecare nu se știe.",
+   "more": "Aparatele, selectorul și comutatoarele se văd în fotografia din 2011 (SIGUR); pe ea nu se citesc inscripții. Mașina avea circa 2000 de triode și consuma cam 10 kW (Wikipedia RO, după Farcaș). Ce tensiune arăta fiecare aparat, scalele și rostul comenzilor sunt GHICITE. În emulator, comenzile acestui panou nu fac nimic.",
+   "status": "MIXT",
+   "sources": [
+    "photo2011",
+    "wikiRO",
+    "semantica"
+   ]
+  },
+  "lamp-M": {
+   "title": "Registrul M (memorie)",
+   "short": "Cele 31 de becuri arată cuvântul din registrul M, bit cu bit: aprins = 1. Becul 0 e semnul. Prin M trec cuvintele spre și dinspre tambur.",
+   "more": "Un cuvânt are 31 de biți, m0 … m30 (Lucrarea 7, p. 1):\n\n- ca **număr**: m0 e semnul, ceilalți dau o fracție între −1 și 1, în complement față de unu (deci există și „−0”);\n- ca **instrucțiuni**: m1–m5 codul 2, m6–m10 codul 1, m11–m20 adresa 2, m21–m30 adresa 1 — două instrucțiuni într-un cuvânt.\n\nProgramatorii citeau becurile în grupe de câte trei, în octal. Panoul e numerotat 0–30 (SIGUR, texturile modelului 3D); becurile sunt verzi în fotografia din 2011.",
+   "status": "SIGUR",
+   "sources": [
+    "baltacLab",
+    "wikiRO",
+    "photo2011"
+   ]
+  },
+  "switch-M": {
+   "title": "Comutatoarele registrului M",
+   "short": "Cu ele operatorul punea un cuvânt în M, bit cu bit, de obicei în grupe de câte trei (octal). În emulator, pârghia sus = 1.",
+   "more": "Că becurile M sunt dublate de comutatoare e SIGUR (Farcaș, Wikipedia RO). Că un comutator încarcă direct bitul lui în M e DEDUS.\n\n**GHICIT:** sensul pârghiei (sus = 1) și faptul că pârghia ține poziția și pune tot cuvântul în M la fiecare mutare. Butoanele ANULEAZA M și ANULEAZA RAI sugerează o altă procedură posibilă: registrul se golea, apoi comutatoarele adăugau biții. Până la o sursă, emulatorul păstrează varianta simplă.\n\nProcedura de introducere a unui program de mână: cuvântul pe comutatoarele M, adresa pe comutatoarele RAI, apoi MEMORIE SCRIERE.",
+   "status": "MIXT",
+   "sources": [
+    "farcas2005",
+    "wikiRO",
+    "semantica"
+   ]
+  },
+  "lamp-RI": {
+   "title": "Registrul de instrucțiuni RI",
+   "short": "Arată instrucțiunea care se execută: primele 5 becuri sunt codul operației, următoarele 10 adresa din memorie cu care lucrează.",
+   "more": "RI are 15 biți = o instrucțiune: cod de 5 biți (ponderile 16 8 4 2 1, sub CODUL 2) și adresă de 10 biți (512 … 1, sub ADRESA 2). Codurile se scriau în octal: de exemplu 33 = CIT (citește un caracter de pe bandă), 05 = A (adunare), 25 = ME (memorare). Tabelul complet e în documentație.\n\nCulorile (verde, verde, chihlimbar, roșu, roșu, apoi verde) sunt cele din fotografia din 2011.",
+   "status": "SIGUR",
+   "sources": [
+    "baltacLab",
+    "model3d",
+    "photo2011"
+   ]
+  },
+  "lamp-R1": {
+   "title": "Registrul de microinstrucțiuni R I",
+   "short": "Șapte becuri cu numărul microoperației curente. La fiecare pas, numărul trece în R II, pe panoul stâng, iar noua microoperație intră în R I.",
+   "more": "Lucrarea 7 (p. 3) spune că există două registre de microinstrucțiuni, R1 și R2, de câte 7 biți, și că „impulsurile de ritm impar produc trecerea conținutului registrului R1 în R2” — SIGUR. Că numărul din R I e chiar numărul celulei din grila panoului stâng e DEDUS: adresele reale ale microprogramelor (de exemplu 94 → 90 → 24 la tipărirea unei cifre) nu se potrivesc cu grila, dar nu avem tabelul lor complet.",
+   "status": "DEDUS",
+   "sources": [
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "lamp-R2": {
+   "title": "Registrul de microinstrucțiuni R II",
+   "short": "Șapte becuri: microoperația de dinaintea celei din R I. Împreună, R I și R II lasă operatorul să urmărească microprogramul pas cu pas.",
+   "more": "Inscripția R II și ponderile 64 … 1 sunt pe textura panoului stâng (SIGUR). Trecerea R I → R II la fiecare pas e scrisă în Lucrarea 7, p. 3 (SIGUR); numerotarea microoperațiilor din emulator e DEDUSĂ.",
+   "status": "DEDUS",
+   "sources": [
+    "baltacLab",
+    "model3d",
+    "semantica"
+   ]
+  },
+  "lamp-RA": {
+   "title": "Registrul de adresă RA",
+   "short": "Zece becuri cu adresa de pe tambur la care lucrează instrucțiunea curentă (ponderi 512 … 1).",
+   "more": "Inscripția RA și cele 10 ponderi sunt pe panou (SIGUR). Microoperațiile „(ra)/2 trece în RA” și „2(ra) trece în RAI” arată că RA ținea adrese și se folosea la saltul în program; restul rolului lui e DEDUS.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "lamp-RAI": {
+   "title": "Registrul de adresă al instrucțiunii (RAI)",
+   "short": "Adresa de pe tambur a cuvântului cu instrucțiunea următoare. După ce se execută ambele instrucțiuni ale unui cuvânt, RAI crește cu 1.",
+   "more": "Inscripția de pe panou: „REG DE ADRESA A INSTRUCTIEI — RAI”, cu ponderile 512 … 1. Lucrarea 7, p. 6: „trece instrucția 2 în locul instrucției 1”, „RAI+1→RAI” — SIGUR. Tamburul avea 1024 de adrese, 0000–1777 în octal.",
+   "status": "SIGUR",
+   "sources": [
+    "baltacLab",
+    "model3d"
+   ]
+  },
+  "switch-RAI": {
+   "title": "Comutatoarele RAI",
+   "short": "Aici se punea adresa de la care pornește programul, sau adresa la care se scrie ori se citește un cuvânt cu MEMORIE. Pârghia sus = 1 (ghicit).",
+   "more": "Preîncărcătorul INEX-1 cerea „se pornește calculatorul de la 0010” (Facsimil 5) — deci adresa de pornire se dădea de la pupitru: SIGUR. Că se dădea chiar din aceste comutatoare e DEDUS. Sensul pârghiei și faptul că ține poziția sunt GHICITE.\n\nCând alegeți un program în pagină, comutatoarele sunt deja puse pe adresa lui de pornire (1477 pentru retipărire, 0010 pentru INEX-1).",
+   "status": "MIXT",
+   "sources": [
+    "baltacLab",
+    "baltac2011",
+    "semantica"
+   ]
+  },
+  "lamp-instr": {
+   "title": "INSTRUCTIA 1 / 2, MEMORIE TAMBUR / FERITE",
+   "short": "Primele două becuri arată care din cele două instrucțiuni ale cuvântului urmează. TAMBUR: memoria folosită; FERITE: memoria cu ferite, pregătită, dar nelegată.",
+   "more": "Ordinea „întâi instrucțiunea 1, apoi 2, apoi RAI + 1” e DEDUSĂ din Lucrarea 7 (p. 6) și confirmată de programele originale INEX-1 și retipărirea, care rulează corect doar așa. Memoria cu ferite a fost cercetată în 1962–1963 (Facsimil 11, Baltac); în emulator becul FERITE stă stins — GHICIT.",
+   "status": "MIXT",
+   "sources": [
+    "baltacLab",
+    "baltac2011",
+    "semantica"
+   ]
+  },
+  "switch-instr-0": {
+   "title": "INSTRUCTIA 1",
+   "short": "Face din prima instrucțiune a cuvântului următoarea de executat.",
+   "more": "Lucrarea 7, p. 6: „trece instrucția 2 în locul instrucției 1”. Efectul butonului în emulator: pune faza pe instrucțiunea aleasă — DEDUS.",
+   "status": "DEDUS",
+   "sources": [
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "switch-instr-1": {
+   "title": "INSTRUCTIA 2",
+   "short": "Face din a doua instrucțiune a cuvântului următoarea de executat.",
+   "more": "Lucrarea 7, p. 6: „trece instrucția 2 în locul instrucției 1”. Efectul butonului în emulator: pune faza pe instrucțiunea aleasă — DEDUS.",
+   "status": "DEDUS",
+   "sources": [
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "switch-instr-2": {
+   "title": "MEMORIE TAMBUR",
+   "short": "Funcția exactă nu se cunoaște; probabil alegea tamburul ca memorie de lucru. În emulator nu face nimic.",
+   "more": "Lucrarea 7, p. 6: „trece instrucția 2 în locul instrucției 1”. Efectul butonului în emulator: niciunul — GHICIT.",
+   "status": "GHICIT",
+   "sources": [
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "switch-instr-3": {
+   "title": "MEMORIE FERITE",
+   "short": "Funcția exactă nu se cunoaște; legată de memoria cu ferite, cercetată în 1962–1963. În emulator nu face nimic.",
+   "more": "Lucrarea 7, p. 6: „trece instrucția 2 în locul instrucției 1”. Efectul butonului în emulator: niciunul — GHICIT.",
+   "status": "GHICIT",
+   "sources": [
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "switch-commands-0": {
+   "title": "ANULEAZA RAI",
+   "short": "Pune RAI pe zero: programul va porni de la adresa 0000.",
+   "more": "Inscripția e pe panou (SIGUR). Efectul e DEDUS din inscripție.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-commands-1": {
+   "title": "ANULEAZA M",
+   "short": "Golește registrul M: toți biții devin 0.",
+   "more": "Inscripția e pe panou (SIGUR). Efectul e DEDUS din inscripție.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-commands-2": {
+   "title": "ANULEAZA S",
+   "short": "Golește acumulatorul S, registrul în care se fac calculele. S nu are becuri pe pupitru.",
+   "more": "Inscripția e pe panou (SIGUR). Efectul e DEDUS din inscripție.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-commands-3": {
+   "title": "INTRODUCE 7 CATEG. DIN RA în RI",
+   "short": "Copiază 7 biți („7 categorii”) din RA în registrul de microinstrucțiuni R I.",
+   "more": "Inscripția e pe panou (SIGUR). Efectul e DEDUS din inscripție.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-commands-4": {
+   "title": "INTRODUCE M în I",
+   "short": "Copiază cuvântul din M în registrul I, al doilea registru de calcul.",
+   "more": "Inscripția e pe panou (SIGUR). Efectul e DEDUS din inscripție.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-commands-5": {
+   "title": "INTRODUCE M în RI",
+   "short": "Pune în RI instrucțiunea curentă din cuvântul aflat în M, ca s-o poată executa direct.",
+   "more": "Inscripția e pe panou (SIGUR). Efectul e DEDUS din inscripție.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-commands-6": {
+   "title": "ADUNARE 1",
+   "short": "Funcția acestui buton nu se cunoaște. În emulator nu face nimic.",
+   "more": "Inscripția e pe panou (SIGUR). Ce făcea nu reiese din inscripție și nicio sursă păstrată nu o spune — GHICIT.",
+   "status": "GHICIT",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-commands-7": {
+   "title": "M+S 2",
+   "short": "Funcția acestui buton nu se cunoaște. În emulator nu face nimic.",
+   "more": "Inscripția e pe panou (SIGUR). Ce făcea nu reiese din inscripție și nicio sursă păstrată nu o spune — GHICIT.",
+   "status": "GHICIT",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "lamp-memory": {
+   "title": "Becurile MEMORIE",
+   "short": "Pătratul roșu clipește când se scrie un cuvânt pe tambur de la pupitru, cel albastru la citire. Rostul lor e ghicit.",
+   "more": "Culorile și forma pătrată se văd în fotografia din 2011 (SIGUR). Legătura cu SCRIERE și CITIRE e GHICITĂ, după așezarea lor deasupra butoanelor.",
+   "status": "MIXT",
+   "sources": [
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "switch-memory-0": {
+   "title": "MEMORIE SCRIERE",
+   "short": "Scrie cuvântul din M pe tambur, la adresa din RAI. Așa se introducea un program de mână, cuvânt cu cuvânt.",
+   "more": "Inscripția MEMORIE / SCRIERE e pe panou (SIGUR); efectul (tambur[RAI] ← M) e DEDUS din inscripții și din faptul că RAI are comutatoare.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-memory-1": {
+   "title": "MEMORIE CITIRE",
+   "short": "Aduce în M cuvântul de pe tambur de la adresa din RAI, ca să poată fi citit pe becuri.",
+   "more": "Inscripția MEMORIE / CITIRE e pe panou (SIGUR); efectul (M ← tambur[RAI]) e DEDUS.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "lamp-pulses": {
+   "title": "Becurile IMPULSURI",
+   "short": "Arată dacă impulsurile de ceas ale mașinii merg (verde) sau sunt întrerupte (roșu). Fără impulsuri, mașina stă.",
+   "more": "Becurile roșu și verde se văd în fotografia din 2011 (SIGUR); semnificația lor e GHICITĂ.",
+   "status": "GHICIT",
+   "sources": [
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "switch-pulses-0": {
+   "title": "IMPULSURI: INTRERUPE / RESTABILESTE",
+   "short": "Întrerupe impulsurile mașinii, oprind-o pe loc, apoi le restabilește. După restabilire, programul se reia cu CALCULEAZA.",
+   "more": "Inscripțiile IMPULSURI, INTRERUPE (parțial ștearsă) și RESTABILESTE sunt pe panou. Efectul din emulator (oprire, becul OPRIT aprins) e GHICIT. Alegerea unui program readuce impulsurile.",
+   "status": "GHICIT",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "lamp-overflow": {
+   "title": "În caz de depășirea capacității registrului — becurile",
+   "short": "Arată ce face mașina când un rezultat nu încape în registru: se oprește (roșu) sau continuă (verde).",
+   "more": "Inscripția „IN CAZ DE DEPASIREA CAPACITATII REGISTRULUI — SE OPRESTE / NU SE OPRESTE” e pe panou (SIGUR); legătura becurilor cu alegerea e DEDUSĂ.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-overflow-0": {
+   "title": "SE OPRESTE (la depășire)",
+   "short": "La depășire, mașina se oprește și aprinde DEPASIT CAPACITATEA REGISTRULUI. Emulatorul pornește așa.",
+   "more": "Numerele mașinii sunt fracții între −1 și 1; o sumă care iese din interval „depășește capacitatea registrului”. Oprirea e DEDUSĂ din inscripție.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-overflow-1": {
+   "title": "NU SE OPRESTE (la depășire)",
+   "short": "La depășire, mașina nu se oprește; becul de depășire se aprinde, iar calculul continuă cu rezultatul trunchiat.",
+   "more": "Continuarea e DEDUSĂ din inscripție; forma exactă a rezultatului după depășire e GHICITĂ.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "lamp-indicators-0": {
+   "title": "DEPASIT CAPACITATEA REGISTRULUI",
+   "short": "Se aprinde când un rezultat iese din intervalul −1 … 1 al numerelor mașinii (o „depășire”).",
+   "more": "Inscripția și becul (roșu) sunt pe panou și în fotografia din 2011 (SIGUR). Când anume se aprinde e DEDUS din inscripție.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "lamp-indicators-1": {
+   "title": "HIRTIA AGATATA",
+   "short": "Se aprinde când cititorul nu mai are bandă: banda s-a terminat sau s-a agățat. Mașina se oprește.",
+   "more": "Inscripția și becul (roșu) sunt pe panou și în fotografia din 2011 (SIGUR). Când anume se aprinde e DEDUS din inscripție.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "lamp-indicators-2": {
+   "title": "OPRIT",
+   "short": "Mașina e oprită: a executat instrucțiunea O, s-a oprit la o problemă sau a fost oprită de la pupitru.",
+   "more": "Inscripția și becul (roșu) sunt pe panou și în fotografia din 2011 (SIGUR). Când anume se aprinde e DEDUS din inscripție.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "lamp-compute": {
+   "title": "CALCULEAZA — becurile",
+   "short": "Arată modul de lucru: calcul automat sau câte o singură instrucțiune.",
+   "more": "Becurile verzi deasupra butoanelor AUTOMAT și INSTRUCTIE UNICA se văd în fotografia din 2011 (SIGUR); semnificația e DEDUSĂ.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "switch-compute-0": {
+   "title": "CALCULEAZA AUTOMAT",
+   "short": "Pornește programul de la adresa din RAI și îl lasă să meargă până se oprește. Încercați!",
+   "more": "Butonul există (SIGUR, inscripția); Lucrarea 7 (p. 6) vorbește despre execuția automată și pas cu pas. Efectul exact e DEDUS. La viteza din 1962, mașina făcea cam 50 de instrucțiuni pe secundă, pentru că aștepta tamburul să se rotească.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "switch-compute-1": {
+   "title": "CALCULEAZA INSTRUCTIE UNICA",
+   "short": "Execută o singură instrucțiune și se oprește, ca să se poată urmări pe becuri ce s-a schimbat.",
+   "more": "Butonul există (SIGUR); efectul (exact o instrucțiune) e DEDUS din inscripție și din Lucrarea 7, p. 6.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "lamp-uop": {
+   "title": "Grila de microoperații",
+   "short": "Fiecare bec are deasupra numele unei microoperații. Un bec clipește când microoperația lui se execută.",
+   "more": "Numele celulelor sunt citite de pe textura panoului (SIGUR, cu câteva nesigure). Doar adunarea era cablată și nu are bec; restul instrucțiunilor erau microprogramate (schema Wilkes). Ce microoperații alcătuiesc fiecare instrucțiune și în ce ordine e DEDUS — paginile Lucrării 7 care le descriau s-au pierdut. Grila completă e în documentație, capitolul 4.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "baltacLab",
+    "wikiRO",
+    "semantica"
+   ]
+  },
+  "lamp-pilot": {
+   "title": "Cele trei becuri din mijlocul panoului stâng",
+   "short": "Becuri fără inscripție. Ce arătau nu se știe; în emulator rămân stinse.",
+   "more": "Becurile sunt în modelul 3D (SIGUR); rostul lor e necunoscut — GHICIT.",
+   "status": "GHICIT",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "lamp-generator": {
+   "title": "GENERATOR PRINCIPAL — becurile",
+   "short": "Becurile generatorului de impulsuri care dădea ritmul mașinii. Ce arăta fiecare nu se știe; în emulator stau fixe.",
+   "more": "Inscripțiile generatorului (IMPULSURI, FRECVENȚĂ FIN, FRECVENȚĂ TREPTE, p, q, ⎍/⊔) sunt pe panou (SIGUR). Starea becurilor din emulator (1, 3, 5 aprinse) e GHICITĂ.",
+   "status": "GHICIT",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-generator": {
+   "title": "GENERATOR PRINCIPAL — comutatoarele",
+   "short": "Alegeau sursa și frecvența impulsurilor (inclusiv un generator extern). În emulator nu fac nimic.",
+   "more": "Inscripțiile („IMPULSURI”, „DE LA GENER. EXTERN”, „DECLANSARE MANUALA SAU”, 1 · 2 · 3) sunt pe panou, unele greu de citit (SIGUR / nesigur). Funcția precisă e GHICITĂ.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "knob": {
+   "title": "FRECVENȚĂ FIN — butonul rotativ",
+   "short": "Butonul rotativ al generatorului; după inscripție, reglajul fin al frecvenței impulsurilor. În emulator nu face nimic.",
+   "more": "Butonul e în modelul 3D, sub inscripția FRECVENȚĂ FIN (SIGUR); funcția e DEDUSĂ din inscripție.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "meter": {
+   "title": "Voltmetru",
+   "short": "Arăta una din tensiunile de alimentare ale tuburilor. Ce tensiune măsura fiecare și scalele nu se cunosc.",
+   "more": "Aparatele și litera V de pe cadrane se văd în fotografia din 2011 (SIGUR). Cifrele de pe cadrane nu se pot citi; cele patru voltmetre de sus sunt desenate cu scala 0–250 V, după o amintire transmisă proiectului (nu după o sursă scrisă) și după tensiunile obișnuite pentru tuburi (GHICIT). Acele stau fix.",
+   "status": "GHICIT",
+   "sources": [
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "meter-5": {
+   "title": "Voltmetrul care lipsește azi",
+   "short": "În 2011 locul lui era o ramă goală; o fotografie din 1961 îl arată la locul lui. Aici e redesenat după vecinii lui.",
+   "more": "Rama goală se vede în fotografia din 2011 (SIGUR). Aspectul aparatului e DEDUS din celelalte trei din același rând.",
+   "status": "DEDUS",
+   "sources": [
+    "photo2011",
+    "wikiRO",
+    "semantica"
+   ]
+  },
+  "selector": {
+   "title": "Selectorul",
+   "short": "Buton rotativ mic; probabil alegea ce tensiune arată un voltmetru. Funcția e ghicită.",
+   "more": "Butonul se vede în fotografia din 2011 (SIGUR); funcția e GHICITĂ.",
+   "status": "GHICIT",
+   "sources": [
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "power": {
+   "title": "Comutatorul rotativ mare",
+   "short": "Mâner negru pe un disc alb; probabil pornirea alimentării mașinii. Funcția e ghicită.",
+   "more": "Comutatorul se vede în fotografia din 2011 (SIGUR); funcția e GHICITĂ.",
+   "status": "GHICIT",
+   "sources": [
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "toggle": {
+   "title": "Comutatoare mici",
+   "short": "Comutatoare basculante ale panoului din mijloc. Funcția lor nu se cunoaște.",
+   "more": "Se văd în fotografia din 2011 (SIGUR); funcția e GHICITĂ. În emulator nu fac nimic.",
+   "status": "GHICIT",
+   "sources": [
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "tape": {
+   "title": "Cititorul de bandă perforată",
+   "short": "Programele și datele intrau pe bandă de telex cu 5 canale. Gaura înseamnă 0. Un cuvânt ocupă 6 rânduri de bandă.",
+   "more": "- Bandă de telex cu 5 canale și un canal de ghidaj; **perforația = „0”**; citire mecanică — SIGUR (Farcaș, Wikipedia RO).\n- Instrucțiunea CIT citește **un rând** (5 biți) și îl pune aliniat la dreapta — SIGUR (tabelul Geier).\n- Un cuvânt = **6 rânduri** de câte 5 biți, m1–m5 primul — DEDUS (Geier: „două instrucțiuni … prin doar șase caractere”); semnul m0 nu e pe bandă.\n- Canalul 1 = bitul cel mai semnificativ al rândului — GHICIT.\n- Așezarea canalelor pe hârtie: 1 · 2 · ghidaj · 3 · 4 · 5 — DEDUS din banda de telex.\n- Când banda se termină: HIRTIA AGATATA — DEDUS.\n\nExemplul complet (cuvântul 05 1626 25 1512 desenat pe 6 rânduri) e în documentație, capitolul 5. Banda INEX-1 originală nu s-a păstrat; cea din pagină e o bandă de test.",
+   "status": "MIXT",
+   "sources": [
+    "farcas2005",
+    "wikiRO",
+    "geier1961",
+    "semantica"
+   ]
+  },
+  "sheet": {
+   "title": "Mașina de scris",
+   "short": "Rezultatele se tipăreau pe o mașină de scris electrică obișnuită, acționată de electromagneți puși deasupra clapelor.",
+   "more": "- Mașina de scris electrică cu electromagneți deasupra clapelor, hârtie A4/A3 — SIGUR (Farcaș).\n- Instrucțiunea AC cu subcodul 0136 tipărește o cifră din s0…s3, cu 0133 o literă din s0…s4 — SIGUR (tabelul Geier): 16 caractere numerice și 30 de litere, cu ă, î, ș, ț.\n- Care cod e care literă sau semn — GHICIT (tabelul nu s-a păstrat); spațiul și rândul nou sunt cele folosite de programul de retipărire.\n- Viteza, cam 10 caractere pe secundă — GHICIT.\n\nProgramul original de retipărire din 6.09.1962 (Facsimil 4) își tipărește aici propriul listing exact cum apare în facsimil.",
+   "status": "MIXT",
+   "sources": [
+    "farcas2005",
+    "geier1961",
+    "baltac2011",
+    "semantica"
+   ]
+  },
+  "provenance": {
+   "title": "Proveniența programului",
+   "short": "Arată de unde vine fiecare cuvânt al programului: ORIGINAL (din documente din 1962), DEDUS, RECONSTRUCȚIE sau GHICIT.",
+   "more": "- **ORIGINAL** — transcris dintr-un document de epocă, cu trimitere la facsimil (de exemplu Facsimilul 4 din cartea lui V. Baltac).\n- **DEDUS** — rezultă din documente, dar nu e scris în ele (de exemplu o cifră corectată de mână).\n- **RECONSTRUCȚIE** — scris acum, după logica programului, pentru că lipsește din document (de exemplu constantele citite de retipărire).\n- **GHICIT** — necesar ca să meargă, fără sursă.\n\nImaginile facsimilelor nu sunt reproduse aici; ele se găsesc în cartea lui Vasile Baltac.",
+   "status": "MIXT",
+   "sources": [
+    "baltac2011",
+    "semantica"
+   ]
+  }
+ },
+ "sources": {
+  "baltac2011": {
+   "cite": "Vasile Baltac, „MECIPT – Mașina Electronică de Calcul a Institutului Politehnic din Timișoara – Evocări și Documente”, 2011",
+   "where": "facsimilele 4 (retipărirea, 6.09.1962), 5 (INEX-1), 8 (tamburul), 11 (ferite)"
+  },
+  "baltacLab": {
+   "cite": "Vasile Baltac, lucrările de laborator la MECIPT-1, 1965–1966",
+   "where": "Lucrarea 7 (p. 1, 3, 6) și Lucrarea 8, paginile păstrate"
+  },
+  "geier1961": {
+   "cite": "A. Geier, „Programarea calculatorului electronic cifric MECIPT I în regimul virgulă mobilă”, Buletinul Științific și Tehnic al IPT, 1961",
+   "where": "tabelul instrucțiunilor, reprodus în Wikipedia RO"
+  },
+  "wikiRO": {
+   "cite": "Wikipedia în limba română, articolul „MECIPT”",
+   "where": "secțiunile despre MECIPT-1 și setul de instrucțiuni",
+   "url": "https://ro.wikipedia.org/wiki/MECIPT"
+  },
+  "farcas2005": {
+   "cite": "Dan D. Farcaș, „MECIPT, o istorie subiectivă”, 2005",
+   "where": "descrierea mașinii, a benzii și a mașinii de scris"
+  },
+  "maruster": {
+   "cite": "Ștefan Mărușter, „Povestea unei lucrări”",
+   "where": "amintiri despre programarea MECIPT-1"
+  },
+  "baltacKey": {
+   "cite": "Vasile Baltac, „Key Aspects of the History of Computing in Romania”",
+   "where": "contextul istoric"
+  },
+  "model3d": {
+   "cite": "marius0198, modelul 3D „MECIPT-1”, Sketchfab, 2020, CC BY 4.0",
+   "where": "texturile panourilor (inscripțiile) și pozițiile becurilor",
+   "url": "https://sketchfab.com/3d-models/mecipt-1-62ddfc49f1c54967967d76abab5f3d2d"
+  },
+  "photo2011": {
+   "cite": "Turbojet, „MECIPT-1 Control desk”, Wikimedia Commons, 2011, CC BY-SA 4.0",
+   "where": "aspectul pupitrului restaurat, culorile becurilor",
+   "url": "https://commons.wikimedia.org/wiki/File:MECIPT-1_Control_desk.jpg"
+  },
+  "semantica": {
+   "cite": "Proiectul emulatorului: „Semantica emulatorului — ce e sigur, dedus sau ghicit”",
+   "where": "documentația, capitolul 7",
+   "url": "doc.html#07-ce-e-sigur"
+  }
+ },
+ "tour": [],
+ "uops": {},
+ "ops": {}
+}

@@ -1,0 +1,655 @@
+{
+ "entries": {
+  "panel-right": {
+   "title": "Right panel — registers and controls",
+   "short": "This is where the operator worked: the lamps show the machine registers, and the switches and buttons enter words and addresses and start the computation.",
+   "more": "From top to bottom:\n\n- **M** — the memory register, 31 green lamps numbered 0–30, each with a switch below;\n- **RI** — the instruction register (code and address of the instruction being executed), under the inscriptions CODUL 2, CODUL 1, ADRESA 2, ADRESA 1 (code 2, code 1, address 2, address 1);\n- **R I** — the micro-instruction register (7 lamps) and **RA** — the address register;\n- **RAI** — the instruction address register, with switches, then INSTRUCTIA 1/2 (instruction 1/2) and MEMORIE TAMBUR/FERITE (drum/ferrite memory);\n- the ANULEAZA (clear) and INTRODUCE (enter) commands;\n- bottom: MEMORIE (memory), IMPULSURI (pulses), what the machine does on overflow, the status lamps and CALCULEAZA (compute).\n\nThe inscriptions are redrawn letter by letter from the textures of the 3D model; the lamp colours follow the 2011 photograph. The inscriptions stay in Romanian, as on the real console.",
+   "status": "SIGUR",
+   "sources": [
+    "model3d",
+    "photo2011"
+   ]
+  },
+  "panel-left": {
+   "title": "Left panel — micro-operations and the generator",
+   "short": "Each lamp in the grid carries the name of a micro-operation, one of the small steps an instruction is made of. Below: the main generator and register R II.",
+   "more": "MECIPT-1 was **microprogrammed**: only addition was hard-wired; the other instructions were built from elementary steps (the Wilkes scheme) — CERTAIN, after the Romanian Wikipedia and lab sheet 7.\n\n- The large grid has the heading ⎍ (positive pulse), 16 × 3 cells, 35 of them inscribed; the small grid ⊔ (negative pulse), 3 × 3, has 4.\n- The cell names are CERTAIN where legible; a few are uncertain (marked in the transcription).\n- The order of micro-operations inside each instruction has not survived; the emulator composes it from these names — DEDUCED.\n- **R II** (7 lamps, 64 … 1) receives at every step the content of R I on the right panel (lab sheet 7, p. 3).",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "panel-middle": {
+   "title": "Middle panel — measuring instruments",
+   "short": "Voltmeters for the supply voltages of the roughly 2000 electron tubes. What each one measured is not known.",
+   "more": "The instruments, the selector and the switches are visible in the 2011 photograph (CERTAIN); no inscriptions can be read on it. The machine had about 2000 triodes and used about 10 kW (Romanian Wikipedia, after Farcaș). Which voltage each meter showed, the scales and the purpose of the controls are GUESSED. In the emulator the controls of this panel do nothing.",
+   "status": "MIXT",
+   "sources": [
+    "photo2011",
+    "wikiRO",
+    "semantica"
+   ]
+  },
+  "lamp-M": {
+   "title": "Register M (memory)",
+   "short": "The 31 lamps show the word in register M, bit by bit: lit = 1. Lamp 0 is the sign. Words travel to and from the drum through M.",
+   "more": "A word has 31 bits, m0 … m30 (lab sheet 7, p. 1):\n\n- as a **number**: m0 is the sign, the others give a fraction between −1 and 1 in ones’ complement (so there is also a “−0”);\n- as **instructions**: m1–m5 code 2, m6–m10 code 1, m11–m20 address 2, m21–m30 address 1 — two instructions in one word.\n\nProgrammers read the lamps in groups of three, in octal. The panel is numbered 0–30 (CERTAIN, 3D model textures); the lamps are green in the 2011 photograph.",
+   "status": "SIGUR",
+   "sources": [
+    "baltacLab",
+    "wikiRO",
+    "photo2011"
+   ]
+  },
+  "switch-M": {
+   "title": "Register M switches",
+   "short": "With them the operator put a word into M, bit by bit, usually in groups of three (octal). In the emulator, lever up = 1.",
+   "more": "That the M lamps are paired with switches is CERTAIN (Farcaș, Romanian Wikipedia). That a switch loads its bit directly into M is DEDUCED.\n\n**GUESSED:** the lever direction (up = 1), and that the lever latches and puts the whole word into M at every move. The ANULEAZA M and ANULEAZA RAI (clear) buttons suggest another possible procedure: the register was cleared, then the switches added bits. Until a source turns up, the emulator keeps the simple version.\n\nEntering a program by hand: the word on the M switches, the address on the RAI switches, then MEMORIE SCRIERE (memory: write).",
+   "status": "MIXT",
+   "sources": [
+    "farcas2005",
+    "wikiRO",
+    "semantica"
+   ]
+  },
+  "lamp-RI": {
+   "title": "Instruction register RI",
+   "short": "Shows the instruction being executed: the first 5 lamps are the operation code, the next 10 the memory address it works with.",
+   "more": "RI has 15 bits = one instruction: a 5-bit code (weights 16 8 4 2 1, under CODUL 2) and a 10-bit address (512 … 1, under ADRESA 2). Codes were written in octal, e.g. 33 = CIT (read tape), 05 = A (add), 25 = ME (store). The full table is in the documentation.\n\nThe colours (green, green, amber, red, red, then green) are those of the 2011 photograph.",
+   "status": "SIGUR",
+   "sources": [
+    "baltacLab",
+    "model3d",
+    "photo2011"
+   ]
+  },
+  "lamp-R1": {
+   "title": "Micro-instruction register R I",
+   "short": "Seven lamps with the number of the current micro-operation. At each step the number moves to R II on the left panel and the new micro-operation enters R I.",
+   "more": "Lab sheet 7 (p. 3) says there are two micro-instruction registers, R1 and R2, of 7 bits each, and that “the odd-rhythm pulses move the content of R1 into R2” — CERTAIN. That the number in R I is the number of the grid cell on the left panel is DEDUCED: the real microprogram addresses (e.g. 94 → 90 → 24 when printing a digit) do not match the grid, but their full table is lost.",
+   "status": "DEDUS",
+   "sources": [
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "lamp-R2": {
+   "title": "Micro-instruction register R II",
+   "short": "Seven lamps: the micro-operation before the one in R I. Together, R I and R II let the operator follow the microprogram step by step.",
+   "more": "The inscription R II and the weights 64 … 1 are on the left panel texture (CERTAIN). The R I → R II transfer at every step is written in lab sheet 7, p. 3 (CERTAIN); the numbering of micro-operations in the emulator is DEDUCED.",
+   "status": "DEDUS",
+   "sources": [
+    "baltacLab",
+    "model3d",
+    "semantica"
+   ]
+  },
+  "lamp-RA": {
+   "title": "Address register RA",
+   "short": "Ten lamps with the drum address the current instruction is working with (weights 512 … 1).",
+   "more": "The inscription RA and its 10 weights are on the panel (CERTAIN). The micro-operations “(ra)/2 goes into RA” and “2(ra) goes into RAI” show that RA held addresses and was used for jumps; the rest of its role is DEDUCED.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "lamp-RAI": {
+   "title": "Instruction address register (RAI)",
+   "short": "The drum address of the word holding the next instruction. After both instructions of a word have run, RAI goes up by 1.",
+   "more": "The panel inscription reads “REG DE ADRESA A INSTRUCTIEI — RAI” (instruction address register), with weights 512 … 1. Lab sheet 7, p. 6: “instruction 2 moves into the place of instruction 1”, “RAI+1→RAI” — CERTAIN. The drum had 1024 addresses, 0000–1777 in octal.",
+   "status": "SIGUR",
+   "sources": [
+    "baltacLab",
+    "model3d"
+   ]
+  },
+  "switch-RAI": {
+   "title": "RAI switches",
+   "short": "Here the operator set the address where the program starts, or the address to write or read with MEMORIE. Lever up = 1 (guessed).",
+   "more": "The INEX-1 preloader says “start the computer from 0010” (facsimile 5), so the start address was given from the console: CERTAIN. That it was given with these switches is DEDUCED. The lever direction and its latching are GUESSED.\n\nWhen you choose a program on the page, the switches are already set to its start address (1477 for the reprinting program, 0010 for INEX-1).",
+   "status": "MIXT",
+   "sources": [
+    "baltacLab",
+    "baltac2011",
+    "semantica"
+   ]
+  },
+  "lamp-instr": {
+   "title": "INSTRUCTIA 1 / 2, MEMORIE TAMBUR / FERITE",
+   "short": "The first two lamps show which of the word’s two instructions comes next. TAMBUR (drum): the memory in use; FERITE (ferrites): the ferrite memory, prepared but not connected.",
+   "more": "The order “instruction 1 first, then 2, then RAI + 1” is DEDUCED from lab sheet 7 (p. 6) and confirmed by the original INEX-1 and reprinting programs, which only run correctly this way. Ferrite memory was researched in 1962–1963 (facsimile 11, Baltac); in the emulator the FERITE lamp stays off — GUESSED.",
+   "status": "MIXT",
+   "sources": [
+    "baltacLab",
+    "baltac2011",
+    "semantica"
+   ]
+  },
+  "switch-instr-0": {
+   "title": "INSTRUCTIA 1 (instruction 1)",
+   "short": "Makes the first instruction of the word the next one to run.",
+   "more": "Lab sheet 7, p. 6: “instruction 2 moves into the place of instruction 1”. The button’s effect in the emulator: it sets the phase to the chosen instruction — DEDUCED.",
+   "status": "DEDUS",
+   "sources": [
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "switch-instr-1": {
+   "title": "INSTRUCTIA 2 (instruction 2)",
+   "short": "Makes the second instruction of the word the next one to run.",
+   "more": "Lab sheet 7, p. 6: “instruction 2 moves into the place of instruction 1”. The button’s effect in the emulator: it sets the phase to the chosen instruction — DEDUCED.",
+   "status": "DEDUS",
+   "sources": [
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "switch-instr-2": {
+   "title": "MEMORIE TAMBUR (drum memory)",
+   "short": "Its exact function is unknown; it probably selected the drum as working memory. In the emulator it does nothing.",
+   "more": "Lab sheet 7, p. 6: “instruction 2 moves into the place of instruction 1”. The button’s effect in the emulator: none — GUESSED.",
+   "status": "GHICIT",
+   "sources": [
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "switch-instr-3": {
+   "title": "MEMORIE FERITE (ferrite memory)",
+   "short": "Its exact function is unknown; linked to the ferrite memory researched in 1962–1963. In the emulator it does nothing.",
+   "more": "Lab sheet 7, p. 6: “instruction 2 moves into the place of instruction 1”. The button’s effect in the emulator: none — GUESSED.",
+   "status": "GHICIT",
+   "sources": [
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "switch-commands-0": {
+   "title": "ANULEAZA RAI (clear RAI)",
+   "short": "Sets RAI to zero: the program will start from address 0000.",
+   "more": "The inscription is on the panel (CERTAIN). The effect is DEDUCED from the inscription.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-commands-1": {
+   "title": "ANULEAZA M (clear M)",
+   "short": "Clears register M: all bits become 0.",
+   "more": "The inscription is on the panel (CERTAIN). The effect is DEDUCED from the inscription.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-commands-2": {
+   "title": "ANULEAZA S (clear S)",
+   "short": "Clears accumulator S, the register where calculations happen. S has no lamps on the console.",
+   "more": "The inscription is on the panel (CERTAIN). The effect is DEDUCED from the inscription.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-commands-3": {
+   "title": "INTRODUCE 7 CATEG. DIN RA în RI (enter 7 bits of RA into R I)",
+   "short": "Copies 7 bits (“7 categories”) from RA into the micro-instruction register R I.",
+   "more": "The inscription is on the panel (CERTAIN). The effect is DEDUCED from the inscription.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-commands-4": {
+   "title": "INTRODUCE M în I (enter M into I)",
+   "short": "Copies the word in M into register I, the second arithmetic register.",
+   "more": "The inscription is on the panel (CERTAIN). The effect is DEDUCED from the inscription.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-commands-5": {
+   "title": "INTRODUCE M în RI (enter M into RI)",
+   "short": "Puts the current instruction of the word in M into RI, so it can be executed directly.",
+   "more": "The inscription is on the panel (CERTAIN). The effect is DEDUCED from the inscription.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-commands-6": {
+   "title": "ADUNARE 1 (addition 1)",
+   "short": "The function of this button is unknown. In the emulator it does nothing.",
+   "more": "The inscription is on the panel (CERTAIN). What it did does not follow from the inscription and no surviving source says — GUESSED.",
+   "status": "GHICIT",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-commands-7": {
+   "title": "M+S 2",
+   "short": "The function of this button is unknown. In the emulator it does nothing.",
+   "more": "The inscription is on the panel (CERTAIN). What it did does not follow from the inscription and no surviving source says — GUESSED.",
+   "status": "GHICIT",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "lamp-memory": {
+   "title": "MEMORIE lamps",
+   "short": "The red square flashes when a word is written to the drum from the console, the blue one when reading. Their purpose is guessed.",
+   "more": "The colours and the square shape are visible in the 2011 photograph (CERTAIN). The link with SCRIERE (write) and CITIRE (read) is GUESSED from their position above the buttons.",
+   "status": "MIXT",
+   "sources": [
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "switch-memory-0": {
+   "title": "MEMORIE SCRIERE (memory: write)",
+   "short": "Writes the word in M to the drum, at the address in RAI. This is how a program was entered by hand, word by word.",
+   "more": "The inscription MEMORIE / SCRIERE is on the panel (CERTAIN); the effect (drum[RAI] ← M) is DEDUCED from the inscriptions and from RAI having switches.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-memory-1": {
+   "title": "MEMORIE CITIRE (memory: read)",
+   "short": "Brings the word at the RAI address from the drum into M, so it can be read on the lamps.",
+   "more": "The inscription MEMORIE / CITIRE is on the panel (CERTAIN); the effect (M ← drum[RAI]) is DEDUCED.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "lamp-pulses": {
+   "title": "IMPULSURI lamps (pulses)",
+   "short": "Show whether the machine’s clock pulses are running (green) or interrupted (red). Without pulses the machine stands still.",
+   "more": "The red and green lamps are visible in the 2011 photograph (CERTAIN); their meaning is GUESSED.",
+   "status": "GHICIT",
+   "sources": [
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "switch-pulses-0": {
+   "title": "IMPULSURI: INTRERUPE / RESTABILESTE (pulses: interrupt / restore)",
+   "short": "Interrupts the machine’s pulses, stopping it on the spot, then restores them. After restoring, the program resumes with CALCULEAZA.",
+   "more": "The inscriptions IMPULSURI, INTRERUPE (partly worn) and RESTABILESTE are on the panel. The effect in the emulator (stop, OPRIT lamp on) is GUESSED. Choosing a program restores the pulses.",
+   "status": "GHICIT",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "lamp-overflow": {
+   "title": "On register overflow — lamps",
+   "short": "Show what the machine does when a result does not fit in the register: it stops (red) or carries on (green).",
+   "more": "The inscription “IN CAZ DE DEPASIREA CAPACITATII REGISTRULUI — SE OPRESTE / NU SE OPRESTE” (on register overflow — stop / do not stop) is on the panel (CERTAIN); the link between lamps and choice is DEDUCED.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-overflow-0": {
+   "title": "SE OPRESTE (on overflow: stop)",
+   "short": "On overflow the machine stops and lights DEPASIT CAPACITATEA REGISTRULUI. The emulator starts in this mode.",
+   "more": "The machine’s numbers are fractions between −1 and 1; a sum outside that range “exceeds the register capacity”. The stop is DEDUCED from the inscription.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-overflow-1": {
+   "title": "NU SE OPRESTE (on overflow: do not stop)",
+   "short": "On overflow the machine does not stop; the overflow lamp lights and the computation carries on with a truncated result.",
+   "more": "Carrying on is DEDUCED from the inscription; the exact result after overflow is GUESSED.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "lamp-indicators-0": {
+   "title": "DEPASIT CAPACITATEA REGISTRULUI (register capacity exceeded)",
+   "short": "Lights when a result falls outside the machine’s number range −1 … 1 (an “overflow”).",
+   "more": "The inscription and the (red) lamp are on the panel and in the 2011 photograph (CERTAIN). Exactly when it lights is DEDUCED from the inscription.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "lamp-indicators-1": {
+   "title": "HIRTIA AGATATA (paper jammed)",
+   "short": "Lights when the reader has no more tape: the tape has ended or jammed. The machine stops.",
+   "more": "The inscription and the (red) lamp are on the panel and in the 2011 photograph (CERTAIN). Exactly when it lights is DEDUCED from the inscription.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "lamp-indicators-2": {
+   "title": "OPRIT (stopped)",
+   "short": "The machine is stopped: it executed instruction O, stopped on a problem or was stopped from the console.",
+   "more": "The inscription and the (red) lamp are on the panel and in the 2011 photograph (CERTAIN). Exactly when it lights is DEDUCED from the inscription.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "lamp-compute": {
+   "title": "CALCULEAZA lamps (compute)",
+   "short": "Show the working mode: automatic computation or one instruction at a time.",
+   "more": "The green lamps above the AUTOMAT and INSTRUCTIE UNICA buttons are visible in the 2011 photograph (CERTAIN); their meaning is DEDUCED.",
+   "status": "DEDUS",
+   "sources": [
+    "model3d",
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "switch-compute-0": {
+   "title": "CALCULEAZA AUTOMAT (compute: automatic)",
+   "short": "Starts the program at the address in RAI and lets it run until it stops. Try it!",
+   "more": "The button exists (CERTAIN, the inscription); lab sheet 7 (p. 6) mentions automatic and step-by-step execution. The exact effect is DEDUCED. At 1962 speed the machine did about 50 instructions per second, because it waited for the drum to turn.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "switch-compute-1": {
+   "title": "CALCULEAZA INSTRUCTIE UNICA (compute: single instruction)",
+   "short": "Executes a single instruction and stops, so the changes can be followed on the lamps.",
+   "more": "The button exists (CERTAIN); the effect (exactly one instruction) is DEDUCED from the inscription and from lab sheet 7, p. 6.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "lamp-uop": {
+   "title": "The micro-operation grid",
+   "short": "Each lamp has the name of a micro-operation above it. A lamp flashes when its micro-operation is executed.",
+   "more": "The cell names are read from the panel texture (CERTAIN, a few uncertain). Only addition was hard-wired and has no lamp; the other instructions were microprogrammed (the Wilkes scheme). Which micro-operations make up each instruction, and in what order, is DEDUCED — the pages of lab sheet 7 that described them are lost. The full grid is in chapter 4 of the documentation.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "baltacLab",
+    "wikiRO",
+    "semantica"
+   ]
+  },
+  "lamp-pilot": {
+   "title": "The three lamps in the middle of the left panel",
+   "short": "Lamps without an inscription. What they showed is unknown; in the emulator they stay off.",
+   "more": "The lamps are in the 3D model (CERTAIN); their purpose is unknown — GUESSED.",
+   "status": "GHICIT",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "lamp-generator": {
+   "title": "GENERATOR PRINCIPAL — lamps (main generator)",
+   "short": "The lamps of the pulse generator that set the machine’s rhythm. What each showed is unknown; in the emulator they stay fixed.",
+   "more": "The generator inscriptions (IMPULSURI, FRECVENȚĂ FIN, FRECVENȚĂ TREPTE — pulses, fine frequency, frequency steps — p, q, ⎍/⊔) are on the panel (CERTAIN). The lamp states in the emulator (1, 3, 5 lit) are GUESSED.",
+   "status": "GHICIT",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "switch-generator": {
+   "title": "GENERATOR PRINCIPAL — switches (main generator)",
+   "short": "They chose the source and frequency of the pulses (including an external generator). In the emulator they do nothing.",
+   "more": "The inscriptions (“IMPULSURI”, “DE LA GENER. EXTERN” — from external generator, “DECLANSARE MANUALA SAU” — manual triggering or, 1 · 2 · 3) are on the panel, some hard to read (CERTAIN / uncertain). Their precise function is GUESSED.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "knob": {
+   "title": "FRECVENȚĂ FIN — the rotary knob (fine frequency)",
+   "short": "The generator’s rotary knob; going by the inscription, the fine adjustment of the pulse frequency. In the emulator it does nothing.",
+   "more": "The knob is in the 3D model, under the inscription FRECVENȚĂ FIN (CERTAIN); its function is DEDUCED from the inscription.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
+  "meter": {
+   "title": "Voltmeter",
+   "short": "Showed one of the supply voltages for the tubes. Which voltage each one measured, and the scales, are unknown.",
+   "more": "The meters and the letter V on the dials are visible in the 2011 photograph (CERTAIN). The figures on the dials cannot be read; the four top voltmeters are drawn with a 0–250 V scale, after a recollection passed on to the project (not a written source) and typical tube voltages (GUESSED). The needles are fixed.",
+   "status": "GHICIT",
+   "sources": [
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "meter-5": {
+   "title": "The voltmeter missing today",
+   "short": "In 2011 its place was an empty bezel; a 1961 photograph shows it in place. Here it is redrawn after its neighbours.",
+   "more": "The empty bezel is visible in the 2011 photograph (CERTAIN). The look of the meter is DEDUCED from the other three in the same row.",
+   "status": "DEDUS",
+   "sources": [
+    "photo2011",
+    "wikiRO",
+    "semantica"
+   ]
+  },
+  "selector": {
+   "title": "Selector",
+   "short": "A small rotary knob; it probably chose which voltage a meter displayed. Its function is guessed.",
+   "more": "The knob is visible in the 2011 photograph (CERTAIN); its function is GUESSED.",
+   "status": "GHICIT",
+   "sources": [
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "power": {
+   "title": "Large rotary switch",
+   "short": "A black handle on a white disc; probably the machine’s power switch. Its function is guessed.",
+   "more": "The switch is visible in the 2011 photograph (CERTAIN); its function is GUESSED.",
+   "status": "GHICIT",
+   "sources": [
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "toggle": {
+   "title": "Small switches",
+   "short": "Toggle switches on the middle panel. Their function is unknown.",
+   "more": "They are visible in the 2011 photograph (CERTAIN); their function is GUESSED. In the emulator they do nothing.",
+   "status": "GHICIT",
+   "sources": [
+    "photo2011",
+    "semantica"
+   ]
+  },
+  "tape": {
+   "title": "Punched-tape reader",
+   "short": "Programs and data came in on 5-channel telex tape. A hole means 0. One word takes 6 rows of tape.",
+   "more": "- 5-channel telex tape with a feed-hole track; **a punched hole = “0”**; mechanical reading — CERTAIN (Farcaș, Romanian Wikipedia).\n- The CIT instruction reads **one row** (5 bits) and stores it right-aligned — CERTAIN (Geier’s table).\n- One word = **6 rows** of 5 bits, m1–m5 first — DEDUCED (Geier: “two 15-bit instructions … by just six characters”); the sign bit m0 is not on the tape.\n- Channel 1 = the most significant bit of the row — GUESSED.\n- Channel layout on the paper: 1 · 2 · feed · 3 · 4 · 5 — DEDUCED from telex tape.\n- When the tape ends: HIRTIA AGATATA (paper jammed) — DEDUCED.\n\nThe full example (the word 05 1626 25 1512 drawn on 6 rows) is in chapter 5 of the documentation. The original INEX-1 tape has not survived; the one on the page is a test tape.",
+   "status": "MIXT",
+   "sources": [
+    "farcas2005",
+    "wikiRO",
+    "geier1961",
+    "semantica"
+   ]
+  },
+  "sheet": {
+   "title": "Typewriter",
+   "short": "Results were printed on an ordinary electric typewriter, driven by electromagnets placed above the keys.",
+   "more": "- An electric typewriter with electromagnets above the keys, A4/A3 paper — CERTAIN (Farcaș).\n- The AC instruction with sub-code 0136 prints a digit from s0…s3, with 0133 a letter from s0…s4 — CERTAIN (Geier’s table): 16 numeric characters and 30 letters, including ă, î, ș, ț.\n- Which code is which letter or sign — GUESSED (the table is lost); space and newline are those used by the reprinting program.\n- The speed, about 10 characters a second — GUESSED.\n\nThe original reprinting program of 6 September 1962 (facsimile 4) prints its own listing here exactly as it appears in the facsimile.",
+   "status": "MIXT",
+   "sources": [
+    "farcas2005",
+    "geier1961",
+    "baltac2011",
+    "semantica"
+   ]
+  },
+  "provenance": {
+   "title": "Program provenance",
+   "short": "Shows where each word of the program comes from: ORIGINAL (from 1962 documents), DEDUCED, RECONSTRUCTION or GUESSED.",
+   "more": "- **ORIGINAL** — transcribed from a period document, with a reference to the facsimile (e.g. facsimile 4 in V. Baltac’s book).\n- **DEDUCED** — follows from the documents but is not written in them (e.g. a digit corrected by hand).\n- **RECONSTRUCTION** — written now, following the program’s logic, because it is missing from the document (e.g. the constants read by the reprinting program).\n- **GUESSED** — needed for it to work, without a source.\n\nThe facsimile images are not reproduced here; they are in Vasile Baltac’s book.",
+   "status": "MIXT",
+   "sources": [
+    "baltac2011",
+    "semantica"
+   ]
+  }
+ },
+ "sources": {
+  "baltac2011": {
+   "cite": "Vasile Baltac, “MECIPT – Mașina Electronică de Calcul a Institutului Politehnic din Timișoara – Evocări și Documente” (Recollections and Documents), 2011",
+   "where": "facsimiles 4 (program reprinting, 6 Sept 1962), 5 (INEX-1), 8 (the drum), 11 (ferrites)"
+  },
+  "baltacLab": {
+   "cite": "Vasile Baltac, MECIPT-1 laboratory work sheets, 1965–1966",
+   "where": "sheet 7 (pp. 1, 3, 6) and sheet 8, surviving pages"
+  },
+  "geier1961": {
+   "cite": "A. Geier, “Programarea calculatorului electronic cifric MECIPT I în regimul virgulă mobilă” (Programming the MECIPT I in floating point), Scientific and Technical Bulletin of the Polytechnic Institute of Timișoara, 1961",
+   "where": "the instruction table, reproduced in the Romanian Wikipedia"
+  },
+  "wikiRO": {
+   "cite": "Romanian Wikipedia, article “MECIPT”",
+   "where": "the sections on MECIPT-1 and its instruction set",
+   "url": "https://ro.wikipedia.org/wiki/MECIPT"
+  },
+  "farcas2005": {
+   "cite": "Dan D. Farcaș, “MECIPT, o istorie subiectivă” (MECIPT, a subjective history), 2005",
+   "where": "description of the machine, the tape and the typewriter"
+  },
+  "maruster": {
+   "cite": "Ștefan Mărușter, “Povestea unei lucrări” (The story of a piece of work)",
+   "where": "recollections of programming MECIPT-1"
+  },
+  "baltacKey": {
+   "cite": "Vasile Baltac, “Key Aspects of the History of Computing in Romania”",
+   "where": "historical context"
+  },
+  "model3d": {
+   "cite": "marius0198, 3D model “MECIPT-1”, Sketchfab, 2020, CC BY 4.0",
+   "where": "panel textures (inscriptions) and lamp positions",
+   "url": "https://sketchfab.com/3d-models/mecipt-1-62ddfc49f1c54967967d76abab5f3d2d"
+  },
+  "photo2011": {
+   "cite": "Turbojet, “MECIPT-1 Control desk”, Wikimedia Commons, 2011, CC BY-SA 4.0",
+   "where": "the restored console, lamp colours",
+   "url": "https://commons.wikimedia.org/wiki/File:MECIPT-1_Control_desk.jpg"
+  },
+  "semantica": {
+   "cite": "The emulator project: “Emulator semantics — what is certain, deduced or guessed”",
+   "where": "documentation, chapter 7",
+   "url": "doc.html?lang=en#07-ce-e-sigur"
+  }
+ },
+ "tour": [],
+ "uops": {
+  "0": "s goes into M [?]",
+  "1": "s goes into I",
+  "2": "i goes into S",
+  "3": "Logical multiplication (AND)",
+  "4": "Shift: left in S · I. goes into S.",
+  "5": "Shift: right in S · zero goes into S.",
+  "6": "Shift: left in I · zero goes into I.",
+  "7": "Shift: right in I · S. goes into I.",
+  "8": "Change M.",
+  "9": "If M. = 1 change M into M̄",
+  "10": "Change M into M̄ except M. [?]",
+  "11": "If S. = 1 change S into S̄",
+  "12": "If α = 1 change S into S̄",
+  "13": "If β = 1 change S into S̄",
+  "14": "Move RAI (advance it)",
+  "15": "2(ra) goes into RAI",
+  "16": "(ra)/2 goes into RA",
+  "17": "Set the counter to 2 and N = 0 [?]",
+  "18": "Move the counter",
+  "19": "(ra) goes into counter N",
+  "20": "Instruction 2 goes into place 1",
+  "21": "ra goes into RI",
+  "22": "S. goes into α",
+  "23": "If S. = M., β = 0 · if S. ≠ M., β = 1",
+  "24": "If s = 0 and i = 0 set β = 0 [?]",
+  "25": "If i = 0 set β = 0 [?]",
+  "26": "If s = 0 set α = 0",
+  "27": "If s = 0 and i = 0 set S. = 1 [?]",
+  "28": "If s = 0 set I. = 1",
+  "29": "S̄. goes into I.",
+  "30": "β goes into I.",
+  "31": "S. goes into S.",
+  "32": "If β = 0 and S. ≠ α [?], DCR",
+  "33": "If I. = 1 [?], DCR",
+  "34": "If S. ≠ S. [?], DCR",
+  "35": "Zero goes into M.",
+  "36": "One goes into M.",
+  "37": "Zero goes into γ",
+  "38": "One goes into γ"
+ },
+ "ops": {
+  "0": "Halt; on restart continue from y",
+  "1": "S ← y",
+  "2": "S ← –y",
+  "3": "S ← |y|",
+  "4": "S ← –|y|",
+  "5": "S ← s + y",
+  "6": "S ← s – y",
+  "7": "S ← s + |y|",
+  "8": "S ← s – |y|",
+  "9": "S & I ← s × y",
+  "10": "S ← s × y, rounded",
+  "11": "I ← s : y, S ← remainder",
+  "12": "Y ← s + y",
+  "13": "jump (transfer) to y",
+  "14": "jump to y if s ≥ 0 (per the table)",
+  "15": "jump to y if s < 0 (per the table)",
+  "16": "jump to y if s ≠ 0",
+  "17": "logical shift left of S & I by “n” places",
+  "18": "logical shift right of S & I by “n” places",
+  "19": "logical shift left of S by “n” places",
+  "20": "logical shift right of S by “n” places",
+  "21": "store s at y",
+  "22": "store i at y",
+  "23": "I ← y",
+  "24": "next instruction (no operation)",
+  "25": "S ← s ∙ y (logical product)",
+  "26": "peripheral command (sub-code in the address field)",
+  "27": "read one tape character and store it right-aligned at y",
+  "28": "transfer y to the ICR automaton"
+ }
+}

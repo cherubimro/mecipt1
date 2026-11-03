@@ -19,3 +19,4 @@ https://creativecommons.org/licenses/by-sa/4.0/
 - **Fonturi** (`web/fonts/`) — Barlow Semi Condensed (The Barlow Project Authors) și Courier Prime (The Courier Prime Project Authors), ambele sub **SIL Open Font License 1.1**; textul licenței e alături, în `OFL-*.txt`.
 - **Datele paginii** (`web/data/*.json`, `web/programs/catalog.json`) — CC BY-SA 4.0. Programele oferite în pagină sunt cele de mai sus (retipărirea, Facsimil 4; preîncărcătorul INEX-1, Facsimil 5), cu proveniența fiecărui cuvânt; banda de test INEX-1 (`tests/data/inex-banda-3-cuvinte.mec`) e GHICITĂ, făcută pentru verificare.
 - **Panoul din mijloc** (`web/data/art-middle.json`) — măsurat pe fotografia din 2011 (Turbojet, CC BY-SA 4.0).
+- **Textele ajutorului** (`web/data/help/*.json`, generate de `tools/help/gen_help.py`) — scrise pentru acest proiect după sursele de mai sus, CC BY-SA 4.0.
