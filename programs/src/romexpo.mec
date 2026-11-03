@@ -1,0 +1,125 @@
+; SPDX-License-Identifier: CC-BY-SA-4.0
+; Cupola Romexpo — CALCUL ILUSTRATIV, în spiritul celui efectuat în 1963 pentru cupola Romexpo; cifrele nu sunt cele reale.
+; RECONSTRUCȚIE (Planul 6): calculul elementelor cupolei (iulie 1963, programator V. Baltac, catedra acad. Mateescu)
+; nu s-a păstrat. Aici: o cupolă sferică cu diametrul public de 93,5 m; săgeata (24 m), unghiul maxim φmax
+; (calculat dinainte, ca din tabele) și cele 32 de meridiane sunt GHICITE.
+; Raza sferei R = (a² + f²)/(2f), a = D/2; 10 inele la φᵢ = i·φmax/10. Un rând pe inel, cu rutinele INEX-1:
+; i (0134), φᵢ în radiani, rᵢ/100 = R·sin φᵢ/100, cᵢ/100 = 2·rᵢ·sin(π/32)/100, lungimea elementului de inel (0135, 5 zecimale).
+; Sinusul: rutina SIN de mai jos, cu metoda găsită pentru tabelul din 1962 (y = sin(2w)/2, termen cu termen, 6 termeni).
+; Pornire de la 0400. Referința independentă: tools/ref/romexpo.py.
+
+@prov RECONSTRUCTIE Romexpo: calcul ilustrativ (Planul 6); cifrele nu sunt cele reale
+0400  U 0510  ME 0002
+0401  U 0543  T 0133   ; formatul: α = 2, β = 5
+0402  U 0555  IN 0555
+0403  ME 0523  U 0556
+0404  IN 0556  A 0523   ; (a² + f²)/100²
+0405  ME 0523  U 0556
+0406  A 0556  ME 0524   ; 2f/100
+0407  U 0523  D 0524   ; R/100: câtul în I
+0410  AC 0151  ME 0525
+0411  U 0547  ME 0535
+0412  U 0511  ME 0507
+0413  T 0454  CU 0000   ; sin(π/32)/2
+0414  U 0536  DS 0002
+0415  ME 0526  U 0000   ; 2·sin(π/32)
+0416  ME 0527  ME 0530   ; w ← 0; i ← 0
+0417  UN 0546  ME 0531   ; K ← −10 (inele)
+0420  U 0527  A 0557
+0421  ME 0527  ME 0535   ; w = φ/2
+0422  U 0512  ME 0507
+0423  T 0454  CU 0000   ; sin φ / 2
+0424  U 0527  A 0527
+0425  ME 0532  U 0525   ; φ
+0426  IN 0536  DS 0001   ; r/100 = 2·(R/100)·(sin φ/2)
+0427  ME 0533  IN 0526   ; c/100 = (r/100)·2·sin(π/32)
+0430  ME 0534  U 0530
+0431  A 0001  ME 0530
+0432  U 0513  ME 0002
+0433  U 0530  T 0134   ; i
+0434  U 0514  ME 0002
+0435  U 0544  T 0136
+0436  U 0515  ME 0002
+0437  U 0532  T 0135   ; φ
+0440  U 0516  ME 0002
+0441  U 0544  T 0136
+0442  U 0517  ME 0002
+0443  U 0533  T 0135   ; r/100
+0444  U 0520  ME 0002
+0445  U 0544  T 0136
+0446  U 0521  ME 0002
+0447  U 0534  T 0135   ; c/100
+0450  U 0522  ME 0002
+0451  U 0545  T 0132
+0452  U 0001  MS 0531
+0453  TPO 0420  O 0400   ; încă un inel; altfel gata
+; ---- SIN: SY ← sin(2·SW)/2; revine prin SINV ----
+0454  U 0535  INR 0535   ; w² rotunjit
+0455  ME 0537  U 0535
+0456  ME 0540  ME 0541   ; t = y = w
+0457  U 0537  IN 0550
+0460  ME 0542  U 0540
+0461  IN 0542  ME 0540
+0462  U 0541  SC 0540
+0463  ME 0541  U 0537   ; − (2/3)w³
+0464  IN 0551  ME 0542
+0465  U 0540  IN 0542
+0466  ME 0540  U 0541
+0467  A 0540  ME 0541   ; + (2/15)w⁵
+0470  U 0537  IN 0552
+0471  ME 0542  U 0540
+0472  IN 0542  ME 0540
+0473  U 0541  SC 0540
+0474  ME 0541  U 0537   ; − (4/315)w⁷
+0475  IN 0553  ME 0542
+0476  U 0540  IN 0542
+0477  ME 0540  U 0541
+0500  A 0540  ME 0541   ; + (2/2835)w⁹
+0501  U 0537  IN 0554
+0502  ME 0542  U 0540
+0503  IN 0542  ME 0540
+0504  U 0541  SC 0540
+0505  ME 0541  ME 0536   ; − (4/155925)w¹¹
+0506  T 0507  CU 0000
+0507  O 0507  CU 0000   ; revenirea din SIN (chemătorul pune aici T q)
+0510  T 0402  CU 0000
+0511  T 0414  CU 0000
+0512  T 0424  CU 0000
+0513  T 0434  CU 0000
+0514  T 0436  CU 0000
+0515  T 0440  CU 0000
+0516  T 0442  CU 0000
+0517  T 0444  CU 0000
+0520  T 0446  CU 0000
+0521  T 0450  CU 0000
+0522  T 0452  CU 0000
+0523 = o00000000000
+0524 = o00000000000
+0525 = o00000000000   ; R/100
+0526 = o00000000000   ; 2·sin(π/32)
+0527 = o00000000000   ; φ/2
+0530 = o00000000000   ; i
+0531 = o00000000000
+0532 = o00000000000
+0533 = o00000000000
+0534 = o00000000000
+0535 = o00000000000
+0536 = o00000000000
+0537 = o00000000000
+0540 = o00000000000
+0541 = o00000000000
+0542 = o00000000000
+0543  O 0002  O 0005
+0544 = -0,0625   ; −2·2⁻⁵: două spații
+0545 = -0,03125   ; −1·2⁻⁵: un rând
+0546 = o00000000012
+0547 = o00311037553   ; π/64 = (π/32)/2
+0550 = o05252525253   ; 2/3 rotunjit (ca în tabelul de sinus)
+0551 = o01463146314   ; 1/5
+0552 = o00606060606   ; 2/21
+0553 = o00343434343   ; 1/18
+0554 = o00224744045   ; 2/55
+0555 = o03572702437   ; a/100 = 46,75 m / 100 (diametrul public 93,5 m)
+@prov GHICIT Romexpo: săgeata cupolei și unghiul maxim, ghicite
+0556 = o01727024366   ; f/100 = 24 m / 100
+0557 = o00302210702   ; φmax/20 (φmax = arcsin(a/R) ≈ 0,9486 rad, calculat dinainte)

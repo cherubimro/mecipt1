@@ -14,6 +14,7 @@ RUT = 'programs/src/inex1-rutine.mec'
 RECIPES = [
     ('tape', 'programs/inex1-banda.mec', [PRE, RUT]),
     ('join', 'programs/vidraru.mec', [PRE, RUT, 'programs/src/vidraru.mec']),
+    ('join', 'programs/romexpo.mec', [PRE, RUT, 'programs/src/romexpo.mec']),
 ]
 
 PRELOADER = {0o10, 0o11, 0o12, 0o13, 0o14, 0o15}
