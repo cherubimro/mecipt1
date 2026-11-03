@@ -7,7 +7,8 @@ export const OP = {
   SWITCHES_M: 1, SWITCHES_RAI: 2, ANULEAZA_RAI: 3, ANULEAZA_M: 4, ANULEAZA_S: 5, RA_IN_RI: 6,
   M_IN_I: 7, M_IN_RI: 8, MEM_SCRIERE: 9, MEM_CITIRE: 10, INSTRUCTIA: 11, DEPASIRE: 12, OPRESTE: 13,
 };
-export const PROV = ['NONE', 'ORIGINAL', 'DEDUS', 'RECONSTRUCTIE', 'GHICIT'];
+export const PROV = ['NONE', 'ORIGINAL', 'DEDUS', 'RECONSTRUCTIE', 'GHICIT', 'MODIFICAT'];
+export const PROV_MODIFICAT = 5;
 export const TICKS_PER_SECOND = 51200;
 const NUOPS = 39;
 const REGS = ['S', 'I', 'M', 'RI', 'RAI', 'RA', 'R1', 'R2', 'alpha', 'beta', 'gamma', 'phase',
@@ -116,4 +117,21 @@ export class Machine {
   uopId(grid, row, col) { return this.exports.api_uop_id(grid, row, col); }
   wordValue(w) { return this.exports.api_word_value(w >>> 0); }
   opEffect(code) { return this.cstr(this.exports.api_op_effect(code)); }
+  // ---- Atelierul: tamburul cuvânt cu cuvânt ----
+  peek(addr) { return this.exports.api_peek(addr) >>> 0; }
+  poke(addr, word, prov = PROV_MODIFICAT) { return this.exports.api_poke(addr, word >>> 0, prov) === 0; }
+  clearWord(addr) { return this.exports.api_clear_word(addr) === 0; }
+  written(addr) { return this.exports.api_written(addr) === 1; }
+  // Partea de după adresă a unui rând .mec (`UI 0000 CU 0000`, `27 0000 30 0000`, `= 0,5`) → cuvântul, prin nucleu.
+  assemble(text) {
+    this.putText(String(text));
+    if (this.exports.api_assemble() < 0) return { error: this.cstr(this.exports.api_error()) };
+    return { word: this.exports.api_assembled() >>> 0 };
+  }
+  mergeProgram(text) {
+    this.putText(text);
+    if (this.exports.api_merge_program() < 0) throw new Error(this.cstr(this.exports.api_error()));
+  }
+  resetCpu() { this.exports.api_reset_cpu(); }
+  setVisitorTape(on) { this.exports.api_set_visitor_tape(on ? 1 : 0); }
 }

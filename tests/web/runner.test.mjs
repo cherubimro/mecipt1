@@ -128,3 +128,19 @@ test('încărcarea readuce impulsurile', async () => {
   r.frame(500);
   assert.ok(r.machine.instructions() > 0);
 });
+
+test('poke applies between instructions', async () => {
+  const r = await runner();
+  r.enqueue({ ui: 'automat' });
+  for (let i = 0; i < 3; i++) r.frame(100);
+  const n = r.machine.instructions();
+  r.enqueue({ poke: { addr: 0o1551, word: 0x10000000, prov: 5 } });
+  r.frame(100);
+  assert.equal(r.machine.peek(0o1551), 0x10000000);
+  assert.equal(r.machine.provenance(0o1551).kind, 'MODIFICAT');
+  assert.ok(r.machine.instructions() > n);
+  assert.equal(r.mode, 'automat');
+  r.enqueue({ clear: 0o1551 });
+  r.frame(16);
+  assert.equal(r.machine.provenance(0o1551).kind, 'NONE');
+});

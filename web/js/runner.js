@@ -32,7 +32,11 @@ export class Runner {
     let halted = null;
     const note = (h) => { if (h !== HALT.OK) { halted = h; this.mode = 'idle'; } };
     for (const a of this.queue.splice(0)) {
-      if ('op' in a) {
+      if ('poke' in a) {
+        m.poke(a.poke.addr, a.poke.word, a.poke.prov);
+      } else if ('clear' in a) {
+        m.clearWord(a.clear);
+      } else if ('op' in a) {
         m.console(a.op, a.arg ?? 0);
         if (a.op === OP.MEM_SCRIERE) memFlash.write = true;
         if (a.op === OP.MEM_CITIRE) memFlash.read = true;
