@@ -114,4 +114,14 @@ TEST(test_inex_word1_is_dedus) {
     free(t);
 }
 
+TEST(test_parse_modificat) {
+    static mec_image im;
+    int rc = mec_program_parse("@prov MODIFICAT vizitator\n0100 = 0,5\n", &im);
+    if (rc) printf("  %s\n", im.error);
+    CHECK_EQ_U(rc, 0);
+    CHECK_EQ_U(im.prov[0100], PROV_MODIFICAT);
+    CHECK_EQ_S(mec_prov_name(PROV_MODIFICAT), "MODIFICAT");
+    CHECK_EQ_U(PROV_MODIFICAT, 5);
+}
+
 RUN_ALL()

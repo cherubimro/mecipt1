@@ -13,6 +13,7 @@ void mec_init(mecipt *m, mec_variants_t v) {
 }
 
 void mec_load_image(mecipt *m, const mec_image *img) {
+    memset(m->written, 0, sizeof m->written);
     for (int a = 0; a < 1024; a++) {
         if (img->prov[a] == PROV_NONE) continue;
         m->drum[a] = img->word[a] & MEC_MASK31;
@@ -47,6 +48,8 @@ mword mec_drum_read(mecipt *m, int addr) {
 void mec_drum_write(mecipt *m, int addr, mword w) {
     drum_wait(m, addr);
     m->drum[addr & 01777] = w & MEC_MASK31;
+    m->written[addr & 01777] = 1;
+    if (m->visitor_tape) m->prov[addr & 01777] = PROV_MODIFICAT;
 }
 
 static mec_halt overflow(mecipt *m, int ovf) {

@@ -26,6 +26,8 @@ typedef struct mecipt {
     uint8_t R1, R2, alpha, beta, gamma;
     int phase;                  /* 1: urmează prima instrucțiune din cuvânt; 2: a doua */
     int dcr, oprit, hirtie_agatata, stop_on_dcr, unknown_code;
+    uint8_t written[1024];      /* 1 = cuvânt scris de program în timpul rulării („scris de program”) */
+    int visitor_tape;           /* 1 = în cititor e o bandă perforată de vizitator: scrierile programului devin MODIFICAT (GHICIT) */
     uint64_t ticks;             /* timpi de cuvânt; 1024 pe rotație; 50 rot/s */
     mec_variants_t v;
     struct mec_periph *io;      /* poate fi NULL */

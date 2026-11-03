@@ -4,6 +4,7 @@
 #include "periph.h"
 #include "microops.h"
 #include "isa.h"
+#include <stdio.h>
 #include <string.h>
 
 #define BUF_SIZE 65536
@@ -14,6 +15,23 @@ static mec_uop_trace tr;
 static uint8_t tape[BUF_SIZE];
 static char buf[BUF_SIZE], out[sizeof io.typed + 1], err[160];
 static uint16_t uops[64];
+/* sursele proveniențelor, pe adresă: din programul încărcat și din cele unite peste el */
+static char srcs[64][96];
+static int nsrcs;
+static uint8_t src_of[1024];
+static uint32_t assembled;
+static mec_image tmp_img;
+
+static void take_sources(const mec_image *im) {
+    for (int a = 0; a < 1024; a++) {
+        if (im->prov[a] == PROV_NONE) continue;
+        const char *s = im->sources[im->src[a]];
+        int k = 0;
+        while (k < nsrcs && strcmp(srcs[k], s) != 0) k++;
+        if (k == nsrcs && nsrcs < 64) snprintf(srcs[nsrcs++], sizeof srcs[0], "%s", s);
+        src_of[a] = (uint8_t)(k < nsrcs ? k : 0);
+    }
+}
 static uint64_t ninstr;
 
 static void reset_all(void) {
@@ -44,6 +62,9 @@ int api_load_program(void) {
     }
     reset_all();
     mec_load_image(&m, &img);
+    nsrcs = 0;
+    memset(src_of, 0, sizeof src_of);
+    take_sources(&img);
     return 0;
 }
 
@@ -142,11 +163,63 @@ int api_console(int op, int arg) {
     return 0;
 }
 
-int api_prov(int addr) { return (addr < 0 || addr > 1023) ? PROV_NONE : (int)img.prov[addr]; }
+int api_prov(int addr) { return (addr < 0 || addr > 1023) ? PROV_NONE : (int)m.prov[addr]; }
 const char *api_prov_source(int addr) {
-    if (addr < 0 || addr > 1023 || img.prov[addr] == PROV_NONE) return "";
-    return img.sources[img.src[addr]];
+    if (addr < 0 || addr > 1023 || m.prov[addr] == PROV_NONE || m.prov[addr] == PROV_MODIFICAT) return "";
+    return srcs[src_of[addr]];
 }
+
+int api_written(int addr) { return (addr < 0 || addr > 1023) ? 0 : m.written[addr]; }
+uint32_t api_peek(int addr) { return (addr < 0 || addr > 1023) ? 0 : m.drum[addr]; }
+int api_poke(int addr, uint32_t w, int prov) {
+    if (addr < 0 || addr > 1023 || prov <= PROV_NONE || prov > PROV_MODIFICAT) return -1;
+    m.drum[addr] = w & MEC_MASK31;
+    m.prov[addr] = (mec_prov)prov;
+    m.written[addr] = 0;
+    return 0;
+}
+int api_clear_word(int addr) {
+    if (addr < 0 || addr > 1023) return -1;
+    m.drum[addr] = 0; m.prov[addr] = PROV_NONE; m.written[addr] = 0;
+    return 0;
+}
+int api_assemble(void) {
+    static char text[BUF_SIZE + 32];
+    buf[BUF_SIZE - 1] = 0;
+    if (strchr(buf, '\n')) { snprintf(err, sizeof err, "un singur rând"); return -1; }
+    snprintf(text, sizeof text, "@prov GHICIT atelier\n0000 %s\n", buf);
+    if (mec_program_parse(text, &tmp_img)) {
+        const char *e = tmp_img.error;
+        const char *colon = strstr(e, ": ");
+        snprintf(err, sizeof err, "%s", (strncmp(e, "linia", 5) == 0 && colon) ? colon + 2 : e);
+        return -1;
+    }
+    if (tmp_img.prov[0] == PROV_NONE) { snprintf(err, sizeof err, "lipsește cuvântul"); return -1; }
+    assembled = tmp_img.word[0];
+    return 0;
+}
+uint32_t api_assembled(void) { return assembled; }
+int api_merge_program(void) {
+    buf[BUF_SIZE - 1] = 0;
+    if (mec_program_parse(buf, &tmp_img)) {
+        memcpy(err, tmp_img.error, sizeof err); err[sizeof err - 1] = 0;
+        return -1;
+    }
+    for (int a = 0; a < 1024; a++) {
+        if (tmp_img.prov[a] == PROV_NONE) continue;
+        m.drum[a] = tmp_img.word[a] & MEC_MASK31;
+        m.prov[a] = tmp_img.prov[a];
+        m.written[a] = 0;
+    }
+    take_sources(&tmp_img);
+    return 0;
+}
+void api_reset_cpu(void) {
+    m.S = m.M = 0; m.I = 0; m.RAI = m.RA = m.RI = 0;
+    m.R1 = m.R2 = m.alpha = m.beta = m.gamma = 0;
+    m.phase = 1; m.dcr = 0; m.hirtie_agatata = 0; m.oprit = 1;
+}
+int api_set_visitor_tape(int on) { m.visitor_tape = on ? 1 : 0; return 0; }
 int api_uop_id(int grid, int row, int col) { return mec_uop_id(grid, row, col); }
 double api_word_value(uint32_t w) { return mec_to_double(w & MEC_MASK31); }
 const char *api_op_effect(int code) { const char *e = mec_op_effect(code, &m.v); return e ? e : ""; }

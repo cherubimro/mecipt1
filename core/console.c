@@ -21,7 +21,10 @@ void mec_c_introduce_M_in_RI(mecipt *m) {
 }
 
 /* Operații manuale: se fac imediat (operatorul ține butonul până trece cuvântul). */
-void mec_c_memorie_scriere(mecipt *m) { m->drum[m->RAI & 01777] = m->M & MEC_MASK31; }
+void mec_c_memorie_scriere(mecipt *m) {
+    m->drum[m->RAI & 01777] = m->M & MEC_MASK31;
+    m->prov[m->RAI & 01777] = PROV_MODIFICAT;   /* scrierea vine de la vizitator, de la pupitru */
+}
 void mec_c_memorie_citire(mecipt *m)  { m->M = m->drum[m->RAI & 01777]; }
 
 void mec_c_select_instr(mecipt *m, int which) { m->phase = (which == 2) ? 2 : 1; }

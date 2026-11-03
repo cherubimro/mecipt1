@@ -157,4 +157,82 @@ TEST(test_api_word_value) {
     CHECK(api_word_value(0x7FFFFFFFu) == 0.0);
 }
 
+static int put(const char *t) { snprintf(api_buf(), (size_t)api_buf_size(), "%s", t); return 0; }
+
+TEST(test_api_poke_peek_clear) {
+    api_init();
+    CHECK_EQ_U(api_poke(01000, 0x20000000u, PROV_MODIFICAT), 0);
+    CHECK_EQ_U(api_peek(01000), 0x20000000u);
+    CHECK_EQ_U(api_prov(01000), PROV_MODIFICAT);
+    CHECK_EQ_S(api_prov_source(01000), "");
+    CHECK(api_poke(02000, 1, 5) == -1);
+    CHECK(api_poke(0, 1, 9) == -1);
+    CHECK_EQ_U(api_clear_word(01000), 0);
+    CHECK_EQ_U(api_peek(01000), 0);
+    CHECK_EQ_U(api_prov(01000), PROV_NONE);
+}
+
+TEST(test_api_assemble) {
+    api_init();
+    put("UI 0000 CU 0000");
+    CHECK_EQ_U(api_assemble(), 0);
+    CHECK_EQ_U(api_assembled(), (030u << 25) | (027u << 20));
+    put("27 0000  30 0000");
+    CHECK_EQ_U(api_assemble(), 0);
+    CHECK_EQ_U(api_assembled(), (030u << 25) | (027u << 20));
+    put("= 0,5");
+    CHECK_EQ_U(api_assemble(), 0);
+    CHECK_EQ_U(api_assembled(), 0x20000000u);
+    put("XX 9999");
+    CHECK(api_assemble() == -1);
+    CHECK(strstr(api_error(), "mnemonic") != NULL);
+    CHECK(strstr(api_error(), "linia") == NULL);
+}
+
+TEST(test_api_merge_keeps_drum) {
+    api_init();
+    load_file_into_buf("../programs/retiparire-1962.mec");
+    CHECK_EQ_U(api_load_program(), 0);
+    api_console(API_C_SWITCHES_RAI, 01477);
+    api_run(1e12, 50);
+    uint32_t w = api_peek(01477); double t = api_ticks();
+    load_file_into_buf("../programs/inex1-preincarcator.mec");
+    CHECK_EQ_U(api_merge_program(), 0);
+    CHECK_EQ_U(api_peek(01477), w);
+    CHECK(api_ticks() == t);
+    CHECK_EQ_U(api_prov(010), PROV_ORIGINAL);
+    CHECK(strstr(api_prov_source(010), "Facsimil 5") != NULL);
+    CHECK(strstr(api_prov_source(01477), "Facsimil 4") != NULL);
+}
+
+TEST(test_api_reset_cpu_keeps_drum) {
+    api_init();
+    load_file_into_buf("../programs/retiparire-1962.mec");
+    CHECK_EQ_U(api_load_program(), 0);
+    api_console(API_C_SWITCHES_RAI, 01477);
+    api_run(1e12, 200);
+    uint32_t w = api_peek(01477);
+    int any = 0; for (int a = 0; a < 1024; a++) any |= api_written(a);
+    CHECK(any);
+    api_reset_cpu();
+    CHECK_EQ_U(api_reg(API_REG_S), 0);
+    CHECK_EQ_U(api_reg(API_REG_OPRIT), 1);
+    CHECK_EQ_U(api_peek(01477), w);
+    int still = 0; for (int a = 0; a < 1024; a++) still |= api_written(a);
+    CHECK(still);
+}
+
+TEST(test_api_visitor_tape_flag) {
+    api_init();
+    put("@prov GHICIT t\n0000  U 0100  ME 0101\n0001  O 0001  O 0001\n0100 = 0,5\n");
+    CHECK_EQ_U(api_load_program(), 0);
+    CHECK_EQ_U(api_set_visitor_tape(1), 0);
+    api_run(1e12, 10);
+    CHECK_EQ_U(api_prov(0101), PROV_MODIFICAT);
+    put("@prov GHICIT t\n0000  U 0100  ME 0101\n0001  O 0001  O 0001\n0100 = 0,5\n");
+    api_load_program();
+    api_run(1e12, 10);
+    CHECK_EQ_U(api_prov(0101), PROV_NONE);
+}
+
 RUN_ALL()

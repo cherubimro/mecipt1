@@ -5,7 +5,8 @@
 #include <stddef.h>
 #include "word.h"
 
-typedef enum { PROV_NONE = 0, PROV_ORIGINAL, PROV_DEDUS, PROV_RECONSTRUCTIE, PROV_GHICIT } mec_prov;
+/* MODIFICAT: cuvânt pus pe tambur de vizitator (Atelier, MEMORIE SCRIERE, banda lui prin INEX-1). */
+typedef enum { PROV_NONE = 0, PROV_ORIGINAL, PROV_DEDUS, PROV_RECONSTRUCTIE, PROV_GHICIT, PROV_MODIFICAT } mec_prov;
 
 typedef struct {
     mword word[1024];

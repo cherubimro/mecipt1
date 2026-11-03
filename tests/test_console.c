@@ -76,4 +76,13 @@ TEST(test_select_instr_and_dcr_switch) {
     CHECK_EQ_U(m.stop_on_dcr, 0);
 }
 
+TEST(test_memorie_scriere_marks_modified) {
+    mec_init(&m, mec_variants_default());
+    mec_c_set_switches_RAI(&m, 0200);
+    mec_c_set_switches_M(&m, 0x123);
+    mec_c_memorie_scriere(&m);
+    CHECK_EQ_U(m.drum[0200], 0x123);
+    CHECK_EQ_U(m.prov[0200], PROV_MODIFICAT);
+}
+
 RUN_ALL()

@@ -43,6 +43,16 @@ API int api_prov(int addr);
 API const char *api_prov_source(int addr);
 API int api_uop_id(int grid, int row, int col);
 API double api_word_value(uint32_t w);
-API const char *api_op_effect(int code);  /* efectul REAL sub variantele mașinii (14/15!); "" pentru coduri necunoscute */   /* fracția în complement față de unu (−0 → 0) */
+API const char *api_op_effect(int code);
+/* Atelierul: editarea tamburului. Proveniența e cea vie a mașinii (se schimbă la orice scriere a vizitatorului). */
+API int api_written(int addr);          /* 1 = scris de program în timpul rulării */
+API uint32_t api_peek(int addr);
+API int api_poke(int addr, uint32_t w, int prov);   /* 0 sau −1 (adresă sau proveniență invalidă) */
+API int api_clear_word(int addr);       /* cuvânt 0, proveniență NONE */
+API int api_assemble(void);             /* api_buf = partea de după adresă a unui rând .mec; 0 sau −1 (api_error) */
+API uint32_t api_assembled(void);
+API int api_merge_program(void);        /* api_buf ca .mec, scris peste tamburul curent, fără reset; 0 sau −1 */
+API void api_reset_cpu(void);           /* registrele la zero, oprit; tamburul, proveniența și banda rămân */
+API int api_set_visitor_tape(int on);  /* efectul REAL sub variantele mașinii (14/15!); "" pentru coduri necunoscute */   /* fracția în complement față de unu (−0 → 0) */
 
 #endif

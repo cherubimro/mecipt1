@@ -171,4 +171,26 @@ TEST(test_speed_real_time) {
     CHECK(s1 >= 1.15 * s0);         /* sursele: 70–80 cu intercalare, pentru programe așezate anume */
 }
 
+TEST(test_program_writes_are_marked) {
+    load("@prov GHICIT test\n0000  U 0100  ME 0101\n0001  O 0001  O 0001\n0100 = 0,5\n", mec_variants_default());
+    mec_run(&m, 100);
+    CHECK_EQ_U(m.written[0101], 1);
+    CHECK_EQ_U(m.written[0100], 0);
+    CHECK_EQ_U(m.prov[0101], PROV_NONE);
+}
+
+TEST(test_visitor_tape_marks_modified) {
+    load("@prov GHICIT test\n0000  U 0100  ME 0101\n0001  O 0001  O 0001\n0100 = 0,5\n", mec_variants_default());
+    m.visitor_tape = 1;
+    mec_run(&m, 100);
+    CHECK_EQ_U(m.prov[0101], PROV_MODIFICAT);
+}
+
+TEST(test_load_clears_written) {
+    load("@prov GHICIT test\n0000  U 0100  ME 0101\n0001  O 0001  O 0001\n0100 = 0,5\n", mec_variants_default());
+    mec_run(&m, 100);
+    mec_load_image(&m, &img);
+    CHECK_EQ_U(m.written[0101], 0);
+}
+
 RUN_ALL()

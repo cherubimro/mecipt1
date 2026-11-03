@@ -6,10 +6,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-static const char *PROV_NAMES[] = { "NIMIC", "ORIGINAL", "DEDUS", "RECONSTRUCTIE", "GHICIT" };
+static const char *PROV_NAMES[] = { "NIMIC", "ORIGINAL", "DEDUS", "RECONSTRUCTIE", "GHICIT", "MODIFICAT" };
 
 const char *mec_prov_name(mec_prov p) {
-    return (p >= PROV_NONE && p <= PROV_GHICIT) ? PROV_NAMES[p] : "?";
+    return (p >= PROV_NONE && p <= PROV_MODIFICAT) ? PROV_NAMES[p] : "?";
 }
 
 static int is_octal_tok(const char *t) {
@@ -102,7 +102,7 @@ int mec_program_parse(const char *text, mec_image *img) {
             char kind[32] = {0}; int off = 0;
             if (sscanf(line, "@prov %31s %n", kind, &off) < 1 || off == 0) FAIL("directivă invalidă");
             mec_prov pv = PROV_NONE;
-            for (int k = 1; k <= PROV_GHICIT; k++) if (strcmp(kind, PROV_NAMES[k]) == 0) pv = (mec_prov)k;
+            for (int k = 1; k <= PROV_MODIFICAT; k++) if (strcmp(kind, PROV_NAMES[k]) == 0) pv = (mec_prov)k;
             if (pv == PROV_NONE) FAIL("proveniență necunoscută „%s”", kind);
             char *s = line + off; size_t sl = strlen(s);
             while (sl && isspace((unsigned char)s[sl - 1])) s[--sl] = 0;
