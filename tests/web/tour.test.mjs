@@ -91,3 +91,11 @@ test('content', () => {
   for (let i = 0; i < IDS.length; i++) assert.deepEqual(
     [RO.tour[i].target, RO.tour[i].view, RO.tour[i].waitFor], [EN.tour[i].target, EN.tour[i].view, EN.tour[i].waitFor]);
 });
+
+test('register steps frame their whole group', () => {
+  const want = { 'memory-drum': 'M', words: 'RI', rai: 'RAI', 'start-address': 'RAI', run: 'compute', microops: 'uop' };
+  for (const H of [RO, EN]) for (const s of H.tour) {
+    if (s.id in want) assert.equal(s.group, want[s.id], s.id);
+    if (s.group) assert.ok(s.group in POS.right || s.group in POS.left, s.group);
+  }
+});

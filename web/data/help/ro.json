@@ -596,21 +596,24 @@
    "target": "lamp-M-0",
    "view": "right",
    "waitFor": null,
-   "text": "Memoria era un tambur magnetic care se rotea de 50 de ori pe secundă și ținea 1024 de cuvinte. Rândul de sus, M, arată un cuvânt de 31 de biți: bec aprins = 1. Becul 0 e semnul."
+   "text": "Memoria era un tambur magnetic care se rotea de 50 de ori pe secundă și ținea 1024 de cuvinte. Rândul de sus, M, arată un cuvânt de 31 de biți: bec aprins = 1. Becul 0 e semnul.",
+   "group": "M"
   },
   {
    "id": "words",
    "target": "lamp-RI-0",
    "view": "right",
    "waitFor": null,
-   "text": "Un cuvânt ține un număr sau două instrucțiuni. Fiecare instrucțiune are un cod de operație (5 biți) și o adresă (10 biți). Rândul RI arată instrucțiunea care se execută acum."
+   "text": "Un cuvânt ține un număr sau două instrucțiuni. Fiecare instrucțiune are un cod de operație (5 biți) și o adresă (10 biți). Rândul RI arată instrucțiunea care se execută acum.",
+   "group": "RI"
   },
   {
    "id": "rai",
    "target": "switch-RAI-0",
    "view": "right",
    "waitFor": null,
-   "text": "RAI ține adresa următorului cuvânt cu instrucțiuni. Cu comutatoarele de sub el, operatorul dădea adresa de la care pornește programul. Aici e ghicit cum lucrau pârghiile: sus = 1, iar fiecare mutare pune toată adresa în RAI. Butoanele ANULEAZA sugerează că poate registrul se golea întâi și pârghiile doar adăugau biți."
+   "text": "RAI ține adresa următorului cuvânt cu instrucțiuni. Cu comutatoarele de sub el, operatorul dădea adresa de la care pornește programul. Aici e ghicit cum lucrau pârghiile: sus = 1, iar fiecare mutare pune toată adresa în RAI. Butoanele ANULEAZA sugerează că poate registrul se golea întâi și pârghiile doar adăugau biți.",
+   "group": "RAI"
   },
   {
    "id": "start-address",
@@ -618,14 +621,16 @@
    "view": "right",
    "waitFor": null,
    "text": "Am încărcat programul original din 6 septembrie 1962 care își retipărește propriul listing. Comutatoarele RAI arată deja adresa lui de pornire: 1477 în octal.",
-   "load": "retiparire-1962"
+   "load": "retiparire-1962",
+   "group": "RAI"
   },
   {
    "id": "run",
    "target": "switch-compute-0",
    "view": "right",
    "waitFor": "typed",
-   "text": "Acum rulăm programul: apăsați butonul CALCULEAZA AUTOMAT, marcat cu galben. Turul continuă când mașina începe să scrie."
+   "text": "Acum rulăm programul: apăsați butonul CALCULEAZA AUTOMAT, marcat cu galben. Turul continuă când mașina începe să scrie.",
+   "group": "compute"
   },
   {
    "id": "typewriter",
@@ -639,7 +644,8 @@
    "target": "lamp-uop-0",
    "view": "left",
    "waitFor": null,
-   "text": "Fiecare instrucțiune era făcută din pași mărunți, microoperații. Pe panoul stâng, fiecare are un bec cu numele ei; becurile clipesc pe măsură ce mașina lucrează."
+   "text": "Fiecare instrucțiune era făcută din pași mărunți, microoperații. Pe panoul stâng, fiecare are un bec cu numele ei; becurile clipesc pe măsură ce mașina lucrează.",
+   "group": "uop"
   },
   {
    "id": "tape",

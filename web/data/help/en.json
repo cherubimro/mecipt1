@@ -596,21 +596,24 @@
    "target": "lamp-M-0",
    "view": "right",
    "waitFor": null,
-   "text": "The memory was a magnetic drum turning 50 times a second and holding 1024 words. The top row, M, shows a 31-bit word: lamp lit = 1. Lamp 0 is the sign."
+   "text": "The memory was a magnetic drum turning 50 times a second and holding 1024 words. The top row, M, shows a 31-bit word: lamp lit = 1. Lamp 0 is the sign.",
+   "group": "M"
   },
   {
    "id": "words",
    "target": "lamp-RI-0",
    "view": "right",
    "waitFor": null,
-   "text": "A word holds a number or two instructions. Each instruction has an operation code (5 bits) and an address (10 bits). The RI row shows the instruction being executed now."
+   "text": "A word holds a number or two instructions. Each instruction has an operation code (5 bits) and an address (10 bits). The RI row shows the instruction being executed now.",
+   "group": "RI"
   },
   {
    "id": "rai",
    "target": "switch-RAI-0",
    "view": "right",
    "waitFor": null,
-   "text": "RAI holds the address of the next instruction word. With the switches below it, the operator gave the address where the program starts. How the levers worked is guessed here: up = 1, and each move puts the whole address into RAI. The ANULEAZA (clear) buttons suggest that the register may have been cleared first, with the levers only adding bits."
+   "text": "RAI holds the address of the next instruction word. With the switches below it, the operator gave the address where the program starts. How the levers worked is guessed here: up = 1, and each move puts the whole address into RAI. The ANULEAZA (clear) buttons suggest that the register may have been cleared first, with the levers only adding bits.",
+   "group": "RAI"
   },
   {
    "id": "start-address",
@@ -618,14 +621,16 @@
    "view": "right",
    "waitFor": null,
    "text": "We have loaded the original program of 6 September 1962 that reprints its own listing. The RAI switches already show its start address: 1477 in octal.",
-   "load": "retiparire-1962"
+   "load": "retiparire-1962",
+   "group": "RAI"
   },
   {
    "id": "run",
    "target": "switch-compute-0",
    "view": "right",
    "waitFor": "typed",
-   "text": "Now let us run the program: press the CALCULEAZA AUTOMAT (compute: automatic) button, marked in yellow. The tour continues when the machine starts typing."
+   "text": "Now let us run the program: press the CALCULEAZA AUTOMAT (compute: automatic) button, marked in yellow. The tour continues when the machine starts typing.",
+   "group": "compute"
   },
   {
    "id": "typewriter",
@@ -639,7 +644,8 @@
    "target": "lamp-uop-0",
    "view": "left",
    "waitFor": null,
-   "text": "Each instruction was made of small steps, micro-operations. On the left panel each one has a lamp with its name; the lamps flicker as the machine works."
+   "text": "Each instruction was made of small steps, micro-operations. On the left panel each one has a lamp with its name; the lamps flicker as the machine works.",
+   "group": "uop"
   },
   {
    "id": "tape",

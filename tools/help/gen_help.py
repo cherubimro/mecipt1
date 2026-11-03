@@ -363,6 +363,9 @@ TOUR = [
   'For any element, press “Explain” and then the element. The documentation has everything: the instructions, the tape, the console, what is certain and what is guessed, and the sources.'),
 ]
 
+# grupul de pe pupitru încadrat la fiecare pas (toate becurile și comutatoarele lui)
+TOUR_GROUPS = {'memory-drum': 'M', 'words': 'RI', 'rai': 'RAI', 'start-address': 'RAI', 'run': 'compute', 'microops': 'uop'}
+
 UOPS_EN = ['s goes into M [?]', 's goes into I', 'i goes into S', 'Logical multiplication (AND)',
  'Shift: left in S · I. goes into S.', 'Shift: right in S · zero goes into S.', 'Shift: left in I · zero goes into I.',
  'Shift: right in I · S. goes into I.', 'Change M.', 'If M. = 1 change M into M̄', 'Change M into M̄ except M. [?]',
@@ -391,6 +394,8 @@ def build(lang):
         st = {'id': sid, 'target': target, 'view': view, 'waitFor': wait, 'text': ro if lang == 'ro' else en}
         if load:
             st['load'] = load
+        if sid in TOUR_GROUPS:
+            st['group'] = TOUR_GROUPS[sid]
         out['tour'].append(st)
     for key, st, src, ro, en in E:
         t = ro if lang == 'ro' else en

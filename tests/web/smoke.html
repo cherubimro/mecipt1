@@ -89,12 +89,24 @@ f.addEventListener('load', () => {
   stage('tur');
   // turul ghidat: pornește, marchează ținta, supraviețuiește schimbării programului, așteaptă textul pe coală
   const card = d.getElementById('tour-card');
+  const viewBeforeTour = d.getElementById('panels').dataset.view;
   d.getElementById('tour-start').focus();
   d.getElementById('tour-start').click();
   P.advance(50);
   if (!card.contains(d.activeElement)) fail('focusul nu intră în cardul turului: ' + (d.activeElement && d.activeElement.id));
   if (d.getElementById('tour-text').getAttribute('aria-live') !== 'polite') fail('textul turului nu e anunțat');
   if (card.hidden || !d.getElementById('desk').classList.contains('tour-target')) fail('turul: cardul sau ținta primului pas');
+  // fiecare pas încadrează grupul despre care vorbește, ca „Înainte” să se vadă pe pupitru
+  const frameBox = () => { const f = d.querySelector('.tour-frame'); if (!f) return null; const b = f.getBoundingClientRect(); return `${Math.round(b.x)},${Math.round(b.y)},${Math.round(b.width)},${Math.round(b.height)}`; };
+  d.getElementById('tour-next').click(); P.advance(50);
+  const fM = frameBox();
+  if (!fM) fail('turul: pasul despre M nu încadrează rândul M');
+  const nM = d.querySelectorAll('.tour-frame').length;
+  if (nM !== 1) fail('turul: un singur chenar pe pas, sunt ' + nM);
+  d.getElementById('tour-next').click(); P.advance(50);
+  const fRI = frameBox();
+  if (!fRI || fRI === fM) fail('turul: chenarul nu se mută de la M la RI: ' + fM + ' / ' + fRI);
+  d.getElementById('tour-prev').click(); d.getElementById('tour-prev').click(); P.advance(50);
   while (P.tour.step() && P.tour.step().id !== 'start-address') { d.getElementById('tour-next').click(); P.advance(50); }
   if (!d.getElementById('tour-next').disabled) fail('turul: Înainte trebuie blocat cât se încarcă programul pasului');
   await until(() => !d.getElementById('tour-next').disabled, 5000, 'turul: încărcarea programului nu se termină');
@@ -121,6 +133,8 @@ f.addEventListener('load', () => {
   d.getElementById('tour-close').click();
   if (!card.hidden || d.querySelector('.tour-target')) fail('turul nu se închide curat');
   if (d.activeElement !== d.getElementById('tour-start')) fail('focusul nu revine la „Tur ghidat”');
+  if (d.querySelector('.tour-frame')) fail('chenarul turului rămâne după închidere');
+  if (d.getElementById('panels').dataset.view !== viewBeforeTour) fail('vederea nu revine după tur: ' + d.getElementById('panels').dataset.view);
   await P.select('retiparire-1962');
   P.setView('all');
   stage('impulsuri');

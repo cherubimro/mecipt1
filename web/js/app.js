@@ -185,12 +185,40 @@ async function main() {
   // ---- turul ghidat ----
   const tour = new Tour(HELP[lang].tour);
   let loadedFor = -1, tourLoading = null;
+  // Chenarul pasului: un dreptunghi galben în jurul tuturor becurilor și comutatoarelor grupului.
+  function frameGroup(g) {
+    const els = [...document.querySelectorAll(`[id^="lamp-${g}-"], [id^="switch-${g}-"]`)];
+    const svg = els.length && els[0].ownerSVGElement;
+    if (!svg) return;
+    const inv = svg.getScreenCTM().inverse();
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    for (const el of els) {
+      const r = el.getBoundingClientRect();
+      for (const [px, py] of [[r.left, r.top], [r.right, r.bottom]]) {
+        const p = new DOMPoint(px, py).matrixTransform(inv);
+        x0 = Math.min(x0, p.x); y0 = Math.min(y0, p.y); x1 = Math.max(x1, p.x); y1 = Math.max(y1, p.y);
+      }
+    }
+    const pad = 12;
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('class', 'tour-frame');
+    for (const [k, v] of [['x', x0 - pad], ['y', y0 - pad], ['width', x1 - x0 + 2 * pad], ['height', y1 - y0 + 2 * pad], ['rx', 8]]) rect.setAttribute(k, v);
+    svg.append(rect);
+  }
+  let viewBeforeTour = null;
   function renderTour() {
     for (const el of document.querySelectorAll('.tour-target')) el.classList.remove('tour-target');
+    for (const el of document.querySelectorAll('.tour-frame')) el.remove();
     const st = tour.step();
     $('tour-card').hidden = !st;
-    if (!st) { loadedFor = -1; return; }
+    if (!st) {
+      loadedFor = -1;
+      if (viewBeforeTour !== null) { setView(viewBeforeTour); viewBeforeTour = null; }   // vederea dinainte de tur
+      return;
+    }
+    if (viewBeforeTour === null) viewBeforeTour = $('panels').dataset.view;
     setView(st.view);
+    if (st.group) frameGroup(st.group);
     // pasul încarcă un program: „Înainte” stă blocat până se termină încărcarea, ca un AUTOMAT apăsat
     // repede să nu fie oprit de încărcarea care vine după el
     let loading = false;
