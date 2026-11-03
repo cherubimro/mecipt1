@@ -147,9 +147,9 @@ The sound choices (`web/js/sound/`). No recordings of MECIPT-1 exist.
 
 | Choice | Status | Reason / source |
 |---|---|---|
-| The drum drawn below the console: a cylinder on its side, one track and one head per bit | GUESSED | no photograph of the drum has been found; the capacity (1024 × 31 bits) and the speed (50 rev/s) are CERTAIN (Farcaș, Baltac) |
+| The drum drawn below the console: upright, on the gold cabinet, with the head blocks around it and the FŰTÉS / TÖRLÉS panel | CERTAIN (the look) | Turbojet’s photographs, Museum of Banat, 2015 (Wikimedia Commons, CC BY-SA 4.0); capacity and speed: Farcaș, Baltac |
+| The drum’s green lamp lit while the machine is powered; FŰTÉS and TÖRLÉS off; its switches do nothing | GUESSED | their function is not documented |
 | In the drawing the rotation is slowed down (one turn every 1.6 s) and goes on while the page is open | — (emulator rule) | at 50 rev/s the eye would see only a blur; the drum spun while the machine was powered |
-| The heads light up in frames where the machine did something (instructions or memory commands) | GUESSED | every instruction reads the drum; it is not known whether there was a lamp for the heads |
 | The drum hum has a 50 Hz fundamental (with harmonics) | DEDUCED | The drum turns 50 times a second: 1024 word times per turn, 51,200 a second (`core/machine.h`). |
 | The timbre of the hum, the tape reader, the typewriter and the controls | GUESSED | No recordings exist; the sounds are synthesised to sound mechanical (spec §5). |
 | One click per tape row read and one key strike per character, ≈ 0.1 s | GUESSED | The rate from “Peripherals” (one character ≈ 0.1 s). |

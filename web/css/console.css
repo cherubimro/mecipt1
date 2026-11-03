@@ -95,12 +95,11 @@ body:not([data-mode="atelier"]) .panels[data-view="all"] #panel-right { transfor
 @media (prefers-reduced-motion: reduce) { .switch .lever { transition: none; } }
 
 /* ---- perifericele ---- */
-.peripherals { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; align-items: start; }
+.peripherals { display: grid; grid-template-columns: minmax(200px, 0.55fr) 1fr 1fr; gap: 24px; margin-top: 24px; align-items: start; }
 .device { background: #4a4f52; border-radius: 4px; padding: 12px 16px 14px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); }
 .device h2 { margin: 0 0 8px; font-size: 17px; font-weight: 500; color: #e3e5e2; }
 .device-note { margin: 6px 0 0; font-size: 14px; color: #c4c8c4; }
 .tape svg { display: block; width: 100%; height: auto; border-radius: 2px; }
-.drum-device { grid-column: 1 / -1; }
 .mag-drum svg { display: block; width: 100%; height: auto; border-radius: 2px; }
 
 .typewriter { background: #3e4245; }

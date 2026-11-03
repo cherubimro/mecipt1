@@ -145,9 +145,9 @@ Alegerile sunetului (`web/js/sound/`). Nu există înregistrări ale MECIPT-1.
 
 | Alegere | Statut | Motiv / sursă |
 |---|---|---|
-| Tamburul desenat sub pupitru: un cilindru culcat, cu o pistă și un cap pentru fiecare bit | GHICIT | nu s-a găsit nicio fotografie a tamburului; capacitatea (1024 × 31 de biți) și viteza (50 rot/s) sunt SIGURE (Farcaș, Baltac) |
+| Tamburul desenat sub pupitru: vertical, pe dulăpașul auriu, cu blocurile capetelor jur-împrejur și panoul FŰTÉS / TÖRLÉS | SIGUR (aspectul) | fotografiile lui Turbojet, Muzeul Banatului, 2015 (Wikimedia Commons, CC BY-SA 4.0); capacitatea și viteza: Farcaș, Baltac |
+| Becul verde al tamburului aprins cât mașina e sub tensiune; FŰTÉS și TÖRLÉS stinse; comutatoarele lui nu fac nimic | GHICIT | funcția lor nu e documentată |
 | În desen rotația e încetinită (o rotație la 1,6 s) și continuă cât pagina e deschisă | — (regula emulatorului) | la 50 rot/s ochiul n-ar vedea decât o pată; tamburul se învârtea cât mașina era sub tensiune |
-| Capetele se aprind în cadrele în care mașina a făcut ceva (instrucțiuni sau comenzi de memorie) | GHICIT | orice instrucțiune citește tamburul; nu se știe dacă exista un bec al capetelor |
 | Zumzetul tamburului are fundamentala de 50 Hz (cu armonice) | DEDUS | Tamburul face 50 de rotații pe secundă: 1024 de timpi de cuvânt pe rotație, 51 200 pe secundă (`core/machine.h`). |
 | Timbrul zumzetului, al cititorului, al mașinii de scris și al comenzilor | GHICIT | Nu există înregistrări; sunetele sunt sintetizate să sune mecanic (spec §5). |
 | Un clic pentru fiecare rând citit și o lovitură de clapă pentru fiecare caracter, ≈ 0,1 s | GHICIT | Ritmul din „Periferice” (un caracter ≈ 0,1 s). |
