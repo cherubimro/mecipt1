@@ -23,7 +23,11 @@ programele originale din 1962.
 - **Sunetul** (Planul 5): zumzetul tamburului, țăcănitul cititorului, clapele mașinii de scris și clicurile
   comenzilor, sintetizate în browser după ritmul mașinii (reconstruite: nu există înregistrări). Butonul 🔊/🔇
   din bară; alegerea se ține minte.
-- Urmează: sunetul, reconstrucțiile, telefonul, interfețele wx și ncurses (`docs/superpowers/plans/`).
+- **Programele reconstruite** (Planul 6): banda INEX-1 (rutinele scrise acum la punctele de intrare din
+  Facsimilul 5), încărcată de preîncărcătorul original; tabelul de sinus din 21.02.1962, reprodus după Facsimilul 3
+  (44 din 45 de valori cifră cu cifră; diferă sin 32°); calculele ilustrative Vidraru și Romexpo, cu eticheta
+  „cifrele nu sunt cele reale”. Sursele în `programs/src/`, generate cu `make programs`; referințele în `tools/ref/`.
+- Urmează: telefonul și publicarea, interfețele wx și ncurses (`docs/superpowers/plans/`).
 
 Ce e sigur, ce e dedus și ce e ghicit: `docs/semantica.md` (în engleză: `docs/semantica.en.md`).
 Textele ajutorului se scriu în `tools/help/gen_help.py`, iar capitolele documentației în `web/doc/{ro,en}/`. Fiecare cuvânt de program își poartă

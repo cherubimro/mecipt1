@@ -504,7 +504,7 @@
   "tape": {
    "title": "Cititorul de bandă perforată",
    "short": "Programele și datele intrau pe bandă de telex cu 5 canale. Gaura înseamnă 0. Un cuvânt ocupă 6 rânduri de bandă.",
-   "more": "- Bandă de telex cu 5 canale și un canal de ghidaj; **perforația = „0”**; citire mecanică — SIGUR (Farcaș, Wikipedia RO).\n- Instrucțiunea CIT citește **un rând** (5 biți) și îl pune aliniat la dreapta — SIGUR (tabelul Geier).\n- Un cuvânt = **6 rânduri** de câte 5 biți, m1–m5 primul — DEDUS (Geier: „două instrucțiuni … prin doar șase caractere”); semnul m0 nu e pe bandă.\n- Canalul 1 = bitul cel mai semnificativ al rândului — GHICIT.\n- Așezarea canalelor pe hârtie: 1 · 2 · ghidaj · 3 · 4 · 5 — DEDUS din banda de telex.\n- Când banda se termină: HIRTIA AGATATA — DEDUS.\n\nExemplul complet (cuvântul 05 1626 25 1512 desenat pe 6 rânduri) e în documentație, capitolul 5. Banda INEX-1 originală nu s-a păstrat; cea din pagină e o bandă de test.",
+   "more": "- Bandă de telex cu 5 canale și un canal de ghidaj; **perforația = „0”**; citire mecanică — SIGUR (Farcaș, Wikipedia RO).\n- Instrucțiunea CIT citește **un rând** (5 biți) și îl pune aliniat la dreapta — SIGUR (tabelul Geier).\n- Un cuvânt = **6 rânduri** de câte 5 biți, m1–m5 primul — DEDUS (Geier: „două instrucțiuni … prin doar șase caractere”); semnul m0 nu e pe bandă.\n- Canalul 1 = bitul cel mai semnificativ al rândului — GHICIT.\n- Așezarea canalelor pe hârtie: 1 · 2 · ghidaj · 3 · 4 · 5 — DEDUS din banda de telex.\n- Când banda se termină: HIRTIA AGATATA — DEDUS.\n\nExemplul complet (cuvântul 05 1626 25 1512 desenat pe 6 rânduri) e în documentație, capitolul 5. Banda INEX-1 originală nu s-a păstrat; cea din pagină e **reconstruită** (rutinele scrise acum după punctele de intrare din Facsimilul 5) și o încarcă preîncărcătorul original, de la 0010, ca în 1962.",
    "status": "MIXT",
    "sources": [
     "farcas2005",
@@ -516,7 +516,7 @@
   "sheet": {
    "title": "Mașina de scris",
    "short": "Rezultatele se tipăreau pe o mașină de scris electrică obișnuită, acționată de electromagneți puși deasupra clapelor.",
-   "more": "- Mașina de scris electrică cu electromagneți deasupra clapelor, hârtie A4/A3 — SIGUR (Farcaș).\n- Instrucțiunea AC cu subcodul 0136 tipărește o cifră din s0…s3, cu 0133 o literă din s0…s4 — SIGUR (tabelul Geier).\n- Seturile de caractere — SIGUR (Baltac, lucrarea de laborator L6, prin Wikipedia RO): cifre, spațiu, minus, punct, virgulă și întoarcerea carului (codul 14 nu era folosit); spațiu, cele 26 de litere englezești și ă, î, ș, ț (codul 31 nu era folosit).\n- Care cod e care literă sau semn — GHICIT (tabelul nu s-a păstrat); spațiul și rândul nou sunt cele folosite de programul de retipărire.\n- Viteza, cam 10 caractere pe secundă — GHICIT.\n\nProgramul original de retipărire din 6.09.1962 (Facsimil 4) își tipărește aici propriul listing exact cum apare în facsimil.",
+   "more": "- Mașina de scris electrică cu electromagneți deasupra clapelor, hârtie A4/A3 — SIGUR (Farcaș).\n- Instrucțiunea AC cu subcodul 0136 tipărește o cifră din s0…s3, cu 0133 o literă din s0…s4 — SIGUR (tabelul Geier).\n- Seturile de caractere — SIGUR (Baltac, lucrarea de laborator L6, prin Wikipedia RO): cifre, spațiu, minus, punct, virgulă și întoarcerea carului (codul 14 nu era folosit); spațiu, cele 26 de litere englezești și ă, î, ș, ț (codul 31 nu era folosit).\n- Cifra zero se bate „o”, ca în facsimilele 3 și 4 — DEDUS.\n- Care cod e care literă sau semn — GHICIT (tabelul nu s-a păstrat); spațiul și rândul nou sunt cele folosite de programul de retipărire.\n- Viteza, cam 10 caractere pe secundă — GHICIT.\n\nProgramul original de retipărire din 6.09.1962 (Facsimil 4) își tipărește aici propriul listing exact cum apare în facsimil.",
    "status": "MIXT",
    "sources": [
     "farcas2005",
@@ -531,6 +531,46 @@
    "short": "Arată de unde vine fiecare cuvânt al programului: ORIGINAL (din documente din 1962), DEDUS, RECONSTRUCȚIE sau GHICIT.",
    "more": "- **ORIGINAL** — transcris dintr-un document de epocă, cu trimitere la facsimil (de exemplu Facsimilul 4 din cartea lui V. Baltac).\n- **DEDUS** — rezultă din documente, dar nu e scris în ele (de exemplu o cifră corectată de mână).\n- **RECONSTRUCȚIE** — scris acum, după logica programului, pentru că lipsește din document (de exemplu constantele citite de retipărire).\n- **GHICIT** — necesar ca să meargă, fără sursă.\n\nImaginile facsimilelor nu sunt reproduse aici; ele se găsesc în cartea lui Vasile Baltac.",
    "status": "MIXT",
+   "sources": [
+    "baltac2011",
+    "semantica"
+   ]
+  },
+  "program-inex1": {
+   "title": "Preîncărcătorul INEX-1 și banda INEX-1",
+   "short": "Preîncărcătorul e ORIGINAL (Facsimilul 5); banda INEX-1 e RECONSTRUITĂ: rutinele de tipărire și de citire, scrise acum la punctele de intrare din facsimil.",
+   "more": "- **ORIGINAL**: preîncărcătorul, 0000–0001 și 0010–0015, cu procedura „se pune banda INEX-1 în cititor … și se pornește calculatorul de la 0010”; cuvântul 0001 e DEDUS (cifra corectată de mână).\n- **RECONSTRUCȚIE**: banda, 190 de cuvinte (0002–0277, 1140 de rânduri). Preîncărcătorul o citește în cam 3 minute și se oprește cu HIRTIA AGATATA la capăt.\n- Punctele de intrare sunt SIGURE (Facsimilul 5): 0040 (0026) citirea benzilor de la pupitru, 0025 ca program, 0133 formatul, 0134 întregi, 0135 subunitare, 0132 rânduri, 0136 spații, 0246 de la A la B.\n- **GHICIT**: cum se cheamă rutinele (întoarcerea prin celula V = 0002, argumentul în S) și valorile implicite (3 cifre la întregi, 9 zecimale).\n\nDetaliile sunt în documentație, capitolul 6, și în Semantica, secțiunea „INEX-1 reconstruit”.",
+   "status": "MIXT",
+   "sources": [
+    "baltac2011",
+    "semantica"
+   ]
+  },
+  "program-sinus-1962": {
+   "title": "Tabelul de sinus din 21 februarie 1962",
+   "short": "Rezultatul e ORIGINAL (Facsimilul 3: 45 de valori, 1°–45°, cu 9 zecimale); programul s-a pierdut și e RECONSTRUIT, cu o metodă care reproduce 44 din cele 45 de valori.",
+   "more": "- **Rezultatul**: Facsimilul 3, „Tabel de sinus dela 1° la 45° calculat de MECIPT-1”, 21.02.1962 — tipărit cu „o” pentru zero și un semn după fiecare număr.\n- **Metoda (RECONSTRUCȚIE, găsită prin căutare)**: toate valorile tipărite sunt impare în ultima cifră binară, deci mașina calcula sin x / 2 și tipărea dublul minus o unitate. Argumentul e n·π/360 (π/360 trunchiat), iar seria Taylor se ia termen cu termen, fiecare termen trunchiat; doar w² și primul raport (2/3) sunt rotunjite.\n- **Potrivirea**: 44 de valori ies cifră cu cifră ca în facsimil. **sin 32°** iese o,52991926o în loc de o,529919258 (adevărat: 0,5299192642); diferența nu se explică și e lăsată la vedere.\n- Nicio regulă a aritmeticii mașinii n-a trebuit schimbată pentru asta.",
+   "status": "MIXT",
+   "sources": [
+    "baltac2011",
+    "semantica"
+   ]
+  },
+  "program-vidraru": {
+   "title": "Barajul Vidraru — calcul ilustrativ",
+   "short": "Calcul ilustrativ în spiritul celui efectuat pentru barajul Vidraru; cifrele nu sunt cele reale. Nici programul, nici datele nu s-au păstrat.",
+   "more": "- **Metoda**: arcele încastrate, mult simplificat (ideea, după articolul lui Farcaș din 1964). 11 arce orizontale, de la coronament la fundație.\n- **Datele**: înălțimea de 166 m și grosimile de ~6 m sus și ~25 m jos sunt publice; cota coronamentului (834 m) și razele arcelor (160 m sus, 80 m jos) sunt GHICITE.\n- **Coloanele**, pe fiecare rând (un arc): cota (m); adâncimea /1000, egală cu presiunea apei p /1000 (tf/m²); forța din arc N = p·R /10⁶ (tf/m); efortul din beton σ = N/t /10⁴ (tf/m²). Numerele sunt scalate ca să încapă în fracțiile mașinii, cum făceau programatorii atunci.\n- Programul (RECONSTRUCȚIE) tipărește cu rutinele INEX-1 și e verificat față de un calcul independent făcut cu aceeași aritmetică.",
+   "status": "GHICIT",
+   "sources": [
+    "farcas1964",
+    "semantica"
+   ]
+  },
+  "program-romexpo": {
+   "title": "Cupola Romexpo — calcul ilustrativ",
+   "short": "Calcul ilustrativ în spiritul celui efectuat în 1963 pentru cupola Romexpo; cifrele nu sunt cele reale. Calculul original (iulie 1963, programator V. Baltac) nu s-a păstrat.",
+   "more": "- **Modelul**: o cupolă sferică cu diametrul public de 93,5 m; săgeata (24 m), unghiul de la vârf la bază (~0,949 rad, calculat dinainte, ca din tabele) și cele 32 de meridiane sunt GHICITE. Raza sferei se calculează în program: R = (a² + f²)/(2f).\n- **Coloanele**, pe fiecare rând (un inel, de la vârf spre bază): numărul inelului; unghiul φ (radiani); raza inelului r = R·sin φ /100 (m); lungimea elementului de inel c = 2·r·sin(π/32) /100 (m).\n- Sinusul se calculează cu aceeași metodă ca tabelul din 1962.\n- Programul (RECONSTRUCȚIE) tipărește cu rutinele INEX-1 și e verificat față de un calcul independent făcut cu aceeași aritmetică.",
+   "status": "GHICIT",
    "sources": [
     "baltac2011",
     "semantica"
@@ -623,7 +663,7 @@
  "sources": {
   "baltac2011": {
    "cite": "Vasile Baltac, „MECIPT – Mașina Electronică de Calcul a Institutului Politehnic din Timișoara – Evocări și Documente”, 2011",
-   "where": "facsimilele 4 (retipărirea, 6.09.1962), 5 (INEX-1), 8 (tamburul), 11 (ferite)"
+   "where": "facsimilele 3 (tabelul de sinus, 21.02.1962), 4 (retipărirea, 6.09.1962), 5 (INEX-1), 8 (tamburul), 11 (ferite)"
   },
   "baltacLab": {
    "cite": "Vasile Baltac, lucrările de laborator la MECIPT-1, 1965–1966",
@@ -659,6 +699,10 @@
    "cite": "Turbojet, „MECIPT-1 Control desk”, Wikimedia Commons, 2011, CC BY-SA 4.0",
    "where": "aspectul pupitrului restaurat, culorile becurilor",
    "url": "https://commons.wikimedia.org/wiki/File:MECIPT-1_Control_desk.jpg"
+  },
+  "farcas1964": {
+   "cite": "D. Farcaș, despre dimensionarea arcelor încastrate cu MECIPT-1, Buletinul Științific și Tehnic al IPT, 1964",
+   "where": "doar ideea metodei; articolul n-a putut fi consultat"
   },
   "semantica": {
    "cite": "Proiectul emulatorului: „Semantica emulatorului — ce e sigur, dedus sau ghicit”",

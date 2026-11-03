@@ -1,0 +1,76 @@
+; SPDX-License-Identifier: CC-BY-SA-4.0
+; Barajul Vidraru — CALCUL ILUSTRATIV, în spiritul celui efectuat pentru barajul Vidraru; cifrele nu sunt cele reale.
+; RECONSTRUCȚIE (Planul 6): nu s-au păstrat nici programul, nici datele. Ideea metodei („dimensionarea arcelor
+; încastrate”) e după articolul lui Farcaș din Buletinul IPT, 1964; aici e mult simplificată.
+; Dimensiunile publice: înălțimea 166 m, grosimea ~6 m la coronament și ~25 m la bază. GHICITE: cota coronamentului
+; (834 m) și razele arcelor (160 m sus, 80 m jos).
+; 11 arce orizontale, de la coronament (k = 0) la fundație (k = 10): adâncimea h = 16,6·k m, presiunea apei
+; p = h tf/m², raza R = 160 − 8·k m, grosimea t = 6 + 1,9·k m, forța inelară N = p·R tf/m, efortul σ = N/t tf/m².
+; Câte un rând pe arc, cu rutinele INEX-1: cota (0134), h/1000 = p/1000, N/10⁶, σ/10⁴ (0135, 6 zecimale).
+; Pornire de la 0400. Referința independentă: tools/ref/vidraru.py.
+
+@prov RECONSTRUCTIE Vidraru: calcul ilustrativ (Planul 6); cifrele nu sunt cele reale
+0400  U 0443  ME 0002
+0401  U 0464  T 0133   ; formatul: α = 3, β = 6
+0402  U 0000  ME 0454
+0403  U 0473  ME 0455
+0404  U 0475  ME 0456
+0405  UN 0467  ME 0457   ; K ← −11 (arce)
+0406  U 0454  IN 0470   ; ⌊h⌋ ca întreg: (h/1000)·1000·2⁻³⁰
+0407  ME 0460  U 0471
+0410  SC 0460  ME 0461   ; cota = 834 − ⌊h⌋
+0411  U 0454  IN 0455   ; N/10⁶ = (h/1000)·(R/1000)
+0412  ME 0462  D 0456   ; σ/10⁴ = (N/10⁶)/(t/100): câtul în I
+0413  AC 0151  ME 0463
+0414  U 0444  ME 0002
+0415  U 0461  T 0134   ; cota
+0416  U 0445  ME 0002
+0417  U 0465  T 0136
+0420  U 0446  ME 0002
+0421  U 0454  T 0135   ; p/1000
+0422  U 0447  ME 0002
+0423  U 0465  T 0136
+0424  U 0450  ME 0002
+0425  U 0462  T 0135   ; N/10⁶
+0426  U 0451  ME 0002
+0427  U 0465  T 0136
+0430  U 0452  ME 0002
+0431  U 0463  T 0135   ; σ/10⁴
+0432  U 0453  ME 0002
+0433  U 0466  T 0132   ; rând nou
+0434  U 0454  A 0472   ; arcul următor
+0435  ME 0454  U 0455
+0436  SC 0474  ME 0455
+0437  U 0456  A 0476
+0440  ME 0456  U 0001
+0441  MS 0457  TPO 0406
+0442  O 0400  O 0400   ; gata
+0443  T 0402  CU 0000   ; cuvintele de revenire (puse în V)
+0444  T 0416  CU 0000
+0445  T 0420  CU 0000
+0446  T 0422  CU 0000
+0447  T 0424  CU 0000
+0450  T 0426  CU 0000
+0451  T 0430  CU 0000
+0452  T 0432  CU 0000
+0453  T 0434  CU 0000
+0454 = o00000000000   ; h/1000
+0455 = o00000000000   ; R/1000
+0456 = o00000000000   ; t/100
+0457 = o00000000000
+0460 = o00000000000
+0461 = o00000000000
+0462 = o00000000000
+0463 = o00000000000
+0464  O 0003  O 0006
+0465 = -0,0625   ; −2·2⁻⁵: două spații
+0466 = -0,03125   ; −1·2⁻⁵: un rând
+0467 = o00000000013
+0470 = o00000001750
+@prov GHICIT Vidraru: dimensiuni publice (166 m, 6/25 m) și valori ghicite (cota, razele)
+0471 = o00000001502   ; cota coronamentului (m)
+0472 = o00103774563   ; 16,6 m / 1000, rotunjit în sus (altfel ⌊h⌋ pierde o unitate la h întreg)
+0473 = o01217270244   ; 160 m / 1000
+0474 = o00040611157   ; 8 m / 1000
+0475 = o00365605075   ; 6 m / 100
+0476 = o00115645707   ; 1,9 m / 100

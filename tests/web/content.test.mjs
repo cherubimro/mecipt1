@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync } from 'node:fs';
 import { MACROS } from '../../web/js/md.js';
-import { ROOT, read } from './helpers.mjs';
+import { ROOT, read, readJson } from './helpers.mjs';
 
 const CHAPTERS = ['01-masina.md', '02-cuvantul.md', '03-instructiuni.md', '04-pupitrul.md',
   '05-banda-si-masina-de-scris.md', '06-programe.md', '07-ce-e-sigur.md', '08-surse.md', '09-atelierul.md'];
@@ -63,4 +63,24 @@ test('the workshop chapter states its guesses', () => {
   for (const w of ['MODIFIED', '0014', 'GUESSED', 'written by the program']) assert.ok(en.includes(w), w);
   assert.ok(read('docs/semantica.md').includes('## Atelierul'));
   assert.ok(read('docs/semantica.en.md').includes('## The workshop'));
+});
+
+// Citările colii (numere cu 9 zecimale, cum le bate mașina de scris): „o” pentru zero, niciodată „0” amestecat.
+test('citările tipăriturii folosesc „o” pentru zero', () => {
+  const files = ['docs/semantica.md', 'docs/semantica.en.md', 'web/data/help/ro.json', 'web/data/help/en.json',
+    ...['ro', 'en'].flatMap((l) => readdirSync(`${ROOT}web/doc/${l}`).map((f) => `web/doc/${l}/${f}`))];
+  for (const f of files) {
+    for (const m of read(f).matchAll(/(?<![0-9o])[0o][,.][0-9o]{9}(?![0-9o])/g)) {
+      if (!m[0].includes('o', 2) && m[0][0] === '0') continue;     // un număr obișnuit, nu o citare a colii
+      assert.ok(m[0][0] === 'o' && !m[0].includes('0'), `${f}: ${m[0]}`);
+    }
+  }
+});
+
+test('LICENSE-CONTINUT numește fiecare program din catalog', () => {
+  const lic = read('LICENSE-CONTINUT.md');
+  for (const p of readJson('web/programs/catalog.json')) {
+    for (const f of [p.file, p.tape].filter(Boolean)) assert.ok(lic.includes(f), f);
+  }
+  assert.ok(!lic.includes('inex-banda-3-cuvinte.mec` e GHICITĂ, făcută pentru verificare'), 'banda de test nu mai e în pagină');
 });

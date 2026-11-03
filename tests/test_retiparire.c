@@ -13,6 +13,9 @@ static char *slurp(const char *path) {
     return buf;
 }
 
+/* Mașina de scris bate „o” pentru cifra zero (Facsimilele 3 și 4). */
+static void listing_as_typed(char *s) { for (; *s; s++) if (*s == '0') *s = 'o'; }
+
 TEST(test_retiparire_reproduces_facsimile) {
     static mec_image img; static mecipt m; static mec_periph io;
     char *t = slurp("../programs/retiparire-1962.mec");
@@ -24,6 +27,7 @@ TEST(test_retiparire_reproduces_facsimile) {
     /* textul așteptat = listingul facsimilului, generat din transcriere */
     static char expected[8192];
     mec_listing(&img, 01477, 01545, expected, sizeof expected);
+    listing_as_typed(expected);
 
     mec_init(&m, mec_variants_default());
     mec_load_image(&m, &img);

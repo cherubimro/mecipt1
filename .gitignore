@@ -5,3 +5,5 @@ build/
 # materiale de cercetare cu licențe mixte (facsimile Baltac etc.) — nu intră în depozit
 surse/
 third_party/
+__pycache__/
+*.pyc

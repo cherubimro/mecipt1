@@ -48,6 +48,7 @@ Every choice without an explicit source is listed here, with its reason and, whe
 | End of tape or no reader → HÂRTIA AGĂȚATĂ (paper jammed), halt | DEDUCED | the “HÂRTIA AGĂȚATĂ” lamp on the console |
 | AC 0136 prints the digit in s0 s1 s2 s3; AC 0133 the letter in s0 … s4 | CERTAIN (the bits) / GUESSED (the glyphs) | Geier’s table |
 | The sets: digits, space, minus, point, comma, carriage return (code 14 unused); space + 26 English letters + ă î ș ț (code 31 unused) | CERTAIN | Baltac, lab sheet L6, via the Romanian Wikipedia |
+| Code 0 is printed as “o” | DEDUCED | Facsimiles 3 and 4: the typewriter strikes “o” for zero (o,o174524o6; 15o1) |
 | Glyphs of codes 10–15 (decimal): space , - newline (unused) . | GUESSED (the layout) | the reprinting program uses two codes from 10–15 (space and newline); which code is which cannot be deduced; 14 stays unused per L6 |
 | Letters: A Ă B C D E F G H I Î J K L M N O P Q R S Ș T Ț U V W X Y Z, then space; 31 unused | GUESSED (the order) | the set is the L6 one; the order of the codes has not survived |
 | AC 0151: S ← I (positive) | GUESSED (the sign) | the table: “S ← i” |
@@ -153,3 +154,34 @@ The sound choices (`web/js/sound/`). No recordings of MECIPT-1 exist.
 | Above 40 events a second (measured in real time) the clicks become a quieter buzz; below 25 they return | — (emulator rule) | At high speed the clicks could no longer be heard separately. |
 | The top bar and the Workshop make no sound; in Explain mode the controls do not click | — (emulator rule) | They are present-day controls, not the machine's; in Explain mode the controls do not act. |
 | The hum is heard whenever sound is on, not only while a program runs | GUESSED | The drum turned whenever the machine was powered. |
+
+## INEX-1 reconstructed (Plan 6)
+The INEX-1 routines (`programs/src/inex1-rutine.mec`) are written now. From facsimile 5 only the preloader and the entry points are known.
+
+| Choice | Status | Reason / source |
+|---|---|---|
+| Entry points 0025, 0026, 0040, 0132–0136, 0246 and what each does | CERTAIN (addresses, role) | Facsimile 5 |
+| Calling: the program puts the word “T r” into V (0002), the argument into S, and jumps to the entry; the routine returns with T 0002 | GUESSED | “returns to V” (facsimile 5); there is no return register |
+| The routines clobber S, I and cells 0003–0007; 0044 is the reader’s cell | GUESSED | the original preloader uses 0044 for CIT |
+| 0133: S = c1 α c2 β (α digits for integers, β decimals); by default α = 3, β = 9 | GUESSED | Facsimile 5: “in S with t−α 00−β”; 9 decimals as in facsimile 3 |
+| 0134: the integer n·2⁻³⁰, “-” in front if negative, α digits, leading zeros as spaces | GUESSED | — |
+| 0135: “-” in front if negative, “o,” and β truncated decimals, then the mark after the number | GUESSED (form) / DEDUCED (truncation) | Facsimile 3; exact truncation reproduces 44 of the 45 sine values |
+| The mark after each number in facsimile 3 is printed as the minus (code 12) | GUESSED | the closest character in the typewriter’s set; in the facsimile it sits a little lower |
+| 0136 / 0132: S = −n·2⁻⁵, n spaces / n new lines | DEDUCED (the argument) / GUESSED (0132) | Facsimile 5 gives “−n·2⁻⁵ in S” next to 0136 |
+| 0246: S = 00 A 00 B, the words from A to B with 0135, 5 to a line | GUESSED | “5 to a line” as in facsimile 3 |
+| 0040 (0026): reads 6-row words from the console into the address of the ME at 0045, until the tape ends; 0025: S = 00 A 00 n, n words to A, returns via V | GUESSED | the same technique (sentinel) as the original preloader |
+| Signed constants (character codes ≥ 8) are kept shifted by one bit and restored with DS 1 | — (emulator rule) | only m1–m30 go on tape (Geier) |
+| The INEX-1 tape: words 0002–0277, with identical copies of the preloader at 0010–0015 and 0014 punched as “ME 0014” | DEDUCED | the preloader writes over itself; only this way does loading go on |
+| “146 (VF)” next to 0135 in facsimile 5 | unknown | does not follow from the work |
+
+## The computing programs (Plan 6)
+| Choice | Status | Reason / source |
+|---|---|---|
+| Sine table: the machine computed y ≈ sin x / 2 and printed 2y − 2⁻³⁰ | DEDUCED | all 45 values of facsimile 3 correspond to odd binary words (by chance: 1 in 2⁴¹) |
+| The argument: n·π/360, with π/360 truncated (o43575065), added n times | DEDUCED | the trend of the facsimile’s errors, −0.18·n·cos x units |
+| The Taylor series term by term, 5 terms; w² rounded (INR), terms truncated (IN), the ratio 2/3 rounded | RECONSTRUCTION | found by exhaustive search (`tools/ref/sin_search.py`, `sin_metoda.md`); reproduces 44 of the 45 values |
+| sin 32° comes out o,52991926o, not o,529919258 as in the facsimile | — (unexplained difference, accepted) | every variant reaching 44 misses it; the facsimile’s digits read clearly |
+| IN truncates and INR rounds half up | GUESSED, confirmed by facsimile 3 | the method found needs no change to the core |
+| Vidraru: crest at 834 m, radii 160 / 80 m, scaled columns (h/1000, N/10⁶, σ/10⁴) | GUESSED | illustrative calculation; height and thicknesses are public |
+| Romexpo: rise 24 m, φmax worked out beforehand, 32 meridians, scaled columns (r/100, c/100) | GUESSED | illustrative calculation; the diameter is public |
+| The computing programs start from 0400 with the INEX-1 routines already on the drum | — (emulator rule) | the visitor does not wait for the INEX-1 tape to be read (spec §4.2) |

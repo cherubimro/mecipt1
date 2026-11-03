@@ -17,6 +17,7 @@ import { Tour } from './tour.js';
 import { describeValue } from './values.js';
 import { formatWord, rowsFor, provLabel } from './atelier/editor.js';
 import { setupSound } from './sound/page.js';
+import { catalogNote } from './catalog.js';
 
 const $ = (id) => document.getElementById(id);
 const storage = (() => { try { return window.localStorage; } catch { return null; } })();
@@ -61,7 +62,7 @@ function setTexts() {
   $('status').textContent = T().loading;
 }
 
-function provenanceLabel(machine, tapeSource, foreign, removed) {
+function provenanceLabel(machine, tapeSource, foreign, removed, prog) {
   const el = $('provenance');
   el.textContent = '';
   if (foreign) el.append(`${T().foreignFile} · `);
@@ -82,8 +83,10 @@ function provenanceLabel(machine, tapeSource, foreign, removed) {
     k.textContent = T().prov.MODIFICAT;
     el.append(' · ', k, ` — ${T().removedBy(removed)}`);
   }
-  if (tapeSource === 'catalog') el.append(` · ${T().tapeTest}`);
+  if (tapeSource === 'catalog') el.append(` · ${catalogNote(prog, 'tape_note', lang) ?? T().tapeTest}`);
   if (tapeSource === 'visitor') el.append(` · ${T().visitorTape}`);
+  const note = catalogNote(prog, 'note', lang);
+  if (note && !foreign) el.append(` · ${note}`);
 }
 
 async function main() {
@@ -170,8 +173,8 @@ async function main() {
   }
   function describeProgram() {
     if (!current) return;
-    provenanceLabel(machine, tapeSource, foreign, atelier ? atelier.removedCount() : 0);
-    $('tape-info').textContent = tapeSource === 'catalog' ? `${T().tapeRows(tapeRows.length)} · ${T().tapeTest}`
+    provenanceLabel(machine, tapeSource, foreign, atelier ? atelier.removedCount() : 0, current);
+    $('tape-info').textContent = tapeSource === 'catalog' ? `${T().tapeRows(tapeRows.length)} · ${catalogNote(current, 'tape_note', lang) ?? T().tapeTest}`
       : tapeSource === 'visitor' ? `${T().tapeRows(tapeRows.length)} · ${T().visitorTape}` : T().tapeEmpty;
     for (const o of $('program').options) {
       const p = catalog.find((c) => c.id === o.value);
@@ -216,6 +219,8 @@ async function main() {
   }) : null);
   function explain(id, from = null) {
     helpEl = from;
+    // eticheta de sub alegerea programului: ajutorul programului încărcat, dacă are unul
+    if (id === 'provenance' && current && !foreign && HELP[lang].entries[`program-${current.id}`]) id = `program-${current.id}`;
     help.show(id, HELP[lang], T(), valueOf(id), from);
     document.body.classList.add('help-open');   // pe ecrane late pagina se strânge, ca panoul să nu acopere pupitrul
   }
@@ -324,11 +329,11 @@ async function main() {
   // înaintea ascultătorilor butoanelor).
   document.addEventListener('click', (e) => {
     if (!explaining || !e.target.closest) return;
-    const el = e.target.closest('#atelier [data-help], #provenance [data-help], #sound[data-help]');
+    const el = e.target.closest('#atelier [data-help], #provenance [data-help], #provenance, #sound[data-help]');
     if (!el) return;
     e.preventDefault();
     e.stopPropagation();
-    explain(el.dataset.help, el);
+    explain(el.dataset.help || el.id, el);   // eticheta programului → ajutorul programului încărcat
   }, true);
   document.addEventListener('click', (e) => {
     if (!e.target.closest || e.target.closest('#help-panel, header')) return;

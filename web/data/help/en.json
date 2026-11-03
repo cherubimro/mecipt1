@@ -504,7 +504,7 @@
   "tape": {
    "title": "Punched-tape reader",
    "short": "Programs and data came in on 5-channel telex tape. A hole means 0. One word takes 6 rows of tape.",
-   "more": "- 5-channel telex tape with a feed-hole track; **a punched hole = “0”**; mechanical reading — CERTAIN (Farcaș, Romanian Wikipedia).\n- The CIT instruction reads **one row** (5 bits) and stores it right-aligned — CERTAIN (Geier’s table).\n- One word = **6 rows** of 5 bits, m1–m5 first — DEDUCED (Geier: “two 15-bit instructions … by just six characters”); the sign bit m0 is not on the tape.\n- Channel 1 = the most significant bit of the row — GUESSED.\n- Channel layout on the paper: 1 · 2 · feed · 3 · 4 · 5 — DEDUCED from telex tape.\n- When the tape ends: HIRTIA AGATATA (paper jammed) — DEDUCED.\n\nThe full example (the word 05 1626 25 1512 drawn on 6 rows) is in chapter 5 of the documentation. The original INEX-1 tape has not survived; the one on the page is a test tape.",
+   "more": "- 5-channel telex tape with a feed-hole track; **a punched hole = “0”**; mechanical reading — CERTAIN (Farcaș, Romanian Wikipedia).\n- The CIT instruction reads **one row** (5 bits) and stores it right-aligned — CERTAIN (Geier’s table).\n- One word = **6 rows** of 5 bits, m1–m5 first — DEDUCED (Geier: “two 15-bit instructions … by just six characters”); the sign bit m0 is not on the tape.\n- Channel 1 = the most significant bit of the row — GUESSED.\n- Channel layout on the paper: 1 · 2 · feed · 3 · 4 · 5 — DEDUCED from telex tape.\n- When the tape ends: HIRTIA AGATATA (paper jammed) — DEDUCED.\n\nThe full example (the word 05 1626 25 1512 drawn on 6 rows) is in chapter 5 of the documentation. The original INEX-1 tape has not survived; the one on the page is **reconstructed** (routines written now from the entry points in facsimile 5) and is loaded by the original preloader, from 0010, as in 1962.",
    "status": "MIXT",
    "sources": [
     "farcas2005",
@@ -516,7 +516,7 @@
   "sheet": {
    "title": "Typewriter",
    "short": "Results were printed on an ordinary electric typewriter, driven by electromagnets placed above the keys.",
-   "more": "- An electric typewriter with electromagnets above the keys, A4/A3 paper — CERTAIN (Farcaș).\n- The AC instruction with sub-code 0136 prints a digit from s0…s3, with 0133 a letter from s0…s4 — CERTAIN (Geier’s table).\n- The character sets — CERTAIN (Baltac, lab sheet L6, via the Romanian Wikipedia): digits, space, minus, point, comma and carriage return (code 14 not used); space, the 26 English letters and ă, î, ș, ț (code 31 not used).\n- Which code is which letter or sign — GUESSED (the table is lost); space and newline are those used by the reprinting program.\n- The speed, about 10 characters a second — GUESSED.\n\nThe original reprinting program of 6 September 1962 (facsimile 4) prints its own listing here exactly as it appears in the facsimile.",
+   "more": "- An electric typewriter with electromagnets above the keys, A4/A3 paper — CERTAIN (Farcaș).\n- The AC instruction with sub-code 0136 prints a digit from s0…s3, with 0133 a letter from s0…s4 — CERTAIN (Geier’s table).\n- The character sets — CERTAIN (Baltac, lab sheet L6, via the Romanian Wikipedia): digits, space, minus, point, comma and carriage return (code 14 not used); space, the 26 English letters and ă, î, ș, ț (code 31 not used).\n- The digit zero is struck as “o”, as in facsimiles 3 and 4 — DEDUCED.\n- Which code is which letter or sign — GUESSED (the table is lost); space and newline are those used by the reprinting program.\n- The speed, about 10 characters a second — GUESSED.\n\nThe original reprinting program of 6 September 1962 (facsimile 4) prints its own listing here exactly as it appears in the facsimile.",
    "status": "MIXT",
    "sources": [
     "farcas2005",
@@ -531,6 +531,46 @@
    "short": "Shows where each word of the program comes from: ORIGINAL (from 1962 documents), DEDUCED, RECONSTRUCTION or GUESSED.",
    "more": "- **ORIGINAL** — transcribed from a period document, with a reference to the facsimile (e.g. facsimile 4 in V. Baltac’s book).\n- **DEDUCED** — follows from the documents but is not written in them (e.g. a digit corrected by hand).\n- **RECONSTRUCTION** — written now, following the program’s logic, because it is missing from the document (e.g. the constants read by the reprinting program).\n- **GUESSED** — needed for it to work, without a source.\n\nThe facsimile images are not reproduced here; they are in Vasile Baltac’s book.",
    "status": "MIXT",
+   "sources": [
+    "baltac2011",
+    "semantica"
+   ]
+  },
+  "program-inex1": {
+   "title": "The INEX-1 preloader and the INEX-1 tape",
+   "short": "The preloader is ORIGINAL (facsimile 5); the INEX-1 tape is RECONSTRUCTED: printing and reading routines written now at the entry points given in the facsimile.",
+   "more": "- **ORIGINAL**: the preloader, 0000–0001 and 0010–0015, with the procedure “put the INEX-1 tape in the reader … and start the computer from 0010”; word 0001 is DEDUCED (a digit corrected by hand).\n- **RECONSTRUCTION**: the tape, 190 words (0002–0277, 1140 rows). The preloader reads it in about 3 minutes and stops with HIRTIA AGATATA (paper jammed) at its end.\n- The entry points are CERTAIN (facsimile 5): 0040 (0026) reading tapes from the console, 0025 as a program, 0133 format, 0134 integers, 0135 fractions, 0132 lines, 0136 spaces, 0246 from A to B.\n- **GUESSED**: how the routines are called (return through cell V = 0002, the argument in S) and the defaults (3 digits for integers, 9 decimals).\n\nThe details are in chapter 6 of the documentation and in Semantics, section “INEX-1 reconstructed”.",
+   "status": "MIXT",
+   "sources": [
+    "baltac2011",
+    "semantica"
+   ]
+  },
+  "program-sinus-1962": {
+   "title": "The sine table of 21 February 1962",
+   "short": "The result is ORIGINAL (facsimile 3: 45 values, 1°–45°, with 9 decimals); the program is lost and RECONSTRUCTED, with a method that reproduces 44 of the 45 values.",
+   "more": "- **The result**: facsimile 3, “Sine table from 1° to 45° computed by MECIPT-1”, 21 Feb 1962 — printed with “o” for zero and a mark after every number.\n- **The method (RECONSTRUCTION, found by search)**: every printed value is odd in its last binary digit, so the machine computed sin x / 2 and printed twice that minus one unit. The argument is n·π/360 (π/360 truncated), and the Taylor series is taken term by term, each term truncated; only w² and the first ratio (2/3) are rounded.\n- **The match**: 44 values come out digit for digit as in the facsimile. **sin 32°** comes out o,52991926o instead of o,529919258 (true: 0.5299192642); the difference is unexplained and left in plain view.\n- No rule of the machine’s arithmetic had to change for this.",
+   "status": "MIXT",
+   "sources": [
+    "baltac2011",
+    "semantica"
+   ]
+  },
+  "program-vidraru": {
+   "title": "Vidraru dam — illustrative calculation",
+   "short": "Illustrative calculation in the spirit of the one made for the Vidraru dam; the figures are not the real ones. Neither the program nor the data have survived.",
+   "more": "- **The method**: fixed arches, much simplified (the idea, after Farcaș’s 1964 article). 11 horizontal arches, from the crest to the foundation.\n- **The data**: the 166 m height and the ~6 m top and ~25 m bottom thicknesses are public; the crest elevation (834 m) and the arch radii (160 m at the top, 80 m at the bottom) are GUESSED.\n- **The columns**, on each line (one arch): elevation (m); depth /1000, equal to the water pressure p /1000 (tf/m²); the arch force N = p·R /10⁶ (tf/m); the concrete stress σ = N/t /10⁴ (tf/m²). The numbers are scaled to fit the machine’s fractions, as programmers did then.\n- The program (RECONSTRUCTION) prints with the INEX-1 routines and is checked against an independent calculation done with the same arithmetic.",
+   "status": "GHICIT",
+   "sources": [
+    "farcas1964",
+    "semantica"
+   ]
+  },
+  "program-romexpo": {
+   "title": "Romexpo dome — illustrative calculation",
+   "short": "Illustrative calculation in the spirit of the one made in 1963 for the Romexpo dome; the figures are not the real ones. The original calculation (July 1963, programmer V. Baltac) has not survived.",
+   "more": "- **The model**: a spherical dome with the public diameter of 93.5 m; the rise (24 m), the angle from the top to the base (~0.949 rad, worked out beforehand, as from tables) and the 32 meridians are GUESSED. The sphere’s radius is computed in the program: R = (a² + f²)/(2f).\n- **The columns**, on each line (one ring, from the top down): ring number; the angle φ (radians); the ring radius r = R·sin φ /100 (m); the ring element length c = 2·r·sin(π/32) /100 (m).\n- The sine is computed with the same method as the 1962 table.\n- The program (RECONSTRUCTION) prints with the INEX-1 routines and is checked against an independent calculation done with the same arithmetic.",
+   "status": "GHICIT",
    "sources": [
     "baltac2011",
     "semantica"
@@ -623,7 +663,7 @@
  "sources": {
   "baltac2011": {
    "cite": "Vasile Baltac, “MECIPT – Mașina Electronică de Calcul a Institutului Politehnic din Timișoara – Evocări și Documente” (Recollections and Documents), 2011",
-   "where": "facsimiles 4 (program reprinting, 6 Sept 1962), 5 (INEX-1), 8 (the drum), 11 (ferrites)"
+   "where": "facsimiles 3 (the sine table, 21 Feb 1962), 4 (program reprinting, 6 Sept 1962), 5 (INEX-1), 8 (the drum), 11 (ferrites)"
   },
   "baltacLab": {
    "cite": "Vasile Baltac, MECIPT-1 laboratory work sheets, 1965–1966",
@@ -659,6 +699,10 @@
    "cite": "Turbojet, “MECIPT-1 Control desk”, Wikimedia Commons, 2011, CC BY-SA 4.0",
    "where": "the restored console, lamp colours",
    "url": "https://commons.wikimedia.org/wiki/File:MECIPT-1_Control_desk.jpg"
+  },
+  "farcas1964": {
+   "cite": "D. Farcaș, on sizing fixed arches with MECIPT-1, Scientific and Technical Bulletin of the Polytechnic Institute of Timișoara, 1964",
+   "where": "only the idea of the method; the article could not be consulted"
   },
   "semantica": {
    "cite": "The emulator project: “Emulator semantics — what is certain, deduced or guessed”",

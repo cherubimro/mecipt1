@@ -1,0 +1,66 @@
+; SPDX-License-Identifier: CC-BY-SA-4.0
+; Tabelul de sinus 1°–45° — MECIPT-1, 21.02.1962
+; REZULTATUL e ORIGINAL: Facsimilul 3 (V. Baltac, „MECIPT – Evocări și Documente”, 2011), „Tabel de sinus dela 1°
+; la 45° calculat de MECIPT-1”, 45 de valori cu 9 zecimale, 5 pe rând. PROGRAMUL nu s-a păstrat: codul de mai jos e o
+; RECONSTRUCȚIE, cu metoda găsită prin căutare în modelul aritmeticii mașinii (tools/ref/sin_metoda.md):
+;   - toate valorile tipărite sunt impare în ultima cifră binară: se calcula y ≈ sin(n°)/2 și se tipărea 2y − 2⁻³⁰;
+;   - w = n·(π/360 trunchiat), prin adunări; y = w − (2/3)w³ + (2/15)w⁵ − (4/315)w⁷ + (2/2835)w⁹, termen cu termen:
+;     w² rotunjit (INR), fiecare termen tᵢ = tᵢ₋₁·(w²·rᵢ) trunchiat (IN), r₁ = 2/3 rotunjit, ceilalți trunchiați.
+; Reproduce 44 din cele 45 de valori ale facsimilului; sin 32° iese o,52991926o în loc de o,529919258 (diferență
+; neexplicată, acceptată). Tipărirea: rutina INEX-1 0135, 9 zecimale, rând nou (0132) după fiecare al cincilea număr.
+; Pornire de la 0400.
+
+@prov RECONSTRUCTIE Sinus 1962: metoda reconstruită (Planul 6); rezultatul e Facsimil 3
+0400  U 0000  ME 0445   ; w ← 0
+0401  UN 0455  ME 0453   ; K ← −45 (valori)
+0402  UN 0456  ME 0454   ; L ← −5 (pe rând)
+0403  U 0445  A 0460
+0404  ME 0445  INR 0445   ; w ← w + π/360; S ← w² rotunjit
+0405  ME 0446  U 0445
+0406  ME 0447  ME 0450   ; t = y = w
+0407  U 0446  IN 0461
+0410  ME 0451  U 0447
+0411  IN 0451  ME 0447
+0412  U 0450  SC 0447
+0413  ME 0450  U 0446   ; − (2/3)w³
+0414  IN 0462  ME 0451
+0415  U 0447  IN 0451
+0416  ME 0447  U 0450
+0417  A 0447  ME 0450   ; + (2/15)w⁵
+0420  U 0446  IN 0463
+0421  ME 0451  U 0447
+0422  IN 0451  ME 0447
+0423  U 0450  SC 0447
+0424  ME 0450  U 0446   ; − (4/315)w⁷
+0425  IN 0464  ME 0451
+0426  U 0447  IN 0451
+0427  ME 0447  U 0450
+0430  A 0447  DS 0001   ; + (2/2835)w⁹; 2y
+0431  SC 0001  ME 0452   ; 2y − 2⁻³⁰
+0432  U 0443  ME 0002
+0433  U 0452  T 0135   ; tipărește
+0434  U 0001  MS 0454
+0435  TPO 0441  U 0444   ; mai e loc pe rând
+0436  ME 0002  U 0457
+0437  T 0132  CU 0000   ; rând nou
+0440  UN 0456  ME 0454
+0441  U 0001  MS 0453
+0442  TPO 0403  O 0400   ; următorul grad; altfel gata
+0443  T 0434  CU 0000
+0444  T 0440  CU 0000
+0445 = o00000000000
+0446 = o00000000000
+0447 = o00000000000
+0450 = o00000000000
+0451 = o00000000000
+0452 = o00000000000
+0453 = o00000000000
+0454 = o00000000000
+0455 = o00000000055
+0456 = o00000000005
+0457 = -0,03125   ; −1·2⁻⁵: un rând
+0460 = o00043575065   ; π/360 trunchiat (9 370 165·2⁻³⁰)
+0461 = o05252525253   ; 2/3 rotunjit
+0462 = o01463146314   ; 1/5 = (2/15)/(2/3)
+0463 = o00606060606   ; 2/21 = (4/315)/(2/15)
+0464 = o00343434343   ; 1/18 = (2/2835)/(4/315)
