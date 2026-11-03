@@ -43,6 +43,9 @@ printf '@prov GHICIT t\n0002 = 0,5\n0012  O 0000  O 0000\n' > build/pre-banda.me
 python3 tools/mecjoin.py --tape programs/inex1-preincarcator.mec build/pre-banda.mec >/dev/null 2>&1 \
   && { echo "FAIL e2e_tape_rejects_preloader_overlap"; fail=1; } || echo "OK   e2e_tape_rejects_preloader_overlap"
 
+git ls-files | grep -q "__pycache__\|\.pyc$" \
+  && { echo "FAIL e2e_no_compiled_python_tracked"; fail=1; } || echo "OK   e2e_no_compiled_python_tracked"
+
 build/mecdoc 2>/dev/null | cmp -s - web/data/core-tables.json \
   && echo "OK   e2e_core_tables_up_to_date" || { echo "FAIL e2e_core_tables_up_to_date: rulați make tables"; fail=1; }
 
