@@ -9,7 +9,7 @@ CORE_OBJ := $(CORE_SRC:core/%.c=$(B)/core/%.o)
 TESTS    := $(patsubst tests/%.c,$(B)/tests/%,$(wildcard tests/test_*.c))
 TOOLS    := $(patsubst tools/%.c,$(B)/%,$(wildcard tools/*.c))
 
-.PHONY: all check clean e2e wasm
+.PHONY: all check clean e2e wasm web-check
 all: $(B)/libmecipt.a $(TOOLS)
 
 $(B)/core/%.o: core/%.c $(wildcard core/*.h)
@@ -41,6 +41,9 @@ $(B)/mecipt.wasm: $(CORE_SRC) $(wildcard core/*.h) tools/fetch-wasi.sh
 	$(WASM_CC) --target=wasm32-wasi --sysroot=$(WASI)/wasi-sysroot -std=c11 -O2 -Wall -Wextra -Werror -Icore \
 	  -nostartfiles -nodefaultlibs -Wl,--no-entry -Wl,--export-dynamic $(CORE_SRC) -lc \
 	  $(WASI)/lib/wasi/libclang_rt.builtins-wasm32.a -o $@
+
+web-check: $(B)/mecipt.wasm
+	node --test tests/web/
 
 clean:
 	rm -rf $(B)
