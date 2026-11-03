@@ -15,8 +15,12 @@ programele originale din 1962.
   tradusă, statutul SIGUR/DEDUS/GHICIT și sursele) și documentația pentru pasionați (`doc.html`):
   cuvântul, setul de instrucțiuni, pupitrul, banda și mașina de scris, programele, sursele.
   Totul în **română și engleză** (RO | EN în bară; inscripțiile pupitrului rămân în română).
-- Urmează: atelierul (editor, tambur, perforator), sunetul, reconstrucțiile, telefonul,
-  interfețele wx și ncurses (`docs/superpowers/plans/`).
+- **Atelierul** (Planul 3): vederea Atelier (sau Ambele) din bară. Editorul arată programul de pe tambur
+  în notația listingurilor din 1962 și îl lasă pe vizitator să-l schimbe; orice cuvânt schimbat devine
+  **MODIFICAT**. Tamburul e o grilă de 1024 de cuvinte colorate după proveniență, cu adresa curentă aprinsă.
+  Perforatorul pregătește o bandă, care se încarcă apoi cu preîncărcătorul original INEX-1. Programul
+  modificat se ține minte în browser și se poate descărca sau deschide ca fișier `.mec` (citibil de `mecasm`).
+- Urmează: sunetul, reconstrucțiile, telefonul, interfețele wx și ncurses (`docs/superpowers/plans/`).
 
 Ce e sigur, ce e dedus și ce e ghicit: `docs/semantica.md` (în engleză: `docs/semantica.en.md`).
 Textele ajutorului se scriu în `tools/help/gen_help.py`, iar capitolele documentației în `web/doc/{ro,en}/`. Fiecare cuvânt de program își poartă
