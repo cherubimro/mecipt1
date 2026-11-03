@@ -81,3 +81,15 @@ test('panoul din mijloc are 11 aparate', () => {
   assert.ok(!/undefined|NaN/.test(svgM));
   assert.ok(!svgM.includes('class="switch'), 'comenzile din mijloc sunt decor');
 });
+
+test('voltmetrele de sus au scala 0–250 V', () => {
+  const meter = (i) => {
+    const a = svgM.indexOf(`id="meter-${i}"`);
+    return svgM.slice(a, svgM.indexOf('<g class="meter"', a + 1) > 0 ? svgM.indexOf('<g class="meter"', a + 1) : undefined);
+  };
+  for (const i of [0, 1, 2, 3]) {
+    const g = meter(i);
+    for (const v of ['>0<', '>50<', '>100<', '>150<', '>200<', '>250<']) assert.ok(g.includes(v), `meter-${i} ${v}`);
+  }
+  assert.ok(!meter(4).includes('>250<'), 'cadranele fără cifre vizibile rămân fără scală');
+});

@@ -15,6 +15,8 @@ M = [((157, 137), 85, 'round-large', -50), ((338, 148), 58, 'round', 35), ((493,
      ((354, 425), 38, 'small', -10), ((512, 424), 38, 'small', 5), ((667, 423), 37, 'small', 0)]
 for i, ((cx, cy), r, st, nd) in enumerate(M):
     it = {'t': 'meter', 'id': 'meter-%d' % i, 'x': X(cx), 'y': Y(cy), 'r': round(r * K, 1), 'style': st, 'needle': nd}
+    if i < 4:  # cifrele se văd pe fotografie, dar nu se pot citi; 0–250 V după amintirea utilizatorului (GHICIT)
+        it['scale'] = [0, 250, 50]
     if i == 5:
         it['note'] = 'lipsește în fotografia din 2011 (rama goală); prezent în fotografia din 1961'
     items.append(it)

@@ -120,6 +120,7 @@ Alegerile făcute pentru pagina pupitrului (`web/js/bindings.js`, `web/js/glow.j
 | Culoarea feței: panourile laterale crem (#e2dcc2), cel din mijloc albastru (#4a7cad) | SIGUR (aproximat) | Fotografia din 2011; texturile modelului 3D sunt verzui din cauza luminii. |
 | Inerția becurilor: aprindere τ = 25 ms, stingere τ = 70 ms | GHICIT | Un bec mic cu filament. |
 | Aparatul de măsură al doilea din rândul 2 (lipsă azi) e desenat | DEDUS | Rama goală din 2011; fotografia din 1961 îl arată. Scalele și acele sunt GHICITE. |
+| Voltmetrele din rândul de sus au scala 0–250 V | GHICIT | Pe fotografia din 2011 se văd 5–6 cifre, ultima de trei cifre, dar nu se pot citi; 250 V e amintirea utilizatorului și se potrivește cu tensiunile anodice ale tuburilor. Celelalte cadrane: doar gradații. |
 | Un bec de microoperație se aprinde dacă microoperația a rulat cel puțin o dată de la cadrul precedent | GHICIT | Ochiul vede, la 50 instr/s, becurile pulsând; vezi și inerția. |
 | Încărcarea unui program (și Reîncarcă) readuce impulsurile (IMPULSURI pe RESTABILESTE) | GHICIT | O pornire curată; altfel vizitatorul rămâne cu mașina oprită fără să știe de ce. |
 | Comutatoarele M și RAI țin poziția și pun tot cuvântul în registru la fiecare mutare | GHICIT, în tensiune cu sursele | Existența butoanelor ANULEAZA M / RAI și introducerea „cu trei degete” sugerează că, poate, comutatoarele adăugau biți într-un registru golit înainte. De hotărât înainte ca turul ghidat (Planul 4) să predea procedura de lucru. |

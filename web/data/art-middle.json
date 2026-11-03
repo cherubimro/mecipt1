@@ -15,7 +15,12 @@
 "y": 283.4,
 "r": 254.4,
 "style": "round-large",
-"needle": -50
+"needle": -50,
+"scale": [
+0,
+250,
+50
+]
 },
 {
 "t": "meter",
@@ -24,7 +29,12 @@
 "y": 317.3,
 "r": 173.6,
 "style": "round",
-"needle": 35
+"needle": 35,
+"scale": [
+0,
+250,
+50
+]
 },
 {
 "t": "meter",
@@ -33,7 +43,12 @@
 "y": 317.3,
 "r": 173.6,
 "style": "round",
-"needle": -40
+"needle": -40,
+"scale": [
+0,
+250,
+50
+]
 },
 {
 "t": "meter",
@@ -42,7 +57,12 @@
 "y": 317.3,
 "r": 173.6,
 "style": "round",
-"needle": -35
+"needle": -35,
+"scale": [
+0,
+250,
+50
+]
 },
 {
 "t": "meter",

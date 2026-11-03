@@ -113,11 +113,18 @@ function meter(p, it) {
       + `<circle cy="${n(pivot)}" r="${n(r * 0.17)}" fill="#1a1a1a"/>`;
   }
   let ticks = '';
-  for (let k = 0; k <= 20; k++) {
-    const t = ((-50 + k * 5) * Math.PI) / 180;
+  // scala: [min, max, pas între cifre]; fără scală, doar gradații (scalele reale nu se citesc — GHICIT)
+  const [lo, hi, step] = it.scale || [0, 4, 1];
+  const nTicks = Math.round(((hi - lo) / step) * 5);
+  for (let k = 0; k <= nTicks; k++) {
+    const t = ((-50 + (k * 100) / nTicks) * Math.PI) / 180;
     const big = k % 5 === 0;
     const r0 = R * (big ? 0.84 : 0.9);
     ticks += `<line x1="${n(r0 * Math.sin(t))}" y1="${n(pivot - r0 * Math.cos(t))}" x2="${n(R * Math.sin(t))}" y2="${n(pivot - R * Math.cos(t))}" stroke="#222" stroke-width="${big ? 2 : 1}"/>`;
+    if (big && it.scale) {
+      const rl = R * 1.16;
+      ticks += `<text x="${n(rl * Math.sin(t))}" y="${n(pivot - rl * Math.cos(t) + r * 0.04)}" font-family="${FONT}" font-size="${n(r * 0.11)}" text-anchor="middle" fill="#222">${lo + (k / 5) * step}</text>`;
+    }
   }
   const L = R * 0.98;
   return `<g class="meter" id="${esc(it.id)}" data-style="${esc(st)}" transform="translate(${n(x)} ${n(y)})">`
