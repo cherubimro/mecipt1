@@ -323,6 +323,31 @@ f.addEventListener('load', () => {
   if (d.getElementById('help-title').textContent !== helpRO.entries['atelier-controls'].title) fail('Explică pe Pas: ' + d.getElementById('help-title').textContent);
   P.explainMode(false); P.closeHelp();
   P.setMode('console'); P.advance(50);
+  stage('3d');
+  // vederea 3D: butonul comută; modelul se încarcă la cerere; becurile se aprind după emulator; înapoi la 2D.
+  // Fără WebGL (unele mașini fără ecran), pagina trebuie să spună asta și să rămână în 2D.
+  await P.select('retiparire-1962');
+  click('view-3d');
+  await until(() => P.view3dState() !== 'loading', 20000, 'modelul 3D nu se încarcă');
+  if (P.view3dState() === 'ready') {
+    if (!d.querySelector('#desk-3d canvas')) fail('3D: lipsește desenul');
+    if (!d.querySelector('.frame').closest('[hidden]') && d.querySelector('.frame').offsetParent !== null) fail('3D: pupitrul 2D încă se vede');
+    if (P.view3d().lampCount !== 161) fail('3D: becuri legate ' + P.view3d().lampCount);
+    if (d.getElementById('view-3d').getAttribute('aria-pressed') !== 'true') fail('3D: butonul nu arată starea');
+    click('switch-compute-0');
+    await until(() => P.view3d().lit() > 5, 20000, () => '3D: becurile nu se aprind: ' + P.view3d().lit());
+    P.runner.enqueue({ op: 13 });                   // OP.OPRESTE
+    P.advance(50);
+  } else if (P.view3dState() === 'unavailable') {
+    if (!d.getElementById('desk-3d-msg').textContent.includes('3D')) fail('3D indisponibil fără mesaj');
+  } else fail('3D: stare ' + P.view3dState());
+  click('view-3d');
+  if (d.querySelector('.frame').offsetParent === null) fail('înapoi la 2D: pupitrul nu se vede');
+  P.explainMode(true);
+  click('view-3d');
+  if (d.getElementById('help-title').textContent !== helpRO.entries.view3d.title) fail('Explică pe 3D: ' + d.getElementById('help-title').textContent);
+  if (d.querySelector('.frame').offsetParent === null) fail('în modul Explică, butonul 3D a comutat vederea');
+  P.explainMode(false); P.closeHelp();
   stage('telefon');
   // telefonul (390 px): fără derulare orizontală a paginii, un singur panou (cel drept), comutatoare de atins cu degetul
   const openAt = async (width, height, search = '') => {

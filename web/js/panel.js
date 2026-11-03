@@ -17,6 +17,8 @@ const GLASS = {
   blue: { off: ['#3a5a9a', '#152448'], on: ['#eef6ff', '#6aa8ff', '#2050c8'] },
 };
 
+export const LAMP_COLORS = GLASS;   // aceleași culori și pentru becurile din vederea 3D
+
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 // Litera cu bară (M̄): bara se trage ca linie; accentul combinat U+0304 abia se vede în Barlow.
 const svgText = (s) => String(s).split(/([^\u0304]\u0304)/u).map((p, i) => (i % 2

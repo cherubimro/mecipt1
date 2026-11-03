@@ -37,6 +37,14 @@ Below the grid: **GENERATOR PRINCIPAL** (main generator: IMPULSURI, FRECVENȚĂ 
 ## Middle panel — the measuring instruments
 Eleven voltmeters (one is missing today, only its bezel remains), a selector, a large rotary switch and small switches. They probably showed the supply voltages of the tubes; what each measured and the scales are GUESSED. The four top voltmeters are drawn with a 0–250 V scale (GUESSED).
 
+## The 3D view
+The **3D** button in the top bar shows the console as a three-dimensional model: “MECIPT-1” by marius0198 (Sketchfab, 2020, CC BY 4.0), the model the panels were redrawn from.
+
+- Rotate the console with the mouse or a finger, and zoom with the wheel or two fingers.
+- **The model’s lamps light up following the emulated machine**, just like on the drawn panels. Each of the 161 lamps is tied to its object in the model.
+- In 3D the console is only looked at: the model’s switches do not move. The controls are pressed in the 2D view (the **2D** button).
+- The model and the three.js library load only at the first press on 3D, about 4.5 MB. Without WebGL, the page stays in 2D and says why.
+
 ## The magnetic drum
 Below the console, next to the tape reader and the typewriter, the magnetic drum is drawn. It was the machine’s only memory: **1024 words of 31 bits**, written around a cylinder spinning **50 times a second**. The machine waited for each word to come under the heads. That is why it did about 50 instructions a second. The 50 Hz hum comes from here too.
 

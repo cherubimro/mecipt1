@@ -501,6 +501,16 @@
     "semantica"
    ]
   },
+  "view3d": {
+   "title": "Vederea 3D",
+   "short": "Butonul 3D arată pupitrul ca model tridimensional, pe care îl puteți roti și apropia; becurile lui se aprind după mașina emulată, la fel ca pe panourile desenate. Butonul 2D vă întoarce la pupitrul desenat.",
+   "more": "- **Modelul**: „MECIPT-1” de marius0198 (Sketchfab, 2020, CC BY 4.0), același din care s-au redesenat panourile; texturile panourilor laterale sunt cele ale modelului.\n- **Becurile** modelului (161, câte unul pentru fiecare bec al emulatorului) se aprind după aceeași stare a mașinii și cu aceeași inerție ca în 2D. Legătura bec–obiect vine din `positions.json`, unde fiecare bec păstrează numele obiectului din model.\n- În 3D pupitrul **doar se privește**: comutatoarele modelului nu se mișcă și nu se apasă; comenzile rămân în vederea 2D.\n- Rotire: mouse-ul sau un deget; apropiere: rotița sau două degete.\n- Modelul și biblioteca three.js (MIT) se încarcă abia la prima apăsare pe 3D (cam 4,5 MB). Dacă browserul nu are WebGL, pagina spune asta și rămâne în 2D.",
+   "status": "MIXT",
+   "sources": [
+    "model3d",
+    "semantica"
+   ]
+  },
   "drum": {
    "title": "Tamburul magnetic",
    "short": "Singura memorie a mașinii: un tambur care se rotea de 50 de ori pe secundă, cu 1024 de cuvinte de 31 de biți scrise magnetic jur-împrejurul lui. De la el vine zumzetul.",

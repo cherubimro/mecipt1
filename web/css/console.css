@@ -96,6 +96,11 @@ body:not([data-mode="atelier"]) .panels[data-view="all"] #panel-right { transfor
 @media (prefers-reduced-motion: reduce) { .switch .lever { transition: none; } }
 
 /* ---- perifericele ---- */
+.desk-3d { position: relative; height: min(62vh, 640px); min-height: 320px; background: var(--wall); border-radius: 3px; overflow: hidden; }
+.desk-3d canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
+.desk-3d-msg { position: absolute; left: 12px; bottom: 8px; right: 12px; margin: 0; font-size: 14px; color: var(--wall-text);
+  text-shadow: 0 1px 2px #000; pointer-events: none; }
+#view-3d[aria-pressed="true"] { background: var(--strip-ink); color: var(--strip); }
 .peripherals { display: grid; grid-template-columns: minmax(200px, 0.55fr) 1fr 1fr; gap: 24px; margin-top: 24px; align-items: start; }
 .device { background: #4a4f52; border-radius: 4px; padding: 12px 16px 14px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); }
 .device h2 { margin: 0 0 8px; font-size: 17px; font-weight: 500; color: #e3e5e2; }
