@@ -61,7 +61,7 @@ site: $(B)/mecipt.wasm
 	cp docs/semantica.en.md $(B)/site/doc/en/semantica.md
 
 serve: site
-	cd $(B)/site && python3 -m http.server 8000 --bind 127.0.0.1
+	python3 tools/serve.py $(B)/site 8000
 
 clean:
 	rm -rf $(B)

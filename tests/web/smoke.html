@@ -112,7 +112,7 @@ f.addEventListener('load', () => {
   await until(() => !d.getElementById('tour-next').disabled, 5000, 'turul: încărcarea programului nu se termină');
   d.getElementById('tour-next').click(); P.advance(50);
   if (!d.getElementById('switch-compute-0').classList.contains('tour-target')) fail('turul: ținta pasului run');
-  if (!d.getElementById('tour-next').disabled) fail('turul: Înainte ar trebui dezactivat cât pasul așteaptă');
+  if (d.getElementById('tour-next').disabled) fail('turul: la pasul run, Înainte trebuie să poată sări peste el');
   // vizitatorul alege alt program la pasul run: mașina se oprește fără să scrie; turul spune ce e de făcut
   await P.select('inex1');
   if (!P.tour.active || P.tour.step().id !== 'run') fail('turul s-a pierdut la schimbarea programului');

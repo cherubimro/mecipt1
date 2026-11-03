@@ -240,7 +240,7 @@ async function main() {
     $('tour-wait').hidden = !st.waitFor;
     $('tour-wait').textContent = tourStuck ? T().tourStuck : T().tourWaiting;
     $('tour-prev').disabled = tour.index === 0;
-    $('tour-next').disabled = !!st.waitFor || loading;
+    $('tour-next').disabled = loading;
     $('tour-next').textContent = tour.index + 1 === tour.steps.length ? T().tourDone : T().tourNext;
   }
   let tourStuck = false;

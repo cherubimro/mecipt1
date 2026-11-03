@@ -22,14 +22,16 @@ test('steps come in order', () => {
   assert.equal(t.index, RUN);
 });
 
-test('waiting step blocks next', () => {
+test('a waiting step advances by itself, and Next can skip it', () => {
   const t = new Tour(RO.tour);
   t.start();
   for (let i = 0; i < RUN; i++) t.next();
-  t.next();
   assert.equal(t.step().id, 'run');
   assert.equal(t.onEvent({ type: 'halted' }), false);
   assert.equal(t.onEvent({ type: 'typed' }), true);
+  assert.equal(t.step().id, 'typewriter');
+  t.prev();
+  t.next();                                   // vizitatorul nu vrea să ruleze: trece mai departe
   assert.equal(t.step().id, 'typewriter');
 });
 

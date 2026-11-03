@@ -30,7 +30,7 @@ pentru teste Node 20 și, opțional, Google Chrome/Chromium.
 make check        # nucleul: testele unitare și cele end-to-end
 make wasm         # build/mecipt.wasm (descarcă o dată wasi-sysroot 21, ≈ 5 MB, verificat cu sha256)
 make site         # build/site/: pagina statică completă
-make serve        # o servește pe http://127.0.0.1:8000/ (documentația: /doc.html)
+make serve        # o servește pe http://127.0.0.1:8000/ (documentația: /doc.html), fără cache în browser
 make tables       # regenerează web/data/core-tables.json din nucleu (verificat de make check)
 make web-check    # testele Node pe WASM-ul real + scenariul din Chrome fără ecran
 ```

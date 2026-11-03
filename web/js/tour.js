@@ -12,8 +12,9 @@ export class Tour {
   stop() { this.active = false; }
   step() { return this.active ? this.steps[this.index] : null; }
   waiting() { const s = this.step(); return !!(s && s.waitFor); }
+  // Un pas care așteaptă (de exemplu textul pe coală) trece singur mai departe; „Înainte” îl poate sări.
   next() {
-    if (!this.active || this.waiting()) return;
+    if (!this.active) return;
     this.advance();
   }
   prev() { if (this.active && this.index > 0) this.index--; }
