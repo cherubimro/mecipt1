@@ -75,6 +75,7 @@ export const STRINGS = {
       badAddr: 'Adresa trebuie să fie în octal, între 0000 și 1777.',
       empty: 'Tamburul e gol.',
     },
+    drum: { title: 'Tamburul: 1024 de cuvinte', empty: 'gol', legend: 'Literele: O original, D dedus, R reconstrucție, G ghicit, M modificat, P scris de program.' },
     words: plural('cuvânt', 'cuvinte', 'de cuvinte'),
     halt: {
       1: 'Oprit: instrucțiunea O (oprire).',
@@ -142,6 +143,7 @@ export const STRINGS = {
       badAddr: 'The address must be octal, between 0000 and 1777.',
       empty: 'The drum is empty.',
     },
+    drum: { title: 'The drum: 1024 words', empty: 'empty', legend: 'Letters: O original, D deduced, R reconstruction, G guessed, M modified, P written by the program.' },
     words: (n) => (n === 1 ? '1 word' : `${n} words`),
     halt: {
       1: 'Stopped: instruction O (halt).',
