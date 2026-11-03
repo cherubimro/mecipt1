@@ -10,6 +10,7 @@
 - **Vasile Baltac**, *Key Aspects of the History of Computing in Romania*.
 - **marius0198**, 3D model [“MECIPT-1”](https://sketchfab.com/3d-models/mecipt-1-62ddfc49f1c54967967d76abab5f3d2d), Sketchfab, 2020, CC BY 4.0 — panel textures and lamp positions.
 - **Turbojet**, [“MECIPT-1 Control desk”](https://commons.wikimedia.org/wiki/File:MECIPT-1_Control_desk.jpg), Wikimedia Commons, 2011, CC BY-SA 4.0 — the look and colours of the restored console.
+- **Turbojet**, [“MECIPT-1 Drum memory”](https://commons.wikimedia.org/wiki/File:MECIPT-1_Drum_memory.jpg) and [“MECIPT-1 Drum memory 2”](https://commons.wikimedia.org/wiki/File:MECIPT-1_Drum_memory_2.jpg), Wikimedia Commons, 2015, CC BY-SA 4.0 — the magnetic drum, at the Museum of Banat.
 
 ## Licences
 - The emulator code: **AGPL-3.0-or-later**.
