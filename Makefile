@@ -51,6 +51,9 @@ $(B)/mecipt.wasm: $(CORE_SRC) $(wildcard core/*.h) tools/fetch-wasi.sh
 	  $(WASI)/lib/wasi/libclang_rt.builtins-wasm32.a -o $@
 
 web-check: site
+	python3 tools/check_site.py --selftest
+	python3 tools/site_base_url.py --selftest
+	python3 tools/check_site.py $(B)/site
 	node --test tests/web/
 	sh tests/web-smoke.sh
 
@@ -63,6 +66,7 @@ site: $(B)/mecipt.wasm
 	cp programs/*.mec $(B)/site/programs/
 	cp docs/semantica.md $(B)/site/doc/ro/semantica.md
 	cp docs/semantica.en.md $(B)/site/doc/en/semantica.md
+	if [ -n "$(BASE_URL)" ]; then python3 tools/site_base_url.py $(B)/site "$(BASE_URL)"; fi
 
 serve: site
 	python3 tools/serve.py $(B)/site 8000

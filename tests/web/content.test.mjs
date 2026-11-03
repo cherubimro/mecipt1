@@ -84,3 +84,17 @@ test('LICENSE-CONTINUT numește fiecare program din catalog', () => {
   }
   assert.ok(!lic.includes('inex-banda-3-cuvinte.mec` e GHICITĂ, făcută pentru verificare'), 'banda de test nu mai e în pagină');
 });
+
+test('paginile au descriere, imagine de partajare, iconiță și mesaj fără JavaScript', () => {
+  for (const page of ['web/index.html', 'web/doc.html']) {
+    const h = read(page);
+    assert.match(h, /<meta name="description" content="[^"]{40,}">/, page);
+    assert.match(h, /<meta property="og:title" content="[^"]+">/, page);
+    assert.match(h, /<meta property="og:description" content="[^"]+">/, page);
+    assert.match(h, /<meta property="og:image" content="img\/mecipt-1\.png">/, page);
+    assert.match(h, /<link rel="icon" href="favicon\.svg" type="image\/svg\+xml">/, page);
+    assert.match(h, /<noscript>.*JavaScript.*<\/noscript>/, page);
+  }
+  assert.ok(read('web/favicon.svg').startsWith('<svg'));
+  assert.ok(readdirSync(`${ROOT}web/img`).includes('mecipt-1.png'));
+});

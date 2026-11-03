@@ -323,6 +323,43 @@ f.addEventListener('load', () => {
   if (d.getElementById('help-title').textContent !== helpRO.entries['atelier-controls'].title) fail('Explică pe Pas: ' + d.getElementById('help-title').textContent);
   P.explainMode(false); P.closeHelp();
   P.setMode('console'); P.advance(50);
+  stage('telefon');
+  // telefonul (390 px): fără derulare orizontală a paginii, un singur panou (cel drept), comutatoare de atins cu degetul
+  const openAt = async (width, height, search = '') => {
+    const h = document.createElement('iframe');
+    h.width = width; h.height = height;
+    document.body.append(h);
+    h.src = '../index.html' + search;
+    await until(() => h.contentWindow && h.contentWindow.__pupitru, 10000, 'pagina nu se încarcă la ' + width + ' px');
+    await h.contentWindow.__pupitru.ready;
+    h.contentWindow.__pupitru.advance(50);
+    return h;
+  };
+  const wide = (h) => h.contentDocument.documentElement.scrollWidth - h.contentDocument.documentElement.clientWidth;
+  const ph = await openAt(390, 800);
+  if (wide(ph) > 0) fail('pe telefon pagina derulează orizontal cu ' + wide(ph) + ' px');
+  if (ph.contentDocument.getElementById('panels').dataset.view !== 'right') fail('pe telefon: vederea ' + ph.contentDocument.getElementById('panels').dataset.view);
+  const lever = ph.contentDocument.getElementById('switch-compute-0').getBoundingClientRect();
+  if (Math.min(lever.width, lever.height) < 20) fail('comutatorul CALCULEAZA e prea mic pe telefon: ' + lever.width.toFixed(0) + '×' + lever.height.toFixed(0));
+  // butonul de pornire (marcat de îndrumare) se vede în rama panoului, fără derulare
+  const pd = ph.contentDocument, phFrame = pd.querySelector('.frame').getBoundingClientRect();
+  const cue = pd.getElementById('switch-compute-0').getBoundingClientRect();
+  if (cue.left < phFrame.left || cue.right > phFrame.right) fail(`pe telefon, CALCULEAZA nu se vede în ramă: ${cue.left.toFixed(0)}–${cue.right.toFixed(0)} în ${phFrame.left.toFixed(0)}–${phFrame.right.toFixed(0)}`);
+  // mașina de scris înaintea tamburului; rândurile lungi (60 de caractere la sinus) se derulează pe coală
+  if (pd.querySelector('.typewriter').getBoundingClientRect().top > pd.querySelector('.drum-device').getBoundingClientRect().top) fail('pe telefon, mașina de scris vine după tambur');
+  if (ph.contentWindow.getComputedStyle(pd.querySelector('.sheet-paper')).overflowX !== 'auto') fail('pe telefon, coala nu se derulează orizontal');
+  ph.contentWindow.__pupitru.setMode('atelier'); ph.contentWindow.__pupitru.advance(50);
+  if (wide(ph) > 0) fail('pe telefon, Atelierul derulează orizontal cu ' + wide(ph) + ' px');
+  ph.contentWindow.__pupitru.setMode('console');
+  ph.remove();
+  stage('lat-1280');
+  const mid = await openAt(1280, 900);
+  for (const m of ['console', 'both', 'atelier']) {
+    mid.contentWindow.__pupitru.setMode(m); mid.contentWindow.__pupitru.advance(50);
+    if (wide(mid) > 0) fail(`la 1280 px, vederea ${m} derulează orizontal cu ${wide(mid)} px`);
+  }
+  mid.contentWindow.__pupitru.setMode('console');
+  mid.remove();
   stage('documentatie');
   if (!d.getElementById('doc-link').getAttribute('href').startsWith('doc.html')) fail('linkul spre documentație');
   const g = document.createElement('iframe');
