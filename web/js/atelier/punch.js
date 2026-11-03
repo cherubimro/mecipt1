@@ -38,6 +38,7 @@ export function punchRange(machine, from, to) {
   const out = [];
   for (let a = from; a <= to && a < 1024; a++) {
     const w = machine.peek(a);
+    if (w >>> 30) { out.push(`= o${w.toString(8).padStart(11, '0')}`); continue; }   // cu semn: perforatorul avertizează
     const c2 = (w >>> 25) & 31, c1 = (w >>> 20) & 31, a2 = (w >>> 10) & 1023, a1 = w & 1023;
     out.push(`${c1.toString(8).padStart(2, '0')} ${oct4(a1)}  ${c2.toString(8).padStart(2, '0')} ${oct4(a2)}`);
   }
@@ -47,8 +48,16 @@ export function punchRange(machine, from, to) {
 // Unde scrie preîncărcătorul cuvintele: de la adresa instrucțiunii ME de la 0014 (adresa 1, m21–m30), crescător.
 export function inexPlan(machine, words) {
   const start = machine.peek(0o14) & 0o1777;
-  const end = start + Math.max(words, 1) - 1;
-  return { start, end, overwritesPreloader: start <= 0o15 && end >= 0o10 };
+  const n = Math.max(words, 1);
+  const end = (start + n - 1) & 0o1777;
+  // preîncărcătorul ocupă 0000–0001 (0001 e constanta cu care MS 0014 mărește adresa) și 0010–0015;
+  // adresa trece de la 1777 la 0000
+  let hit = false;
+  for (let i = 0; i < n && !hit; i++) {
+    const a = (start + i) & 0o1777;
+    hit = a <= 1 || (a >= 0o10 && a <= 0o15);
+  }
+  return { start, end, overwritesPreloader: hit };
 }
 
 export const INEX_PRELOADER = 'programs/inex1-preincarcator.mec';

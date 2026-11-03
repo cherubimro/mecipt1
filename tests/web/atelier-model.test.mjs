@@ -70,6 +70,18 @@ test('removed words come back as removals', async () => {
   assert.deepEqual(back.edits.entries().map((x) => [x.addr, x.removed]), [[0o1675, true]]);
 });
 
+
+test('a broken file is refused, not half-loaded', async () => {
+  const m = await fresh();
+  const e = new Edits('retiparire-1962', RETIPARIRE());
+  const typo = e.toMec('2026-11-03').replace(/^1500 .*$/m, '1500  UI 000O  CU 0000');
+  const r = Edits.fromMec(typo, catalogFor, m);
+  assert.ok(r.error && r.error.includes('linia'), JSON.stringify(r.error));
+  assert.equal(r.edits, undefined);
+  const three = Edits.fromMec('@prov GHICIT x\n100  O 0000  O 0000\n', catalogFor, m);
+  assert.deepEqual(three.edits.entries().map((x) => x.addr), [0o100]);
+});
+
 test('files from elsewhere are the visitor\'s', async () => {
   const m = await fresh();
   const back = Edits.fromMec('@prov ORIGINAL pretins\n0100  O 0000  O 0000\n0101 = 0,5\n', catalogFor, m);

@@ -53,6 +53,10 @@ API int api_assemble(void);             /* api_buf = partea de după adresă a u
 API uint32_t api_assembled(void);
 API int api_merge_program(void);        /* api_buf ca .mec, scris peste tamburul curent, fără reset; 0 sau −1 */
 API void api_reset_cpu(void);           /* registrele la zero, oprit; tamburul, proveniența și banda rămân */
-API int api_set_visitor_tape(int on);  /* efectul REAL sub variantele mașinii (14/15!); "" pentru coduri necunoscute */   /* fracția în complement față de unu (−0 → 0) */
+API int api_set_visitor_tape(int on);
+API uint32_t api_prov_version(void);    /* se schimbă la orice schimbare de proveniență */
+API int api_parse_only(void);           /* parsează api_buf ca .mec fără să atingă mașina; 0 sau −1 (api_error) */
+API uint32_t api_parsed_word(int addr);
+API int api_parsed_prov(int addr);  /* efectul REAL sub variantele mașinii (14/15!); "" pentru coduri necunoscute */   /* fracția în complement față de unu (−0 → 0) */
 
 #endif

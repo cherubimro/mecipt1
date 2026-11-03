@@ -23,13 +23,14 @@ export function setupAtelier(app) {
   const editor = new Editor($('at-editor'), {
     machine, tables, S: app.T(), lang: app.lang(),
     onEdit(addr, text, word) {
+      enter();                             // modificările salvate ajung pe tambur înaintea celei noi
       edits.set(addr, text, word);
-      applied = true;
       persist();
       runner.enqueue({ poke: { addr, word, prov: PROV_MODIFICAT } });
       dirty = true; showModified();
     },
     onRemove(addr) {
+      enter();
       edits.remove(addr);
       persist();
       runner.enqueue({ clear: addr });
@@ -56,6 +57,8 @@ export function setupAtelier(app) {
       const texts = new Map();
       for (const p of app.catalog) texts.set(p.id, await app.getText(`programs/${p.file}`));
       const r = Edits.fromMec(text, (id) => texts.get(id) ?? null, machine);
+      if (r.error) { editor.notice(app.T().openError(r.error)); return; }
+      editor.notice('');
       if (r.foreign) {
         await app.select(null, { original: true, empty: true });
         app.setForeign(true);
@@ -153,6 +156,7 @@ export function setupAtelier(app) {
   return {
     editor, drum, punch, setLang, afterLoad, enter, onFrame,
     markDirty() { dirty = true; },
+    removedCount() { return applied ? edits.entries().filter((e) => e.removed).length : 0; },
     get edits() { return edits; },
   };
 }

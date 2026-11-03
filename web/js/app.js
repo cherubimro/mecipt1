@@ -60,7 +60,7 @@ function setTexts() {
   $('status').textContent = T().loading;
 }
 
-function provenanceLabel(machine, hasTape, foreign) {
+function provenanceLabel(machine, tapeSource, foreign, removed) {
   const el = $('provenance');
   el.textContent = '';
   if (foreign) el.append(`${T().foreignFile} · `);
@@ -74,7 +74,15 @@ function provenanceLabel(machine, hasTape, foreign) {
     const src = p.kind === 'MODIFICAT' ? T().modifiedBy : p.source;
     el.append(k, ` — ${src}: ${T().words(p.words)}`);
   });
-  if (hasTape) el.append(` · ${T().tapeTest}`);
+  if (removed) {
+    const k = document.createElement('span');
+    k.className = 'kind kind-MODIFICAT';
+    k.dataset.help = 'prov-modificat';
+    k.textContent = T().prov.MODIFICAT;
+    el.append(' · ', k, ` — ${T().removedBy(removed)}`);
+  }
+  if (tapeSource === 'catalog') el.append(` · ${T().tapeTest}`);
+  if (tapeSource === 'visitor') el.append(` · ${T().visitorTape}`);
 }
 
 async function main() {
@@ -122,6 +130,8 @@ async function main() {
   }
 
   let current = null, tapeRows = new Uint8Array(0), smoothTape = 0, lastHalt = null, foreign = false;
+  let tapeSource = null;          // 'catalog' | 'visitor' | null: ce bandă e în cititor
+  let atelier = null, lastProvVersion = -1;
   // original: încarcă programul din catalog fără modificările vizitatorului (pupitrul, turul, „Revino la original”);
   // empty: tambur gol (fișier deschis care nu vine din catalog).
   async function select(id, { fromTour = false, original = false, empty = false } = {}) {
@@ -138,6 +148,7 @@ async function main() {
     runner.load(text, tape, start);
     current = p;
     foreign = false;
+    tapeSource = tape ? 'catalog' : null;
     if (!empty) $('program').value = p.id;
     atelier.afterLoad(empty ? null : p, text, { original: original || fromTour || mode === 'console', inAtelier: mode !== 'console' });
     tapeRows = machine.tape();
@@ -154,8 +165,9 @@ async function main() {
   }
   function describeProgram() {
     if (!current) return;
-    provenanceLabel(machine, !!current.tape, foreign);
-    $('tape-info').textContent = current.tape ? `${T().tapeRows(tapeRows.length)} · ${T().tapeTest}` : T().tapeEmpty;
+    provenanceLabel(machine, tapeSource, foreign, atelier ? atelier.removedCount() : 0);
+    $('tape-info').textContent = tapeSource === 'catalog' ? `${T().tapeRows(tapeRows.length)} · ${T().tapeTest}`
+      : tapeSource === 'visitor' ? `${T().tapeRows(tapeRows.length)} · ${T().visitorTape}` : T().tapeEmpty;
     for (const o of $('program').options) {
       const p = catalog.find((c) => c.id === o.value);
       o.textContent = lang === 'en' && p.title_en ? p.title_en : p.title;
@@ -347,7 +359,7 @@ async function main() {
   };
   document.querySelectorAll('input[name=speed]').forEach((r) => r.addEventListener('change', () => setSpeed(r.value)));
   // ---- Atelierul și vederile ----
-  const atelier = setupAtelier({
+  atelier = setupAtelier({
     machine, runner, tables, storage, catalog, getText,
     T, lang: () => lang,
     select, current: () => current,
@@ -361,7 +373,8 @@ async function main() {
     onTapeLoaded() {
       tapeRows = machine.tape();
       smoothTape = 0;
-      $('tape-info').textContent = `${T().tapeRows(tapeRows.length)} · ${T().visitorTape}`;
+      tapeSource = 'visitor';
+      describeProgram();
     },
     pulses(on) {
       if (on === runner.pulsesOff) { runner.enqueue({ ui: 'toggle-pulses' }); setLever('switch-pulses-0', !on); }
@@ -415,7 +428,9 @@ async function main() {
     const t = `${T().machineTime}: ${machine.seconds().toFixed(1)} s`;
     if ($('machine-time').textContent !== t) $('machine-time').textContent = t;
     if (help.open) help.setValue(valueOf(help.target));
-    if (snap.memFlash.write) atelier.markDirty();
+    // eticheta din bară urmează proveniența în orice vedere (MEMORIE SCRIERE, banda vizitatorului, editorul)
+    const pv = machine.provVersion();
+    if (pv !== lastProvVersion) { lastProvVersion = pv; describeProgram(); atelier.markDirty(); }
     atelier.onFrame(snap, dt, mode !== 'console');
   }
   let last = null;

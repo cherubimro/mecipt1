@@ -11,20 +11,16 @@ function wordLines(text) {
   const out = [];
   for (const raw of String(text).split('\n')) {
     const line = raw.replace(/;.*$/, '').trim();
-    const m = /^([0-7]{4})\s+(.+)$/.exec(line);
+    const m = /^([0-7]{1,4})\s+(.+)$/.exec(line);
     if (m) out.push({ addr: parseInt(m[1], 8), rest: m[2].trim() });
   }
   return out;
 }
 
-// Cuvintele unui text .mec, asamblate prin nucleu: Map addr → word.
+// Cuvintele unui text .mec, parsate de nucleu: Map addr → word (sau {error}).
 function wordsOf(text, machine) {
-  const words = new Map();
-  for (const { addr, rest } of wordLines(text)) {
-    const r = machine.assemble(rest);
-    if (!r.error) words.set(addr, r.word);
-  }
-  return words;
+  const r = machine.parseMec(text);
+  return r.error ? new Map() : r.words;
 }
 
 export class Edits {
@@ -70,21 +66,21 @@ export class Edits {
   }
 
   // Un fișier deschis nu e crezut pe cuvânt: cuvintele se compară cu programul din catalog.
+  // Un fișier pe care nucleul nu-l acceptă e refuzat întreg ({error}), ca să nu se încarce pe jumătate.
   static fromMec(text, catalogFor, machine) {
+    const parsed = machine.parseMec(text);
+    if (parsed.error) return { error: parsed.error };
     const m = /^;\s*mecipt-origin:\s*(\S+)/m.exec(text);
     const id = m ? m[1] : null;
     const original = id ? catalogFor(id) : null;
     const foreign = original === null || original === undefined;
     const edits = new Edits(foreign ? null : id, foreign ? '' : original);
     const orig = foreign ? new Map() : wordsOf(original, machine);
-    const seen = new Set();
-    for (const { addr, rest } of wordLines(text)) {
-      const r = machine.assemble(rest);
-      if (r.error) continue;
-      seen.add(addr);
-      if (!orig.has(addr) || orig.get(addr) !== r.word) edits.set(addr, rest, r.word);
+    const forms = new Map(wordLines(text).map((l) => [l.addr, l.rest]));   // forma scrisă, pentru fișierul următor
+    for (const [addr, word] of parsed.words) {
+      if (!orig.has(addr) || orig.get(addr) !== word) edits.set(addr, forms.get(addr) || `= o${word.toString(8).padStart(11, '0')}`, word);
     }
-    for (const addr of orig.keys()) if (!seen.has(addr)) edits.remove(addr);
+    for (const addr of orig.keys()) if (!parsed.words.has(addr)) edits.remove(addr);
     return { programId: edits.programId, edits, foreign };
   }
 

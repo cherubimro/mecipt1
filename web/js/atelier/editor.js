@@ -65,11 +65,19 @@ export class Editor {
       if (f && cb.onOpen) cb.onOpen(await f.text());
       e.target.value = '';
     });
+    this.q('.ed-rows').addEventListener('keydown', (e) => {
+      if (e.target.matches && e.target.matches('li[data-addr]') && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        this.edit(Number(e.target.dataset.addr));
+      }
+    });
     this.q('.ed-rows').addEventListener('click', (e) => {
       if (document.body.classList.contains('explaining')) return;   // modul Explică: doar explicația
       const li = e.target.closest('li[data-addr]');
       if (li && !e.target.closest('.ed-edit')) this.edit(Number(li.dataset.addr));
     });
+    this.keys = null;
+    this.sigs = new Map();
     this.setLang(lang, S);
   }
 
@@ -83,25 +91,65 @@ export class Editor {
     this.q('.ed-download').textContent = t.download;
     this.q('.ed-open-text').textContent = t.open;
     this.q('.ed-hint').textContent = t.hint;
+    this.keys = null;
     this.render();
   }
 
-  rowHtml(r) {
+  rowParts(r) {
     const f = formatWord(r.word, this.tables, (w) => this.machine.wordValue(w), this.lang);
     const kind = r.prov === 5 ? 'MODIFICAT' : r.written ? 'WRITTEN' : PROV[r.prov];
     const full = provLabel(r, this.S);
     const short = r.prov === 5 || r.written ? full : (this.S.prov[PROV[r.prov]] || '');
-    return `<li data-addr="${r.addr}" data-help="atelier-row" class="ed-row kind-${kind}" tabindex="0" title="${esc(full)}">`
-      + `<span class="ed-a">${oct(r.addr, 4)}</span><span class="ed-ins">${esc(f.ins)}</span>`
+    const inner = `<span class="ed-a">${oct(r.addr, 4)}</span><span class="ed-ins">${esc(f.ins)}</span>`
       + `<span class="ed-oct">${f.oct}</span><span class="ed-frac">= ${f.frac}</span>`
-      + `<span class="ed-prov">${esc(short)}</span></li>`;
+      + `<span class="ed-prov">${esc(short)}</span>`;
+    return { kind, full, inner, sig: `${r.word}|${r.prov}|${r.written ? 1 : 0}|${this.lang}` };
   }
 
+  rowHtml(r) {
+    const p = this.rowParts(r);
+    return `<li data-addr="${r.addr}" data-help="atelier-row" class="ed-row kind-${p.kind}" tabindex="0" title="${esc(p.full)}">${p.inner}</li>`;
+  }
+
+  // Lista se reconstruiește doar când se schimbă mulțimea adreselor; altfel se actualizează rândurile schimbate,
+  // ca focusul și un click în curs să nu se piardă cât rulează mașina.
   render() {
     if (this.editing !== null) return;            // nu stricăm rândul pe care îl scrie vizitatorul
     const rows = rowsFor(this.machine);
     const list = this.q('.ed-rows');
-    list.innerHTML = rows.length ? rows.map((r) => this.rowHtml(r)).join('') : `<li class="ed-empty">${esc(this.S.ed.empty)}</li>`;
+    const keys = rows.map((r) => r.addr).join(',');
+    if (keys !== this.keys) {
+      this.keys = keys;
+      this.sigs = new Map();
+      list.innerHTML = rows.length ? rows.map((r) => this.rowHtml(r)).join('') : `<li class="ed-empty">${esc(this.S.ed.empty)}</li>`;
+      for (const r of rows) this.sigs.set(r.addr, this.rowParts(r).sig);
+      return;
+    }
+    for (const r of rows) {
+      const p = this.rowParts(r);
+      if (this.sigs.get(r.addr) === p.sig) continue;
+      this.updateRow(r, p);
+    }
+  }
+
+  updateRow(r, p = this.rowParts(r)) {
+    const li = this.q(`li[data-addr="${r.addr}"]`);
+    if (!li) return;
+    li.className = `ed-row kind-${p.kind}`;
+    li.title = p.full;
+    li.innerHTML = p.inner;
+    this.sigs.set(r.addr, p.sig);
+  }
+
+  // După scriere sau renunțare: rândul își reia forma, iar focusul revine pe el.
+  restoreRow(addr) {
+    this.editing = null;
+    const r = rowsFor(this.machine).find((x) => x.addr === addr);
+    const li = this.q(`li[data-addr="${addr}"]`);
+    if (r && li) this.updateRow(r);
+    else { this.keys = null; this.render(); }
+    const again = this.q(`li[data-addr="${addr}"]`);
+    if (again) again.focus();
   }
 
   focusAddr(addr) {
@@ -154,7 +202,7 @@ export class Editor {
     li.querySelector('.ed-save').addEventListener('click', () => this.commit());
     li.querySelector('.ed-cancel').addEventListener('click', () => this.cancel());
     const rm = li.querySelector('.ed-remove');
-    if (rm) rm.addEventListener('click', () => { const a = this.editing; this.editing = null; this.cb.onRemove(a); this.render(); });
+    if (rm) rm.addEventListener('click', () => { const a = this.editing; this.editing = null; this.cb.onRemove(a); this.keys = null; this.render(); });
   }
 
   commit() {
@@ -164,10 +212,17 @@ export class Editor {
     const r = this.machine.assemble(text);
     const err = li.querySelector('.row-error');
     if (r.error) { err.textContent = r.error; err.hidden = false; return false; }   // tamburul nu se atinge
-    this.editing = null;
     this.cb.onEdit(addr, text, r.word);
+    this.restoreRow(addr);
     return true;
   }
 
-  cancel() { this.editing = null; this.render(); }
+  cancel() { const a = this.editing; this.restoreRow(a); }
+
+  // Mesaj deasupra listei (de exemplu un fișier care nu poate fi deschis).
+  notice(msg) {
+    const err = this.q('.ed-addr-error');
+    err.textContent = msg || '';
+    err.hidden = !msg;
+  }
 }

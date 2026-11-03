@@ -235,4 +235,38 @@ TEST(test_api_visitor_tape_flag) {
     CHECK_EQ_U(api_prov(0101), PROV_NONE);
 }
 
+TEST(test_api_prov_version_counts_changes) {
+    api_init();
+    put("@prov GHICIT t\n0000  U 0100  ME 0101\n0001  O 0001  O 0001\n0100 = 0,5\n");
+    api_load_program();
+    unsigned v0 = api_prov_version();
+    api_console(API_C_SWITCHES_RAI, 0200);
+    api_console(API_C_MEM_SCRIERE, 0);
+    CHECK(api_prov_version() != v0);
+    unsigned v1 = api_prov_version();
+    api_run(1e12, 10);                      /* scriere de program fără bandă de vizitator: proveniența nu se schimbă */
+    CHECK_EQ_U(api_prov_version(), v1);
+    api_set_visitor_tape(1);
+    api_console(API_C_SWITCHES_RAI, 0);
+    api_run(1e12, 10);
+    CHECK(api_prov_version() != v1);
+    unsigned v2 = api_prov_version();
+    api_poke(0300, 1, PROV_MODIFICAT);
+    CHECK(api_prov_version() != v2);
+}
+
+TEST(test_api_parse_only) {
+    api_init();
+    put("@prov ORIGINAL x\n100  O 0000  O 0000\n0101 = 0,5\n");
+    CHECK_EQ_U(api_parse_only(), 0);
+    CHECK_EQ_U(api_parsed_prov(0100), PROV_ORIGINAL);
+    CHECK_EQ_U(api_parsed_word(0101), 0x20000000u);
+    CHECK_EQ_U(api_parsed_prov(0102), PROV_NONE);
+    put("@prov ORIGINAL x\n1500  UI 000O  CU 0000\n");
+    CHECK(api_parse_only() == -1);
+    CHECK(strstr(api_error(), "linia 2") != NULL);
+    put("@prov ORIGINAL x\n2000  O 0000  O 0000\n");
+    CHECK(api_parse_only() == -1);
+}
+
 RUN_ALL()

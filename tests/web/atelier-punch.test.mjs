@@ -56,6 +56,29 @@ test('warns when the tape would overwrite the preloader', async () => {
   assert.equal(p.overwritesPreloader, false);
 });
 
+
+test('the preloader check covers 0000–0001 and the wrap past 1777', async () => {
+  const m = await newMachine();
+  m.loadProgram('');
+  m.mergeProgram(INEX());
+  m.poke(0o14, m.assemble('25 0000  01 0001').word);
+  assert.equal(inexPlan(m, 2).overwritesPreloader, true);
+  m.poke(0o14, m.assemble('25 1776  01 0001').word);
+  const p = inexPlan(m, 5);
+  assert.equal(p.overwritesPreloader, true);
+  m.poke(0o14, m.assemble('25 1770  01 0001').word);
+  assert.equal(inexPlan(m, 8).overwritesPreloader, false);
+});
+
+test('punchRange keeps the sign, so punchWords can warn', async () => {
+  const m = await newMachine();
+  m.loadProgram('');
+  m.poke(0o100, m.assemble('= -0,5').word);
+  const t = punchRange(m, 0o100, 0o100);
+  const p = punchWords(t, m);
+  assert.equal(p.signWarnings.length, 1);
+});
+
 test('the punched program loads through INEX-1', async () => {
   const m = await newMachine();
   m.loadProgram('');

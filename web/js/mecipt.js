@@ -133,5 +133,14 @@ export class Machine {
     if (this.exports.api_merge_program() < 0) throw new Error(this.cstr(this.exports.api_error()));
   }
   resetCpu() { this.exports.api_reset_cpu(); }
+  provVersion() { return this.exports.api_prov_version() >>> 0; }
+  // Un text .mec parsat de nucleu, fără să atingă mașina: {error} sau {words: Map(adresă → cuvânt)}.
+  parseMec(text) {
+    this.putText(text);
+    if (this.exports.api_parse_only() < 0) return { error: this.cstr(this.exports.api_error()) };
+    const words = new Map();
+    for (let a = 0; a < 1024; a++) if (this.exports.api_parsed_prov(a) !== 0) words.set(a, this.exports.api_parsed_word(a) >>> 0);
+    return { words };
+  }
   setVisitorTape(on) { this.exports.api_set_visitor_tape(on ? 1 : 0); }
 }

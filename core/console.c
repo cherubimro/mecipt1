@@ -24,6 +24,7 @@ void mec_c_introduce_M_in_RI(mecipt *m) {
 void mec_c_memorie_scriere(mecipt *m) {
     m->drum[m->RAI & 01777] = m->M & MEC_MASK31;
     m->prov[m->RAI & 01777] = PROV_MODIFICAT;   /* scrierea vine de la vizitator, de la pupitru */
+    m->prov_version++;
 }
 void mec_c_memorie_citire(mecipt *m)  { m->M = m->drum[m->RAI & 01777]; }
 

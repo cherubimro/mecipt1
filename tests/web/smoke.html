@@ -167,6 +167,13 @@ f.addEventListener('load', () => {
   click('switch-compute-0');
   await until(() => glow('lamp-indicators-1') > 0.5 && P.runner.machine.tapePos() === 18, 20000,
     () => `INEX: HIRTIA ${glow('lamp-indicators-1')}, banda ${P.runner.machine.tapePos()}, mod ${P.runner.mode}`);
+  stage('atelier-eticheta');
+  // eticheta din bară urmează proveniența în orice vedere: MEMORIE SCRIERE de la pupitru face cuvântul MODIFICAT
+  await P.select('retiparire-1962');
+  P.runner.enqueue({ op: 2, arg: 0o1551 });       // OP.SWITCHES_RAI
+  P.runner.enqueue({ op: 9 });                    // OP.MEM_SCRIERE
+  P.advance(50); P.advance(50);
+  if (!d.getElementById('provenance').textContent.includes('MODIFICAT')) fail('eticheta după MEMORIE SCRIERE în Pupitru: ' + d.getElementById('provenance').textContent);
   stage('atelier');
   // Atelierul: vederea, editorul, tamburul, proveniența MODIFICAT, revenirea la original, banda prin INEX-1
   const m = P.runner.machine;
@@ -202,6 +209,29 @@ f.addEventListener('load', () => {
   d.querySelector('#atelier .ed-revert').click();
   await until(() => m.provenance(0o1551).kind === 'RECONSTRUCTIE', 5000, 'Revino la original: ' + m.provenance(0o1551).kind);
   if (w.localStorage.getItem('mecipt.atelier.retiparire-1962') !== null) fail('modificările rămân în localStorage după revenire');
+  // ștergerea unui cuvânt original se vede în eticheta din bară
+  row(0o1500).click();
+  row(0o1500).querySelector('.ed-remove').click();
+  P.advance(50); P.advance(50);
+  if (!/șters/.test(d.getElementById('provenance').textContent)) fail('ștergerea nu apare în etichetă: ' + d.getElementById('provenance').textContent);
+  d.querySelector('#atelier .ed-revert').click();
+  await until(() => m.provenance(0o1500).kind === 'ORIGINAL', 5000, 'revenire după ștergere');
+  // tastatura: Enter pe un rând îl deschide; după scriere, focusul revine pe rând
+  P.advance(50);
+  row(0o1556).focus();
+  row(0o1556).dispatchEvent(new w.KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+  const kin = row(0o1556).querySelector('.ed-input');
+  if (!kin) fail('Enter pe rând nu deschide editarea');
+  kin.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  if (d.activeElement !== row(0o1556)) fail('focusul nu revine pe rând: ' + (d.activeElement && d.activeElement.tagName));
+  // rândurile nu se reconstruiesc cât rulează mașina (click-urile nu se pierd)
+  const keep = row(0o1477);
+  d.getElementById('at-run').click();
+  for (let i = 0; i < 12; i++) P.advance(50);
+  if (row(0o1477) !== keep) fail('editorul își reconstruiește rândurile cât rulează');
+  d.getElementById('at-stop').click(); P.advance(50);
+  d.querySelector('#atelier .ed-revert').click();
+  await until(() => !m.written(0o1512), 5000, 'revenire după rulare');
   // banda perforată de vizitator, încărcată cu preîncărcătorul original INEX-1
   const pu = (c) => d.querySelector('#atelier ' + c);
   pu('.pu-text').value = 'UI 0000  CU 0000\n= 0,25\n05 1626  25 1512';
@@ -209,6 +239,7 @@ f.addEventListener('load', () => {
   pu('.pu-load').click();
   pu('.pu-inex').click();
   await until(() => m.provenance(0o10).kind === 'ORIGINAL' && row(0o14), 5000, 'INEX-1 nu ajunge pe tambur');
+  if (!d.getElementById('tape-info').textContent.includes(P.runner.machine && 'vizitator')) fail('eticheta benzii: ' + d.getElementById('tape-info').textContent);
   await type(0o14, '25 1000  01 0001');
   if (!pu('.pu-where').textContent.includes('1000') || pu('.pu-where').classList.contains('pu-danger')) fail('planul INEX: ' + pu('.pu-where').textContent);
   const start = d.getElementById('at-start');
@@ -216,6 +247,9 @@ f.addEventListener('load', () => {
   start.dispatchEvent(new w.Event('change', { bubbles: true }));
   d.getElementById('at-run').click();
   await until(() => glow('lamp-indicators-1') > 0.5, 15000, 'banda nu se termină (HIRTIA): ' + m.tapePos());
+  P.advance(50); P.advance(300);
+  const nMod = [...Array(1024).keys()].filter((a) => m.provenance(a).kind === 'MODIFICAT').length;
+  if (!d.getElementById('provenance').textContent.includes(String(nMod))) fail(`eticheta după INEX: ${nMod} MODIFICAT, bara: ` + d.getElementById('provenance').textContent);
   const want = ['UI 0000  CU 0000', '= 0,25', '05 1626  25 1512'].map((t) => m.assemble(t).word);
   for (let i = 0; i < 3; i++) {
     if (m.peek(0o1000 + i) !== want[i] || m.provenance(0o1000 + i).kind !== 'MODIFICAT') fail(`INEX: cuvântul ${i} la ${(0o1000 + i).toString(8)}`);

@@ -20,7 +20,7 @@ static char srcs[64][96];
 static int nsrcs;
 static uint8_t src_of[1024];
 static uint32_t assembled;
-static mec_image tmp_img;
+static mec_image tmp_img, parsed_img;
 
 static void take_sources(const mec_image *im) {
     for (int a = 0; a < 1024; a++) {
@@ -176,11 +176,13 @@ int api_poke(int addr, uint32_t w, int prov) {
     m.drum[addr] = w & MEC_MASK31;
     m.prov[addr] = (mec_prov)prov;
     m.written[addr] = 0;
+    m.prov_version++;
     return 0;
 }
 int api_clear_word(int addr) {
     if (addr < 0 || addr > 1023) return -1;
     m.drum[addr] = 0; m.prov[addr] = PROV_NONE; m.written[addr] = 0;
+    m.prov_version++;
     return 0;
 }
 int api_assemble(void) {
@@ -212,6 +214,7 @@ int api_merge_program(void) {
         m.written[a] = 0;
     }
     take_sources(&tmp_img);
+    m.prov_version++;
     return 0;
 }
 void api_reset_cpu(void) {
@@ -223,3 +226,14 @@ int api_set_visitor_tape(int on) { m.visitor_tape = on ? 1 : 0; return 0; }
 int api_uop_id(int grid, int row, int col) { return mec_uop_id(grid, row, col); }
 double api_word_value(uint32_t w) { return mec_to_double(w & MEC_MASK31); }
 const char *api_op_effect(int code) { const char *e = mec_op_effect(code, &m.v); return e ? e : ""; }
+uint32_t api_prov_version(void) { return m.prov_version; }
+int api_parse_only(void) {
+    buf[BUF_SIZE - 1] = 0;
+    if (mec_program_parse(buf, &parsed_img)) {
+        memcpy(err, parsed_img.error, sizeof err); err[sizeof err - 1] = 0;
+        return -1;
+    }
+    return 0;
+}
+uint32_t api_parsed_word(int addr) { return (addr < 0 || addr > 1023) ? 0 : parsed_img.word[addr]; }
+int api_parsed_prov(int addr) { return (addr < 0 || addr > 1023) ? PROV_NONE : (int)parsed_img.prov[addr]; }
