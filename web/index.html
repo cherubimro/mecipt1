@@ -19,6 +19,8 @@
     <p id="provenance" class="provenance"></p>
   </div>
   <div class="bar-controls">
+    <div class="mode" id="mode" role="group" aria-labelledby="mode-label"><span id="mode-label" class="visually-hidden">Vederea</span>
+      <button id="mode-console" type="button" aria-pressed="true">Pupitru</button><button id="mode-atelier" type="button" aria-pressed="false">Atelier</button><button id="mode-both" type="button" aria-pressed="false">Ambele</button></div>
     <fieldset class="speed">
       <legend id="speed-label">Viteza</legend>
       <label><input type="radio" name="speed" value="epoca" checked> <span id="speed-epoca">ca în 1962</span></label>
@@ -51,6 +53,21 @@
       </div>
     </div>
   </div>
+  <section id="atelier" class="atelier" aria-label="Atelier">
+    <div class="at-controls">
+      <button id="at-reset" type="button" data-help="atelier-controls">Reset</button>
+      <button id="at-step" type="button" data-help="atelier-controls">Pas</button>
+      <button id="at-run" type="button" data-help="atelier-controls">Rulează</button>
+      <button id="at-stop" type="button" data-help="atelier-controls">Oprește</button>
+      <label><span id="at-start-label">Pornire de la (octal)</span> <input id="at-start" size="5" maxlength="4" inputmode="numeric"></label>
+      <p id="at-modified" class="at-modified" hidden><span id="at-modified-text"></span> <button id="at-revert-link" type="button"></button></p>
+    </div>
+    <div class="at-tools">
+      <div id="at-editor" class="at-tool at-editor"></div>
+      <div id="at-drum" class="at-tool at-drum" data-help="atelier-drum"></div>
+      <div id="at-punch" class="at-tool at-punch"></div>
+    </div>
+  </section>
   <div class="peripherals">
     <section class="device reader">
       <h2 id="reader-label">Cititorul de bandă perforată</h2>

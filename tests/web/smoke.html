@@ -167,6 +167,72 @@ f.addEventListener('load', () => {
   click('switch-compute-0');
   await until(() => glow('lamp-indicators-1') > 0.5 && P.runner.machine.tapePos() === 18, 20000,
     () => `INEX: HIRTIA ${glow('lamp-indicators-1')}, banda ${P.runner.machine.tapePos()}, mod ${P.runner.mode}`);
+  stage('atelier');
+  // Atelierul: vederea, editorul, tamburul, proveniența MODIFICAT, revenirea la original, banda prin INEX-1
+  const m = P.runner.machine;
+  await P.select('retiparire-1962');
+  P.setMode('atelier');
+  P.advance(50);
+  const vis = (id) => { const e = d.getElementById(id); return e && e.offsetParent !== null; };
+  if (!vis('atelier') || vis('panel-left') || !vis('panel-right')) fail('vederea Atelier: ' + [vis('atelier'), vis('panel-left'), vis('panel-right')]);
+  if (d.documentElement.scrollWidth > w.innerWidth + 1) fail('Atelierul cere derulare orizontală: ' + d.documentElement.scrollWidth);
+  const row = (a) => d.querySelector(`#atelier li[data-addr="${a}"]`);
+  const type = async (a, text) => {
+    if (!row(a)) fail('lipsește rândul ' + a.toString(8) + ' din editor; rânduri: ' + d.querySelectorAll('#atelier li[data-addr]').length);
+    row(a).click();
+    const inp = row(a).querySelector('.ed-input');
+    if (!inp) fail('rândul ' + a.toString(8) + ' nu se deschide pentru editare');
+    inp.value = text;
+    inp.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    P.advance(50); P.advance(50);
+  };
+  await type(0o1551, '= 0,25');
+  if (m.peek(0o1551) !== 0x10000000) fail('editorul nu scrie pe tambur: ' + m.peek(0o1551).toString(8));
+  if (!row(0o1551).textContent.includes('MODIFICAT')) fail('rândul nu arată MODIFICAT: ' + row(0o1551).textContent);
+  if (!d.querySelector('#atelier .cell[data-addr="873"]').getAttribute('class').includes('kind-MODIFICAT')) fail('celula 1551 nu e MODIFICAT');
+  if (!d.getElementById('provenance').textContent.includes('MODIFICAT')) fail('eticheta din bară: ' + d.getElementById('provenance').textContent);
+  row(0o1551).click();
+  const inp2 = row(0o1551).querySelector('.ed-input');
+  inp2.value = '= 2,5';
+  inp2.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+  const err = row(0o1551).querySelector('.row-error');
+  if (!err || err.hidden) fail('textul greșit nu arată eroare');
+  if (m.peek(0o1551) !== 0x10000000) fail('textul greșit a schimbat tamburul');
+  row(0o1551).querySelector('.ed-cancel').click();
+  d.querySelector('#atelier .ed-revert').click();
+  await until(() => m.provenance(0o1551).kind === 'RECONSTRUCTIE', 5000, 'Revino la original: ' + m.provenance(0o1551).kind);
+  if (w.localStorage.getItem('mecipt.atelier.retiparire-1962') !== null) fail('modificările rămân în localStorage după revenire');
+  // banda perforată de vizitator, încărcată cu preîncărcătorul original INEX-1
+  const pu = (c) => d.querySelector('#atelier ' + c);
+  pu('.pu-text').value = 'UI 0000  CU 0000\n= 0,25\n05 1626  25 1512';
+  pu('.pu-punch').click();
+  pu('.pu-load').click();
+  pu('.pu-inex').click();
+  await until(() => m.provenance(0o10).kind === 'ORIGINAL' && row(0o14), 5000, 'INEX-1 nu ajunge pe tambur');
+  await type(0o14, '25 1000  01 0001');
+  if (!pu('.pu-where').textContent.includes('1000') || pu('.pu-where').classList.contains('pu-danger')) fail('planul INEX: ' + pu('.pu-where').textContent);
+  const start = d.getElementById('at-start');
+  start.value = '0010';
+  start.dispatchEvent(new w.Event('change', { bubbles: true }));
+  d.getElementById('at-run').click();
+  await until(() => glow('lamp-indicators-1') > 0.5, 15000, 'banda nu se termină (HIRTIA): ' + m.tapePos());
+  const want = ['UI 0000  CU 0000', '= 0,25', '05 1626  25 1512'].map((t) => m.assemble(t).word);
+  for (let i = 0; i < 3; i++) {
+    if (m.peek(0o1000 + i) !== want[i] || m.provenance(0o1000 + i).kind !== 'MODIFICAT') fail(`INEX: cuvântul ${i} la ${(0o1000 + i).toString(8)}`);
+  }
+  // pupitrul încarcă originalul, chiar dacă există modificări salvate
+  await P.select('retiparire-1962');
+  await type(0o1551, '= 0,25');
+  P.setMode('console');
+  P.advance(50);
+  if (vis('atelier')) fail('Atelierul rămâne vizibil în vederea Pupitru');
+  await P.select('retiparire-1962');
+  if (m.provenanceSummary().some((e) => e.kind === 'MODIFICAT')) fail('pupitrul a încărcat versiunea modificată');
+  P.setMode('atelier'); P.advance(50);
+  if (m.provenance(0o1551).kind !== 'MODIFICAT' || !d.getElementById('at-modified') || d.getElementById('at-modified').hidden) fail('Atelierul nu oferă versiunea modificată');
+  d.querySelector('#atelier .ed-revert').click();
+  await until(() => m.provenance(0o1551).kind === 'RECONSTRUCTIE', 5000, 'a doua revenire');
+  P.setMode('console'); P.advance(50);
   stage('documentatie');
   if (!d.getElementById('doc-link').getAttribute('href').startsWith('doc.html')) fail('linkul spre documentație');
   const g = document.createElement('iframe');

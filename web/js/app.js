@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Pagina pupitrului: leagă mașina (WASM), bucla de cadre, panourile, banda și mașina de scris.
-import { loadMecipt, HALT } from './mecipt.js';
+import { loadMecipt, HALT, OP } from './mecipt.js';
+import { setupAtelier } from './atelier/page.js';
 import { Clock } from './clock.js';
 import { Runner } from './runner.js';
 import { renderPanel } from './panel.js';
@@ -41,6 +42,8 @@ function setTexts() {
   $('reload').textContent = T().reload;
   $('explain').textContent = T().explain;
   $('tour-start').textContent = T().tourStart;
+  for (const m of ['console', 'atelier', 'both']) $(`mode-${m}`).textContent = T().modes[m];
+  $('mode-label').textContent = T().modes.label;
   $('tour-prev').textContent = T().tourPrev;
   $('tour-close').textContent = T().tourClose;
   $('tour-wait').textContent = T().tourWaiting;
@@ -56,16 +59,18 @@ function setTexts() {
   $('status').textContent = T().loading;
 }
 
-function provenanceLabel(machine, hasTape) {
+function provenanceLabel(machine, hasTape, foreign) {
   const el = $('provenance');
   el.textContent = '';
+  if (foreign) el.append(`${T().foreignFile} · `);
   const parts = machine.provenanceSummary();
   parts.forEach((p, i) => {
     if (i) el.append(' · ');
     const k = document.createElement('span');
     k.className = `kind kind-${p.kind}`;
     k.textContent = T().prov[p.kind] ?? p.kind;
-    el.append(k, ` — ${p.source}: ${T().words(p.words)}`);
+    const src = p.kind === 'MODIFICAT' ? T().modifiedBy : p.source;
+    el.append(k, ` — ${src}: ${T().words(p.words)}`);
   });
   if (hasTape) el.append(` · ${T().tapeTest}`);
 }
@@ -114,15 +119,25 @@ async function main() {
     $('program').append(o);
   }
 
-  let current = null, tapeRows = new Uint8Array(0), smoothTape = 0, lastHalt = null;
-  async function select(id, { fromTour = false } = {}) {
+  let current = null, tapeRows = new Uint8Array(0), smoothTape = 0, lastHalt = null, foreign = false;
+  // original: încarcă programul din catalog fără modificările vizitatorului (pupitrul, turul, „Revino la original”);
+  // empty: tambur gol (fișier deschis care nu vine din catalog).
+  async function select(id, { fromTour = false, original = false, empty = false } = {}) {
     if (!fromTour) loadedFor = -1;   // vizitatorul a ales alt program: pasul turului care încarcă se reface
-    const p = catalog.find((c) => c.id === id) ?? catalog[0];
-    const [text, tape] = await Promise.all([getText(`programs/${p.file}`), p.tape ? getText(`programs/${p.tape}`) : null]);
+    let p, text, tape;
+    if (empty) {
+      p = { id: 'vizitator', title: '', start: '0000', tape: null };
+      text = ''; tape = null;
+    } else {
+      p = catalog.find((c) => c.id === id) ?? catalog[0];
+      [text, tape] = await Promise.all([getText(`programs/${p.file}`), p.tape ? getText(`programs/${p.tape}`) : null]);
+    }
     const start = parseInt(p.start, 8);
     runner.load(text, tape, start);
     current = p;
-    $('program').value = p.id;
+    foreign = false;
+    if (!empty) $('program').value = p.id;
+    atelier.afterLoad(empty ? null : p, text, { original: original || fromTour || mode === 'console', inAtelier: mode !== 'console' });
     tapeRows = machine.tape();
     smoothTape = 0;
     sheet.clear();
@@ -137,7 +152,7 @@ async function main() {
   }
   function describeProgram() {
     if (!current) return;
-    provenanceLabel(machine, !!current.tape);
+    provenanceLabel(machine, !!current.tape, foreign);
     $('tape-info').textContent = current.tape ? `${T().tapeRows(tapeRows.length)} · ${T().tapeTest}` : T().tapeEmpty;
     for (const o of $('program').options) {
       const p = catalog.find((c) => c.id === o.value);
@@ -304,6 +319,43 @@ async function main() {
     if (r) r.checked = true;
   };
   document.querySelectorAll('input[name=speed]').forEach((r) => r.addEventListener('change', () => setSpeed(r.value)));
+  // ---- Atelierul și vederile ----
+  const atelier = setupAtelier({
+    machine, runner, tables, storage, catalog, getText,
+    T, lang: () => lang,
+    select, current: () => current,
+    describe: () => describeProgram(),
+    setForeign(on) { foreign = on; describeProgram(); },
+    setStartRai(addr) {
+      for (let i = 0; i < 10; i++) switches.RAI[i] = (addr >> (9 - i)) & 1;
+      showSwitchWord('RAI', switches.RAI);
+      runner.enqueue({ op: OP.SWITCHES_RAI, arg: addr });
+    },
+    onTapeLoaded() {
+      tapeRows = machine.tape();
+      smoothTape = 0;
+      $('tape-info').textContent = `${T().tapeRows(tapeRows.length)} · ${T().visitorTape}`;
+    },
+    pulses(on) {
+      if (on === runner.pulsesOff) { runner.enqueue({ ui: 'toggle-pulses' }); setLever('switch-pulses-0', !on); }
+    },
+  });
+  langListeners.push(() => atelier.setLang());
+  const MODES = ['console', 'atelier', 'both'];
+  let mode = (() => { try { const v = storage && storage.getItem('mecipt.view'); return MODES.includes(v) ? v : 'console'; } catch { return 'console'; } })();
+  function setMode(m) {
+    if (!MODES.includes(m)) return;
+    mode = m;
+    document.body.dataset.mode = m;
+    for (const x of MODES) $(`mode-${x}`).setAttribute('aria-pressed', String(x === m));
+    try { if (storage) storage.setItem('mecipt.view', m); } catch { /* nu se ține minte */ }
+    if (m !== 'console') atelier.enter();
+    atelier.markDirty();
+  }
+  for (const x of MODES) $(`mode-${x}`).addEventListener('click', () => setMode(x));
+  document.body.dataset.mode = mode;
+  for (const x of MODES) $(`mode-${x}`).setAttribute('aria-pressed', String(x === mode));
+
   const setView = (name) => {
     $('panels').dataset.view = name;
     $('view').value = name;
@@ -336,6 +388,8 @@ async function main() {
     const t = `${T().machineTime}: ${machine.seconds().toFixed(1)} s`;
     if ($('machine-time').textContent !== t) $('machine-time').textContent = t;
     if (help.open) help.setValue(valueOf(help.target));
+    if (snap.memFlash.write) atelier.markDirty();
+    atelier.onFrame(snap, dt, mode !== 'console');
   }
   let last = null;
   function frame(now) {
@@ -346,7 +400,8 @@ async function main() {
 
   await select(catalog[0].id);
   requestAnimationFrame(frame);
-  return { runner, select, setSpeed, setView, setLang, sheet, advance, explain, explainMode, closeHelp: () => help.close(), tour: tourApi };
+  return { runner, select, setSpeed, setView, setLang, sheet, advance, explain, explainMode, closeHelp: () => help.close(), tour: tourApi,
+    setMode, atelier };
 }
 
 const api = {};

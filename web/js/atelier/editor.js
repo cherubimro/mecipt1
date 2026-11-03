@@ -89,10 +89,12 @@ export class Editor {
   rowHtml(r) {
     const f = formatWord(r.word, this.tables, (w) => this.machine.wordValue(w), this.lang);
     const kind = r.prov === 5 ? 'MODIFICAT' : r.written ? 'WRITTEN' : PROV[r.prov];
-    return `<li data-addr="${r.addr}" data-help="atelier-row" class="ed-row kind-${kind}" tabindex="0">`
+    const full = provLabel(r, this.S);
+    const short = r.prov === 5 || r.written ? full : (this.S.prov[PROV[r.prov]] || '');
+    return `<li data-addr="${r.addr}" data-help="atelier-row" class="ed-row kind-${kind}" tabindex="0" title="${esc(full)}">`
       + `<span class="ed-a">${oct(r.addr, 4)}</span><span class="ed-ins">${esc(f.ins)}</span>`
       + `<span class="ed-oct">${f.oct}</span><span class="ed-frac">= ${f.frac}</span>`
-      + `<span class="ed-prov">${esc(provLabel(r, this.S))}</span></li>`;
+      + `<span class="ed-prov">${esc(short)}</span></li>`;
   }
 
   render() {
