@@ -11,6 +11,7 @@ import { Sheet, renderSheet } from './typewriter.js';
 import { S } from './strings.js';
 import { pickLang, saveLang } from './lang.js';
 import { HelpPanel } from './help.js';
+import { renderMarkdown } from './md.js';
 import { Tour } from './tour.js';
 import { describeValue } from './values.js';
 
@@ -160,7 +161,7 @@ async function main() {
   const help = new HelpPanel({
     panel: $('help-panel'), title: $('help-title'), status: $('help-status'), short: $('help-short'),
     value: $('help-value'), moreBtn: $('help-more-btn'), more: $('help-more'), close: $('help-close'),
-  }, { onClose: () => document.body.classList.remove('help-open') });
+  }, { render: renderMarkdown, onClose: () => document.body.classList.remove('help-open') });
   const valueOf = (id) => (lastSnap ? describeValue(id, lastSnap.state, {
     tables, wordValue: (w) => machine.wordValue(w), uopIndex, uops: lastSnap.uops, lang,
     mode: runner.mode, pulsesOff: runner.pulsesOff,

@@ -136,6 +136,19 @@ f.addEventListener('load', () => {
   click('switch-compute-0');
   await until(() => glow('lamp-indicators-1') > 0.5 && P.runner.machine.tapePos() === 18, 20000,
     () => `INEX: HIRTIA ${glow('lamp-indicators-1')}, banda ${P.runner.machine.tapePos()}, mod ${P.runner.mode}`);
+  stage('documentatie');
+  if (!d.getElementById('doc-link').getAttribute('href').startsWith('doc.html')) fail('linkul spre documentație');
+  const g = document.createElement('iframe');
+  g.width = 1200; g.height = 800;
+  document.body.append(g);
+  const docText = () => (g.contentDocument && g.contentDocument.getElementById('doc-content') || {}).innerHTML || '';
+  g.src = '../doc.html?lang=ro#05-banda-si-masina-de-scris';
+  await until(() => docText().includes('perforația') && docText().includes('<table>'), 10000, () => 'capitolul 05: ' + docText().slice(0, 120));
+  if (!docText().includes('10101')) fail('exemplul de bandă lipsește');
+  g.src = '../doc.html?lang=en#05-banda-si-masina-de-scris';
+  await until(() => docText().includes('punched'), 10000, () => 'capitolul 05 în engleză: ' + docText().slice(0, 120));
+  g.src = '../doc.html?lang=ro#semantica';
+  await until(() => docText().includes('Pupitrul web'), 10000, () => 'semantica: ' + docText().slice(0, 120));
   if (errors.length) fail('erori în pagină: ' + errors.join(' | '));
   out.textContent = 'SMOKE OK';
 })().catch((e) => { if (!out.textContent.startsWith('SMOKE FAIL')) out.textContent = 'SMOKE FAIL: ' + e; });

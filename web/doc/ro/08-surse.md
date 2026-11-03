@@ -1,0 +1,18 @@
+# Surse și licențe
+
+## Surse
+- **Vasile Baltac**, *MECIPT – Mașina Electronică de Calcul a Institutului Politehnic din Timișoara – Evocări și Documente*, 2011 — facsimilele 3 (tabelul de sinus), 4 (retipărirea, 6.09.1962), 5 (INEX-1), 8 (tamburul), 11 (ferite). Facsimilele nu sunt reproduse aici.
+- **Vasile Baltac**, lucrările de laborator la MECIPT-1, 1965–1966 — paginile păstrate din Lucrările 7 și 8.
+- **A. Geier**, „Programarea calculatorului electronic cifric MECIPT I în regimul virgulă mobilă”, *Buletinul Științific și Tehnic al IPT*, 1961 — tabelul instrucțiunilor, prin Wikipedia RO.
+- **Wikipedia în limba română**, articolul [MECIPT](https://ro.wikipedia.org/wiki/MECIPT).
+- **Dan D. Farcaș**, *MECIPT, o istorie subiectivă*, 2005.
+- **Ștefan Mărușter**, *Povestea unei lucrări*.
+- **Vasile Baltac**, *Key Aspects of the History of Computing in Romania*.
+- **marius0198**, modelul 3D [„MECIPT-1”](https://sketchfab.com/3d-models/mecipt-1-62ddfc49f1c54967967d76abab5f3d2d), Sketchfab, 2020, CC BY 4.0 — texturile panourilor și pozițiile becurilor.
+- **Turbojet**, [„MECIPT-1 Control desk”](https://commons.wikimedia.org/wiki/File:MECIPT-1_Control_desk.jpg), Wikimedia Commons, 2011, CC BY-SA 4.0 — aspectul și culorile pupitrului restaurat.
+
+## Licențe
+- Codul emulatorului: **AGPL-3.0-or-later**.
+- Conținutul (programele transcrise, desenul pupitrului, datele, textele ajutorului și ale acestei documentații): **CC BY-SA 4.0**.
+- Modelul 3D (CC BY 4.0) și fotografia (CC BY-SA 4.0) sunt folosite cu atribuire.
+- Fonturile Barlow Semi Condensed și Courier Prime: **SIL Open Font License 1.1**.

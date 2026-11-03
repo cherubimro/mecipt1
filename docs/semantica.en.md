@@ -1,0 +1,128 @@
+# Emulator semantics — what is certain, deduced or guessed
+
+*English translation of `docs/semantica.md`; the Romanian file is the reference. Keep both in step: every section has the same table rows.*
+
+Every choice without an explicit source is listed here, with its reason and, where there is one, the oracle that supports it. In the code it appears as `// GHICIT:` (guessed) or `// DEDUS:` (deduced).
+
+## The word and the instructions
+| Choice | Status | Justification |
+|---|---|---|
+| m0 = sign, m30 = least significant bit | CERTAIN | Lab sheet 7 p.1; the M panel numbered 0–30 |
+| Fields: m1–m5 code 2 · m6–m10 code 1 · m11–m20 address 2 · m21–m30 address 1 | CERTAIN | Lab sheet 7 p.1; the right-panel labels |
+| Period listings print (code 1, address 1) first | DEDUCED | The INEX-1 preloader: the sentinel −mem[1] = −1 only works if the address printed first is m21–m30 |
+| Instruction 1 runs first, then 2, then RAI + 1 | DEDUCED | Lab sheet 7 p.6: “instruction 2 moves into the place of instruction 1”, “RAI+1→RAI”; the logic of INEX-1 |
+| Word 0001 of INEX-1 = 00 0001 00 0000 | DEDUCED | a digit corrected by hand; only 0000 makes MS 0014 advance the ME address correctly |
+
+## Instructions
+| Choice | Status | Justification |
+|---|---|---|
+| `O y`: halt, RAI ← y (a restart continues from y) | CERTAIN | Geier’s table: “on restart, continue from y” |
+| −0 counts as zero for TPO, TN, TO | GUESSED | ones’ complement has two zeros; a visitor computing x − x must see “zero” |
+| `MS y`: S ← s + y and y ← S | DEDUCED — reprinting oracle | the table says “Y ← s + y”; the 1962 program tests S right after `MS 1625` |
+| `UI y`: I ← bits m1–m30 of y | GUESSED | I has 30 bits |
+| Codes 29–31: halt with OPRIT | GUESSED | they are not in the table |
+| The instruction is read from the drum when it executes (self-modifying code works) | DEDUCED | INEX-1 uses `MS 0014` on its own instruction |
+
+## Timing
+| Choice | Status | Justification |
+|---|---|---|
+| 1024 word times per revolution, 50 rev/s | CERTAIN | Romanian Wikipedia, Baltac |
+| Every access waits for the word’s position, then `exec_ticks` = 3 | GUESSED (the value 3) | — |
+| Interleaving: even addresses in slots 0–511, odd in 512–1023 | DEDUCED | Baltac, facsimile 8 (“even addresses on one half of the drum and odd ones on the other”) |
+| **Check:** a typical program (summing a table) runs at **50.6 instr/s** without interleaving and **60.7** with it | — | the sources: 50, and 70–80 (for programs laid out on purpose); the model was not tuned to these figures |
+
+## Shifts, multiplication, division
+| Choice | Status | Justification |
+|---|---|---|
+| Logical shift: the sign takes part, bits shifted out are lost, zeros come in | GUESSED (sign handling) | the table: “logical shift” |
+| DLS/DLD on S & I as one 61-bit register (S high, I low) | DEDUCED | the table: “S & I”; IN puts the double product in S & I |
+| Number of places = the field (not 32 − the field) | DEDUCED — INEX-1 oracle | see “The INEX-1 oracle” below; the “32−n” note in Geier/Wikipedia remains unexplained (perhaps base-32 notation, perhaps only DS/DD) |
+| IN: sign and high part in S, low part in I, both complemented for a negative result | GUESSED | — |
+| INR: round half up | GUESSED | — |
+| D: I ← quotient (30 bits), S ← remainder with the sign of s; \|s\| ≥ \|y\| → overflow (DCR) | GUESSED (the form of the remainder) | the table: “I ← s : y, S ← remainder” |
+
+## Peripherals
+| Choice | Status | Justification |
+|---|---|---|
+| CIT: one tape row, inverted (hole = 0), right-aligned, the rest of the word 0 | CERTAIN / DEDUCED (rest = 0) | Romanian Wikipedia (Baltac, L5); Geier’s table |
+| End of tape or no reader → HÂRTIA AGĂȚATĂ (paper jammed), halt | DEDUCED | the “HÂRTIA AGĂȚATĂ” lamp on the console |
+| AC 0136 prints the digit in s0 s1 s2 s3; AC 0133 the letter in s0 … s4 | CERTAIN (the bits) / GUESSED (the glyphs) | Geier’s table; 16 numeric characters, 30 letters with ă î ș ț |
+| Glyphs of digits 10–15: space , - newline . + | GUESSED | the reprinting program uses two codes from 10–15 (space and newline); which code is which cannot be deduced |
+| Letters: A Ă B C D E F G H I Î J K L M N O P Q R S Ș T Ț U V W X Y Z, then space, newline | GUESSED | 30 letters = the Romanian alphabet without Â |
+| AC 0151: S ← I (positive) | GUESSED (the sign) | the table: “S ← i” |
+| One character at the reader/typewriter ≈ 0.1 s | GUESSED | the order of magnitude of a teleprinter |
+| Program tape: one word = 6 characters of 5 bits (m1–m30) | DEDUCED | Geier: “two 15-bit instructions … by just six characters” |
+
+## The console
+| Choice | Status | Justification |
+|---|---|---|
+| The switches under M load register M directly | DEDUCED | the M lamps are paired with switches (Farcaș; Romanian Wikipedia) |
+| MEMORIE SCRIERE (write): drum[RAI] ← M; CITIRE (read): M ← drum[RAI]; immediately | DEDUCED | the inscriptions of the MEMORIE group; RAI has switches |
+| “INTRODUCE 7 CATEG. DIN RA ÎN R I” (enter 7 bits of RA into R I): R I ← 7 bits of RA | DEDUCED | “7 categories” = 7 bits = the width of R I |
+| “INTRODUCE M ÎN RI” (enter M into RI): RI ← the current instruction in M | DEDUCED | inscription |
+| CALCULEAZĂ AUTOMAT / INSTRUCȚIE UNICĂ (compute: automatic / single instruction) | CERTAIN (existence) / DEDUCED (effect) | inscription; lab sheet 7 p.6 |
+
+## Micro-operations (the left-panel lamps)
+| Choice | Status | Justification |
+|---|---|---|
+| The 39 micro-operations and their texts | CERTAIN (where not `[?]`) | the panel inscriptions (3D model textures) |
+| At every micro-operation: R I → R II, the new address into R I | DEDUCED | Lab sheet 7 p.3: “the odd-rhythm pulses move the content of register R1 into R2” |
+| The micro-operation sequences per instruction (`MEC_UOP_SEQ`) | DEDUCED | composed from the panel’s micro-operations; the real order has not survived (lab sheet 7 pp.2–4 missing). Addition was hard-wired and has no lamp of its own |
+| The AC microprograms (94 → 90 → 24, 91 → 90 → 24) | CERTAIN (lab sheet 7 p.6) | they are microprogram addresses, not grid cells; not yet emitted in the trace |
+
+## The INEX-1 oracle (the original preloader, facsimile 5)
+`build/mecvariants inex` runs the original preloader on a tape of 3 known words, under all 8 combinations:
+
+| shift | pair order | code 14 | result |
+|---|---|---|---|
+| **n = the field** | **1 first** | **jumps on s < 0** | **SUCCEEDS** |
+| the other 7 combinations | | | fail |
+
+Conclusions (DEDUCED, confirmed by the original code):
+- the number of shift places is the address field itself;
+- instruction 1 runs first (code 1 = m6–m10, address 1 = m21–m30, printed first in the listing);
+- **code 14 (octal 16) jumps when S is negative**, and code 15 (octal 17) when S ≥ 0 — the opposite of Geier’s table as it appears on Wikipedia (14 = TPO “s ≥ 0”, 15 = TN “s < 0”). Either the table rows are swapped in the transcription, or the sign convention differs. **An open question, to be checked in Geier 1961 / the lab sheets.** The mnemonics stay as in the table; the `branch14_on_negative` variant controls the direction.
+- How the preloader works: S starts at −1 (a sentinel), receives 5 bits per character and shifts by 5; after 6 characters the sentinel (bit 0) reaches the sign position and S becomes positive → the loop stops, the word (m0 = 0, m1–m30 = the 6 characters) is stored, and `MS 0014` advances the store address.
+
+## The reprinting oracle (the program of 6 Sept 1962, facsimile 4)
+The original program, with 7 reconstructed constants (1551, 1556, 1557, 1600, 1625, 1626, 1675), started at 1477, **prints its own listing (1477–1545, 39 lines) character for character identical to the facsimile**, in ≈ 114 s of simulated time (`tests/test_retiparire.c`).
+
+It independently confirms:
+- the shift by n = the field: each octal digit is extracted with `DLD 1` / print s0…s3 / `DLS 4`;
+- **code 15 (octal 17) jumps on s ≥ 0**: the loop `MS 1625` / `17 1477` continues while the counter is ≥ 0 — the same 14/15 swap as in INEX-1;
+- AC 0136 prints the digit in s0…s3 (with s0 = 0 for octal digits);
+- the period listing format `AAAA  c1 aaaa  c2 aaaa` was the output of this very program.
+
+It also shows:
+- **MS also leaves the result in S** (otherwise the loop would stop after the first line).
+
+Still guessed: the exact codes for space and newline (10 and 13 here) and the mask 1600 (chosen to clear address 1).
+
+## After the final review
+- `mec_op_effect(code, variants)` gives the **real** effect of codes 14/15 under the active variant; interfaces must use it instead of the table text.
+- −0 is displayed as “0” (`mec_to_double`).
+- The “2(ra) goes into RAI” lamp lights only when the jump is actually taken.
+- Fractions in `.mec` files are read with our own parser (`0,5` or `0.5`), independent of locale; `nan`, `inf`, `0x…`, `1e…` are rejected.
+- Word 0001 of INEX-1 has the provenance DEDUCED (the digit corrected by hand).
+
+## The web console
+The choices made for the console page (`web/js/bindings.js`, `web/js/glow.js`, `web/data/`), each with its status.
+
+| Choice | Status | Reason / source |
+|---|---|---|
+| Lever up = 1, down = 0 (the M and RAI switches) | GUESSED | No source gives the direction; it is the usual convention. |
+| Momentary (spring back after 150 ms): ANULEAZA, INTRODUCE, INSTRUCTIA 1/2, MEMORIE SCRIERE/CITIRE, SE OPRESTE / NU SE OPRESTE, CALCULEAZA AUTOMAT / INSTRUCTIE UNICA. Latching: the M, RAI and IMPULSURI switches | GUESSED | The commands are momentary actions; M and RAI hold a word / an address. |
+| ADUNARE 1, M+S 2, MEMORIE TAMBUR, MEMORIE FERITE, the generator switches and knob do nothing | GUESSED | Their function is undocumented (FERITE: the ferrite memory, unfinished in 1962–1963). |
+| IMPULSURI — INTRERUPE (interrupt) stops the machine and lights OPRIT; pressing again (RESTABILESTE, restore) lets it start again | GUESSED | From the inscription. |
+| The MEMORIE lamps (SCRIERE red square, CITIRE blue square) flash on writing/reading from the console | GUESSED | On the panel they sit next to those buttons. |
+| The INSTRUCTIA 1/2 lamps show the phase (first / second instruction of the word); MEMORIE TAMBUR lit, FERITE off | DEDUCED | The inscriptions; the machine worked only with the drum. |
+| The generator lamps: 1, 3, 5 lit (fixed); the three pilot lamps in the middle of the left panel: off | GUESSED | What they showed is unknown. |
+| SE OPRESTE / NU SE OPRESTE lights the lamp of the chosen overflow behaviour | DEDUCED | The inscription “IN CAZ DE DEPASIREA CAPACITATII REGISTRULUI” (on register overflow). |
+| Lamp colours (M green; RI green, green, amber, red, red, then green; R I white, white, then red; RA, RAI, R II red; micro-operations white; MEMORIE red/blue squares; IMPULSURI and overflow red/green; CALCULEAZA green) | CERTAIN | The 2011 photograph (Turbojet, Wikimedia, CC BY-SA 4.0). |
+| Face colour: side panels cream (#e2dcc2), middle panel blue (#4a7cad) | CERTAIN (approximated) | The 2011 photograph; the 3D model textures look greenish because of the lighting. |
+| Lamp inertia: lighting τ = 25 ms, going out τ = 70 ms | GUESSED | A small filament lamp. |
+| The second meter of row 2 (missing today) is drawn | DEDUCED | The empty bezel in 2011; the 1961 photograph shows it. The scales and needles are GUESSED. |
+| The top-row voltmeters have a 0–250 V scale | GUESSED | The 2011 photograph shows 5–6 figures, the last with three digits, but they cannot be read; 250 V is the user’s recollection and matches tube anode voltages. The other dials: graduations only. |
+| A micro-operation lamp lights if the micro-operation ran at least once since the previous frame | GUESSED | At 50 instr/s the eye sees the lamps pulsing; see also the inertia. |
+| Loading a program (and Reload) restores the pulses (IMPULSURI on RESTABILESTE) | GUESSED | A clean start; otherwise the visitor is left with a stopped machine without knowing why. |
+| The M and RAI switches latch and put the whole word into the register at every move | GUESSED, in tension with the sources | The ANULEAZA M / RAI (clear) buttons and “three-finger” entry suggest that the switches may have added bits into a register cleared beforehand. To be decided before the guided tour (Plan 4) teaches the operating procedure. |

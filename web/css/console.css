@@ -137,3 +137,27 @@ body.explaining .room, body.explaining .room * { cursor: help !important; }
 .tour-target:not(g) { outline: 4px solid var(--focus); outline-offset: 3px; }
 g.tour-target { filter: drop-shadow(0 0 5px #f2c230) drop-shadow(0 0 3px #f2c230); }
 .switch.tour-target .focus-ring { stroke: var(--focus); }
+
+/* ---- pagina de documentație ---- */
+body.doc-page { min-width: 0; background: #e9ebe8; color: #1f2a33; }
+.doc-bar { grid-template-columns: 1fr auto auto; }
+.doc-bar a { color: #24496f; }
+.lang-link { display: inline-block; padding: 3px 10px; border: 1px solid #8f969a; color: var(--strip-ink); text-decoration: none; background: #f6f7f5; }
+.lang-link + .lang-link { border-left: 0; }
+.lang-link[aria-current="true"] { background: var(--strip-ink); color: var(--strip); }
+.doc-layout { display: grid; grid-template-columns: minmax(200px, 270px) minmax(0, 1fr); gap: 28px; max-width: 1180px; margin: 0 auto; padding: 22px 24px 48px; }
+.doc-toc h2 { font-size: 16px; font-weight: 500; margin: 0 0 8px; }
+.doc-toc ol { margin: 0; padding-left: 20px; line-height: 1.6; }
+.doc-toc a { color: #24496f; }
+.doc-toc a[aria-current] { font-weight: 500; color: #1f2a33; text-decoration: none; }
+.doc-content { max-width: 80ch; font-size: 16.5px; line-height: 1.55; outline: none; }
+.doc-content h1 { font-size: 30px; font-weight: 500; margin: 0 0 14px; }
+.doc-content h2 { font-size: 21px; font-weight: 500; margin: 26px 0 8px; }
+.doc-content h3 { font-size: 17.5px; font-weight: 500; margin: 20px 0 6px; }
+.doc-content table { border-collapse: collapse; margin: 10px 0 16px; font-size: 14.5px; background: #f6f7f5; }
+.doc-content th, .doc-content td { border: 1px solid #b4b9b6; padding: 3px 8px; text-align: left; vertical-align: top; }
+.doc-content th { background: #dfe2de; font-weight: 500; }
+.doc-content code, .doc-content pre { font-family: 'Courier Prime', 'Courier New', monospace; font-size: 0.95em; }
+.doc-content pre { background: #f4f0e3; padding: 8px 12px; overflow-x: auto; }
+.doc-content a { color: #24496f; }
+@media (max-width: 760px) { .doc-layout { grid-template-columns: 1fr; } }
