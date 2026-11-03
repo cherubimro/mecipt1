@@ -36,3 +36,15 @@ Sub grilă: **GENERATOR PRINCIPAL** (IMPULSURI, FRECVENȚĂ FIN, FRECVENȚĂ TRE
 
 ## Panoul din mijloc — aparatele de măsură
 Unsprezece voltmetre (unul lipsește azi, se vede doar rama), un selector, un comutator rotativ mare și comutatoare mici. Arătau, probabil, tensiunile de alimentare ale tuburilor; ce măsura fiecare și scalele sunt GHICITE. Cele patru voltmetre de sus sunt desenate cu scala 0–250 V (GHICIT).
+
+## Sunetul
+Nu există înregistrări ale MECIPT-1, așa că sunetele pupitrului sunt **reconstruite** (GHICIT) și sintetizate în browser. Ele urmează exact ce face mașina emulată:
+
+- **zumzetul tamburului**, discret și continuu, cât sunetul e pornit. Are 50 Hz pentru că tamburul face 50 de rotații pe secundă (DEDUS: 1024 de cuvinte pe rotație, 51 200 de timpi de cuvânt pe secundă);
+- **țăcănitul cititorului**, câte un clic pentru fiecare rând de bandă citit, cam unul la 0,1 s;
+- **mașina de scris**, o lovitură de clapă pentru fiecare caracter și sunetul carului la rând nou;
+- **comenzile pupitrului**, clicuri discrete la butoane și pârghii (bara de sus și Atelierul nu fac sunet: sunt comenzi de azi).
+
+La viteza rapidă rândurile și caracterele vin prea des ca să se audă separat; clicurile devin atunci un bâzâit continuu, mai încet. Un program care citește rar țăcăne și la viteza rapidă.
+
+Butonul 🔊/🔇 din bară oprește și pornește sunetul, iar alegerea se ține minte. Browserele pornesc sunetul abia după primul gest al vizitatorului (clic, atingere sau tastă).

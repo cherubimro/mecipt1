@@ -138,3 +138,16 @@ Alegerile Atelierului (`web/js/atelier/`, nucleul: `PROV_MODIFICAT`, `written`, 
 | Preîncărcătorul INEX-1 încarcă de la adresa instrucțiunii ME de la 0014; operatorul o schimba ca să încarce în altă parte | GHICIT | Facsimilul 5 dă 0014 = ME 0002 și procedura de pornire, dar nu spune cum se alegea adresa. |
 | În modul „rânduri”, vizitatorul scrie valoarea citită de CIT; pe bandă se perforează biții inversați | DEDUS | Perforația = 0 (Baltac, prin Wikipedia RO). |
 | În vederea Pupitru și în tur se încarcă mereu programul original; în Atelier și Ambele, alegerea din bară aduce și modificările salvate ale vizitatorului, iar eticheta din bară arată MODIFICAT (și cuvintele șterse) | — (regula emulatorului) | Turul și vizitatorul nou trebuie să vadă originalul; în Atelier, vizitatorul își regăsește lucrul. |
+
+## Sunetul
+Alegerile sunetului (`web/js/sound/`). Nu există înregistrări ale MECIPT-1.
+
+| Alegere | Statut | Motiv / sursă |
+|---|---|---|
+| Zumzetul tamburului are fundamentala de 50 Hz (cu armonice) | DEDUS | Tamburul face 50 de rotații pe secundă: 1024 de timpi de cuvânt pe rotație, 51 200 pe secundă (`core/machine.h`). |
+| Timbrul zumzetului, al cititorului, al mașinii de scris și al comenzilor | GHICIT | Nu există înregistrări; sunetele sunt sintetizate să sune mecanic (spec §5). |
+| Un clic pentru fiecare rând citit și o lovitură de clapă pentru fiecare caracter, ≈ 0,1 s | GHICIT | Ritmul din „Periferice” (un caracter ≈ 0,1 s). |
+| La rând nou mașina de scris face sunetul carului | GHICIT | Mașinile de scris ale epocii întorceau carul la fiecare rând. |
+| Peste 40 de evenimente pe secundă (măsurate în timp real) clicurile devin un bâzâit mai încet; sub 25 revin | — (regula emulatorului) | La viteza rapidă clicurile nu s-ar mai auzi separat. |
+| Bara de sus și Atelierul nu fac sunet; în modul Explică comenzile nu fac clic | — (regula emulatorului) | Sunt comenzi de azi, nu ale mașinii; în Explică comenzile nu acționează. |
+| Zumzetul se aude mereu cât sunetul e pornit, nu doar cât rulează un program | GHICIT | Tamburul se învârtea cât mașina era sub tensiune. |

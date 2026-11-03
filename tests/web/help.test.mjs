@@ -85,3 +85,11 @@ test('the workshop has explanations', () => {
   }
   assert.ok(RO.entries['atelier-punch'].more.includes('0014') && RO.entries['atelier-punch'].more.includes('GHICIT'));
 });
+
+test('help: are intrarea sound în ro și en', () => {
+  for (const H of [RO, EN]) {
+    assert.ok(H.entries.sound, 'lipsește intrarea sound');
+    assert.equal(H.entries.sound.status, 'GHICIT');
+    assert.ok(H.entries.sound.more.includes('50'), 'zumzetul de 50 Hz');
+  }
+});

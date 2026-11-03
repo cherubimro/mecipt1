@@ -20,6 +20,9 @@ programele originale din 1962.
   **MODIFICAT**. Tamburul e o grilă de 1024 de cuvinte colorate după proveniență, cu adresa curentă aprinsă.
   Perforatorul pregătește o bandă, care se încarcă apoi cu preîncărcătorul original INEX-1. Programul
   modificat se ține minte în browser și se poate descărca sau deschide ca fișier `.mec` (citibil de `mecasm`).
+- **Sunetul** (Planul 5): zumzetul tamburului, țăcănitul cititorului, clapele mașinii de scris și clicurile
+  comenzilor, sintetizate în browser după ritmul mașinii (reconstruite: nu există înregistrări). Butonul 🔊/🔇
+  din bară; alegerea se ține minte.
 - Urmează: sunetul, reconstrucțiile, telefonul, interfețele wx și ncurses (`docs/superpowers/plans/`).
 
 Ce e sigur, ce e dedus și ce e ghicit: `docs/semantica.md` (în engleză: `docs/semantica.en.md`).

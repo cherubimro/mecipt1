@@ -609,6 +609,15 @@
    "sources": [
     "semantica"
    ]
+  },
+  "sound": {
+   "title": "Sunetul",
+   "short": "Zumzetul tamburului, țăcănitul cititorului, clapele mașinii de scris și clicurile comenzilor. Sunt reconstruite: nu există înregistrări ale MECIPT-1.",
+   "more": "Sunetele sunt sintetizate în browser și urmează exact ce face mașina emulată: un clic pentru fiecare rând de bandă citit și o lovitură de clapă pentru fiecare caracter tipărit, cam unul la 0,1 s; la rând nou se aude carul.\n\n- **Zumzetul** are 50 Hz pentru că tamburul face 50 de rotații pe secundă (DEDUS din 1024 de cuvinte și 51 200 de timpi de cuvânt pe secundă). Timbrul lui e GHICIT.\n- **La viteză mare** clicurile vin prea des ca să se audă separat și devin un bâzâit continuu, mai încet.\n- **Comenzile** pupitrului fac clicuri discrete; bara de sus și Atelierul nu fac sunet, pentru că sunt comenzi de azi.\n\nAlegerea 🔊/🔇 se ține minte. Browserele pornesc sunetul abia după primul gest (clic, atingere sau tastă), așa că pe telefon îl veți auzi după prima atingere.",
+   "status": "GHICIT",
+   "sources": [
+    "semantica"
+   ]
   }
  },
  "sources": {

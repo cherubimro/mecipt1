@@ -376,6 +376,15 @@ e('prov-modificat', 'SIGUR', ['semantica'],
    'You changed or wrote this word. It is no longer the word in the period document, so it no longer carries the ORIGINAL label.',
    'The label belongs to the emulator and is a promise: no word changed by the visitor stays ORIGINAL — not in the editor, not on the drum, not in the program label, not in the downloaded .mec file. An opened file is compared with the catalogue program; whatever differs becomes MODIFIED, whatever the file says.'))
 
+# ---------------- sunetul ----------------
+e('sound', 'GHICIT', ['semantica'],
+  ('Sunetul',
+   'Zumzetul tamburului, țăcănitul cititorului, clapele mașinii de scris și clicurile comenzilor. Sunt reconstruite: nu există înregistrări ale MECIPT-1.',
+   'Sunetele sunt sintetizate în browser și urmează exact ce face mașina emulată: un clic pentru fiecare rând de bandă citit și o lovitură de clapă pentru fiecare caracter tipărit, cam unul la 0,1 s; la rând nou se aude carul.\n\n- **Zumzetul** are 50 Hz pentru că tamburul face 50 de rotații pe secundă (DEDUS din 1024 de cuvinte și 51 200 de timpi de cuvânt pe secundă). Timbrul lui e GHICIT.\n- **La viteză mare** clicurile vin prea des ca să se audă separat și devin un bâzâit continuu, mai încet.\n- **Comenzile** pupitrului fac clicuri discrete; bara de sus și Atelierul nu fac sunet, pentru că sunt comenzi de azi.\n\nAlegerea 🔊/🔇 se ține minte. Browserele pornesc sunetul abia după primul gest (clic, atingere sau tastă), așa că pe telefon îl veți auzi după prima atingere.'),
+  ('Sound',
+   'The hum of the drum, the clatter of the tape reader, the typewriter keys and the clicks of the controls. They are reconstructed: no recordings of MECIPT-1 exist.',
+   'The sounds are synthesised in the browser and follow exactly what the emulated machine does: one click for each tape row read and one key strike for each character typed, roughly one every 0.1 s; a new line sounds the carriage.\n\n- **The hum** is at 50 Hz because the drum turns 50 times a second (DEDUCED from 1024 words and 51,200 word times a second). Its timbre is GUESSED.\n- **At high speed** the clicks come too often to be heard separately and turn into a continuous, quieter buzz.\n- **The console controls** make discreet clicks; the top bar and the Workshop make no sound, because they are present-day controls.\n\nThe 🔊/🔇 choice is remembered. Browsers only start sound after the first gesture (a click, a touch or a key), so on a phone you will hear it after the first touch.'))
+
 # ---------------- turul ghidat ----------------
 # (id, target, view, waitFor, load, ro, en)
 TOUR = [

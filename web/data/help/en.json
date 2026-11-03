@@ -609,6 +609,15 @@
    "sources": [
     "semantica"
    ]
+  },
+  "sound": {
+   "title": "Sound",
+   "short": "The hum of the drum, the clatter of the tape reader, the typewriter keys and the clicks of the controls. They are reconstructed: no recordings of MECIPT-1 exist.",
+   "more": "The sounds are synthesised in the browser and follow exactly what the emulated machine does: one click for each tape row read and one key strike for each character typed, roughly one every 0.1 s; a new line sounds the carriage.\n\n- **The hum** is at 50 Hz because the drum turns 50 times a second (DEDUCED from 1024 words and 51,200 word times a second). Its timbre is GUESSED.\n- **At high speed** the clicks come too often to be heard separately and turn into a continuous, quieter buzz.\n- **The console controls** make discreet clicks; the top bar and the Workshop make no sound, because they are present-day controls.\n\nThe 🔊/🔇 choice is remembered. Browsers only start sound after the first gesture (a click, a touch or a key), so on a phone you will hear it after the first touch.",
+   "status": "GHICIT",
+   "sources": [
+    "semantica"
+   ]
   }
  },
  "sources": {

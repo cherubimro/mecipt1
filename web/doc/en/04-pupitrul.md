@@ -36,3 +36,15 @@ Below the grid: **GENERATOR PRINCIPAL** (main generator: IMPULSURI, FRECVENȚĂ 
 
 ## Middle panel — the measuring instruments
 Eleven voltmeters (one is missing today, only its bezel remains), a selector, a large rotary switch and small switches. They probably showed the supply voltages of the tubes; what each measured and the scales are GUESSED. The four top voltmeters are drawn with a 0–250 V scale (GUESSED).
+
+## Sound
+No recordings of MECIPT-1 exist, so the console sounds are **reconstructed** (GUESSED) and synthesised in the browser. They follow exactly what the emulated machine does:
+
+- **the hum of the drum**, discreet and continuous while sound is on. It is at 50 Hz because the drum turns 50 times a second (DEDUCED: 1024 words per turn, 51,200 word times a second);
+- **the clatter of the tape reader**, one click for each tape row read, roughly one every 0.1 s;
+- **the typewriter**, one key strike for each character and the sound of the carriage at a new line;
+- **the console controls**, discreet clicks on buttons and levers (the top bar and the Workshop make no sound: they are present-day controls).
+
+At high speed the rows and characters come too often to be heard separately; the clicks then become a continuous, quieter buzz. A program that reads rarely still clatters at high speed.
+
+The 🔊/🔇 button in the bar turns sound off and on, and the choice is remembered. Browsers only start sound after the visitor's first gesture (a click, a touch or a key).

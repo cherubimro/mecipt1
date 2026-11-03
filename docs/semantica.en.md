@@ -140,3 +140,16 @@ The workshop’s choices (`web/js/atelier/`, the core: `PROV_MODIFICAT`, `writte
 | The INEX-1 preloader loads from the address of the ME instruction at 0014; the operator changed it to load elsewhere | GUESSED | Facsimile 5 gives 0014 = ME 0002 and the start procedure, but does not say how the address was chosen. |
 | In “rows” mode the visitor writes the value CIT reads; the tape is punched with the bits inverted | DEDUCED | A hole = 0 (Baltac, via the Romanian Wikipedia). |
 | The Console view and the tour always load the original program; in the Workshop and Both views, choosing a program in the bar also brings the visitor’s saved changes, and the bar label shows MODIFIED (and deleted words) | — (emulator rule) | The tour and a new visitor must see the original; in the workshop, visitors find their work again. |
+
+## Sound
+The sound choices (`web/js/sound/`). No recordings of MECIPT-1 exist.
+
+| Choice | Status | Reason / source |
+|---|---|---|
+| The drum hum has a 50 Hz fundamental (with harmonics) | DEDUCED | The drum turns 50 times a second: 1024 word times per turn, 51,200 a second (`core/machine.h`). |
+| The timbre of the hum, the tape reader, the typewriter and the controls | GUESSED | No recordings exist; the sounds are synthesised to sound mechanical (spec §5). |
+| One click per tape row read and one key strike per character, ≈ 0.1 s | GUESSED | The rate from “Peripherals” (one character ≈ 0.1 s). |
+| A new line on the typewriter sounds the carriage | GUESSED | Typewriters of the period returned the carriage at every line. |
+| Above 40 events a second (measured in real time) the clicks become a quieter buzz; below 25 they return | — (emulator rule) | At high speed the clicks could no longer be heard separately. |
+| The top bar and the Workshop make no sound; in Explain mode the controls do not click | — (emulator rule) | They are present-day controls, not the machine's; in Explain mode the controls do not act. |
+| The hum is heard whenever sound is on, not only while a program runs | GUESSED | The drum turned whenever the machine was powered. |
