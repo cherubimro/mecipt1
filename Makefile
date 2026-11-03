@@ -9,7 +9,7 @@ CORE_OBJ := $(CORE_SRC:core/%.c=$(B)/core/%.o)
 TESTS    := $(patsubst tests/%.c,$(B)/tests/%,$(wildcard tests/test_*.c))
 TOOLS    := $(patsubst tools/%.c,$(B)/%,$(wildcard tools/*.c))
 
-.PHONY: all check clean e2e wasm web-check site serve tables
+.PHONY: all check clean e2e wasm web-check site serve tables programs
 all: $(B)/libmecipt.a $(TOOLS)
 
 $(B)/core/%.o: core/%.c $(wildcard core/*.h)
@@ -30,6 +30,10 @@ check: $(TESTS) $(TOOLS)
 	@fail=0; for t in $(TESTS); do (cd tests && ../$$t) || fail=1; done; \
 	if [ -n "$(wildcard tests/e2e.sh)" ]; then sh tests/e2e.sh || fail=1; fi; \
 	exit $$fail
+
+# Programele generate din programs/src/ (rutinele INEX-1 puse în programele de calcul, banda INEX-1).
+programs:
+	python3 tools/mecjoin.py
 
 # Tabelele nucleului pentru documentația web.
 tables: $(B)/mecdoc

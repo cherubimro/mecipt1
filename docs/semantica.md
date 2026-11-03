@@ -152,3 +152,22 @@ Alegerile sunetului (`web/js/sound/`). Nu există înregistrări ale MECIPT-1.
 | Peste 40 de evenimente pe secundă (măsurate în timp real) clicurile devin un bâzâit mai încet; sub 25 revin | — (regula emulatorului) | La viteza rapidă clicurile nu s-ar mai auzi separat. |
 | Bara de sus și Atelierul nu fac sunet; în modul Explică comenzile nu fac clic | — (regula emulatorului) | Sunt comenzi de azi, nu ale mașinii; în Explică comenzile nu acționează. |
 | Zumzetul se aude mereu cât sunetul e pornit, nu doar cât rulează un program | GHICIT | Tamburul se învârtea cât mașina era sub tensiune. |
+
+## INEX-1 reconstruit (Planul 6)
+Rutinele INEX-1 (`programs/src/inex1-rutine.mec`) sunt scrise acum. Din Facsimilul 5 se știu doar preîncărcătorul și punctele de intrare.
+
+| Alegere | Statut | Motiv / sursă |
+|---|---|---|
+| Punctele de intrare 0025, 0026, 0040, 0132–0136, 0246 și ce face fiecare | SIGUR (adresele, rolul) | Facsimilul 5 |
+| Chemarea: programul pune în V (0002) cuvântul „T r”, argumentul în S, sare la intrare; rutina revine cu T 0002 | GHICIT | „revine la V” (Facsimilul 5); nu există registru de întoarcere |
+| Rutinele strică S, I și celulele 0003–0007; 0044 e celula cititorului | GHICIT | preîncărcătorul original folosește 0044 la CIT |
+| 0133: S = c1 α c2 β (α cifre pentru întregi, β zecimale); implicit α = 3, β = 9 | GHICIT | Facsimilul 5: „în S cu t−α 00−β”; 9 zecimale ca în Facsimilul 3 |
+| 0134: întregul n·2⁻³⁰, „-” în față dacă e negativ, α cifre, zerourile din față ca spații | GHICIT | — |
+| 0135: „-” în față dacă e negativ, „o,” și β zecimale trunchiate, apoi semnul de după număr | GHICIT (forma) / DEDUS (trunchierea) | Facsimilul 3; trunchierea exactă reproduce 44 din 45 de valori ale sinusului |
+| Semnul de după număr din Facsimilul 3 se tipărește cu minusul (codul 12) | GHICIT | e caracterul cel mai apropiat din setul mașinii de scris; în facsimil stă puțin mai jos |
+| 0136 / 0132: S = −n·2⁻⁵, n spații / n rânduri noi | DEDUS (argumentul) / GHICIT (0132) | Facsimilul 5 dă „−n·2⁻⁵ în S” lângă 0136 |
+| 0246: S = 00 A 00 B, cuvintele de la A la B cu 0135, câte 5 pe rând | GHICIT | „5 pe rând” ca în Facsimilul 3 |
+| 0040 (0026): citește de la pupitru cuvinte de 6 rânduri la adresa din ME-ul de la 0045, până la sfârșitul benzii; 0025: S = 00 A 00 n, n cuvinte la A, revine prin V | GHICIT | aceeași tehnică (santinela) ca preîncărcătorul original |
+| Constantele cu semn (codurile de caractere ≥ 8) se țin deplasate cu un bit și se refac cu DS 1 | — (regula emulatorului) | pe bandă intră doar m1–m30 (Geier) |
+| Banda INEX-1: cuvintele 0002–0277, cu copii identice ale preîncărcătorului la 0010–0015 și 0014 perforat „ME 0014” | DEDUS | preîncărcătorul scrie peste el însuși; numai așa continuă încărcarea |
+| „146 (VF)” de lângă 0135 în Facsimilul 5 | necunoscut | nu reiese din lucru |

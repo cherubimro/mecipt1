@@ -154,3 +154,22 @@ The sound choices (`web/js/sound/`). No recordings of MECIPT-1 exist.
 | Above 40 events a second (measured in real time) the clicks become a quieter buzz; below 25 they return | — (emulator rule) | At high speed the clicks could no longer be heard separately. |
 | The top bar and the Workshop make no sound; in Explain mode the controls do not click | — (emulator rule) | They are present-day controls, not the machine's; in Explain mode the controls do not act. |
 | The hum is heard whenever sound is on, not only while a program runs | GUESSED | The drum turned whenever the machine was powered. |
+
+## INEX-1 reconstructed (Plan 6)
+The INEX-1 routines (`programs/src/inex1-rutine.mec`) are written now. From facsimile 5 only the preloader and the entry points are known.
+
+| Choice | Status | Reason / source |
+|---|---|---|
+| Entry points 0025, 0026, 0040, 0132–0136, 0246 and what each does | CERTAIN (addresses, role) | Facsimile 5 |
+| Calling: the program puts the word “T r” into V (0002), the argument into S, and jumps to the entry; the routine returns with T 0002 | GUESSED | “returns to V” (facsimile 5); there is no return register |
+| The routines clobber S, I and cells 0003–0007; 0044 is the reader’s cell | GUESSED | the original preloader uses 0044 for CIT |
+| 0133: S = c1 α c2 β (α digits for integers, β decimals); by default α = 3, β = 9 | GUESSED | Facsimile 5: “in S with t−α 00−β”; 9 decimals as in facsimile 3 |
+| 0134: the integer n·2⁻³⁰, “-” in front if negative, α digits, leading zeros as spaces | GUESSED | — |
+| 0135: “-” in front if negative, “o,” and β truncated decimals, then the mark after the number | GUESSED (form) / DEDUCED (truncation) | Facsimile 3; exact truncation reproduces 44 of the 45 sine values |
+| The mark after each number in facsimile 3 is printed as the minus (code 12) | GUESSED | the closest character in the typewriter’s set; in the facsimile it sits a little lower |
+| 0136 / 0132: S = −n·2⁻⁵, n spaces / n new lines | DEDUCED (the argument) / GUESSED (0132) | Facsimile 5 gives “−n·2⁻⁵ in S” next to 0136 |
+| 0246: S = 00 A 00 B, the words from A to B with 0135, 5 to a line | GUESSED | “5 to a line” as in facsimile 3 |
+| 0040 (0026): reads 6-row words from the console into the address of the ME at 0045, until the tape ends; 0025: S = 00 A 00 n, n words to A, returns via V | GUESSED | the same technique (sentinel) as the original preloader |
+| Signed constants (character codes ≥ 8) are kept shifted by one bit and restored with DS 1 | — (emulator rule) | only m1–m30 go on tape (Geier) |
+| The INEX-1 tape: words 0002–0277, with identical copies of the preloader at 0010–0015 and 0014 punched as “ME 0014” | DEDUCED | the preloader writes over itself; only this way does loading go on |
+| “146 (VF)” next to 0135 in facsimile 5 | unknown | does not follow from the work |
