@@ -3,9 +3,10 @@
 #include <string.h>
 
 /* Setul numeric (Wikipedia RO, după Baltac, L6): cifre, spațiu, minus, punct, virgulă, întoarcerea carului;
-   codul 14 nu era folosit (SIGUR). Ce cod are fiecare semn: GHICIT, cu 10 = spațiu și 13 = rând nou ca în retipărire. */
+   codul 14 nu era folosit (SIGUR). Ce cod are fiecare semn: GHICIT, cu 10 = spațiu și 13 = rând nou ca în retipărire.
+   Cifra zero se bate „o”: DEDUS, Facsimilele 3 și 4 (mașina de scris n-avea zero separat). */
 const char *const MEC_DIGIT_GLYPHS[16] = {
-    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", " ", ",", "-", "\n", "", "."
+    "o", "1", "2", "3", "4", "5", "6", "7", "8", "9", " ", ",", "-", "\n", "", "."
 };
 
 /* Setul de litere (Wikipedia RO, după Baltac, L6): spațiu + 26 de litere englezești + ă î ș ț; codul 31 nu era

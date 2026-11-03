@@ -48,6 +48,7 @@ Every choice without an explicit source is listed here, with its reason and, whe
 | End of tape or no reader → HÂRTIA AGĂȚATĂ (paper jammed), halt | DEDUCED | the “HÂRTIA AGĂȚATĂ” lamp on the console |
 | AC 0136 prints the digit in s0 s1 s2 s3; AC 0133 the letter in s0 … s4 | CERTAIN (the bits) / GUESSED (the glyphs) | Geier’s table |
 | The sets: digits, space, minus, point, comma, carriage return (code 14 unused); space + 26 English letters + ă î ș ț (code 31 unused) | CERTAIN | Baltac, lab sheet L6, via the Romanian Wikipedia |
+| Code 0 is printed as “o” | DEDUCED | Facsimiles 3 and 4: the typewriter strikes “o” for zero (o,o17452406; 15o1) |
 | Glyphs of codes 10–15 (decimal): space , - newline (unused) . | GUESSED (the layout) | the reprinting program uses two codes from 10–15 (space and newline); which code is which cannot be deduced; 14 stays unused per L6 |
 | Letters: A Ă B C D E F G H I Î J K L M N O P Q R S Ș T Ț U V W X Y Z, then space; 31 unused | GUESSED (the order) | the set is the L6 one; the order of the codes has not survived |
 | AC 0151: S ← I (positive) | GUESSED (the sign) | the table: “S ← i” |

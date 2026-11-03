@@ -29,7 +29,7 @@ TEST(test_api_load_and_run_retiparire) {
     CHECK_EQ_U(api_console(API_C_SWITCHES_RAI, 01477), 0);
     CHECK_EQ_U(api_run(1e12, 1e6), HALT_STOP_INSTR);
     int n = api_typed_take();
-    CHECK(strncmp(api_out(), "1477  27 0000  30 0000\n", 23) == 0);
+    CHECK(strncmp(api_out(), "1477  27 oooo  3o oooo\n", 23) == 0);
     CHECK_EQ_U(count_lines(api_out(), n), 39);
 }
 

@@ -46,6 +46,7 @@ Fiecare alegere fără sursă explicită e listată aici, cu motivul și, unde e
 | Sfârșitul benzii sau lipsa cititorului → HÂRTIA AGĂȚATĂ, oprire | DEDUS | becul „HÂRTIA AGĂȚATĂ” de pe pupitru |
 | AC 0136 tipărește cifra din s0 s1 s2 s3; AC 0133 litera din s0 … s4 | SIGUR (biții) / GHICIT (glifele) | tabelul Geier |
 | Seturile: cifre, spațiu, minus, punct, virgulă, întoarcerea carului (codul 14 nefolosit); spațiu + 26 de litere englezești + ă î ș ț (codul 31 nefolosit) | SIGUR | Baltac, lucrarea de laborator L6, prin Wikipedia RO |
+| Codul 0 se tipărește „o” | DEDUS | Facsimilele 3 și 4: mașina de scris bate „o” pentru zero (o,o17452406; 15o1) |
 | Glifele codurilor 10–15 (zecimal): spațiu , - rând-nou (nefolosit) . | GHICIT (așezarea) | retipărirea folosește două coduri din 10–15 (spațiu și rând nou); care cod e care nu se poate deduce; 14 rămâne nefolosit după L6 |
 | Literele: A Ă B C D E F G H I Î J K L M N O P Q R S Ș T Ț U V W X Y Z, apoi spațiu; 31 nefolosit | GHICIT (ordinea) | setul e cel din L6; ordinea codurilor nu s-a păstrat |
 | AC 0151: S ← I (pozitiv) | GHICIT (semnul) | tabelul: „S ← i” |

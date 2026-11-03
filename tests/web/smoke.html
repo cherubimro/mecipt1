@@ -175,7 +175,7 @@ f.addEventListener('load', () => {
   if (errors.length) fail('erori după sunet: ' + errors.join(' | '));
   P.setSpeed('rapid');
   click('switch-compute-0');
-  await until(() => P.sheet.lines()[0] === '1477  27 0000  30 0000' && glow('lamp-indicators-2') > 0.5, 20000,
+  await until(() => P.sheet.lines()[0] === '1477  27 oooo  3o oooo' && glow('lamp-indicators-2') > 0.5, 20000,
     () => `retipărirea: mod ${P.runner.mode}, timp ${P.runner.machine.seconds().toFixed(2)} s, coala ${JSON.stringify(P.sheet.lines().slice(0, 2))}, OPRIT ${glow('lamp-indicators-2')}`);
   stage('inex');
   await P.select('inex1');

@@ -27,6 +27,8 @@ Programmers wrote everything in **octal** (groups of three bits). A period listi
 1477  27 0000  30 0000
 ```
 
-that is, the word’s address (1477), then **code 1 and address 1**, then **code 2 and address 2**. That listings print pair 1 first is DEDUCED from the INEX-1 preloader; the format itself is CERTAIN — it is the very output of the original 1962 reprinting program, which the emulator runs (chapter 6).
+On the sheet the typewriter strikes “o” instead of zero, as in the facsimiles: `1477  27 oooo  3o oooo`.
+
+The line means the word’s address (1477), then **code 1 and address 1**, then **code 2 and address 2**. That listings print pair 1 first is DEDUCED from the INEX-1 preloader; the format itself is CERTAIN — it is the very output of the original 1962 reprinting program, which the emulator runs (chapter 6).
 
 Note: the codes in a listing are octal. `27` means 23 in decimal, the **UI** instruction; `33` is **CIT**. The full table is in chapter 3.

@@ -6,7 +6,7 @@ err=$(build/mecrun programs/inex1-preincarcator.mec --tape-words tests/data/inex
 echo "$err" | grep -q "oprit: HÂRTIA AGĂȚATĂ" && echo "OK   e2e_inex_halts_on_tape_end" || { echo "FAIL e2e_inex_halts_on_tape_end: $err"; fail=1; }
 
 out=$(build/mecrun programs/retiparire-1962.mec --start 1477 2>/dev/null | head -1)
-[ "$out" = "1477  27 0000  30 0000" ] && echo "OK   e2e_retiparire_first_line" || { echo "FAIL e2e_retiparire_first_line: '$out'"; fail=1; }
+[ "$out" = "1477  27 oooo  3o oooo" ] && echo "OK   e2e_retiparire_first_line" || { echo "FAIL e2e_retiparire_first_line: '$out'"; fail=1; }
 
 lines=$(build/mecrun programs/retiparire-1962.mec --start 1477 2>/dev/null | wc -l)
 [ "$lines" -eq 39 ] && echo "OK   e2e_retiparire_39_lines" || { echo "FAIL e2e_retiparire_39_lines: $lines"; fail=1; }

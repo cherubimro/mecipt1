@@ -9,7 +9,7 @@ test('retipărirea își tipărește prima linie', async () => {
   m.loadProgram(RETIPARIRE());
   m.console(OP.SWITCHES_RAI, 0o1477);
   assert.equal(m.run(1e12, 1e6), HALT.STOP);
-  assert.ok(m.takeTyped().startsWith('1477  27 0000  30 0000\n'));
+  assert.ok(m.takeTyped().startsWith('1477  27 oooo  3o oooo\n'));
   assert.ok(m.seconds() > 110 && m.seconds() < 120, String(m.seconds()));
 });
 

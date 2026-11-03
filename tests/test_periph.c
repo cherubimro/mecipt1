@@ -91,4 +91,14 @@ TEST(test_glyph_sets_follow_baltac_l6) {
     for (int i = 0; i < 16; i++) CHECK(strcmp(MEC_DIGIT_GLYPHS[i], "+") != 0);
 }
 
+TEST(test_type_digit_zero_is_o) {
+    /* DEDUS: Facsimilele 3 și 4 — mașina de scris bate „o” pentru zero */
+    io.typed_len = 0; io.typed[0] = 0;
+    mec_type_digits(&io, 0);
+    CHECK_EQ_S(io.typed, "o");
+    io.typed_len = 0; io.typed[0] = 0;
+    mec_type_digits(&io, (mword)1 << 27);
+    CHECK_EQ_S(io.typed, "1");
+}
+
 RUN_ALL()

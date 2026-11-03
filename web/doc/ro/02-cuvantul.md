@@ -27,6 +27,8 @@ Programatorii scriau totul în **octal** (grupe de câte trei biți). Un rând d
 1477  27 0000  30 0000
 ```
 
-adică adresa cuvântului (1477), apoi **codul 1 și adresa 1**, apoi **codul 2 și adresa 2**. Că listingurile tipăresc întâi perechea 1 e DEDUS din preîncărcătorul INEX-1; formatul însuși e SIGUR — e chiar ieșirea programului original de retipărire din 1962, pe care emulatorul îl rulează (capitolul 6).
+Pe coală, mașina de scris bate „o” în loc de zero, ca în facsimile: `1477  27 oooo  3o oooo`.
+
+Rândul înseamnă adresa cuvântului (1477), apoi **codul 1 și adresa 1**, apoi **codul 2 și adresa 2**. Că listingurile tipăresc întâi perechea 1 e DEDUS din preîncărcătorul INEX-1; formatul însuși e SIGUR — e chiar ieșirea programului original de retipărire din 1962, pe care emulatorul îl rulează (capitolul 6).
 
 Atenție: codurile din listing sunt în octal. `27` înseamnă 23 în zecimal, adică instrucțiunea **UI**; `33` e **CIT**. Tabelul complet e în capitolul 3.
