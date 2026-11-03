@@ -5,7 +5,7 @@
 import math, re, sys
 
 def numbers(text):
-    return re.findall(r'o,([o0-9]{9})-', text)
+    return re.findall(r'o,([o1-9]{9})-', text)
 
 def main(path):
     text = open(path, encoding='utf-8').read()
