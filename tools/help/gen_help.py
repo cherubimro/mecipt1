@@ -325,6 +325,57 @@ e('provenance', 'MIXT', ['baltac2011', 'semantica'],
    '- **ORIGINAL** — transcribed from a period document, with a reference to the facsimile (e.g. facsimile 4 in V. Baltac’s book).\n- **DEDUCED** — follows from the documents but is not written in them (e.g. a digit corrected by hand).\n- **RECONSTRUCTION** — written now, following the program’s logic, because it is missing from the document (e.g. the constants read by the reprinting program).\n- **GUESSED** — needed for it to work, without a source.\n\nThe facsimile images are not reproduced here; they are in Vasile Baltac’s book.'))
 
 
+# ---------------- Atelierul ----------------
+e('atelier-editor', 'MIXT', ['baltac2011', 'geier1961', 'semantica'],
+  ('Programul de pe tambur',
+   'Cuvintele de pe tambur, scrise ca în listingurile din 1962: adresa, apoi cele două instrucțiuni. Puteți schimba orice cuvânt; schimbarea primește eticheta MODIFICAT.',
+   'Notația e cea a listingurilor de epocă, `AAAA  c1 aaaa  c2 aaaa` în octal — SIGUR: e chiar ieșirea programului original de retipărire din 1962 (Facsimil 4). Mnemonicele sunt din tabelul Geier (1961).\n\nEditorul e o unealtă a emulatorului, nu a mașinii: programatorii din 1962 scriau pe hârtie și introduceau cuvintele de la pupitru sau de pe bandă. Ce schimbați se scrie direct pe tambur, între două instrucțiuni, și se ține minte în browserul dumneavoastră; „Revino la original” șterge schimbările.'),
+  ('The program on the drum',
+   'The words on the drum, written as in the 1962 listings: the address, then the two instructions. You can change any word; the change gets the MODIFIED label.',
+   'The notation is that of the period listings, `AAAA  c1 aaaa  c2 aaaa` in octal — CERTAIN: it is the very output of the original 1962 reprinting program (facsimile 4). The mnemonics come from Geier’s table (1961).\n\nThe editor is a tool of the emulator, not of the machine: the 1962 programmers wrote on paper and entered the words from the console or from tape. What you change is written straight onto the drum, between two instructions, and remembered in your browser; “Back to the original” removes the changes.'))
+e('atelier-row', 'SIGUR', ['baltacLab', 'geier1961', 'semantica'],
+  ('Un cuvânt de pe tambur',
+   'Același cuvânt de 31 de biți, citit în două feluri: ca două instrucțiuni (cu mnemonice și în octal) și ca număr (fracție). Mașina nu le deosebea.',
+   'Un cuvânt e doar 31 de biți (Lucrarea 7, p. 1 — SIGUR): devine instrucțiune când RAI ajunge la el și număr când o instrucțiune îl citește. De aceea rândul arată ambele citiri. Eticheta din dreapta spune de unde vine cuvântul (ORIGINAL, DEDUS, RECONSTRUCȚIE, GHICIT, MODIFICAT) sau „scris de program”, dacă l-a scris programul cât a rulat. Click pe rând ca să-l schimbați.'),
+  ('A word on the drum',
+   'The same 31-bit word, read two ways: as two instructions (with mnemonics and in octal) and as a number (a fraction). The machine did not tell them apart.',
+   'A word is just 31 bits (lab sheet 7, p. 1 — CERTAIN): it becomes an instruction when RAI reaches it and a number when an instruction reads it. So the row shows both readings. The label on the right says where the word comes from (ORIGINAL, DEDUCED, RECONSTRUCTION, GUESSED, MODIFIED) or “written by the program” if the program wrote it while running. Click the row to change it.'))
+e('atelier-drum', 'MIXT', ['wikiRO', 'baltac2011', 'semantica'],
+  ('Tamburul: 1024 de cuvinte',
+   'Memoria mașinii: un tambur magnetic cu 1024 de cuvinte, care se rotea de 50 de ori pe secundă. Fiecare pătrățel e un cuvânt; culoarea și litera spun de unde vine.',
+   'Capacitatea și viteza tamburului sunt SIGURE (Wikipedia RO, Baltac). Grila de 32 × 32 e doar un mod de a desena memoria: adresa = rândul (octal, în stânga) + coloana. Pătratul conturat în portocaliu e adresa curentă (RAI) cât rulează programul. Ulterior, adresele pare și impare au fost puse pe jumătăți diferite ale tamburului (Facsimil 8), ca programele să meargă mai repede.'),
+  ('The drum: 1024 words',
+   'The machine’s memory: a magnetic drum with 1024 words, turning 50 times a second. Each small square is a word; its colour and letter say where it comes from.',
+   'The drum’s capacity and speed are CERTAIN (Romanian Wikipedia, Baltac). The 32 × 32 grid is only a way of drawing the memory: address = row (octal, on the left) + column. The square outlined in orange is the current address (RAI) while the program runs. Later, even and odd addresses were put on different halves of the drum (facsimile 8) so programs would run faster.'))
+e('atelier-cell', 'MIXT', ['semantica'],
+  ('Un cuvânt pe tambur',
+   'Un click duce la rândul lui din editor. Litera: O original, D dedus, R reconstrucție, G ghicit, M modificat de dumneavoastră, P scris de program cât a rulat.',
+   'Proveniența urmează regulile din documentație (capitolul 7): un cuvânt schimbat de vizitator — din editor, cu MEMORIE SCRIERE de la pupitru sau de pe propria bandă — devine MODIFICAT; unul scris de program cât rulează apare „scris de program”, pentru că nu mai e cuvântul din document.'),
+  ('A word on the drum',
+   'A click takes you to its row in the editor. The letter: O original, D deduced, R reconstruction, G guessed, M modified by you, P written by the program while it ran.',
+   'Provenance follows the rules in the documentation (chapter 7): a word changed by the visitor — in the editor, with MEMORIE SCRIERE from the console, or from their own tape — becomes MODIFIED; one the program writes while running shows as “written by the program”, because it is no longer the word in the document.'))
+e('atelier-punch', 'MIXT', ['farcas2005', 'wikiRO', 'geier1961', 'baltac2011', 'semantica'],
+  ('Perforatorul de bandă',
+   'Pregătiți o bandă cum se pregăteau programele în 1962: scrieți cuvintele, perforați, puneți banda în cititor și încărcați-o cu preîncărcătorul original INEX-1.',
+   '- Perforatorul nu era legat de calculator: benzile se pregăteau separat, la un aparat de tip telex — SIGUR (Farcaș).\n- Gaura = 0, 6 rânduri pe cuvânt, m1–m5 primul — SIGUR / DEDUS (capitolul 5).\n- În modul „rânduri” scrieți valoarea pe care o citește instrucțiunea CIT; desenul arată găurile, adică biții inversați.\n- Preîncărcătorul INEX-1 (Facsimil 5) scrie cuvintele benzii începând de la adresa instrucțiunii ME de la 0014 (0002) și o mărește după fiecare cuvânt. Ca să încărcați în altă parte, schimbați adresa din 0014 în editor — că așa proceda operatorul e GHICIT.\n- Cuvintele scrise de program după ce ați pus banda dumneavoastră în cititor devin MODIFICAT (GHICIT, regula emulatorului).'),
+  ('The tape punch',
+   'Prepare a tape the way programs were prepared in 1962: write the words, punch, put the tape in the reader and load it with the original INEX-1 preloader.',
+   '- The punch was not connected to the computer: tapes were prepared separately, on a telex-type machine — CERTAIN (Farcaș).\n- A hole = 0, 6 rows per word, m1–m5 first — CERTAIN / DEDUCED (chapter 5).\n- In “rows” mode you write the value the CIT instruction reads; the drawing shows the holes, i.e. the bits inverted.\n- The INEX-1 preloader (facsimile 5) writes the tape’s words starting at the address of the ME instruction at 0014 (0002) and advances it after each word. To load elsewhere, change the address at 0014 in the editor — that the operator did so is GUESSED.\n- Words the program writes after you put your own tape in the reader become MODIFIED (GUESSED, the emulator’s rule).'))
+e('atelier-controls', 'DEDUS', ['baltacLab', 'semantica'],
+  ('Comenzile Atelierului',
+   'Pas = INSTRUCTIE UNICA, Rulează = CALCULEAZA AUTOMAT, Oprește = IMPULSURI INTRERUPE, ca pe pupitru. Reset golește registrele și lasă tamburul neatins.',
+   'Comenzile trimit aceleași acțiuni ca butoanele pupitrului (Lucrarea 7, p. 6; efectele sunt DEDUSE din inscripții). Reset nu are un buton corespunzător pe pupitru: e o comoditate a emulatorului, echivalentă cu ANULEAZA S, M și RAI apăsate împreună. Adresa de pornire e legată de comutatoarele RAI.'),
+  ('Workshop controls',
+   'Step = INSTRUCTIE UNICA, Run = CALCULEAZA AUTOMAT, Stop = IMPULSURI INTRERUPE, as on the console. Reset clears the registers and leaves the drum untouched.',
+   'The controls send the same actions as the console buttons (lab sheet 7, p. 6; the effects are DEDUCED from the inscriptions). Reset has no matching button on the console: it is a convenience of the emulator, equivalent to pressing ANULEAZA S, M and RAI together. The start address is tied to the RAI switches.'))
+e('prov-modificat', 'SIGUR', ['semantica'],
+  ('MODIFICAT',
+   'Cuvântul a fost schimbat sau scris de dumneavoastră. Nu mai e cuvântul din documentul de epocă, așa că nu mai poartă eticheta ORIGINAL.',
+   'Eticheta e a emulatorului și e o promisiune: niciun cuvânt schimbat de vizitator nu rămâne ORIGINAL — nici în editor, nici pe tambur, nici în eticheta programului, nici în fișierul .mec descărcat. Un fișier deschis e comparat cu programul din catalog; ce diferă devine MODIFICAT, orice ar scrie în fișier.'),
+  ('MODIFIED',
+   'You changed or wrote this word. It is no longer the word in the period document, so it no longer carries the ORIGINAL label.',
+   'The label belongs to the emulator and is a promise: no word changed by the visitor stays ORIGINAL — not in the editor, not on the drum, not in the program label, not in the downloaded .mec file. An opened file is compared with the catalogue program; whatever differs becomes MODIFIED, whatever the file says.'))
+
 # ---------------- turul ghidat ----------------
 # (id, target, view, waitFor, load, ro, en)
 TOUR = [

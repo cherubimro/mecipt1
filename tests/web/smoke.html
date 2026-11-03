@@ -232,6 +232,18 @@ f.addEventListener('load', () => {
   if (m.provenance(0o1551).kind !== 'MODIFICAT' || !d.getElementById('at-modified') || d.getElementById('at-modified').hidden) fail('Atelierul nu oferă versiunea modificată');
   d.querySelector('#atelier .ed-revert').click();
   await until(() => m.provenance(0o1551).kind === 'RECONSTRUCTIE', 5000, 'a doua revenire');
+  // „Explică” pe o celulă de tambur: explicația Atelierului, cu adresa și cuvântul
+  P.explainMode(true);
+  d.querySelector('#atelier .cell[data-addr="873"]').dispatchEvent(new w.MouseEvent('click', { bubbles: true }));
+  P.advance(50);
+  if (d.getElementById('help-title').textContent !== helpRO.entries['atelier-cell'].title) fail('Explică pe celula de tambur: ' + d.getElementById('help-title').textContent);
+  if (!d.getElementById('help-value').textContent.includes('1551')) fail('valoarea celulei: ' + d.getElementById('help-value').textContent);
+  const nBefore = m.instructions();
+  d.getElementById('at-step').click();
+  P.advance(50);
+  if (m.instructions() !== nBefore) fail('în modul Explică, „Pas” a executat o instrucțiune');
+  if (d.getElementById('help-title').textContent !== helpRO.entries['atelier-controls'].title) fail('Explică pe Pas: ' + d.getElementById('help-title').textContent);
+  P.explainMode(false); P.closeHelp();
   P.setMode('console'); P.advance(50);
   stage('documentatie');
   if (!d.getElementById('doc-link').getAttribute('href').startsWith('doc.html')) fail('linkul spre documentație');

@@ -21,3 +21,4 @@ https://creativecommons.org/licenses/by-sa/4.0/
 - **Panoul din mijloc** (`web/data/art-middle.json`) — măsurat pe fotografia din 2011 (Turbojet, CC BY-SA 4.0).
 - **Textele ajutorului** (`web/data/help/*.json`, generate de `tools/help/gen_help.py`) — scrise pentru acest proiect după sursele de mai sus, CC BY-SA 4.0.
 - **Documentația** (`web/doc/`, `docs/semantica.en.md`) — scrisă pentru acest proiect după sursele de mai sus, CC BY-SA 4.0.
+- **Atelierul** (`web/doc/{ro,en}/09-atelierul.md`, explicațiile din `tools/help/gen_help.py`) — scrise pentru acest proiect, CC BY-SA 4.0. Fișierele `.mec` descărcate din Atelier conțin programele de mai sus, cu atribuirea lor, plus modificările vizitatorului.

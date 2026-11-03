@@ -75,3 +75,13 @@ test('honest labels where the reviewer found slips', () => {
   assert.ok(rai(RO).includes('ANULEAZA') && /ghicit/i.test(rai(RO)), rai(RO));
   assert.ok(rai(EN).includes('ANULEAZA') && /guessed/i.test(rai(EN)), rai(EN));
 });
+
+test('the workshop has explanations', () => {
+  for (const k of ['atelier-editor', 'atelier-row', 'atelier-drum', 'atelier-cell', 'atelier-punch', 'atelier-controls', 'prov-modificat']) {
+    for (const H of [RO, EN]) {
+      const e = helpFor(k, H);
+      assert.ok(e.title && e.short && e.sources.length, k);
+    }
+  }
+  assert.ok(RO.entries['atelier-punch'].more.includes('0014') && RO.entries['atelier-punch'].more.includes('GHICIT'));
+});

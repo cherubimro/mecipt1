@@ -126,3 +126,15 @@ Alegerile făcute pentru pagina pupitrului (`web/js/bindings.js`, `web/js/glow.j
 | Un bec de microoperație se aprinde dacă microoperația a rulat cel puțin o dată de la cadrul precedent | GHICIT | Ochiul vede, la 50 instr/s, becurile pulsând; vezi și inerția. |
 | Încărcarea unui program (și Reîncarcă) readuce impulsurile (IMPULSURI pe RESTABILESTE) | GHICIT | O pornire curată; altfel vizitatorul rămâne cu mașina oprită fără să știe de ce. |
 | Comutatoarele M și RAI țin poziția și pun tot cuvântul în registru la fiecare mutare | GHICIT, în tensiune cu sursele | Existența butoanelor ANULEAZA M / RAI și introducerea „cu trei degete” sugerează că, poate, comutatoarele adăugau biți într-un registru golit înainte. De hotărât înainte ca turul ghidat (Planul 4) să predea procedura de lucru. |
+
+## Atelierul
+Alegerile Atelierului (`web/js/atelier/`, nucleul: `PROV_MODIFICAT`, `written`, `visitor_tape`).
+
+| Alegere | Statut | Motiv / sursă |
+|---|---|---|
+| Orice cuvânt pus pe tambur de vizitator (editor, MEMORIE SCRIERE, banda lui prin INEX-1) are proveniența MODIFICAT | — (regula emulatorului) | Vizitatorul nu trebuie să creadă niciodată că rulează cod original când nu e așa (spec §2). |
+| După ce o bandă perforată de vizitator e pusă în cititor, orice cuvânt scris de program pe tambur devine MODIFICAT, până la următoarea încărcare de program | GHICIT | Nu urmărim fiecare bit de pe bandă până pe tambur; regula acoperă cazul INEX-1. |
+| Cuvintele scrise de program cât rulează apar „scris de program”, fără să-și schimbe proveniența, și nu se salvează | — (regula emulatorului) | Nu mai sunt cuvântul din document, dar nici nu le-a schimbat vizitatorul. |
+| Preîncărcătorul INEX-1 încarcă de la adresa instrucțiunii ME de la 0014; operatorul o schimba ca să încarce în altă parte | GHICIT | Facsimilul 5 dă 0014 = ME 0002 și procedura de pornire, dar nu spune cum se alegea adresa. |
+| În modul „rânduri”, vizitatorul scrie valoarea citită de CIT; pe bandă se perforează biții inversați | DEDUS | Perforația = 0 (Baltac, prin Wikipedia RO). |
+| Pupitrul, bara și turul încarcă mereu programul original; versiunea modificată e doar în Atelier | — (regula emulatorului) | Turul și vizitatorul nou trebuie să vadă originalul. |

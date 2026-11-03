@@ -128,3 +128,15 @@ The choices made for the console page (`web/js/bindings.js`, `web/js/glow.js`, `
 | A micro-operation lamp lights if the micro-operation ran at least once since the previous frame | GUESSED | At 50 instr/s the eye sees the lamps pulsing; see also the inertia. |
 | Loading a program (and Reload) restores the pulses (IMPULSURI on RESTABILESTE) | GUESSED | A clean start; otherwise the visitor is left with a stopped machine without knowing why. |
 | The M and RAI switches latch and put the whole word into the register at every move | GUESSED, in tension with the sources | The ANULEAZA M / RAI (clear) buttons and “three-finger” entry suggest that the switches may have added bits into a register cleared beforehand. To be decided before the guided tour (Plan 4) teaches the operating procedure. |
+
+## The workshop
+The workshop’s choices (`web/js/atelier/`, the core: `PROV_MODIFICAT`, `written`, `visitor_tape`).
+
+| Choice | Status | Reason / source |
+|---|---|---|
+| Every word the visitor puts on the drum (editor, MEMORIE SCRIERE, their own tape through INEX-1) gets the provenance MODIFIED | — (emulator rule) | A visitor must never believe they are running original code when they are not (spec §2). |
+| After a tape punched by the visitor is put in the reader, every word the program writes to the drum becomes MODIFIED, until the next program load | GUESSED | We do not follow every bit from the tape to the drum; the rule covers the INEX-1 case. |
+| Words the program writes while running show as “written by the program”, keep their provenance, and are not saved | — (emulator rule) | They are no longer the word in the document, but the visitor did not change them either. |
+| The INEX-1 preloader loads from the address of the ME instruction at 0014; the operator changed it to load elsewhere | GUESSED | Facsimile 5 gives 0014 = ME 0002 and the start procedure, but does not say how the address was chosen. |
+| In “rows” mode the visitor writes the value CIT reads; the tape is punched with the bits inverted | DEDUCED | A hole = 0 (Baltac, via the Romanian Wikipedia). |
+| The console, the bar and the tour always load the original program; the modified version is only in the workshop | — (emulator rule) | The tour and a new visitor must see the original. |

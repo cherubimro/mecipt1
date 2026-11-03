@@ -535,6 +535,80 @@
     "baltac2011",
     "semantica"
    ]
+  },
+  "atelier-editor": {
+   "title": "Programul de pe tambur",
+   "short": "Cuvintele de pe tambur, scrise ca în listingurile din 1962: adresa, apoi cele două instrucțiuni. Puteți schimba orice cuvânt; schimbarea primește eticheta MODIFICAT.",
+   "more": "Notația e cea a listingurilor de epocă, `AAAA  c1 aaaa  c2 aaaa` în octal — SIGUR: e chiar ieșirea programului original de retipărire din 1962 (Facsimil 4). Mnemonicele sunt din tabelul Geier (1961).\n\nEditorul e o unealtă a emulatorului, nu a mașinii: programatorii din 1962 scriau pe hârtie și introduceau cuvintele de la pupitru sau de pe bandă. Ce schimbați se scrie direct pe tambur, între două instrucțiuni, și se ține minte în browserul dumneavoastră; „Revino la original” șterge schimbările.",
+   "status": "MIXT",
+   "sources": [
+    "baltac2011",
+    "geier1961",
+    "semantica"
+   ]
+  },
+  "atelier-row": {
+   "title": "Un cuvânt de pe tambur",
+   "short": "Același cuvânt de 31 de biți, citit în două feluri: ca două instrucțiuni (cu mnemonice și în octal) și ca număr (fracție). Mașina nu le deosebea.",
+   "more": "Un cuvânt e doar 31 de biți (Lucrarea 7, p. 1 — SIGUR): devine instrucțiune când RAI ajunge la el și număr când o instrucțiune îl citește. De aceea rândul arată ambele citiri. Eticheta din dreapta spune de unde vine cuvântul (ORIGINAL, DEDUS, RECONSTRUCȚIE, GHICIT, MODIFICAT) sau „scris de program”, dacă l-a scris programul cât a rulat. Click pe rând ca să-l schimbați.",
+   "status": "SIGUR",
+   "sources": [
+    "baltacLab",
+    "geier1961",
+    "semantica"
+   ]
+  },
+  "atelier-drum": {
+   "title": "Tamburul: 1024 de cuvinte",
+   "short": "Memoria mașinii: un tambur magnetic cu 1024 de cuvinte, care se rotea de 50 de ori pe secundă. Fiecare pătrățel e un cuvânt; culoarea și litera spun de unde vine.",
+   "more": "Capacitatea și viteza tamburului sunt SIGURE (Wikipedia RO, Baltac). Grila de 32 × 32 e doar un mod de a desena memoria: adresa = rândul (octal, în stânga) + coloana. Pătratul conturat în portocaliu e adresa curentă (RAI) cât rulează programul. Ulterior, adresele pare și impare au fost puse pe jumătăți diferite ale tamburului (Facsimil 8), ca programele să meargă mai repede.",
+   "status": "MIXT",
+   "sources": [
+    "wikiRO",
+    "baltac2011",
+    "semantica"
+   ]
+  },
+  "atelier-cell": {
+   "title": "Un cuvânt pe tambur",
+   "short": "Un click duce la rândul lui din editor. Litera: O original, D dedus, R reconstrucție, G ghicit, M modificat de dumneavoastră, P scris de program cât a rulat.",
+   "more": "Proveniența urmează regulile din documentație (capitolul 7): un cuvânt schimbat de vizitator — din editor, cu MEMORIE SCRIERE de la pupitru sau de pe propria bandă — devine MODIFICAT; unul scris de program cât rulează apare „scris de program”, pentru că nu mai e cuvântul din document.",
+   "status": "MIXT",
+   "sources": [
+    "semantica"
+   ]
+  },
+  "atelier-punch": {
+   "title": "Perforatorul de bandă",
+   "short": "Pregătiți o bandă cum se pregăteau programele în 1962: scrieți cuvintele, perforați, puneți banda în cititor și încărcați-o cu preîncărcătorul original INEX-1.",
+   "more": "- Perforatorul nu era legat de calculator: benzile se pregăteau separat, la un aparat de tip telex — SIGUR (Farcaș).\n- Gaura = 0, 6 rânduri pe cuvânt, m1–m5 primul — SIGUR / DEDUS (capitolul 5).\n- În modul „rânduri” scrieți valoarea pe care o citește instrucțiunea CIT; desenul arată găurile, adică biții inversați.\n- Preîncărcătorul INEX-1 (Facsimil 5) scrie cuvintele benzii începând de la adresa instrucțiunii ME de la 0014 (0002) și o mărește după fiecare cuvânt. Ca să încărcați în altă parte, schimbați adresa din 0014 în editor — că așa proceda operatorul e GHICIT.\n- Cuvintele scrise de program după ce ați pus banda dumneavoastră în cititor devin MODIFICAT (GHICIT, regula emulatorului).",
+   "status": "MIXT",
+   "sources": [
+    "farcas2005",
+    "wikiRO",
+    "geier1961",
+    "baltac2011",
+    "semantica"
+   ]
+  },
+  "atelier-controls": {
+   "title": "Comenzile Atelierului",
+   "short": "Pas = INSTRUCTIE UNICA, Rulează = CALCULEAZA AUTOMAT, Oprește = IMPULSURI INTRERUPE, ca pe pupitru. Reset golește registrele și lasă tamburul neatins.",
+   "more": "Comenzile trimit aceleași acțiuni ca butoanele pupitrului (Lucrarea 7, p. 6; efectele sunt DEDUSE din inscripții). Reset nu are un buton corespunzător pe pupitru: e o comoditate a emulatorului, echivalentă cu ANULEAZA S, M și RAI apăsate împreună. Adresa de pornire e legată de comutatoarele RAI.",
+   "status": "DEDUS",
+   "sources": [
+    "baltacLab",
+    "semantica"
+   ]
+  },
+  "prov-modificat": {
+   "title": "MODIFICAT",
+   "short": "Cuvântul a fost schimbat sau scris de dumneavoastră. Nu mai e cuvântul din documentul de epocă, așa că nu mai poartă eticheta ORIGINAL.",
+   "more": "Eticheta e a emulatorului și e o promisiune: niciun cuvânt schimbat de vizitator nu rămâne ORIGINAL — nici în editor, nici pe tambur, nici în eticheta programului, nici în fișierul .mec descărcat. Un fișier deschis e comparat cu programul din catalog; ce diferă devine MODIFICAT, orice ar scrie în fișier.",
+   "status": "SIGUR",
+   "sources": [
+    "semantica"
+   ]
   }
  },
  "sources": {

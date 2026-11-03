@@ -15,6 +15,7 @@ import { HelpPanel } from './help.js';
 import { renderMarkdown } from './md.js';
 import { Tour } from './tour.js';
 import { describeValue } from './values.js';
+import { formatWord, rowsFor, provLabel } from './atelier/editor.js';
 
 const $ = (id) => document.getElementById(id);
 const storage = (() => { try { return window.localStorage; } catch { return null; } })();
@@ -68,6 +69,7 @@ function provenanceLabel(machine, hasTape, foreign) {
     if (i) el.append(' · ');
     const k = document.createElement('span');
     k.className = `kind kind-${p.kind}`;
+    if (p.kind === 'MODIFICAT') k.dataset.help = 'prov-modificat';
     k.textContent = T().prov[p.kind] ?? p.kind;
     const src = p.kind === 'MODIFICAT' ? T().modifiedBy : p.source;
     el.append(k, ` — ${src}: ${T().words(p.words)}`);
@@ -178,7 +180,16 @@ async function main() {
     panel: $('help-panel'), title: $('help-title'), status: $('help-status'), short: $('help-short'),
     value: $('help-value'), moreBtn: $('help-more-btn'), more: $('help-more'), close: $('help-close'),
   }, { render: renderMarkdown, onClose: () => document.body.classList.remove('help-open') });
-  const valueOf = (id) => (lastSnap ? describeValue(id, lastSnap.state, {
+  let helpEl = null;
+  // Explicația unui cuvânt din Atelier: adresa, cuvântul în cele două citiri și proveniența.
+  const atelierValue = (addr) => {
+    const r = rowsFor(machine).find((x) => x.addr === addr) || { addr, word: machine.peek(addr), prov: 0, source: '', written: false };
+    const f = formatWord(r.word, tables, (w) => machine.wordValue(w), lang);
+    const label = r.prov === 0 && !r.written ? T().drum.empty : provLabel(r, T());
+    return `${addr.toString(8).padStart(4, '0')} (${addr}): ${f.ins} · ${f.oct} · = ${f.frac} · ${label}`;
+  };
+  const valueOf = (id) => ((id === 'atelier-cell' || id === 'atelier-row') && helpEl && helpEl.dataset.addr
+    ? atelierValue(Number(helpEl.dataset.addr)) : lastSnap ? describeValue(id, lastSnap.state, {
     tables, wordValue: (w) => machine.wordValue(w), uopIndex, uops: lastSnap.uops, lang,
     mode: runner.mode, pulsesOff: runner.pulsesOff,
     uopName: (i) => helpEn.uops[String(i)], opEffect: (c) => machine.opEffect(c),
@@ -186,6 +197,7 @@ async function main() {
       ? helpEn.ops_real[String(c)] : helpEn.ops[String(c)]),
   }) : null);
   function explain(id, from = null) {
+    helpEl = from;
     help.show(id, HELP[lang], T(), valueOf(id), from);
     document.body.classList.add('help-open');   // pe ecrane late pagina se strânge, ca panoul să nu acopere pupitrul
   }
@@ -277,7 +289,7 @@ async function main() {
     next: () => { tour.next(); renderTour(); }, step: () => tour.step(), get active() { return tour.active; },
   };
 
-  const EXPLAINABLE = '.switch, .lamp, .knob, .meter, .decor[id], #tape, #sheet, #provenance, .panel-slot';
+  const EXPLAINABLE = '[data-help], .switch, .lamp, .knob, .meter, .decor[id], #tape, #sheet, #provenance, .panel-slot';
 
   function press(id) {
     if (id === 'switch-compute-0') $(id).classList.remove('cue');
@@ -289,10 +301,25 @@ async function main() {
     if (a) runner.enqueue(a);
     if (a && a.ui === 'automat') lastHalt = null;
   }
+  // În modul Explică, un click pe un element al Atelierului îl explică și nu-l acționează (faza de captură,
+  // înaintea ascultătorilor butoanelor).
+  document.addEventListener('click', (e) => {
+    if (!explaining || !e.target.closest) return;
+    const el = e.target.closest('#atelier [data-help], #provenance [data-help]');
+    if (!el) return;
+    e.preventDefault();
+    e.stopPropagation();
+    explain(el.dataset.help, el);
+  }, true);
   document.addEventListener('click', (e) => {
     if (!e.target.closest || e.target.closest('#help-panel, header')) return;
     const el = e.target.closest(EXPLAINABLE);
-    if (!el || !el.id) return;
+    if (!el) return;
+    if (el.dataset.help) {                       // elementele Atelierului: explicate doar în modul Explică
+      if (explaining) { e.preventDefault(); e.stopPropagation(); explain(el.dataset.help, el); }
+      return;
+    }
+    if (!el.id) return;
     if (explaining) { explain(el.id, el); return; }
     if (el.classList.contains('switch')) { press(el.id); tourEvent({ type: 'click', id: el.id }); }
     else if (!el.classList.contains('panel-slot')) explain(el.id, el);

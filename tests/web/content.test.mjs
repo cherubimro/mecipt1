@@ -6,7 +6,7 @@ import { MACROS } from '../../web/js/md.js';
 import { ROOT, read } from './helpers.mjs';
 
 const CHAPTERS = ['01-masina.md', '02-cuvantul.md', '03-instructiuni.md', '04-pupitrul.md',
-  '05-banda-si-masina-de-scris.md', '06-programe.md', '07-ce-e-sigur.md', '08-surse.md'];
+  '05-banda-si-masina-de-scris.md', '06-programe.md', '07-ce-e-sigur.md', '08-surse.md', '09-atelierul.md'];
 
 test('chapters exist in both languages', () => {
   for (const l of ['ro', 'en']) assert.deepEqual(readdirSync(`${ROOT}web/doc/${l}`).sort(), CHAPTERS);
@@ -54,4 +54,13 @@ test('the glyph sets follow Baltac L6 and use one number base', () => {
   const en = read('web/doc/en/05-banda-si-masina-de-scris.md');
   assert.ok(en.includes('L6') && en.includes('not used'), 'en: the L6 set');
   assert.ok(!en.includes('from 10–15'));
+});
+
+test('the workshop chapter states its guesses', () => {
+  const ro = read('web/doc/ro/09-atelierul.md');
+  for (const w of ['MODIFICAT', '0014', 'GHICIT', 'scris de program']) assert.ok(ro.includes(w), w);
+  const en = read('web/doc/en/09-atelierul.md');
+  for (const w of ['MODIFIED', '0014', 'GUESSED', 'written by the program']) assert.ok(en.includes(w), w);
+  assert.ok(read('docs/semantica.md').includes('## Atelierul'));
+  assert.ok(read('docs/semantica.en.md').includes('## The workshop'));
 });

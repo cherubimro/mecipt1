@@ -5,7 +5,7 @@ import { pickLang, saveLang } from './lang.js';
 import { S } from './strings.js';
 
 export const CHAPTERS = ['01-masina', '02-cuvantul', '03-instructiuni', '04-pupitrul', '05-banda-si-masina-de-scris',
-  '06-programe', '07-ce-e-sigur', '08-surse', 'semantica'];
+  '06-programe', '07-ce-e-sigur', '08-surse', '09-atelierul', 'semantica'];
 
 const $ = (id) => document.getElementById(id);
 const storage = (() => { try { return window.localStorage; } catch { return null; } })();
