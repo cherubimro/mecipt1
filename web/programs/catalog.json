@@ -1,6 +1,4 @@
 [
- {"id": "retiparire-1962", "file": "retiparire-1962.mec", "tape": null, "start": "1477",
-  "title": "Retipărirea programelor (6 septembrie 1962)"},
- {"id": "inex1", "file": "inex1-preincarcator.mec", "tape": "inex-banda-3-cuvinte.mec", "start": "0010",
-  "title": "Preîncărcătorul INEX-1 (cu o bandă de test de 3 cuvinte)"}
+ {"id": "retiparire-1962", "file": "retiparire-1962.mec", "tape": null, "start": "1477", "title": "Retipărirea programelor (6 septembrie 1962)", "title_en": "Reprinting of programs (6 September 1962)"},
+ {"id": "inex1", "file": "inex1-preincarcator.mec", "tape": "inex-banda-3-cuvinte.mec", "start": "0010", "title": "Preîncărcătorul INEX-1 (cu o bandă de test de 3 cuvinte)", "title_en": "The INEX-1 preloader (with a 3-word test tape)"}
 ]

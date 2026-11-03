@@ -61,6 +61,14 @@ f.addEventListener('load', () => {
   await P.select('retiparire-1962');
   if (P.runner.pulsesOff || d.getElementById('switch-pulses-0').getAttribute('aria-pressed') !== 'false')
     fail('Reîncarcă nu readuce impulsurile');
+  // limba: engleza se aplică fără reîncărcare, inscripțiile rămân în română
+  P.setLang('en');
+  if (d.documentElement.lang !== 'en' || !d.getElementById('hint').textContent.startsWith('Press'))
+    fail('engleza: ' + d.getElementById('hint').textContent);
+  if (!d.getElementById('switch-compute-0').getAttribute('aria-label').startsWith('CALCULEAZA AUTOMAT ('))
+    fail('eticheta în engleză: ' + d.getElementById('switch-compute-0').getAttribute('aria-label'));
+  P.setLang('ro');
+  if (!d.getElementById('hint').textContent.startsWith('Apăsați')) fail('înapoi la română');
   P.setSpeed('rapid');
   click('switch-compute-0');
   await until(() => P.sheet.lines()[0] === '1477  27 0000  30 0000' && glow('lamp-indicators-2') > 0.5, 20000,

@@ -9,8 +9,12 @@ import { glowStep } from './glow.js';
 import { renderTape } from './tape.js';
 import { Sheet, renderSheet } from './typewriter.js';
 import { S } from './strings.js';
+import { pickLang, saveLang } from './lang.js';
 
 const $ = (id) => document.getElementById(id);
+const storage = (() => { try { return window.localStorage; } catch { return null; } })();
+let lang = pickLang(location.search, storage);
+const T = () => S(lang);
 const getJson = async (url) => (await fetchOk(url)).json();
 const getText = async (url) => (await fetchOk(url)).text();
 async function fetchOk(url) {
@@ -20,19 +24,24 @@ async function fetchOk(url) {
 }
 
 function setTexts() {
-  $('subtitle').textContent = S.subtitle;
-  $('program-label').textContent = S.program;
-  $('speed-label').textContent = S.speed;
-  $('speed-epoca').textContent = S.speedEpoca;
-  $('speed-rapid').textContent = S.speedRapid;
-  $('reload').textContent = S.reload;
-  $('view-label').textContent = S.view;
-  for (const o of $('view').options) o.textContent = S.views[o.value];
-  $('hint').textContent = S.hint;
-  $('reader-label').textContent = S.tapeReader;
-  $('typewriter-label').textContent = S.typewriter;
-  $('attribution').textContent = S.attribution;
-  $('status').textContent = S.loading;
+  document.documentElement.lang = lang;
+  document.title = T().title;
+  $('title').textContent = T().title;
+  $('lang-label').textContent = T().langLabel;
+  for (const l of ['ro', 'en']) $(`lang-${l}`).setAttribute('aria-pressed', String(l === lang));
+  $('subtitle').textContent = T().subtitle;
+  $('program-label').textContent = T().program;
+  $('speed-label').textContent = T().speed;
+  $('speed-epoca').textContent = T().speedEpoca;
+  $('speed-rapid').textContent = T().speedRapid;
+  $('reload').textContent = T().reload;
+  $('view-label').textContent = T().view;
+  for (const o of $('view').options) o.textContent = T().views[o.value];
+  $('hint').textContent = T().hint;
+  $('reader-label').textContent = T().tapeReader;
+  $('typewriter-label').textContent = T().typewriter;
+  $('attribution').textContent = T().attribution;
+  $('status').textContent = T().loading;
 }
 
 function provenanceLabel(machine, hasTape) {
@@ -43,10 +52,10 @@ function provenanceLabel(machine, hasTape) {
     if (i) el.append(' · ');
     const k = document.createElement('span');
     k.className = `kind kind-${p.kind}`;
-    k.textContent = S.prov[p.kind] ?? p.kind;
-    el.append(k, ` — ${p.source}: ${S.words(p.words)}`);
+    k.textContent = T().prov[p.kind] ?? p.kind;
+    el.append(k, ` — ${p.source}: ${T().words(p.words)}`);
   });
-  if (hasTape) el.append(` · ${S.tapeTest}`);
+  if (hasTape) el.append(` · ${T().tapeTest}`);
 }
 
 async function main() {
@@ -76,7 +85,10 @@ async function main() {
     el.classList.toggle('down', !up);
     if (LATCHING.test(id)) el.setAttribute('aria-pressed', String(up));
   };
-  for (const el of document.querySelectorAll('.switch')) el.setAttribute('aria-label', S.switchLabel(el.id));
+  const labelSwitches = () => {
+    for (const el of document.querySelectorAll('.switch')) el.setAttribute('aria-label', T().switchLabel(el.id));
+  };
+  labelSwitches();
   setLever('switch-pulses-0', false);
   $('switch-compute-0').classList.add('cue');   // îndrumarea arată butonul de pornire până la prima apăsare
   const showSwitchWord = (group, bits) => bits.forEach((v, i) => setLever(`switch-${group}-${i}`, v === 1));
@@ -84,7 +96,7 @@ async function main() {
   for (const p of catalog) {
     const o = document.createElement('option');
     o.value = p.id;
-    o.textContent = p.title;
+    o.textContent = lang === 'en' && p.title_en ? p.title_en : p.title;
     $('program').append(o);
   }
 
@@ -105,10 +117,30 @@ async function main() {
     showSwitchWord('RAI', switches.RAI);
     showSwitchWord('M', switches.M);
     setLever('switch-pulses-0', false);
-    provenanceLabel(machine, !!p.tape);
-    $('tape-info').textContent = p.tape ? `${S.tapeRows(tapeRows.length)} · ${S.tapeTest}` : S.tapeEmpty;
-    $('status').textContent = S.idle;
+    describeProgram();
+    $('status').textContent = T().idle;
   }
+  function describeProgram() {
+    if (!current) return;
+    provenanceLabel(machine, !!current.tape);
+    $('tape-info').textContent = current.tape ? `${T().tapeRows(tapeRows.length)} · ${T().tapeTest}` : T().tapeEmpty;
+    for (const o of $('program').options) {
+      const p = catalog.find((c) => c.id === o.value);
+      o.textContent = lang === 'en' && p.title_en ? p.title_en : p.title;
+    }
+  }
+  function setLang(l) {
+    if (l !== 'ro' && l !== 'en') return;
+    lang = l;
+    saveLang(l, storage);
+    setTexts();
+    labelSwitches();
+    describeProgram();
+    $('status').textContent = '';
+    for (const fn of langListeners) fn(l);
+  }
+  const langListeners = [];
+  for (const l of ['ro', 'en']) $(`lang-${l}`).addEventListener('click', () => setLang(l));
 
   function press(id) {
     if (id === 'switch-compute-0') $(id).classList.remove('cue');
@@ -159,11 +191,11 @@ async function main() {
     if (Math.abs(snap.tapePos - smoothTape) < 0.01) smoothTape = snap.tapePos;
     renderTape($('tape'), tapeRows, snap.tapePos, smoothTape);
     renderSheet($('sheet'), sheet);
-    const st = runner.pulsesOff ? S.pulsesOff
-      : runner.mode === 'automat' ? S.running
-        : lastHalt !== null && lastHalt !== HALT.OK ? S.halt[lastHalt] : S.idle;
+    const st = runner.pulsesOff ? T().pulsesOff
+      : runner.mode === 'automat' ? T().running
+        : lastHalt !== null && lastHalt !== HALT.OK ? T().halt[lastHalt] : T().idle;
     if ($('status').textContent !== st) $('status').textContent = st;   // anunțat doar la schimbare
-    const t = `${S.machineTime}: ${machine.seconds().toFixed(1)} s`;
+    const t = `${T().machineTime}: ${machine.seconds().toFixed(1)} s`;
     if ($('machine-time').textContent !== t) $('machine-time').textContent = t;
   }
   let last = null;
@@ -175,12 +207,12 @@ async function main() {
 
   await select(catalog[0].id);
   requestAnimationFrame(frame);
-  return { runner, select, setSpeed, setView, sheet, advance };
+  return { runner, select, setSpeed, setView, setLang, sheet, advance };
 }
 
 const api = {};
 api.ready = main().then((o) => Object.assign(api, o)).catch((e) => {
-  $('status').textContent = S.loadError + e.message;
+  $('status').textContent = T().loadError + e.message;
   throw e;
 });
 window.__pupitru = api;

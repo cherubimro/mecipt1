@@ -33,6 +33,12 @@ body { background: var(--wall); color: var(--wall-text); font-family: var(--ui);
   border: 1px solid #8f969a; border-radius: 3px; padding: 3px 8px; }
 .bar button { cursor: pointer; }
 .bar button:hover { background: #fff; }
+.lang { display: flex; }
+.lang button { border-radius: 0; min-width: 38px; }
+.lang button:first-of-type { border-radius: 3px 0 0 3px; }
+.lang button:last-of-type { border-radius: 0 3px 3px 0; border-left: 0; }
+.lang button[aria-pressed="true"] { background: var(--strip-ink); color: var(--strip); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .provenance { grid-column: 1 / -1; margin: 0; font-size: 13.5px; color: #3c4852; }
 .provenance .kind { font-weight: 500; }
 .provenance .kind-ORIGINAL { color: #22612f; }
