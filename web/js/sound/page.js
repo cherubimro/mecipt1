@@ -22,6 +22,7 @@ export function setupSound({ button, storage, T, engine = new SoundEngine(), doc
   const planner = new Planner();
   let on = pickSound(storage);
   let unlocked = false;
+  let pending = null;        // clicul comenzii apăsate cât contextul încă pornea
 
   const render = () => {
     const S = T().sound;
@@ -35,16 +36,21 @@ export function setupSound({ button, storage, T, engine = new SoundEngine(), doc
     button.title = label;
   };
 
+  // Regula browserelor: contextul audio pornește doar dintr-un gest. Pe telefon gestul valid e la ridicarea
+  // degetului (pointerup / touchend / click), nu la apăsare; de aceea ascultăm toate și reîncercăm la fiecare gest
+  // până când contextul rulează (și din nou dacă e întrerupt, de pildă de un apel). Faza de captură: înaintea clicului.
   const unlock = () => {
-    if (unlocked) return;
-    unlocked = true;
-    engine.setEnabled(on);
-    engine.setHidden(!!doc.hidden);
-    engine.unlock();
-    render();
+    if (!unlocked) {
+      unlocked = true;
+      engine.setEnabled(on);
+      engine.setHidden(!!doc.hidden);
+      engine.unlock();
+      render();
+    } else if (!engine.running) {
+      engine.unlock();
+    }
   };
-  // Regula browserelor: contextul audio pornește doar dintr-un gest. Faza de captură: înaintea oricărui clic.
-  for (const ev of ['pointerdown', 'keydown']) doc.addEventListener(ev, unlock, { capture: true, once: true });
+  for (const ev of ['pointerdown', 'pointerup', 'touchend', 'click', 'keydown']) doc.addEventListener(ev, unlock, { capture: true });
   doc.addEventListener('visibilitychange', () => engine.setHidden(!!doc.hidden));
 
   const toggle = () => {
@@ -60,11 +66,20 @@ export function setupSound({ button, storage, T, engine = new SoundEngine(), doc
   return {
     onFrame(snap, dtMs) {
       const r = planner.frame({ t: engine.now(), dtMs, tapePos: snap.tapePos, typed: snap.typed });
-      if (!engine.available || !on) return;
+      if (!engine.running || !on) return;   // context suspendat: nimic nu se adună pentru mai târziu
       for (const e of r.events) engine.play(e.kind, e.t);
       engine.buzz(r.buzz);
     },
-    control(switchId) { if (on) engine.play(clickKind(switchId)); },
+    control(switchId) {
+      if (!on) return;
+      const kind = clickKind(switchId);
+      if (engine.running) { engine.play(kind); return; }
+      if (!engine.available) return;
+      // primul gest se aude și el, după ce contextul pornește; se păstrează doar ultimul clic, nu o coadă
+      const first = pending === null;
+      pending = kind;
+      if (first) engine.whenRunning().then(() => { if (on && pending) engine.play(pending); pending = null; });
+    },
     reset() { planner.reset(); engine.stopAll(); },
     setLang: render,
     toggle,

@@ -41,16 +41,20 @@ export class SoundEngine {
     this._enabled = true;
     this.hidden = false;
     this.live = new Set();      // sursele programate, ca stopAll să le poată opri
+    this.waiters = [];          // cei care așteaptă pornirea contextului
   }
 
   get available() { return !!this.ctx; }
+  // Pe telefon contextul poate rămâne suspendat după primul gest (sau întrerupt de un apel):
+  // atunci nu se programează nimic, ca să nu iasă la pornire o rafală de clicuri adunate.
+  get running() { return !!this.ctx && this.ctx.state === 'running'; }
   get enabled() { return this._enabled; }
   now() { return this.ctx ? this.ctx.currentTime : 0; }
   buzzGain(source) { return this.buzzers ? this.buzzers[source] : null; }
 
   // La primul gest al vizitatorului: creează (sau reia) contextul. false dacă browserul nu poate.
   unlock() {
-    if (this.ctx) { this.resume(); return true; }
+    if (this.ctx) { this.resume().then(() => this.wake()); return true; }
     if (this.failed) return false;
     try {
       this.ctx = this.createContext();
@@ -60,13 +64,33 @@ export class SoundEngine {
       this.failed = true;
       return false;
     }
-    this.resume();
+    if (this.ctx.addEventListener) this.ctx.addEventListener('statechange', () => this.wake());
+    this.resume().then(() => this.wake());
     this.apply();
     return true;
   }
 
+  wake() {
+    if (!this.running) return;
+    const w = this.waiters.splice(0);
+    for (const fn of w) fn();
+  }
+
   resume() {
-    try { const p = this.ctx.resume && this.ctx.resume(); if (p && p.catch) p.catch(() => {}); } catch { /* nu e grav */ }
+    try {
+      const p = this.ctx.resume && this.ctx.resume();
+      if (p && p.catch) return p.catch(() => {});
+    } catch { /* nu e grav */ }
+    return Promise.resolve();
+  }
+
+  // Se rezolvă când contextul rulează (după un resume reușit); dacă browserul refuză, rămâne în așteptare.
+  whenRunning() {
+    if (!this.ctx) return new Promise(() => {});
+    return new Promise((resolve) => {
+      const check = () => { if (this.running) resolve(); else this.waiters.push(check); };
+      this.resume().then(check);
+    });
   }
 
   build() {
@@ -169,7 +193,7 @@ export class SoundEngine {
   }
 
   play(kind, t) {
-    if (!this.ctx || !this._enabled || this.hidden) return;
+    if (!this.running || !this._enabled || this.hidden) return;
     const recipe = RECIPES[kind];
     if (!recipe) return;
     const at = Math.max(t ?? this.ctx.currentTime, this.ctx.currentTime);

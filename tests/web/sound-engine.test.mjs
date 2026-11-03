@@ -108,3 +108,22 @@ test('engine: ascuns coboară masterul la 0, vizibil îl readuce cu rampă de 1 
   assert.equal(last[1], 1);
   assert.ok(Math.abs(last[2] - (ctx().currentTime + 1)) < 1e-9);
 });
+
+test('engine: cu contextul suspendat play nu programează nimic', () => {
+  const { e, ctx } = engine();
+  e.unlock();
+  ctx().resume = () => Promise.resolve();   // browserul refuză: contextul rămâne suspendat
+  ctx().state = 'suspended';
+  const before = started(ctx()).length;
+  e.play('tape');
+  assert.equal(started(ctx()).length, before);
+  assert.equal(e.running, false);
+});
+
+test('engine: whenRunning se rezolvă când contextul pornește', async () => {
+  const { e, ctx } = engine();
+  e.unlock();
+  await e.whenRunning();
+  assert.equal(ctx().state, 'running');
+  assert.equal(e.running, true);
+});
