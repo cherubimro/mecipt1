@@ -14,3 +14,4 @@ https://creativecommons.org/licenses/by-sa/4.0/
 - **Lucrările de laborator** (Baltac, 1965–1966) — citate pentru formatul cuvântului și microprogramare.
 - **Setul de instrucțiuni** — A. Geier, *Programarea calculatorului electronic cifric MECIPT I în regimul virgulă mobilă*, Buletinul Științific și Tehnic al IPT, 1961 (via Wikipedia RO, articolul „MECIPT”).
 - **Descrieri** — Dan D. Farcaș, *MECIPT, o istorie subiectivă* (2005); Ștefan Mărușter, *Povestea unei lucrări*.
+- **Pozițiile becurilor și comutatoarelor** (`web/data/positions.json`) — proiectate de `tools/dae_layout.py` din modelul 3D de mai sus (MECIPT-1_V4.dae), deci derivate din opera lui marius0198 (CC BY 4.0); publicate aici sub CC BY-SA 4.0.
