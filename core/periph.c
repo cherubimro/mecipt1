@@ -2,16 +2,17 @@
 #include "periph.h"
 #include <string.h>
 
-/* GHICIT: 16 caractere numerice (Wikipedia RO); tabela reală nu s-a găsit. */
+/* Setul numeric (Wikipedia RO, după Baltac, L6): cifre, spațiu, minus, punct, virgulă, întoarcerea carului;
+   codul 14 nu era folosit (SIGUR). Ce cod are fiecare semn: GHICIT, cu 10 = spațiu și 13 = rând nou ca în retipărire. */
 const char *const MEC_DIGIT_GLYPHS[16] = {
-    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", " ", ",", "-", "\n", ".", "+"
+    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", " ", ",", "-", "\n", "", "."
 };
 
-/* GHICIT: 30 de caractere alfabetice inclusiv ă, î, ș, ț (Wikipedia RO) = A–Z + Ă Î Ș Ț,
-   în ordine alfabetică românească; 30 = spațiu, 31 = rând nou. */
+/* Setul de litere (Wikipedia RO, după Baltac, L6): spațiu + 26 de litere englezești + ă î ș ț; codul 31 nu era
+   folosit (SIGUR). Ordinea (alfabetică românească, 30 = spațiu): GHICIT. */
 const char *const MEC_LETTER_GLYPHS[32] = {
     "A", "Ă", "B", "C", "D", "E", "F", "G", "H", "I", "Î", "J", "K", "L", "M", "N",
-    "O", "P", "Q", "R", "S", "Ș", "T", "Ț", "U", "V", "W", "X", "Y", "Z", " ", "\n"
+    "O", "P", "Q", "R", "S", "Ș", "T", "Ț", "U", "V", "W", "X", "Y", "Z", " ", ""
 };
 
 int mec_tape_read(mec_periph *p, int *value5) {

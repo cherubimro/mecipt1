@@ -83,4 +83,12 @@ TEST(test_tape_encode_words) {
     CHECK_EQ_U(out[5], (~(w[0] & 037)) & 037);
 }
 
+TEST(test_glyph_sets_follow_baltac_l6) {
+    /* Wikipedia RO după Baltac, L6: setul numeric — codul 14 nefolosit, fără „+”; setul de litere — codul 31 nefolosit */
+    CHECK_EQ_S(MEC_DIGIT_GLYPHS[14], "");
+    CHECK_EQ_S(MEC_DIGIT_GLYPHS[15], ".");
+    CHECK_EQ_S(MEC_LETTER_GLYPHS[31], "");
+    for (int i = 0; i < 16; i++) CHECK(strcmp(MEC_DIGIT_GLYPHS[i], "+") != 0);
+}
+
 RUN_ALL()

@@ -42,3 +42,14 @@ test('macros expand', () => {
   assert.equal((renderMarkdown(expandMacros('{{uops}}', ctx('ro'))).match(/<tr>/g) || []).length, 40);
   assert.ok(expandMacros('{{letters}}', ctx('ro')).includes('Ș'));
 });
+
+test('overbars are drawn as lines', async () => {
+  const { overlineHtml } = await import('../../web/js/md.js');
+  assert.equal(overlineHtml('M\u0304 și S\u0304. <x>'), '<span class="ovl">M</span> și <span class="ovl">S</span>. &lt;x&gt;');
+  assert.ok(renderMarkdown('schimbă M în M\u0304').includes('<span class="ovl">M</span>'));
+  assert.ok(!renderMarkdown('M\u0304').includes('\u0304'));
+});
+
+test('links with control characters are refused', () => {
+  assert.ok(!renderMarkdown('[x](\u0001javascript:alert(1))').includes('href'));
+});

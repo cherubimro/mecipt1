@@ -142,6 +142,14 @@ TEST(test_api_provenance) {
     CHECK_EQ_S(api_prov_source(0), "");
 }
 
+TEST(test_api_op_effect_is_the_real_one) {
+    api_init();
+    CHECK(strstr(api_op_effect(14), "s < 0") != NULL);
+    CHECK(strstr(api_op_effect(15), "s ≥ 0") != NULL);
+    CHECK(strstr(api_op_effect(13), "salt") != NULL);
+    CHECK_EQ_S(api_op_effect(30), "");
+}
+
 TEST(test_api_word_value) {
     CHECK(api_word_value(0x20000000u) == 0.5);
     CHECK(api_word_value(0x10000000u) == 0.25);

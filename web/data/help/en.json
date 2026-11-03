@@ -68,8 +68,8 @@
   "lamp-R1": {
    "title": "Micro-instruction register R I",
    "short": "Seven lamps with the number of the current micro-operation. At each step the number moves to R II on the left panel and the new micro-operation enters R I.",
-   "more": "Lab sheet 7 (p. 3) says there are two micro-instruction registers, R1 and R2, of 7 bits each, and that “the odd-rhythm pulses move the content of R1 into R2” — CERTAIN. That the number in R I is the number of the grid cell on the left panel is DEDUCED: the real microprogram addresses (e.g. 94 → 90 → 24 when printing a digit) do not match the grid, but their full table is lost.",
-   "status": "DEDUS",
+   "more": "Lab sheet 7 (p. 3) says there are two micro-instruction registers, R1 and R2, of 7 bits each, and that “the odd-rhythm pulses move the content of R1 into R2” — CERTAIN. The number the emulator shows in R I (the number of the grid cell on the left panel) is GUESSED: the real microprogram addresses (e.g. 94 → 90 → 24 when printing a digit, lab sheet 7 p. 6) do not match the grid, and their full table is lost.",
+   "status": "MIXT",
    "sources": [
     "baltacLab",
     "semantica"
@@ -78,8 +78,8 @@
   "lamp-R2": {
    "title": "Micro-instruction register R II",
    "short": "Seven lamps: the micro-operation before the one in R I. Together, R I and R II let the operator follow the microprogram step by step.",
-   "more": "The inscription R II and the weights 64 … 1 are on the left panel texture (CERTAIN). The R I → R II transfer at every step is written in lab sheet 7, p. 3 (CERTAIN); the numbering of micro-operations in the emulator is DEDUCED.",
-   "status": "DEDUS",
+   "more": "The inscription R II and the weights 64 … 1 are on the left panel texture (CERTAIN). The R I → R II transfer at every step is written in lab sheet 7, p. 3 (CERTAIN); the numbering of micro-operations in the emulator is GUESSED (see R I).",
+   "status": "MIXT",
    "sources": [
     "baltacLab",
     "model3d",
@@ -100,11 +100,12 @@
   "lamp-RAI": {
    "title": "Instruction address register (RAI)",
    "short": "The drum address of the word holding the next instruction. After both instructions of a word have run, RAI goes up by 1.",
-   "more": "The panel inscription reads “REG DE ADRESA A INSTRUCTIEI — RAI” (instruction address register), with weights 512 … 1. Lab sheet 7, p. 6: “instruction 2 moves into the place of instruction 1”, “RAI+1→RAI” — CERTAIN. The drum had 1024 addresses, 0000–1777 in octal.",
-   "status": "SIGUR",
+   "more": "The panel inscription reads “REG DE ADRESA A INSTRUCTIEI — RAI” (instruction address register), with weights 512 … 1 — CERTAIN. Lab sheet 7, p. 6, writes “instruction 2 moves into the place of instruction 1” and “RAI+1→RAI” — CERTAIN; that RAI goes up only after both instructions of the word have run is DEDUCED from these lines and from the original programs. The drum had 1024 addresses, 0000–1777 in octal.",
+   "status": "MIXT",
    "sources": [
     "baltacLab",
-    "model3d"
+    "model3d",
+    "semantica"
    ]
   },
   "switch-RAI": {
@@ -132,7 +133,7 @@
   "switch-instr-0": {
    "title": "INSTRUCTIA 1 (instruction 1)",
    "short": "Makes the first instruction of the word the next one to run.",
-   "more": "Lab sheet 7, p. 6: “instruction 2 moves into the place of instruction 1”. The button’s effect in the emulator: it sets the phase to the chosen instruction — DEDUCED.",
+   "more": "Lab sheet 7, p. 6: “instruction 2 moves into the place of instruction 1”. The button’s effect in the emulator — it sets the phase to the chosen instruction — is DEDUCED.",
    "status": "DEDUS",
    "sources": [
     "baltacLab",
@@ -142,7 +143,7 @@
   "switch-instr-1": {
    "title": "INSTRUCTIA 2 (instruction 2)",
    "short": "Makes the second instruction of the word the next one to run.",
-   "more": "Lab sheet 7, p. 6: “instruction 2 moves into the place of instruction 1”. The button’s effect in the emulator: it sets the phase to the chosen instruction — DEDUCED.",
+   "more": "Lab sheet 7, p. 6: “instruction 2 moves into the place of instruction 1”. The button’s effect in the emulator — it sets the phase to the chosen instruction — is DEDUCED.",
    "status": "DEDUS",
    "sources": [
     "baltacLab",
@@ -152,20 +153,22 @@
   "switch-instr-2": {
    "title": "MEMORIE TAMBUR (drum memory)",
    "short": "Its exact function is unknown; it probably selected the drum as working memory. In the emulator it does nothing.",
-   "more": "Lab sheet 7, p. 6: “instruction 2 moves into the place of instruction 1”. The button’s effect in the emulator: none — GUESSED.",
+   "more": "The inscription MEMORIE TAMBUR is on the panel (CERTAIN). No surviving source says what the button did; in the emulator it does nothing — GUESSED.",
    "status": "GHICIT",
    "sources": [
-    "baltacLab",
+    "model3d",
+    "baltac2011",
     "semantica"
    ]
   },
   "switch-instr-3": {
    "title": "MEMORIE FERITE (ferrite memory)",
    "short": "Its exact function is unknown; linked to the ferrite memory researched in 1962–1963. In the emulator it does nothing.",
-   "more": "Lab sheet 7, p. 6: “instruction 2 moves into the place of instruction 1”. The button’s effect in the emulator: none — GUESSED.",
+   "more": "The inscription MEMORIE FERITE is on the panel (CERTAIN). No surviving source says what the button did; in the emulator it does nothing — GUESSED. Ferrite memory was researched in 1962–1963 (facsimile 11, Baltac).",
    "status": "GHICIT",
    "sources": [
-    "baltacLab",
+    "model3d",
+    "baltac2011",
     "semantica"
    ]
   },
@@ -513,12 +516,13 @@
   "sheet": {
    "title": "Typewriter",
    "short": "Results were printed on an ordinary electric typewriter, driven by electromagnets placed above the keys.",
-   "more": "- An electric typewriter with electromagnets above the keys, A4/A3 paper — CERTAIN (Farcaș).\n- The AC instruction with sub-code 0136 prints a digit from s0…s3, with 0133 a letter from s0…s4 — CERTAIN (Geier’s table): 16 numeric characters and 30 letters, including ă, î, ș, ț.\n- Which code is which letter or sign — GUESSED (the table is lost); space and newline are those used by the reprinting program.\n- The speed, about 10 characters a second — GUESSED.\n\nThe original reprinting program of 6 September 1962 (facsimile 4) prints its own listing here exactly as it appears in the facsimile.",
+   "more": "- An electric typewriter with electromagnets above the keys, A4/A3 paper — CERTAIN (Farcaș).\n- The AC instruction with sub-code 0136 prints a digit from s0…s3, with 0133 a letter from s0…s4 — CERTAIN (Geier’s table).\n- The character sets — CERTAIN (Baltac, lab sheet L6, via the Romanian Wikipedia): digits, space, minus, point, comma and carriage return (code 14 not used); space, the 26 English letters and ă, î, ș, ț (code 31 not used).\n- Which code is which letter or sign — GUESSED (the table is lost); space and newline are those used by the reprinting program.\n- The speed, about 10 characters a second — GUESSED.\n\nThe original reprinting program of 6 September 1962 (facsimile 4) prints its own listing here exactly as it appears in the facsimile.",
    "status": "MIXT",
    "sources": [
     "farcas2005",
     "geier1961",
-    "baltac2011",
+    "baltacLab",
+    "wikiRO",
     "semantica"
    ]
   },
@@ -606,7 +610,7 @@
    "target": "switch-RAI-0",
    "view": "right",
    "waitFor": null,
-   "text": "RAI holds the address of the next instruction word. With the switches below it, the operator gave the address where the program starts. (The lever direction — up = 1 — is guessed.)"
+   "text": "RAI holds the address of the next instruction word. With the switches below it, the operator gave the address where the program starts. How the levers worked is guessed here: up = 1, and each move puts the whole address into RAI. The ANULEAZA (clear) buttons suggest that the register may have been cleared first, with the levers only adding bits."
   },
   {
    "id": "start-address",
@@ -730,5 +734,9 @@
   "26": "peripheral command (sub-code in the address field)",
   "27": "read one tape character and store it right-aligned at y",
   "28": "transfer y to the ICR automaton"
+ },
+ "ops_real": {
+  "14": "jump to y if s < 0 (deduced from the original programs; Geier’s table says s ≥ 0)",
+  "15": "jump to y if s ≥ 0 (deduced from the original programs; Geier’s table says s < 0)"
  }
 }

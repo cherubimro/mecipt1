@@ -18,6 +18,9 @@ const GLASS = {
 };
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+// Litera cu bară (M̄): bara se trage ca linie; accentul combinat U+0304 abia se vede în Barlow.
+const svgText = (s) => String(s).split(/([^\u0304]\u0304)/u).map((p, i) => (i % 2
+  ? `<tspan text-decoration="overline">${esc(p[0])}</tspan>` : esc(p))).join('');
 const n = (v) => Math.round(v * 10) / 10;
 
 export function lampIds(positions) {
@@ -55,14 +58,13 @@ function defs(p) {
   return s + '</defs>';
 }
 
-function lamp(p, id, x, y, color, square) {
-  const r = LAMP_R;
+function lamp(p, id, x, y, color, square, r = LAMP_R) {
   const shape = (fill, k = 1) => square
     ? `<rect x="${n(-r * k)}" y="${n(-r * k)}" width="${n(2 * r * k)}" height="${n(2 * r * k)}" rx="3" fill="${fill}"/>`
     : `<circle r="${n(r * k)}" fill="${fill}"/>`;
   return `<g class="lamp" id="${id}" data-color="${color}" transform="translate(${n(x)} ${n(y)})">`
     + (square ? `<rect x="${-r - 4}" y="${-r - 4}" width="${2 * r + 8}" height="${2 * r + 8}" rx="4" fill="url(#${p}-chrome)"/>`
-      : `<circle r="${r + 4}" fill="url(#${p}-chrome)"/>`)
+      : `<circle r="${n(r + r * 0.22)}" fill="url(#${p}-chrome)"/>`)
     + shape(`url(#${p}-off-${color})`)
     + `<g class="glow" opacity="0"><circle r="${r * 2.1}" fill="url(#${p}-halo-${color})"/>${shape(`url(#${p}-on-${color})`)}</g>`
     + `<ellipse cx="${-r * 0.3}" cy="${-r * 0.38}" rx="${r * 0.42}" ry="${r * 0.24}" fill="#fff" opacity="0.28"/>`
@@ -169,8 +171,8 @@ function item(p, it) {
       const cell = it.cell ? ` data-cell="${esc(it.cell.join('-'))}"` : '';
       const lines = String(it.text).split('\n');
       const lh = it.lh ?? it.s * 1.6;
-      const body = lines.length === 1 ? esc(it.text)
-        : lines.map((l, k) => `<tspan x="${n(it.x)}" dy="${k ? n(lh) : 0}">${esc(l)}</tspan>`).join('');
+      const body = lines.length === 1 ? svgText(it.text)
+        : lines.map((l, k) => `<tspan x="${n(it.x)}" dy="${k ? n(lh) : 0}">${svgText(l)}</tspan>`).join('');
       return `<text x="${n(it.x)}" y="${n(it.y)}" font-size="${n(it.s)}" text-anchor="${it.anchor ?? 'start'}" fill="${col}"${fit}${unc}${cell}>${body}</text>`;
     }
     case 'pulse': {
@@ -206,7 +208,8 @@ export function renderPanel(side, art, positions, colors) {
   for (const [g, grp] of Object.entries(pos)) {
     (grp.lamps || []).forEach(([x, y], i) => {
       const color = (colors[g] && colors[g][i]) || 'red';
-      parts.push(lamp(p, `lamp-${g}-${i}`, x, y, color, shape[g] === 'square'));
+      // becurile grilei de microoperații sunt mai mici, ca pe panou: inscripția (cu bara lui M̄) rămâne vizibilă
+      parts.push(lamp(p, `lamp-${g}-${i}`, x, y, color, shape[g] === 'square', g === 'uop' ? 14 : LAMP_R));
     });
     (grp.switches || []).forEach(([x, y], i) => parts.push(toggle(p, `switch-${g}-${i}`, x, y)));
     if (grp.knob) parts.push(knob(p, 'knob', grp.knob[0], grp.knob[1]));

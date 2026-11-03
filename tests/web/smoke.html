@@ -89,8 +89,11 @@ f.addEventListener('load', () => {
   stage('tur');
   // turul ghidat: pornește, marchează ținta, supraviețuiește schimbării programului, așteaptă textul pe coală
   const card = d.getElementById('tour-card');
-  P.tour.start();
+  d.getElementById('tour-start').focus();
+  d.getElementById('tour-start').click();
   P.advance(50);
+  if (!card.contains(d.activeElement)) fail('focusul nu intră în cardul turului: ' + (d.activeElement && d.activeElement.id));
+  if (d.getElementById('tour-text').getAttribute('aria-live') !== 'polite') fail('textul turului nu e anunțat');
   if (card.hidden || !d.getElementById('desk').classList.contains('tour-target')) fail('turul: cardul sau ținta primului pas');
   while (P.tour.step() && P.tour.step().id !== 'start-address') { d.getElementById('tour-next').click(); P.advance(50); }
   if (!d.getElementById('tour-next').disabled) fail('turul: Înainte trebuie blocat cât se încarcă programul pasului');
@@ -98,8 +101,17 @@ f.addEventListener('load', () => {
   d.getElementById('tour-next').click(); P.advance(50);
   if (!d.getElementById('switch-compute-0').classList.contains('tour-target')) fail('turul: ținta pasului run');
   if (!d.getElementById('tour-next').disabled) fail('turul: Înainte ar trebui dezactivat cât pasul așteaptă');
-  await P.select('retiparire-1962');
+  // vizitatorul alege alt program la pasul run: mașina se oprește fără să scrie; turul spune ce e de făcut
+  await P.select('inex1');
   if (!P.tour.active || P.tour.step().id !== 'run') fail('turul s-a pierdut la schimbarea programului');
+  click('switch-compute-0');
+  await until(() => d.getElementById('tour-wait').textContent.includes(helpRO.tour[4].id === 'start-address' ? 'Înapoi' : 'Înapoi'), 10000,
+    () => 'turul blocat după INEX: ' + d.getElementById('tour-wait').textContent);
+  d.getElementById('tour-prev').click(); P.advance(50);
+  if (P.tour.step().id !== 'start-address') fail('Înapoi la start-address');
+  await until(() => !d.getElementById('tour-next').disabled, 5000, 'start-address nu reîncarcă retipărirea');
+  if (d.getElementById('program').value !== 'retiparire-1962') fail('start-address nu a reîncărcat retipărirea');
+  d.getElementById('tour-next').click(); P.advance(50);
   click('switch-compute-0');
   await until(() => P.tour.step() && P.tour.step().id === 'typewriter', 10000, () => 'turul nu trece mai departe: ' + (P.tour.step() || {}).id);
   P.setLang('en');
@@ -108,6 +120,7 @@ f.addEventListener('load', () => {
   P.setLang('ro');
   d.getElementById('tour-close').click();
   if (!card.hidden || d.querySelector('.tour-target')) fail('turul nu se închide curat');
+  if (d.activeElement !== d.getElementById('tour-start')) fail('focusul nu revine la „Tur ghidat”');
   await P.select('retiparire-1962');
   P.setView('all');
   stage('impulsuri');

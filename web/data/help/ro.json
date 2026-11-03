@@ -68,8 +68,8 @@
   "lamp-R1": {
    "title": "Registrul de microinstrucțiuni R I",
    "short": "Șapte becuri cu numărul microoperației curente. La fiecare pas, numărul trece în R II, pe panoul stâng, iar noua microoperație intră în R I.",
-   "more": "Lucrarea 7 (p. 3) spune că există două registre de microinstrucțiuni, R1 și R2, de câte 7 biți, și că „impulsurile de ritm impar produc trecerea conținutului registrului R1 în R2” — SIGUR. Că numărul din R I e chiar numărul celulei din grila panoului stâng e DEDUS: adresele reale ale microprogramelor (de exemplu 94 → 90 → 24 la tipărirea unei cifre) nu se potrivesc cu grila, dar nu avem tabelul lor complet.",
-   "status": "DEDUS",
+   "more": "Lucrarea 7 (p. 3) spune că există două registre de microinstrucțiuni, R1 și R2, de câte 7 biți, și că „impulsurile de ritm impar produc trecerea conținutului registrului R1 în R2” — SIGUR. Numărul afișat de emulator în R I (numărul celulei din grila panoului stâng) e GHICIT: adresele reale ale microprogramelor (de exemplu 94 → 90 → 24 la tipărirea unei cifre, Lucrarea 7 p. 6) nu se potrivesc cu grila, iar tabelul lor complet s-a pierdut.",
+   "status": "MIXT",
    "sources": [
     "baltacLab",
     "semantica"
@@ -78,8 +78,8 @@
   "lamp-R2": {
    "title": "Registrul de microinstrucțiuni R II",
    "short": "Șapte becuri: microoperația de dinaintea celei din R I. Împreună, R I și R II lasă operatorul să urmărească microprogramul pas cu pas.",
-   "more": "Inscripția R II și ponderile 64 … 1 sunt pe textura panoului stâng (SIGUR). Trecerea R I → R II la fiecare pas e scrisă în Lucrarea 7, p. 3 (SIGUR); numerotarea microoperațiilor din emulator e DEDUSĂ.",
-   "status": "DEDUS",
+   "more": "Inscripția R II și ponderile 64 … 1 sunt pe textura panoului stâng (SIGUR). Trecerea R I → R II la fiecare pas e scrisă în Lucrarea 7, p. 3 (SIGUR); numerotarea microoperațiilor din emulator e GHICITĂ (vezi R I).",
+   "status": "MIXT",
    "sources": [
     "baltacLab",
     "model3d",
@@ -100,11 +100,12 @@
   "lamp-RAI": {
    "title": "Registrul de adresă al instrucțiunii (RAI)",
    "short": "Adresa de pe tambur a cuvântului cu instrucțiunea următoare. După ce se execută ambele instrucțiuni ale unui cuvânt, RAI crește cu 1.",
-   "more": "Inscripția de pe panou: „REG DE ADRESA A INSTRUCTIEI — RAI”, cu ponderile 512 … 1. Lucrarea 7, p. 6: „trece instrucția 2 în locul instrucției 1”, „RAI+1→RAI” — SIGUR. Tamburul avea 1024 de adrese, 0000–1777 în octal.",
-   "status": "SIGUR",
+   "more": "Inscripția de pe panou: „REG DE ADRESA A INSTRUCTIEI — RAI”, cu ponderile 512 … 1 — SIGUR. Lucrarea 7, p. 6, scrie „trece instrucția 2 în locul instrucției 1” și „RAI+1→RAI” — SIGUR; că RAI crește abia după ce s-au executat ambele instrucțiuni ale cuvântului e DEDUS din aceste rânduri și din programele originale. Tamburul avea 1024 de adrese, 0000–1777 în octal.",
+   "status": "MIXT",
    "sources": [
     "baltacLab",
-    "model3d"
+    "model3d",
+    "semantica"
    ]
   },
   "switch-RAI": {
@@ -132,7 +133,7 @@
   "switch-instr-0": {
    "title": "INSTRUCTIA 1",
    "short": "Face din prima instrucțiune a cuvântului următoarea de executat.",
-   "more": "Lucrarea 7, p. 6: „trece instrucția 2 în locul instrucției 1”. Efectul butonului în emulator: pune faza pe instrucțiunea aleasă — DEDUS.",
+   "more": "Lucrarea 7, p. 6: „trece instrucția 2 în locul instrucției 1”. Efectul butonului în emulator — pune faza pe instrucțiunea aleasă — e DEDUS.",
    "status": "DEDUS",
    "sources": [
     "baltacLab",
@@ -142,7 +143,7 @@
   "switch-instr-1": {
    "title": "INSTRUCTIA 2",
    "short": "Face din a doua instrucțiune a cuvântului următoarea de executat.",
-   "more": "Lucrarea 7, p. 6: „trece instrucția 2 în locul instrucției 1”. Efectul butonului în emulator: pune faza pe instrucțiunea aleasă — DEDUS.",
+   "more": "Lucrarea 7, p. 6: „trece instrucția 2 în locul instrucției 1”. Efectul butonului în emulator — pune faza pe instrucțiunea aleasă — e DEDUS.",
    "status": "DEDUS",
    "sources": [
     "baltacLab",
@@ -152,20 +153,22 @@
   "switch-instr-2": {
    "title": "MEMORIE TAMBUR",
    "short": "Funcția exactă nu se cunoaște; probabil alegea tamburul ca memorie de lucru. În emulator nu face nimic.",
-   "more": "Lucrarea 7, p. 6: „trece instrucția 2 în locul instrucției 1”. Efectul butonului în emulator: niciunul — GHICIT.",
+   "more": "Inscripția MEMORIE TAMBUR e pe panou (SIGUR). Nicio sursă păstrată nu spune ce făcea butonul; în emulator nu face nimic — GHICIT.",
    "status": "GHICIT",
    "sources": [
-    "baltacLab",
+    "model3d",
+    "baltac2011",
     "semantica"
    ]
   },
   "switch-instr-3": {
    "title": "MEMORIE FERITE",
    "short": "Funcția exactă nu se cunoaște; legată de memoria cu ferite, cercetată în 1962–1963. În emulator nu face nimic.",
-   "more": "Lucrarea 7, p. 6: „trece instrucția 2 în locul instrucției 1”. Efectul butonului în emulator: niciunul — GHICIT.",
+   "more": "Inscripția MEMORIE FERITE e pe panou (SIGUR). Nicio sursă păstrată nu spune ce făcea butonul; în emulator nu face nimic — GHICIT. Memoria cu ferite a fost cercetată în 1962–1963 (Facsimil 11, Baltac).",
    "status": "GHICIT",
    "sources": [
-    "baltacLab",
+    "model3d",
+    "baltac2011",
     "semantica"
    ]
   },
@@ -513,12 +516,13 @@
   "sheet": {
    "title": "Mașina de scris",
    "short": "Rezultatele se tipăreau pe o mașină de scris electrică obișnuită, acționată de electromagneți puși deasupra clapelor.",
-   "more": "- Mașina de scris electrică cu electromagneți deasupra clapelor, hârtie A4/A3 — SIGUR (Farcaș).\n- Instrucțiunea AC cu subcodul 0136 tipărește o cifră din s0…s3, cu 0133 o literă din s0…s4 — SIGUR (tabelul Geier): 16 caractere numerice și 30 de litere, cu ă, î, ș, ț.\n- Care cod e care literă sau semn — GHICIT (tabelul nu s-a păstrat); spațiul și rândul nou sunt cele folosite de programul de retipărire.\n- Viteza, cam 10 caractere pe secundă — GHICIT.\n\nProgramul original de retipărire din 6.09.1962 (Facsimil 4) își tipărește aici propriul listing exact cum apare în facsimil.",
+   "more": "- Mașina de scris electrică cu electromagneți deasupra clapelor, hârtie A4/A3 — SIGUR (Farcaș).\n- Instrucțiunea AC cu subcodul 0136 tipărește o cifră din s0…s3, cu 0133 o literă din s0…s4 — SIGUR (tabelul Geier).\n- Seturile de caractere — SIGUR (Baltac, lucrarea de laborator L6, prin Wikipedia RO): cifre, spațiu, minus, punct, virgulă și întoarcerea carului (codul 14 nu era folosit); spațiu, cele 26 de litere englezești și ă, î, ș, ț (codul 31 nu era folosit).\n- Care cod e care literă sau semn — GHICIT (tabelul nu s-a păstrat); spațiul și rândul nou sunt cele folosite de programul de retipărire.\n- Viteza, cam 10 caractere pe secundă — GHICIT.\n\nProgramul original de retipărire din 6.09.1962 (Facsimil 4) își tipărește aici propriul listing exact cum apare în facsimil.",
    "status": "MIXT",
    "sources": [
     "farcas2005",
     "geier1961",
-    "baltac2011",
+    "baltacLab",
+    "wikiRO",
     "semantica"
    ]
   },
@@ -606,7 +610,7 @@
    "target": "switch-RAI-0",
    "view": "right",
    "waitFor": null,
-   "text": "RAI ține adresa următorului cuvânt cu instrucțiuni. Cu comutatoarele de sub el, operatorul dădea adresa de la care pornește programul. (Sensul pârghiilor — sus = 1 — e ghicit.)"
+   "text": "RAI ține adresa următorului cuvânt cu instrucțiuni. Cu comutatoarele de sub el, operatorul dădea adresa de la care pornește programul. Aici e ghicit cum lucrau pârghiile: sus = 1, iar fiecare mutare pune toată adresa în RAI. Butoanele ANULEAZA sugerează că poate registrul se golea întâi și pârghiile doar adăugau biți."
   },
   {
    "id": "start-address",

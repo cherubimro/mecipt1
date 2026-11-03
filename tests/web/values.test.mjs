@@ -44,6 +44,14 @@ test('RI names the instruction', () => {
   assert.ok(t.includes('UI') && t.includes('1477') && t.includes('831'), t);
 });
 
+test('RI gives the real jump condition of codes 14 and 15', () => {
+  const c = ctx('ro', { opEffect: (code) => m.opEffect(code) });
+  assert.ok(V('lamp-RI-0', { RI: (14 << 10) | 5 }, c).includes('s < 0'), V('lamp-RI-0', { RI: (14 << 10) | 5 }, c));
+  assert.ok(V('lamp-RI-0', { RI: (15 << 10) | 5 }, c).includes('s ≥ 0'));
+  const e = ctx('en', { opText: (code) => (code === 14 ? 'jump to y if s < 0 (deduced)' : 'x') });
+  assert.ok(V('lamp-RI-0', { RI: (14 << 10) | 5 }, e).includes('s < 0'));
+});
+
 test('uop lamp names the micro-operation', () => {
   const k = [...uopIndex].indexOf(16);
   const uops = new Uint16Array(39); uops[16] = 1;

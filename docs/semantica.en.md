@@ -46,9 +46,10 @@ Every choice without an explicit source is listed here, with its reason and, whe
 |---|---|---|
 | CIT: one tape row, inverted (hole = 0), right-aligned, the rest of the word 0 | CERTAIN / DEDUCED (rest = 0) | Romanian Wikipedia (Baltac, L5); Geier’s table |
 | End of tape or no reader → HÂRTIA AGĂȚATĂ (paper jammed), halt | DEDUCED | the “HÂRTIA AGĂȚATĂ” lamp on the console |
-| AC 0136 prints the digit in s0 s1 s2 s3; AC 0133 the letter in s0 … s4 | CERTAIN (the bits) / GUESSED (the glyphs) | Geier’s table; 16 numeric characters, 30 letters with ă î ș ț |
-| Glyphs of digits 10–15: space , - newline . + | GUESSED | the reprinting program uses two codes from 10–15 (space and newline); which code is which cannot be deduced |
-| Letters: A Ă B C D E F G H I Î J K L M N O P Q R S Ș T Ț U V W X Y Z, then space, newline | GUESSED | 30 letters = the Romanian alphabet without Â |
+| AC 0136 prints the digit in s0 s1 s2 s3; AC 0133 the letter in s0 … s4 | CERTAIN (the bits) / GUESSED (the glyphs) | Geier’s table |
+| The sets: digits, space, minus, point, comma, carriage return (code 14 unused); space + 26 English letters + ă î ș ț (code 31 unused) | CERTAIN | Baltac, lab sheet L6, via the Romanian Wikipedia |
+| Glyphs of codes 10–15 (decimal): space , - newline (unused) . | GUESSED (the layout) | the reprinting program uses two codes from 10–15 (space and newline); which code is which cannot be deduced; 14 stays unused per L6 |
+| Letters: A Ă B C D E F G H I Î J K L M N O P Q R S Ș T Ț U V W X Y Z, then space; 31 unused | GUESSED (the order) | the set is the L6 one; the order of the codes has not survived |
 | AC 0151: S ← I (positive) | GUESSED (the sign) | the table: “S ← i” |
 | One character at the reader/typewriter ≈ 0.1 s | GUESSED | the order of magnitude of a teleprinter |
 | Program tape: one word = 6 characters of 5 bits (m1–m30) | DEDUCED | Geier: “two 15-bit instructions … by just six characters” |
@@ -67,6 +68,7 @@ Every choice without an explicit source is listed here, with its reason and, whe
 |---|---|---|
 | The 39 micro-operations and their texts | CERTAIN (where not `[?]`) | the panel inscriptions (3D model textures) |
 | At every micro-operation: R I → R II, the new address into R I | DEDUCED | Lab sheet 7 p.3: “the odd-rhythm pulses move the content of register R1 into R2” |
+| The number shown in R I / R II = the number of the grid cell on the left panel | GUESSED | the real microprogram addresses (94 → 90 → 24, lab sheet 7 p.6) do not match the grid; their table is lost |
 | The micro-operation sequences per instruction (`MEC_UOP_SEQ`) | DEDUCED | composed from the panel’s micro-operations; the real order has not survived (lab sheet 7 pp.2–4 missing). Addition was hard-wired and has no lamp of its own |
 | The AC microprograms (94 → 90 → 24, 91 → 90 → 24) | CERTAIN (lab sheet 7 p.6) | they are microprogram addresses, not grid cells; not yet emitted in the trace |
 

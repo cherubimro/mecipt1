@@ -19,6 +19,7 @@ export function helpFor(targetId, help) {
 }
 
 // ---- Panoul de explicații (DOM). Nu atinge `document` la import, ca modulul să meargă și în Node. ----
+import { overlineHtml } from './md.js';
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 export class HelpPanel {
@@ -38,12 +39,12 @@ export class HelpPanel {
     const { els } = this;
     this.target = targetId;
     if (focusFrom) this.returnFocus = focusFrom;
-    els.title.textContent = e.title;
+    els.title.innerHTML = overlineHtml(e.title);
     els.status.textContent = strings.statusNames[e.status] || e.status;
     els.status.className = `help-status status-${e.status}`;
-    els.short.textContent = e.short;
-    els.value.textContent = value || '';
-    els.value.hidden = !value;
+    els.short.innerHTML = overlineHtml(e.short);
+    this.shownValue = null;
+    this.setValue(value);
     els.moreBtn.textContent = strings.moreDetails;
     els.close.textContent = strings.closeHelp;
     const src = e.sources.map((id) => {
@@ -57,7 +58,7 @@ export class HelpPanel {
   }
   setValue(value) {
     const v = value || '';
-    if (this.els.value.textContent !== v) this.els.value.textContent = v;
+    if (this.shownValue !== v) { this.els.value.innerHTML = overlineHtml(v); this.shownValue = v; }
     this.els.value.hidden = !v;
   }
   toggleMore(force) {

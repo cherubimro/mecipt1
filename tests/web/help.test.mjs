@@ -58,3 +58,20 @@ test('english keeps the inscription', () => {
 test('no facsimile images', () => {
   for (const H of [RO, EN]) for (const e of Object.values(H.entries)) assert.ok(!e.more.includes('!['));
 });
+
+test('honest labels where the reviewer found slips', () => {
+  assert.equal(RO.entries['lamp-RAI'].status, 'MIXT');
+  for (const k of ['lamp-R1', 'lamp-R2']) {
+    assert.equal(RO.entries[k].status, 'MIXT', k);
+    assert.ok(RO.entries[k].more.includes('GHICIT'), k);
+    assert.ok(EN.entries[k].more.includes('GUESSED'), k);
+  }
+  for (const k of ['switch-instr-2', 'switch-instr-3']) {
+    assert.ok(!RO.entries[k].more.includes('trece instrucția 2'), k);
+    assert.ok(!EN.entries[k].more.includes('instruction 2 moves'), k);
+  }
+  assert.ok(RO.entries.sheet.more.includes('L6') && EN.entries.sheet.more.includes('L6'));
+  const rai = (H) => H.tour.find((s) => s.id === 'rai').text;
+  assert.ok(rai(RO).includes('ANULEAZA') && /ghicit/i.test(rai(RO)), rai(RO));
+  assert.ok(rai(EN).includes('ANULEAZA') && /guessed/i.test(rai(EN)), rai(EN));
+});

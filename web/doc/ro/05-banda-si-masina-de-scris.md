@@ -26,8 +26,10 @@ Preîncărcătorul original (Facsimil 5) pune în S valoarea −1 ca „santinel
 ## Mașina de scris
 Rezultatele se tipăreau pe o **mașină de scris electrică obișnuită**, cu electromagneți puși deasupra clapelor, pe hârtie A4 sau A3 (SIGUR, Farcaș).
 
-- **AC 0136** tipărește o **cifră** după biții s0 s1 s2 s3 ai lui S; **AC 0133** o **literă** după s0 … s4. SIGUR (tabelul Geier): 16 caractere numerice și 30 de litere, cu ă, î, ș, ț.
-- **Ce cod corespunde cărui caracter** nu s-a păstrat: tabelele de mai jos sunt GHICITE. Programul de retipărire folosește două coduri din 10–15, pentru spațiu și rând nou; care e care nu se poate deduce.
+- **AC 0136** tipărește o **cifră** după biții s0 s1 s2 s3 ai lui S; **AC 0133** o **literă** după s0 … s4. SIGUR (tabelul Geier).
+- **Seturile de caractere** — SIGUR (Baltac, lucrarea de laborator L6, prin Wikipedia RO): setul numeric are cifrele, spațiul, minusul, punctul, virgula și întoarcerea carului — **codul 14 (octal 16) nu era folosit**; setul de litere are spațiul, cele 26 de litere ale alfabetului englez și ă, î, ș, ț — **codul 31 (octal 37) nu era folosit**.
+- **Ce cod corespunde cărui caracter** nu s-a păstrat: așezarea din tabelele de mai jos e GHICITĂ. Programul de retipărire folosește două coduri ale setului numeric, octal 12 și 15, pentru spațiu și rând nou; care e care nu se poate deduce, iar emulatorul a ales 12 = spațiu, 15 = rând nou.
+- Codurile din tabele sunt în **octal**, ca în listingurile de epocă.
 - Viteza, cam 10 caractere pe secundă, e GHICITĂ.
 
 ### Cifrele (AC 0136)

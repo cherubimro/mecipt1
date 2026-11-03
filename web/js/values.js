@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Valoarea unui element al pupitrului, spusă pe înțelesul vizitatorului: zecimal și octal, fracția
 // unui cuvânt, instrucțiunile din el, numele microoperației. Fracția vine din nucleu (wordValue).
-// ctx = { tables, wordValue, uopIndex, uops, lang, mode, pulsesOff, uopName(id)|null, opText(code)|null }
+// ctx = { tables, wordValue, uopIndex, uops, lang, mode, pulsesOff, uopName(id)|null, opEffect(code)|null, opText(code)|null }
 
 const oct = (v, n) => (v >>> 0).toString(8).padStart(n, '0');
 
@@ -55,10 +55,13 @@ function opName(code, ctx, t) {
   return op ? op.mnemonic : `${oct(code, 2)} → ${t.unknown}`;
 }
 
+// Efectul REAL al codului (14/15 sunt inversate față de tabel — vezi semantica): în română din nucleu
+// (ctx.opEffect = Machine.opEffect), în engleză din traducere (ctx.opText).
 function opEffect(code, ctx, t) {
   const op = ctx.tables.ops[code];
   if (!op) return t.unknown;
-  return (ctx.lang === 'en' && ctx.opText && ctx.opText(code)) || op.effect_ro;
+  if (ctx.lang === 'en') return (ctx.opText && ctx.opText(code)) || op.effect_ro;
+  return (ctx.opEffect && ctx.opEffect(code)) || op.effect_ro;
 }
 
 export function describeValue(targetId, state, ctx) {

@@ -161,3 +161,6 @@ body.doc-page { min-width: 0; background: #e9ebe8; color: #1f2a33; }
 .doc-content pre { background: #f4f0e3; padding: 8px 12px; overflow-x: auto; }
 .doc-content a { color: #24496f; }
 @media (max-width: 760px) { .doc-layout { grid-template-columns: 1fr; } }
+
+.ovl { text-decoration: overline; }
+.tour-card:focus { outline: 3px solid var(--focus); outline-offset: 2px; }

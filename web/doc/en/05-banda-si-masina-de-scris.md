@@ -26,8 +26,10 @@ The original preloader (facsimile 5) puts −1 into S as a “sentinel”, then 
 ## The typewriter
 Results were printed on an **ordinary electric typewriter**, with electromagnets placed above the keys, on A4 or A3 paper (CERTAIN, Farcaș).
 
-- **AC 0136** prints a **digit** from bits s0 s1 s2 s3 of S; **AC 0133** a **letter** from s0 … s4. CERTAIN (Geier’s table): 16 numeric characters and 30 letters, including ă, î, ș, ț.
-- **Which code stands for which character** has not survived: the tables below are GUESSED. The reprinting program uses two codes from 10–15, for space and new line; which is which cannot be deduced.
+- **AC 0136** prints a **digit** from bits s0 s1 s2 s3 of S; **AC 0133** a **letter** from s0 … s4. CERTAIN (Geier’s table).
+- **The character sets** — CERTAIN (Baltac, lab sheet L6, via the Romanian Wikipedia): the numeric set has the digits, space, minus, point, comma and carriage return — **code 14 (octal 16) was not used**; the letter set has space, the 26 letters of the English alphabet and ă, î, ș, ț — **code 31 (octal 37) was not used**.
+- **Which code stands for which character** has not survived: the layout of the tables below is GUESSED. The reprinting program uses two codes of the numeric set, octal 12 and 15, for space and new line; which is which cannot be deduced, and the emulator chose 12 = space, 15 = new line.
+- The codes in the tables are in **octal**, as in the period listings.
 - The speed, about 10 characters a second, is GUESSED.
 
 ### Digits (AC 0136)

@@ -3,6 +3,7 @@
 #include "console.h"
 #include "periph.h"
 #include "microops.h"
+#include "isa.h"
 #include <string.h>
 
 #define BUF_SIZE 65536
@@ -148,3 +149,4 @@ const char *api_prov_source(int addr) {
 }
 int api_uop_id(int grid, int row, int col) { return mec_uop_id(grid, row, col); }
 double api_word_value(uint32_t w) { return mec_to_double(w & MEC_MASK31); }
+const char *api_op_effect(int code) { const char *e = mec_op_effect(code, &m.v); return e ? e : ""; }

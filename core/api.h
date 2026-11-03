@@ -42,6 +42,7 @@ API int api_console(int op, int arg);   /* 0 sau −1 pentru op necunoscut */
 API int api_prov(int addr);
 API const char *api_prov_source(int addr);
 API int api_uop_id(int grid, int row, int col);
-API double api_word_value(uint32_t w);   /* fracția în complement față de unu (−0 → 0) */
+API double api_word_value(uint32_t w);
+API const char *api_op_effect(int code);  /* efectul REAL sub variantele mașinii (14/15!); "" pentru coduri necunoscute */   /* fracția în complement față de unu (−0 → 0) */
 
 #endif

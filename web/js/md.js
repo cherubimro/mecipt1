@@ -10,16 +10,23 @@ export function slug(s) {
     .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
+// Doar https:, ancore și adrese relative simple; orice altceva (alte scheme, caractere de control) e refuzat.
 function safeUrl(u) {
-  if (/^https:\/\//i.test(u)) return u;
-  if (/^[a-z][a-z0-9+.-]*:/i.test(u) || u.startsWith('//')) return null;   // alte scheme: refuzate
-  return u;
+  if (/^https:\/\/[\w.-]+(\/[\w./#?=&%~:+-]*)?$/i.test(u)) return u;
+  if (/^[\w./#?=&%-]+$/.test(u) && !u.startsWith('//') && !/^[a-z][a-z0-9+.-]*:/i.test(u)) return u;
+  return null;
+}
+
+// Literele cu bară (M̄, S̄): accentul combinat U+0304 abia se vede în Barlow, deci bara se desenează ca linie.
+export function overlineHtml(text) {
+  return String(text).split(/([^\u0304]\u0304)/u).map((p, i) => (i % 2
+    ? `<span class="ovl">${esc(p[0])}</span>` : esc(p))).join('');
 }
 
 function inline(text) {
   return text.split(/(`[^`]*`)/).map((part) => {
-    if (part.startsWith('`') && part.endsWith('`') && part.length > 1) return `<code>${esc(part.slice(1, -1))}</code>`;
-    let h = esc(part);
+    if (part.startsWith('`') && part.endsWith('`') && part.length > 1) return `<code>${overlineHtml(part.slice(1, -1))}</code>`;
+    let h = overlineHtml(part);
     h = h.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, t, u) => {
       const url = safeUrl(u.replace(/&amp;/g, '&'));
       return url ? `<a href="${esc(url)}">${t}</a>` : t;
@@ -45,7 +52,7 @@ export function renderMarkdown(src) {
       const body = [];
       for (i++; i < lines.length && !lines[i].startsWith('```'); i++) body.push(lines[i]);
       i++;
-      out.push(`<pre><code>${esc(body.join('\n'))}</code></pre>`);
+      out.push(`<pre><code>${overlineHtml(body.join('\n'))}</code></pre>`);
       continue;
     }
     const h = /^(#{1,3})\s+(.*)$/.exec(line);
@@ -93,7 +100,7 @@ const L = {
     uops: ['Grila', 'Rândul', 'Coloana', 'Microoperația'],
     grid: ['⎍', '⊔'],
     glyph: ['Cod', 'Caracter'],
-    space: '(spațiu)', newline: '(rând nou)',
+    space: '(spațiu)', newline: '(rând nou)', unused: '(nefolosit — Baltac, L6)',
     tape: ['Rândul', 'Canalele 1 2 | 3 4 5', 'Biții citiți', 'Câmpul'],
     fields: ['m1–m5: codul 2', 'm6–m10: codul 1', 'm11–m15: adresa 2 (sus)', 'm16–m20: adresa 2 (jos)', 'm21–m25: adresa 1 (sus)', 'm26–m30: adresa 1 (jos)'],
     legend: '● = gaură = 0; · = fără gaură = 1; | = canalul de ghidaj.',
@@ -108,7 +115,7 @@ const L = {
     uops: ['Grid', 'Row', 'Column', 'Micro-operation'],
     grid: ['⎍', '⊔'],
     glyph: ['Code', 'Character'],
-    space: '(space)', newline: '(new line)',
+    space: '(space)', newline: '(new line)', unused: '(not used — Baltac, L6)',
     tape: ['Row', 'Channels 1 2 | 3 4 5', 'Bits read', 'Field'],
     fields: ['m1–m5: code 2', 'm6–m10: code 1', 'm11–m15: address 2 (high)', 'm16–m20: address 2 (low)', 'm21–m25: address 1 (high)', 'm26–m30: address 1 (low)'],
     legend: '● = hole = 0; · = no hole = 1; | = feed track.',
@@ -123,6 +130,7 @@ const cellEsc = (s) => String(s).replace(/\|/g, '\\|');
 const table = (head, rows) => [`| ${head.map(cellEsc).join(' | ')} |`, `|${head.map(() => '---').join('|')}|`,
   ...rows.map((r) => `| ${r.map(cellEsc).join(' | ')} |`)].join('\n');
 const oct = (v, n) => v.toString(8).padStart(n, '0');
+const glyph = (g, t) => (g === ' ' ? t.space : g === '\n' ? t.newline : g === '' ? t.unused : g);
 
 const MACRO_FNS = {
   ops: ({ tables, help, lang }, t) => table(t.ops, tables.ops.map((o) => [oct(o.code, 2), `**${o.mnemonic}**`, t.addr[o.addr],
@@ -130,8 +138,8 @@ const MACRO_FNS = {
   ac: ({ tables, lang }, t) => table(t.ac, tables.ac.map((a) => [a.sub, lang === 'en' ? AC_EN[a.sub] || a.effect_ro : a.effect_ro])),
   uops: ({ tables, help, lang }, t) => table(t.uops, tables.uops.map((u) => [t.grid[u.grid], u.row, u.col,
     lang === 'en' && help.uops ? help.uops[String(u.id)] : u.label_ro])),
-  digits: ({ tables }, t) => table(t.glyph, tables.digits.map((g, i) => [oct(i, 2), g === ' ' ? t.space : g === '\n' ? t.newline : g])),
-  letters: ({ tables }, t) => table(t.glyph, tables.letters.map((g, i) => [oct(i, 2), g === ' ' ? t.space : g === '\n' ? t.newline : g])),
+  digits: ({ tables }, t) => table(t.glyph, tables.digits.map((g, i) => [oct(i, 2), glyph(g, t)])),
+  letters: ({ tables }, t) => table(t.glyph, tables.letters.map((g, i) => [oct(i, 2), glyph(g, t)])),
   'tape-example': (ctx, t) => {
     // cuvântul „05 1626  25 1512”: cod 1 = 05, adresa 1 = 1626, cod 2 = 25, adresa 2 = 1512
     const c1 = 0o05, a1 = 0o1626, c2 = 0o25, a2 = 0o1512;

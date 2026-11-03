@@ -78,3 +78,9 @@ test('wordValue trece prin nucleu', async () => {
   assert.equal(m.wordValue(0x5FFFFFFF), -0.5);
   assert.equal(m.wordValue(0x7FFFFFFF), 0);
 });
+
+test('opEffect dă efectul real al codului', async () => {
+  const m = await newMachine();
+  assert.ok(m.opEffect(14).includes('s < 0'));
+  assert.equal(m.opEffect(31), '');
+});

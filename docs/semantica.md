@@ -44,9 +44,10 @@ Fiecare alegere fără sursă explicită e listată aici, cu motivul și, unde e
 |---|---|---|
 | CIT: un rând de bandă, inversat (perforație = 0), aliniat la dreapta, restul cuvântului 0 | SIGUR / DEDUS (restul 0) | Wikipedia RO (Baltac, L5); tabelul Geier |
 | Sfârșitul benzii sau lipsa cititorului → HÂRTIA AGĂȚATĂ, oprire | DEDUS | becul „HÂRTIA AGĂȚATĂ” de pe pupitru |
-| AC 0136 tipărește cifra din s0 s1 s2 s3; AC 0133 litera din s0 … s4 | SIGUR (biții) / GHICIT (glifele) | tabelul Geier; 16 caractere numerice, 30 alfabetice cu ă î ș ț |
-| Glifele cifrelor 10–15: spațiu , - rând-nou . + | GHICIT | retipărirea folosește două coduri din 10–15 (spațiu și rând nou); care cod e care nu se poate deduce |
-| Literele: A Ă B C D E F G H I Î J K L M N O P Q R S Ș T Ț U V W X Y Z, apoi spațiu, rând nou | GHICIT | 30 de litere = alfabetul românesc fără Â |
+| AC 0136 tipărește cifra din s0 s1 s2 s3; AC 0133 litera din s0 … s4 | SIGUR (biții) / GHICIT (glifele) | tabelul Geier |
+| Seturile: cifre, spațiu, minus, punct, virgulă, întoarcerea carului (codul 14 nefolosit); spațiu + 26 de litere englezești + ă î ș ț (codul 31 nefolosit) | SIGUR | Baltac, lucrarea de laborator L6, prin Wikipedia RO |
+| Glifele codurilor 10–15 (zecimal): spațiu , - rând-nou (nefolosit) . | GHICIT (așezarea) | retipărirea folosește două coduri din 10–15 (spațiu și rând nou); care cod e care nu se poate deduce; 14 rămâne nefolosit după L6 |
+| Literele: A Ă B C D E F G H I Î J K L M N O P Q R S Ș T Ț U V W X Y Z, apoi spațiu; 31 nefolosit | GHICIT (ordinea) | setul e cel din L6; ordinea codurilor nu s-a păstrat |
 | AC 0151: S ← I (pozitiv) | GHICIT (semnul) | tabelul: „S ← i” |
 | Un caracter la cititor/mașina de scris ≈ 0,1 s | GHICIT | ordinul de mărime al unui teleimprimator |
 | Banda pentru programe: un cuvânt = 6 caractere de 5 biți (m1–m30) | DEDUS | Geier: „două instrucțiuni de 15 biți … prin doar șase caractere” |
@@ -65,6 +66,7 @@ Fiecare alegere fără sursă explicită e listată aici, cu motivul și, unde e
 |---|---|---|
 | Cele 39 de microoperații și textele lor | SIGUR (unde nu e `[?]`) | inscripțiile panoului (texturile modelului 3D) |
 | La fiecare microoperație: R I → R II, noua adresă în R I | DEDUS | Lucrarea 7 p.3: „impulsurile de ritm impar produc trecerea conținutului registrului R1 în R2” |
+| Numărul afișat în R I / R II = numărul celulei din grila panoului stâng | GHICIT | adresele reale de microprogram (94 → 90 → 24, Lucrarea 7 p.6) nu se potrivesc cu grila; tabelul lor s-a pierdut |
 | Secvențele de microoperații pe instrucțiune (`MEC_UOP_SEQ`) | DEDUS | compuse din microoperațiile panoului; ordinea reală nu s-a păstrat (Lucrarea 7 p.2–4 lipsă). Adunarea era cablată și nu are bec propriu |
 | Microprogramele AC (94 → 90 → 24, 91 → 90 → 24) | SIGUR (Lucrarea 7 p.6) | sunt adrese de microprogram, nu celule ale grilei; nu sunt încă emise ca urmă |
 

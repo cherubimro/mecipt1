@@ -46,3 +46,12 @@ test('chapters cite sources and do not embed facsimiles', () => {
     assert.ok(!t.includes('!['), `${l}/${c}: fără imagini`);
   }
 });
+
+test('the glyph sets follow Baltac L6 and use one number base', () => {
+  const ro = read('web/doc/ro/05-banda-si-masina-de-scris.md');
+  assert.ok(ro.includes('L6') && ro.includes('nu era folosit'), 'ro: setul din L6');
+  assert.ok(!ro.includes('din 10–15'), 'ro: coduri zecimale lângă tabele octale');
+  const en = read('web/doc/en/05-banda-si-masina-de-scris.md');
+  assert.ok(en.includes('L6') && en.includes('not used'), 'en: the L6 set');
+  assert.ok(!en.includes('from 10–15'));
+});

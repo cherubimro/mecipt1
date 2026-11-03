@@ -115,4 +115,5 @@ export class Machine {
   }
   uopId(grid, row, col) { return this.exports.api_uop_id(grid, row, col); }
   wordValue(w) { return this.exports.api_word_value(w >>> 0); }
+  opEffect(code) { return this.cstr(this.exports.api_op_effect(code)); }
 }

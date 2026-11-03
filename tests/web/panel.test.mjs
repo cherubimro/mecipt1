@@ -93,3 +93,8 @@ test('voltmetrele de sus au scala 0–250 V', () => {
   }
   assert.ok(!meter(4).includes('>250<'), 'cadranele fără cifre vizibile rămân fără scală');
 });
+
+test('the bar over M̄ is a real overline in the SVG', () => {
+  assert.ok(!svgL.includes('\u0304'), 'accentul combinat nu se vede în Barlow');
+  assert.ok(svgL.includes('text-decoration="overline"'));
+});

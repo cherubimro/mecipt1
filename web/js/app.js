@@ -115,7 +115,8 @@ async function main() {
   }
 
   let current = null, tapeRows = new Uint8Array(0), smoothTape = 0, lastHalt = null;
-  async function select(id) {
+  async function select(id, { fromTour = false } = {}) {
+    if (!fromTour) loadedFor = -1;   // vizitatorul a ales alt program: pasul turului care încarcă se reface
     const p = catalog.find((c) => c.id === id) ?? catalog[0];
     const [text, tape] = await Promise.all([getText(`programs/${p.file}`), p.tape ? getText(`programs/${p.tape}`) : null]);
     const start = parseInt(p.start, 8);
@@ -165,7 +166,9 @@ async function main() {
   const valueOf = (id) => (lastSnap ? describeValue(id, lastSnap.state, {
     tables, wordValue: (w) => machine.wordValue(w), uopIndex, uops: lastSnap.uops, lang,
     mode: runner.mode, pulsesOff: runner.pulsesOff,
-    uopName: (i) => helpEn.uops[String(i)], opText: (c) => helpEn.ops[String(c)],
+    uopName: (i) => helpEn.uops[String(i)], opEffect: (c) => machine.opEffect(c),
+    opText: (c) => (helpEn.ops_real && helpEn.ops_real[String(c)] && tables.ops[c] && machine.opEffect(c) !== tables.ops[c].effect_ro
+      ? helpEn.ops_real[String(c)] : helpEn.ops[String(c)]),
   }) : null);
   function explain(id, from = null) {
     help.show(id, HELP[lang], T(), valueOf(id), from);
@@ -194,7 +197,7 @@ async function main() {
     if (st.load && loadedFor !== tour.index) {
       loadedFor = tour.index;
       loading = true;
-      tourLoading = select(st.load).finally(() => { tourLoading = null; if (tour.active) renderTour(); });
+      tourLoading = select(st.load, { fromTour: true }).finally(() => { tourLoading = null; if (tour.active) renderTour(); });
     }
     loading = loading || tourLoading !== null;
     const el = $(st.target);
@@ -205,18 +208,27 @@ async function main() {
     $('tour-count').textContent = `${tour.index + 1} / ${tour.steps.length}`;
     $('tour-text').textContent = st.text;
     $('tour-wait').hidden = !st.waitFor;
+    $('tour-wait').textContent = tourStuck ? T().tourStuck : T().tourWaiting;
     $('tour-prev').disabled = tour.index === 0;
     $('tour-next').disabled = !!st.waitFor || loading;
     $('tour-next').textContent = tour.index + 1 === tour.steps.length ? T().tourDone : T().tourNext;
   }
-  const tourEvent = (ev) => { if (tour.onEvent(ev)) renderTour(); };
-  $('tour-start').addEventListener('click', () => { help.close(); tour.start(); renderTour(); });
-  $('tour-next').addEventListener('click', () => { tour.next(); renderTour(); });
-  $('tour-prev').addEventListener('click', () => { tour.prev(); renderTour(); });
-  $('tour-close').addEventListener('click', () => { tour.stop(); renderTour(); });
+  let tourStuck = false;
+  const tourEvent = (ev) => {
+    if (tour.onEvent(ev)) { tourStuck = false; renderTour(); return; }
+    const st = tour.step();
+    // pasul așteaptă text pe coală, dar mașina s-a oprit fără să scrie (alt program, altă adresă)
+    if (st && st.waitFor === 'typed' && ev.type === 'halted' && !tourStuck) { tourStuck = true; renderTour(); }
+  };
+  const startTour = () => { help.close(); tour.start(); tourStuck = false; renderTour(); $('tour-card').focus(); };
+  const stopTour = () => { tour.stop(); renderTour(); $('tour-start').focus(); };
+  $('tour-start').addEventListener('click', startTour);
+  $('tour-next').addEventListener('click', () => { tour.next(); tourStuck = false; renderTour(); if (!tour.active) $('tour-start').focus(); });
+  $('tour-prev').addEventListener('click', () => { tour.prev(); tourStuck = false; renderTour(); });
+  $('tour-close').addEventListener('click', stopTour);
   langListeners.push(() => { tour.steps = HELP[lang].tour; if (tour.active) renderTour(); });
   const tourApi = {
-    start: () => { tour.start(); renderTour(); }, stop: () => { tour.stop(); renderTour(); },
+    start: startTour, stop: stopTour,
     next: () => { tour.next(); renderTour(); }, step: () => tour.step(), get active() { return tour.active; },
   };
 
@@ -244,7 +256,7 @@ async function main() {
     if (e.key === 'Escape') {
       if (explaining) explainMode(false);
       else if (help.open) help.close();
-      else if (tour.active) { tour.stop(); renderTour(); }
+      else if (tour.active) stopTour();
       return;
     }
     const sw = e.target.closest && e.target.closest('.switch');

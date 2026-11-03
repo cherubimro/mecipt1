@@ -74,20 +74,20 @@ e('lamp-RI', 'SIGUR', ['baltacLab', 'model3d', 'photo2011'],
   ('Instruction register RI',
    'Shows the instruction being executed: the first 5 lamps are the operation code, the next 10 the memory address it works with.',
    'RI has 15 bits = one instruction: a 5-bit code (weights 16 8 4 2 1, under CODUL 2) and a 10-bit address (512 … 1, under ADRESA 2). Codes were written in octal, e.g. 33 = CIT (read tape), 05 = A (add), 25 = ME (store). The full table is in the documentation.\n\nThe colours (green, green, amber, red, red, then green) are those of the 2011 photograph.'))
-e('lamp-R1', 'DEDUS', ['baltacLab', 'semantica'],
+e('lamp-R1', 'MIXT', ['baltacLab', 'semantica'],
   ('Registrul de microinstrucțiuni R I',
    'Șapte becuri cu numărul microoperației curente. La fiecare pas, numărul trece în R II, pe panoul stâng, iar noua microoperație intră în R I.',
-   'Lucrarea 7 (p. 3) spune că există două registre de microinstrucțiuni, R1 și R2, de câte 7 biți, și că „impulsurile de ritm impar produc trecerea conținutului registrului R1 în R2” — SIGUR. Că numărul din R I e chiar numărul celulei din grila panoului stâng e DEDUS: adresele reale ale microprogramelor (de exemplu 94 → 90 → 24 la tipărirea unei cifre) nu se potrivesc cu grila, dar nu avem tabelul lor complet.'),
+   'Lucrarea 7 (p. 3) spune că există două registre de microinstrucțiuni, R1 și R2, de câte 7 biți, și că „impulsurile de ritm impar produc trecerea conținutului registrului R1 în R2” — SIGUR. Numărul afișat de emulator în R I (numărul celulei din grila panoului stâng) e GHICIT: adresele reale ale microprogramelor (de exemplu 94 → 90 → 24 la tipărirea unei cifre, Lucrarea 7 p. 6) nu se potrivesc cu grila, iar tabelul lor complet s-a pierdut.'),
   ('Micro-instruction register R I',
    'Seven lamps with the number of the current micro-operation. At each step the number moves to R II on the left panel and the new micro-operation enters R I.',
-   'Lab sheet 7 (p. 3) says there are two micro-instruction registers, R1 and R2, of 7 bits each, and that “the odd-rhythm pulses move the content of R1 into R2” — CERTAIN. That the number in R I is the number of the grid cell on the left panel is DEDUCED: the real microprogram addresses (e.g. 94 → 90 → 24 when printing a digit) do not match the grid, but their full table is lost.'))
-e('lamp-R2', 'DEDUS', ['baltacLab', 'model3d', 'semantica'],
+   'Lab sheet 7 (p. 3) says there are two micro-instruction registers, R1 and R2, of 7 bits each, and that “the odd-rhythm pulses move the content of R1 into R2” — CERTAIN. The number the emulator shows in R I (the number of the grid cell on the left panel) is GUESSED: the real microprogram addresses (e.g. 94 → 90 → 24 when printing a digit, lab sheet 7 p. 6) do not match the grid, and their full table is lost.'))
+e('lamp-R2', 'MIXT', ['baltacLab', 'model3d', 'semantica'],
   ('Registrul de microinstrucțiuni R II',
    'Șapte becuri: microoperația de dinaintea celei din R I. Împreună, R I și R II lasă operatorul să urmărească microprogramul pas cu pas.',
-   'Inscripția R II și ponderile 64 … 1 sunt pe textura panoului stâng (SIGUR). Trecerea R I → R II la fiecare pas e scrisă în Lucrarea 7, p. 3 (SIGUR); numerotarea microoperațiilor din emulator e DEDUSĂ.'),
+   'Inscripția R II și ponderile 64 … 1 sunt pe textura panoului stâng (SIGUR). Trecerea R I → R II la fiecare pas e scrisă în Lucrarea 7, p. 3 (SIGUR); numerotarea microoperațiilor din emulator e GHICITĂ (vezi R I).'),
   ('Micro-instruction register R II',
    'Seven lamps: the micro-operation before the one in R I. Together, R I and R II let the operator follow the microprogram step by step.',
-   'The inscription R II and the weights 64 … 1 are on the left panel texture (CERTAIN). The R I → R II transfer at every step is written in lab sheet 7, p. 3 (CERTAIN); the numbering of micro-operations in the emulator is DEDUCED.'))
+   'The inscription R II and the weights 64 … 1 are on the left panel texture (CERTAIN). The R I → R II transfer at every step is written in lab sheet 7, p. 3 (CERTAIN); the numbering of micro-operations in the emulator is GUESSED (see R I).'))
 e('lamp-RA', 'MIXT', ['model3d', 'baltacLab', 'semantica'],
   ('Registrul de adresă RA',
    'Zece becuri cu adresa de pe tambur la care lucrează instrucțiunea curentă (ponderi 512 … 1).',
@@ -95,13 +95,13 @@ e('lamp-RA', 'MIXT', ['model3d', 'baltacLab', 'semantica'],
   ('Address register RA',
    'Ten lamps with the drum address the current instruction is working with (weights 512 … 1).',
    'The inscription RA and its 10 weights are on the panel (CERTAIN). The micro-operations “(ra)/2 goes into RA” and “2(ra) goes into RAI” show that RA held addresses and was used for jumps; the rest of its role is DEDUCED.'))
-e('lamp-RAI', 'SIGUR', ['baltacLab', 'model3d'],
+e('lamp-RAI', 'MIXT', ['baltacLab', 'model3d', 'semantica'],
   ('Registrul de adresă al instrucțiunii (RAI)',
    'Adresa de pe tambur a cuvântului cu instrucțiunea următoare. După ce se execută ambele instrucțiuni ale unui cuvânt, RAI crește cu 1.',
-   'Inscripția de pe panou: „REG DE ADRESA A INSTRUCTIEI — RAI”, cu ponderile 512 … 1. Lucrarea 7, p. 6: „trece instrucția 2 în locul instrucției 1”, „RAI+1→RAI” — SIGUR. Tamburul avea 1024 de adrese, 0000–1777 în octal.'),
+   'Inscripția de pe panou: „REG DE ADRESA A INSTRUCTIEI — RAI”, cu ponderile 512 … 1 — SIGUR. Lucrarea 7, p. 6, scrie „trece instrucția 2 în locul instrucției 1” și „RAI+1→RAI” — SIGUR; că RAI crește abia după ce s-au executat ambele instrucțiuni ale cuvântului e DEDUS din aceste rânduri și din programele originale. Tamburul avea 1024 de adrese, 0000–1777 în octal.'),
   ('Instruction address register (RAI)',
    'The drum address of the word holding the next instruction. After both instructions of a word have run, RAI goes up by 1.',
-   'The panel inscription reads “REG DE ADRESA A INSTRUCTIEI — RAI” (instruction address register), with weights 512 … 1. Lab sheet 7, p. 6: “instruction 2 moves into the place of instruction 1”, “RAI+1→RAI” — CERTAIN. The drum had 1024 addresses, 0000–1777 in octal.'))
+   'The panel inscription reads “REG DE ADRESA A INSTRUCTIEI — RAI” (instruction address register), with weights 512 … 1 — CERTAIN. Lab sheet 7, p. 6, writes “instruction 2 moves into the place of instruction 1” and “RAI+1→RAI” — CERTAIN; that RAI goes up only after both instructions of the word have run is DEDUCED from these lines and from the original programs. The drum had 1024 addresses, 0000–1777 in octal.'))
 e('switch-RAI', 'MIXT', ['baltacLab', 'baltac2011', 'semantica'],
   ('Comutatoarele RAI',
    'Aici se punea adresa de la care pornește programul, sau adresa la care se scrie ori se citește un cuvânt cu MEMORIE. Pârghia sus = 1 (ghicit).',
@@ -121,9 +121,14 @@ for i, (ro_t, ro_s, en_t, en_s, st) in enumerate([
     ('INSTRUCTIA 2', 'Face din a doua instrucțiune a cuvântului următoarea de executat.', 'INSTRUCTIA 2 (instruction 2)', 'Makes the second instruction of the word the next one to run.', 'DEDUS'),
     ('MEMORIE TAMBUR', 'Funcția exactă nu se cunoaște; probabil alegea tamburul ca memorie de lucru. În emulator nu face nimic.', 'MEMORIE TAMBUR (drum memory)', 'Its exact function is unknown; it probably selected the drum as working memory. In the emulator it does nothing.', 'GHICIT'),
     ('MEMORIE FERITE', 'Funcția exactă nu se cunoaște; legată de memoria cu ferite, cercetată în 1962–1963. În emulator nu face nimic.', 'MEMORIE FERITE (ferrite memory)', 'Its exact function is unknown; linked to the ferrite memory researched in 1962–1963. In the emulator it does nothing.', 'GHICIT')]):
-    e(f'switch-instr-{i}', st, ['baltacLab', 'semantica'],
-      (ro_t, ro_s, 'Lucrarea 7, p. 6: „trece instrucția 2 în locul instrucției 1”. Efectul butonului în emulator: ' + ('pune faza pe instrucțiunea aleasă — DEDUS.' if i < 2 else 'niciunul — GHICIT.')),
-      (en_t, en_s, 'Lab sheet 7, p. 6: “instruction 2 moves into the place of instruction 1”. The button’s effect in the emulator: ' + ('it sets the phase to the chosen instruction — DEDUCED.' if i < 2 else 'none — GUESSED.')))
+    if i < 2:
+        e(f'switch-instr-{i}', st, ['baltacLab', 'semantica'],
+          (ro_t, ro_s, 'Lucrarea 7, p. 6: „trece instrucția 2 în locul instrucției 1”. Efectul butonului în emulator — pune faza pe instrucțiunea aleasă — e DEDUS.'),
+          (en_t, en_s, 'Lab sheet 7, p. 6: “instruction 2 moves into the place of instruction 1”. The button’s effect in the emulator — it sets the phase to the chosen instruction — is DEDUCED.'))
+    else:
+        e(f'switch-instr-{i}', st, ['model3d', 'baltac2011', 'semantica'],
+          (ro_t, ro_s, 'Inscripția ' + ro_t + ' e pe panou (SIGUR). Nicio sursă păstrată nu spune ce făcea butonul; în emulator nu face nimic — GHICIT.' + (' Memoria cu ferite a fost cercetată în 1962–1963 (Facsimil 11, Baltac).' if i == 3 else '')),
+          (en_t, en_s, 'The inscription ' + ro_t + ' is on the panel (CERTAIN). No surviving source says what the button did; in the emulator it does nothing — GUESSED.' + (' Ferrite memory was researched in 1962–1963 (facsimile 11, Baltac).' if i == 3 else '')))
 CMD = [
  ('ANULEAZA RAI', 'Pune RAI pe zero: programul va porni de la adresa 0000.', 'DEDUS', 'ANULEAZA RAI (clear RAI)', 'Sets RAI to zero: the program will start from address 0000.'),
  ('ANULEAZA M', 'Golește registrul M: toți biții devin 0.', 'DEDUS', 'ANULEAZA M (clear M)', 'Clears register M: all bits become 0.'),
@@ -304,13 +309,13 @@ e('tape', 'MIXT', ['farcas2005', 'wikiRO', 'geier1961', 'semantica'],
   ('Punched-tape reader',
    'Programs and data came in on 5-channel telex tape. A hole means 0. One word takes 6 rows of tape.',
    '- 5-channel telex tape with a feed-hole track; **a punched hole = “0”**; mechanical reading — CERTAIN (Farcaș, Romanian Wikipedia).\n- The CIT instruction reads **one row** (5 bits) and stores it right-aligned — CERTAIN (Geier’s table).\n- One word = **6 rows** of 5 bits, m1–m5 first — DEDUCED (Geier: “two 15-bit instructions … by just six characters”); the sign bit m0 is not on the tape.\n- Channel 1 = the most significant bit of the row — GUESSED.\n- Channel layout on the paper: 1 · 2 · feed · 3 · 4 · 5 — DEDUCED from telex tape.\n- When the tape ends: HIRTIA AGATATA (paper jammed) — DEDUCED.\n\nThe full example (the word 05 1626 25 1512 drawn on 6 rows) is in chapter 5 of the documentation. The original INEX-1 tape has not survived; the one on the page is a test tape.'))
-e('sheet', 'MIXT', ['farcas2005', 'geier1961', 'baltac2011', 'semantica'],
+e('sheet', 'MIXT', ['farcas2005', 'geier1961', 'baltacLab', 'wikiRO', 'semantica'],
   ('Mașina de scris',
    'Rezultatele se tipăreau pe o mașină de scris electrică obișnuită, acționată de electromagneți puși deasupra clapelor.',
-   '- Mașina de scris electrică cu electromagneți deasupra clapelor, hârtie A4/A3 — SIGUR (Farcaș).\n- Instrucțiunea AC cu subcodul 0136 tipărește o cifră din s0…s3, cu 0133 o literă din s0…s4 — SIGUR (tabelul Geier): 16 caractere numerice și 30 de litere, cu ă, î, ș, ț.\n- Care cod e care literă sau semn — GHICIT (tabelul nu s-a păstrat); spațiul și rândul nou sunt cele folosite de programul de retipărire.\n- Viteza, cam 10 caractere pe secundă — GHICIT.\n\nProgramul original de retipărire din 6.09.1962 (Facsimil 4) își tipărește aici propriul listing exact cum apare în facsimil.'),
+   '- Mașina de scris electrică cu electromagneți deasupra clapelor, hârtie A4/A3 — SIGUR (Farcaș).\n- Instrucțiunea AC cu subcodul 0136 tipărește o cifră din s0…s3, cu 0133 o literă din s0…s4 — SIGUR (tabelul Geier).\n- Seturile de caractere — SIGUR (Baltac, lucrarea de laborator L6, prin Wikipedia RO): cifre, spațiu, minus, punct, virgulă și întoarcerea carului (codul 14 nu era folosit); spațiu, cele 26 de litere englezești și ă, î, ș, ț (codul 31 nu era folosit).\n- Care cod e care literă sau semn — GHICIT (tabelul nu s-a păstrat); spațiul și rândul nou sunt cele folosite de programul de retipărire.\n- Viteza, cam 10 caractere pe secundă — GHICIT.\n\nProgramul original de retipărire din 6.09.1962 (Facsimil 4) își tipărește aici propriul listing exact cum apare în facsimil.'),
   ('Typewriter',
    'Results were printed on an ordinary electric typewriter, driven by electromagnets placed above the keys.',
-   '- An electric typewriter with electromagnets above the keys, A4/A3 paper — CERTAIN (Farcaș).\n- The AC instruction with sub-code 0136 prints a digit from s0…s3, with 0133 a letter from s0…s4 — CERTAIN (Geier’s table): 16 numeric characters and 30 letters, including ă, î, ș, ț.\n- Which code is which letter or sign — GUESSED (the table is lost); space and newline are those used by the reprinting program.\n- The speed, about 10 characters a second — GUESSED.\n\nThe original reprinting program of 6 September 1962 (facsimile 4) prints its own listing here exactly as it appears in the facsimile.'))
+   '- An electric typewriter with electromagnets above the keys, A4/A3 paper — CERTAIN (Farcaș).\n- The AC instruction with sub-code 0136 prints a digit from s0…s3, with 0133 a letter from s0…s4 — CERTAIN (Geier’s table).\n- The character sets — CERTAIN (Baltac, lab sheet L6, via the Romanian Wikipedia): digits, space, minus, point, comma and carriage return (code 14 not used); space, the 26 English letters and ă, î, ș, ț (code 31 not used).\n- Which code is which letter or sign — GUESSED (the table is lost); space and newline are those used by the reprinting program.\n- The speed, about 10 characters a second — GUESSED.\n\nThe original reprinting program of 6 September 1962 (facsimile 4) prints its own listing here exactly as it appears in the facsimile.'))
 e('provenance', 'MIXT', ['baltac2011', 'semantica'],
   ('Proveniența programului',
    'Arată de unde vine fiecare cuvânt al programului: ORIGINAL (din documente din 1962), DEDUS, RECONSTRUCȚIE sau GHICIT.',
@@ -333,8 +338,8 @@ TOUR = [
   'Un cuvânt ține un număr sau două instrucțiuni. Fiecare instrucțiune are un cod de operație (5 biți) și o adresă (10 biți). Rândul RI arată instrucțiunea care se execută acum.',
   'A word holds a number or two instructions. Each instruction has an operation code (5 bits) and an address (10 bits). The RI row shows the instruction being executed now.'),
  ('rai', 'switch-RAI-0', 'right', None, None,
-  'RAI ține adresa următorului cuvânt cu instrucțiuni. Cu comutatoarele de sub el, operatorul dădea adresa de la care pornește programul. (Sensul pârghiilor — sus = 1 — e ghicit.)',
-  'RAI holds the address of the next instruction word. With the switches below it, the operator gave the address where the program starts. (The lever direction — up = 1 — is guessed.)'),
+  'RAI ține adresa următorului cuvânt cu instrucțiuni. Cu comutatoarele de sub el, operatorul dădea adresa de la care pornește programul. Aici e ghicit cum lucrau pârghiile: sus = 1, iar fiecare mutare pune toată adresa în RAI. Butoanele ANULEAZA sugerează că poate registrul se golea întâi și pârghiile doar adăugau biți.',
+  'RAI holds the address of the next instruction word. With the switches below it, the operator gave the address where the program starts. How the levers worked is guessed here: up = 1, and each move puts the whole address into RAI. The ANULEAZA (clear) buttons suggest that the register may have been cleared first, with the levers only adding bits.'),
  ('start-address', 'switch-RAI-0', 'right', None, 'retiparire-1962',
   'Am încărcat programul original din 6 septembrie 1962 care își retipărește propriul listing. Comutatoarele RAI arată deja adresa lui de pornire: 1477 în octal.',
   'We have loaded the original program of 6 September 1962 that reprints its own listing. The RAI switches already show its start address: 1477 in octal.'),
@@ -376,6 +381,8 @@ OPS_EN = ['Halt; on restart continue from y', 'S ← y', 'S ← –y', 'S ← |y
  'S ← s ∙ y (logical product)', 'peripheral command (sub-code in the address field)',
  'read one tape character and store it right-aligned at y', 'transfer y to the ICR automaton']
 assert len(UOPS_EN) == 39 and len(OPS_EN) == 29
+OPS_REAL_EN = {'14': 'jump to y if s < 0 (deduced from the original programs; Geier’s table says s ≥ 0)',
+               '15': 'jump to y if s ≥ 0 (deduced from the original programs; Geier’s table says s < 0)'}
 
 def build(lang):
     k = 0 if lang == 'ro' else 1
@@ -391,6 +398,7 @@ def build(lang):
     if lang == 'en':
         out['uops'] = {str(i): u for i, u in enumerate(UOPS_EN)}
         out['ops'] = {str(i): o for i, o in enumerate(OPS_EN)}
+        out['ops_real'] = OPS_REAL_EN
     else:
         out['uops'] = {}
         out['ops'] = {}
