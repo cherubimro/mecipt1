@@ -60,7 +60,7 @@ site: $(B)/mecipt.wasm
 	cp -r web $(B)/site
 	rm -f $(B)/site/package.json
 	cp $(B)/mecipt.wasm $(B)/site/
-	cp programs/*.mec tests/data/inex-banda-3-cuvinte.mec $(B)/site/programs/
+	cp programs/*.mec $(B)/site/programs/
 	cp docs/semantica.md $(B)/site/doc/ro/semantica.md
 	cp docs/semantica.en.md $(B)/site/doc/en/semantica.md
 

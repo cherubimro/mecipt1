@@ -116,9 +116,11 @@ f.addEventListener('load', () => {
   // vizitatorul alege alt program la pasul run: mașina se oprește fără să scrie; turul spune ce e de făcut
   await P.select('inex1');
   if (!P.tour.active || P.tour.step().id !== 'run') fail('turul s-a pierdut la schimbarea programului');
+  P.setSpeed('rapid');            // banda INEX-1 reconstruită ține ~3 min la viteza din 1962
   click('switch-compute-0');
   await until(() => d.getElementById('tour-wait').textContent.includes(helpRO.tour[4].id === 'start-address' ? 'Înapoi' : 'Înapoi'), 10000,
     () => 'turul blocat după INEX: ' + d.getElementById('tour-wait').textContent);
+  P.setSpeed('epoca');
   d.getElementById('tour-prev').click(); P.advance(50);
   if (P.tour.step().id !== 'start-address') fail('Înapoi la start-address');
   await until(() => !d.getElementById('tour-next').disabled, 5000, 'start-address nu reîncarcă retipărirea');
@@ -180,7 +182,9 @@ f.addEventListener('load', () => {
   stage('inex');
   await P.select('inex1');
   click('switch-compute-0');
-  await until(() => glow('lamp-indicators-1') > 0.5 && P.runner.machine.tapePos() === 18, 20000,
+  // banda INEX-1 reconstruită: 190 de cuvinte × 6 rânduri, încărcate de preîncărcătorul original
+  if (!d.getElementById('tape-info').textContent.includes('reconstruită')) fail('banda INEX-1: ' + d.getElementById('tape-info').textContent);
+  await until(() => glow('lamp-indicators-1') > 0.5 && P.runner.machine.tapePos() === 1140, 30000,
     () => `INEX: HIRTIA ${glow('lamp-indicators-1')}, banda ${P.runner.machine.tapePos()}, mod ${P.runner.mode}`);
   stage('atelier-eticheta');
   // eticheta din bară urmează proveniența în orice vedere: MEMORIE SCRIERE de la pupitru face cuvântul MODIFICAT
