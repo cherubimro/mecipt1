@@ -37,6 +37,13 @@ Below the grid: **GENERATOR PRINCIPAL** (main generator: IMPULSURI, FRECVENȚĂ 
 ## Middle panel — the measuring instruments
 Eleven voltmeters (one is missing today, only its bezel remains), a selector, a large rotary switch and small switches. They probably showed the supply voltages of the tubes; what each measured and the scales are GUESSED. The four top voltmeters are drawn with a 0–250 V scale (GUESSED).
 
+## The magnetic drum
+Below the console, above the tape reader and the typewriter, the magnetic drum is drawn. It was the machine’s only memory: **1024 words of 31 bits**, written around a cylinder spinning **50 times a second**. The machine waited for each word to come under the heads. That is why it did about 50 instructions a second. The 50 Hz hum comes from here too.
+
+- The drum came free of charge from Hungary, from an institute of the Hungarian Academy, built under the licence of the Soviet M-3 computer. Its control electronics, with 200 valves, were made in Timișoara (Farcaș; Baltac).
+- **The drawing is GUESSED**: no photograph of the drum has been found. It has one track and one head per bit. The rotation is slowed down: at 50 revolutions a second the eye would see only a blur.
+- The heads light up while the machine reads or writes: at every instruction and at the console’s memory commands.
+
 ## Sound
 No recordings of MECIPT-1 exist, so the console sounds are **reconstructed** (GUESSED) and synthesised in the browser. They follow exactly what the emulated machine does:
 

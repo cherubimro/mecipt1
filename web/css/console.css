@@ -100,6 +100,8 @@ body:not([data-mode="atelier"]) .panels[data-view="all"] #panel-right { transfor
 .device h2 { margin: 0 0 8px; font-size: 17px; font-weight: 500; color: #e3e5e2; }
 .device-note { margin: 6px 0 0; font-size: 14px; color: #c4c8c4; }
 .tape svg { display: block; width: 100%; height: auto; border-radius: 2px; }
+.drum-device { grid-column: 1 / -1; }
+.mag-drum svg { display: block; width: 100%; height: auto; border-radius: 2px; }
 
 .typewriter { background: #3e4245; }
 .sheet { position: relative; --sheet-pad: 1.5ch; font-family: 'Courier Prime', 'Courier New', monospace; font-size: 15px; }
