@@ -36,5 +36,40 @@ Facsimilul 5: „Instrucțiuni la programul INEX-1 — se introduce manual”, c
 
 Programul care cheamă o rutină pune întâi în celula **V** (0002) instrucțiunea de întoarcere, „T r”, iar argumentul în S. Rutina se termină cu `T 0002`. Toate alegerile sunt în *Semantica*, secțiunea „INEX-1 reconstruit”.
 
-## Ce urmează
-Reconstrucții marcate clar: tabelul de sinus din februarie 1962 (rezultatul original tipărit există, Facsimilul 3, și servește drept verificare) și calcule ilustrative în spiritul celor pentru barajul Vidraru și cupola Romexpo — cifrele nu vor fi cele reale.
+## Tabelul de sinus (21 februarie 1962)
+Facsimilul 3: „Tabel de sinus dela 1° la 45° calculat de MECIPT-1”, 45 de valori cu 9 zecimale, câte 5 pe rând. Mașina de scris bate „o” pentru zero și pune un semn după fiecare număr: `o,o174524o6_o,o34899496_…`. În emulator, semnul acesta e minusul, caracterul cel mai apropiat din setul ei.
+
+- **ORIGINAL**: rezultatul. Programul care l-a calculat nu s-a păstrat.
+- **RECONSTRUCȚIE**: programul, cu o metodă găsită prin căutare în modelul aritmeticii mașinii. Cum s-a ajuns la ea:
+  - Toate cele 45 de valori tipărite corespund unor numere binare **impare**. Deci mașina calcula y ≈ sin x / 2 și tipărea 2y − 2⁻³⁰.
+  - Erorile cresc cu −0,18·n unități: argumentul era n·π/360, cu π/360 **trunchiat** și adunat de n ori.
+  - Erorile au un „zgomot” de câte o unitate, neatenuat. Asta înseamnă o serie Taylor luată **termen cu termen**, fiecare termen trunchiat (IN), unde doar w² și primul raport (2/3) sunt rotunjite.
+- **Potrivirea**: 44 de valori ies cifră cu cifră ca în facsimil. **sin 32° iese `o,52991926o`**, în loc de `o,529919258` (valoarea adevărată: 0,5299192642). Cifrele din facsimil se citesc limpede. Toate variantele metodei care ating 44 greșesc exact această valoare. Diferența rămâne neexplicată și e lăsată la vedere.
+- Pornit de la 0400, programul tipărește tabelul în aproximativ 2½ minute de timp al mașinii.
+
+## Barajul Vidraru — calcul ilustrativ
+**Calcul ilustrativ în spiritul celui efectuat pentru barajul Vidraru; cifrele nu sunt cele reale.** Nici programul, nici datele nu s-au păstrat. Metoda e cea a arcelor încastrate (Farcaș, 1964), mult simplificată: 11 arce orizontale, de la coronament la fundație.
+
+- Dimensiunile publice: înălțimea de 166 m, grosimea de ~6 m la coronament și ~25 m la bază. **GHICITE**: cota coronamentului (834 m) și razele arcelor (160 m sus, 80 m jos).
+- Pe fiecare rând (un arc), coloanele sunt:
+  1. cota (m);
+  2. adâncimea /1000, egală cu presiunea apei p /1000 (tf/m²);
+  3. forța din arc N = p·R /10⁶ (tf/m);
+  4. efortul din beton σ = N/t /10⁴ (tf/m²).
+- Numerele sunt scalate ca să încapă în fracțiile mașinii.
+- Pornit de la 0400, programul tipărește 11 rânduri în aproximativ 1½ minute.
+
+## Cupola Romexpo — calcul ilustrativ
+**Calcul ilustrativ în spiritul celui efectuat în 1963 pentru cupola Romexpo; cifrele nu sunt cele reale.** Calculul original (iulie 1963, programator V. Baltac, catedra acad. Mateescu) nu s-a păstrat.
+
+- O cupolă sferică cu diametrul public de 93,5 m. **GHICITE**: săgeata (24 m), unghiul de la vârf la bază (~0,949 rad, calculat dinainte, ca din tabele) și cele 32 de meridiane.
+- Raza sferei se calculează în program: R = (a² + f²)/(2f).
+- Pe fiecare rând (un inel, de la vârf spre bază), coloanele sunt:
+  1. numărul inelului;
+  2. unghiul φ (radiani);
+  3. raza inelului r = R·sin φ /100 (m);
+  4. lungimea elementului de inel c = 2·r·sin(π/32) /100 (m).
+- Sinusul se calculează cu metoda tabelului din 1962.
+- Pornit de la 0400, programul tipărește 10 rânduri în aproximativ 1½ minute.
+
+Vidraru și Romexpo sunt verificate față de un calcul independent (`tools/ref/`), făcut cu aceeași aritmetică a mașinii, pas cu pas.

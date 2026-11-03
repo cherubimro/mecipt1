@@ -536,6 +536,46 @@
     "semantica"
    ]
   },
+  "program-inex1": {
+   "title": "The INEX-1 preloader and the INEX-1 tape",
+   "short": "The preloader is ORIGINAL (facsimile 5); the INEX-1 tape is RECONSTRUCTED: printing and reading routines written now at the entry points given in the facsimile.",
+   "more": "- **ORIGINAL**: the preloader, 0000–0001 and 0010–0015, with the procedure “put the INEX-1 tape in the reader … and start the computer from 0010”; word 0001 is DEDUCED (a digit corrected by hand).\n- **RECONSTRUCTION**: the tape, 190 words (0002–0277, 1140 rows). The preloader reads it in about 3 minutes and stops with HIRTIA AGATATA (paper jammed) at its end.\n- The entry points are CERTAIN (facsimile 5): 0040 (0026) reading tapes from the console, 0025 as a program, 0133 format, 0134 integers, 0135 fractions, 0132 lines, 0136 spaces, 0246 from A to B.\n- **GUESSED**: how the routines are called (return through cell V = 0002, the argument in S) and the defaults (3 digits for integers, 9 decimals).\n\nThe details are in chapter 6 of the documentation and in Semantics, section “INEX-1 reconstructed”.",
+   "status": "MIXT",
+   "sources": [
+    "baltac2011",
+    "semantica"
+   ]
+  },
+  "program-sinus-1962": {
+   "title": "The sine table of 21 February 1962",
+   "short": "The result is ORIGINAL (facsimile 3: 45 values, 1°–45°, with 9 decimals); the program is lost and RECONSTRUCTED, with a method that reproduces 44 of the 45 values.",
+   "more": "- **The result**: facsimile 3, “Sine table from 1° to 45° computed by MECIPT-1”, 21 Feb 1962 — printed with “o” for zero and a mark after every number.\n- **The method (RECONSTRUCTION, found by search)**: every printed value is odd in its last binary digit, so the machine computed sin x / 2 and printed twice that minus one unit. The argument is n·π/360 (π/360 truncated), and the Taylor series is taken term by term, each term truncated; only w² and the first ratio (2/3) are rounded.\n- **The match**: 44 values come out digit for digit as in the facsimile. **sin 32°** comes out 0.52991926o instead of 0.529919258 (true: 0.5299192642); the difference is unexplained and left in plain view.\n- No rule of the machine’s arithmetic had to change for this.",
+   "status": "MIXT",
+   "sources": [
+    "baltac2011",
+    "semantica"
+   ]
+  },
+  "program-vidraru": {
+   "title": "Vidraru dam — illustrative calculation",
+   "short": "Illustrative calculation in the spirit of the one made for the Vidraru dam; the figures are not the real ones. Neither the program nor the data have survived.",
+   "more": "- **The method**: fixed arches, much simplified (the idea, after Farcaș’s 1964 article). 11 horizontal arches, from the crest to the foundation.\n- **The data**: the 166 m height and the ~6 m top and ~25 m bottom thicknesses are public; the crest elevation (834 m) and the arch radii (160 m at the top, 80 m at the bottom) are GUESSED.\n- **The columns**, on each line (one arch): elevation (m); depth /1000, equal to the water pressure p /1000 (tf/m²); the arch force N = p·R /10⁶ (tf/m); the concrete stress σ = N/t /10⁴ (tf/m²). The numbers are scaled to fit the machine’s fractions, as programmers did then.\n- The program (RECONSTRUCTION) prints with the INEX-1 routines and is checked against an independent calculation done with the same arithmetic.",
+   "status": "GHICIT",
+   "sources": [
+    "farcas1964",
+    "semantica"
+   ]
+  },
+  "program-romexpo": {
+   "title": "Romexpo dome — illustrative calculation",
+   "short": "Illustrative calculation in the spirit of the one made in 1963 for the Romexpo dome; the figures are not the real ones. The original calculation (July 1963, programmer V. Baltac) has not survived.",
+   "more": "- **The model**: a spherical dome with the public diameter of 93.5 m; the rise (24 m), the angle from the top to the base (~0.949 rad, worked out beforehand, as from tables) and the 32 meridians are GUESSED. The sphere’s radius is computed in the program: R = (a² + f²)/(2f).\n- **The columns**, on each line (one ring, from the top down): ring number; the angle φ (radians); the ring radius r = R·sin φ /100 (m); the ring element length c = 2·r·sin(π/32) /100 (m).\n- The sine is computed with the same method as the 1962 table.\n- The program (RECONSTRUCTION) prints with the INEX-1 routines and is checked against an independent calculation done with the same arithmetic.",
+   "status": "GHICIT",
+   "sources": [
+    "baltac2011",
+    "semantica"
+   ]
+  },
   "atelier-editor": {
    "title": "The program on the drum",
    "short": "The words on the drum, written as in the 1962 listings: the address, then the two instructions. You can change any word; the change gets the MODIFIED label.",
@@ -623,7 +663,7 @@
  "sources": {
   "baltac2011": {
    "cite": "Vasile Baltac, “MECIPT – Mașina Electronică de Calcul a Institutului Politehnic din Timișoara – Evocări și Documente” (Recollections and Documents), 2011",
-   "where": "facsimiles 4 (program reprinting, 6 Sept 1962), 5 (INEX-1), 8 (the drum), 11 (ferrites)"
+   "where": "facsimiles 3 (the sine table, 21 Feb 1962), 4 (program reprinting, 6 Sept 1962), 5 (INEX-1), 8 (the drum), 11 (ferrites)"
   },
   "baltacLab": {
    "cite": "Vasile Baltac, MECIPT-1 laboratory work sheets, 1965–1966",
@@ -659,6 +699,10 @@
    "cite": "Turbojet, “MECIPT-1 Control desk”, Wikimedia Commons, 2011, CC BY-SA 4.0",
    "where": "the restored console, lamp colours",
    "url": "https://commons.wikimedia.org/wiki/File:MECIPT-1_Control_desk.jpg"
+  },
+  "farcas1964": {
+   "cite": "D. Farcaș, on sizing fixed arches with MECIPT-1, Scientific and Technical Bulletin of the Polytechnic Institute of Timișoara, 1964",
+   "where": "only the idea of the method; the article could not be consulted"
   },
   "semantica": {
    "cite": "The emulator project: “Emulator semantics — what is certain, deduced or guessed”",

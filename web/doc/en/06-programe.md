@@ -36,5 +36,40 @@ Facsimile 5: “Instructions for the INEX-1 program — entered by hand”, word
 
 A program calling a routine first puts the return instruction “T r” into cell **V** (0002) and the argument into S. The routine ends with `T 0002`. All the choices are in *Semantics*, section “INEX-1 reconstructed”.
 
-## What comes next
-Clearly marked reconstructions: the sine table of February 1962 (the original printed result exists, facsimile 3, and serves as a check) and illustrative calculations in the spirit of those for the Vidraru dam and the Romexpo dome — the figures will not be the real ones.
+## The sine table (21 February 1962)
+Facsimile 3: “Sine table from 1° to 45° computed by MECIPT-1”, 45 values with 9 decimals, 5 to a line. The typewriter strikes “o” for zero and puts a mark after every number: `o,o174524o6_o,o34899496_…`. In the emulator that mark is the minus, the closest character in its set.
+
+- **ORIGINAL**: the result. The program that computed it has not survived.
+- **RECONSTRUCTION**: the program, with a method found by searching in the model of the machine’s arithmetic. How it was reached:
+  - All 45 printed values correspond to **odd** binary numbers. So the machine computed y ≈ sin x / 2 and printed 2y − 2⁻³⁰.
+  - The errors grow by −0.18·n units: the argument was n·π/360, with π/360 **truncated** and added n times.
+  - The errors carry an undamped “noise” of about one unit. That means a Taylor series taken **term by term**, each term truncated (IN), with only w² and the first ratio (2/3) rounded.
+- **The match**: 44 values come out digit for digit as in the facsimile. **sin 32° comes out `o,52991926o`** instead of `o,529919258` (true value: 0.5299192642). The digits in the facsimile read clearly. Every variant of the method that reaches 44 misses exactly this value. The difference remains unexplained and is left in plain view.
+- Started from 0400, the program prints the table in about 2½ minutes of machine time.
+
+## Vidraru dam — illustrative calculation
+**Illustrative calculation in the spirit of the one made for the Vidraru dam; the figures are not the real ones.** Neither the program nor the data have survived. The method is that of fixed arches (Farcaș, 1964), much simplified: 11 horizontal arches, from the crest to the foundation.
+
+- Public dimensions: height 166 m, thickness ~6 m at the crest and ~25 m at the base. **GUESSED**: the crest elevation (834 m) and the arch radii (160 m at the top, 80 m at the bottom).
+- On each line (one arch), the columns are:
+  1. elevation (m);
+  2. depth /1000, equal to the water pressure p /1000 (tf/m²);
+  3. arch force N = p·R /10⁶ (tf/m);
+  4. concrete stress σ = N/t /10⁴ (tf/m²).
+- The numbers are scaled to fit the machine’s fractions.
+- Started from 0400, the program prints 11 lines in about 1½ minutes.
+
+## Romexpo dome — illustrative calculation
+**Illustrative calculation in the spirit of the one made in 1963 for the Romexpo dome; the figures are not the real ones.** The original calculation (July 1963, programmer V. Baltac, Acad. Mateescu’s department) has not survived.
+
+- A spherical dome with the public diameter of 93.5 m. **GUESSED**: the rise (24 m), the angle from the top to the base (~0.949 rad, worked out beforehand, as from tables) and the 32 meridians.
+- The sphere’s radius is computed in the program: R = (a² + f²)/(2f).
+- On each line (one ring, from the top down), the columns are:
+  1. ring number;
+  2. the angle φ (radians);
+  3. ring radius r = R·sin φ /100 (m);
+  4. ring element length c = 2·r·sin(π/32) /100 (m).
+- The sine is computed with the 1962 table’s method.
+- Started from 0400, the program prints 10 lines in about 1½ minutes.
+
+Vidraru and Romexpo are checked against an independent calculation (`tools/ref/`), done step by step with the same machine arithmetic.

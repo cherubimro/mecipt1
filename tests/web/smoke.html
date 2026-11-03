@@ -186,6 +186,22 @@ f.addEventListener('load', () => {
   if (!d.getElementById('tape-info').textContent.includes('reconstruită')) fail('banda INEX-1: ' + d.getElementById('tape-info').textContent);
   await until(() => glow('lamp-indicators-1') > 0.5 && P.runner.machine.tapePos() === 1140, 30000,
     () => `INEX: HIRTIA ${glow('lamp-indicators-1')}, banda ${P.runner.machine.tapePos()}, mod ${P.runner.mode}`);
+  stage('programe');
+  // programele reconstruite: eticheta „ilustrativ”, ajutorul programului, coala la „rapid”
+  await P.select('vidraru');
+  if (!d.getElementById('provenance').textContent.includes('cifrele nu sunt cele reale')) fail('eticheta Vidraru: ' + d.getElementById('provenance').textContent);
+  d.getElementById('explain').click();
+  d.getElementById('provenance').click();
+  if (d.getElementById('help-title').textContent !== helpRO.entries['program-vidraru'].title) fail('ajutorul Vidraru: ' + d.getElementById('help-title').textContent);
+  d.getElementById('help-close').click();
+  d.getElementById('explain').click();
+  click('switch-compute-0');
+  await until(() => P.sheet.lines().length >= 11 && glow('lamp-indicators-2') > 0.5, 20000, () => 'Vidraru: ' + JSON.stringify(P.sheet.lines().slice(0, 2)));
+  if (!P.sheet.lines()[0].startsWith('834  o,oooooo-')) fail('prima linie Vidraru: ' + P.sheet.lines()[0]);
+  await P.select('sinus-1962');
+  click('switch-compute-0');
+  await until(() => P.sheet.lines().length >= 9 && glow('lamp-indicators-2') > 0.5, 20000, () => 'sinus: ' + JSON.stringify(P.sheet.lines().slice(0, 2)));
+  if (P.sheet.lines()[0] !== 'o,o174524o6-o,o34899496-o,o52335954-o,o69756471-o,o87155741-') fail('prima linie a sinusului: ' + P.sheet.lines()[0]);
   stage('atelier-eticheta');
   // eticheta din bară urmează proveniența în orice vedere: MEMORIE SCRIERE de la pupitru face cuvântul MODIFICAT
   await P.select('retiparire-1962');

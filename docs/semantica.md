@@ -171,3 +171,15 @@ Rutinele INEX-1 (`programs/src/inex1-rutine.mec`) sunt scrise acum. Din Facsimil
 | Constantele cu semn (codurile de caractere ≥ 8) se țin deplasate cu un bit și se refac cu DS 1 | — (regula emulatorului) | pe bandă intră doar m1–m30 (Geier) |
 | Banda INEX-1: cuvintele 0002–0277, cu copii identice ale preîncărcătorului la 0010–0015 și 0014 perforat „ME 0014” | DEDUS | preîncărcătorul scrie peste el însuși; numai așa continuă încărcarea |
 | „146 (VF)” de lângă 0135 în Facsimilul 5 | necunoscut | nu reiese din lucru |
+
+## Programele de calcul (Planul 6)
+| Alegere | Statut | Motiv / sursă |
+|---|---|---|
+| Tabelul de sinus: mașina calcula y ≈ sin x / 2 și tipărea 2y − 2⁻³⁰ | DEDUS | toate cele 45 de valori din Facsimilul 3 corespund unor cuvinte binare impare (la întâmplare: 1 la 2⁴¹) |
+| Argumentul: n·π/360, cu π/360 trunchiat (o43575065), adunat de n ori | DEDUS | tendința erorilor din facsimil, −0,18·n·cos x unități |
+| Seria Taylor termen cu termen, 5 termeni; w² rotunjit (INR), termenii trunchiați (IN), raportul 2/3 rotunjit | RECONSTRUCȚIE | găsită prin căutare exhaustivă (`tools/ref/sin_search.py`, `sin_metoda.md`); reproduce 44 din 45 de valori |
+| sin 32° iese o,52991926o, nu o,529919258 ca în facsimil | — (diferență neexplicată, acceptată) | toate variantele care ating 44 o greșesc; cifrele facsimilului se citesc limpede |
+| IN trunchiază și INR rotunjește la jumătate în sus | GHICIT, confirmat de Facsimilul 3 | metoda găsită nu cere nicio schimbare a nucleului |
+| Vidraru: cota 834 m, razele 160 / 80 m, coloanele scalate (h/1000, N/10⁶, σ/10⁴) | GHICIT | calcul ilustrativ; înălțimea și grosimile sunt publice |
+| Romexpo: săgeata 24 m, φmax calculat dinainte, 32 de meridiane, coloanele scalate (r/100, c/100) | GHICIT | calcul ilustrativ; diametrul e public |
+| Programele de calcul pornesc de la 0400 și au rutinele INEX-1 deja pe tambur | — (regula emulatorului) | vizitatorul nu așteaptă citirea benzii INEX-1 (spec §4.2) |

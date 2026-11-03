@@ -173,3 +173,15 @@ The INEX-1 routines (`programs/src/inex1-rutine.mec`) are written now. From facs
 | Signed constants (character codes ≥ 8) are kept shifted by one bit and restored with DS 1 | — (emulator rule) | only m1–m30 go on tape (Geier) |
 | The INEX-1 tape: words 0002–0277, with identical copies of the preloader at 0010–0015 and 0014 punched as “ME 0014” | DEDUCED | the preloader writes over itself; only this way does loading go on |
 | “146 (VF)” next to 0135 in facsimile 5 | unknown | does not follow from the work |
+
+## The computing programs (Plan 6)
+| Choice | Status | Reason / source |
+|---|---|---|
+| Sine table: the machine computed y ≈ sin x / 2 and printed 2y − 2⁻³⁰ | DEDUCED | all 45 values of facsimile 3 correspond to odd binary words (by chance: 1 in 2⁴¹) |
+| The argument: n·π/360, with π/360 truncated (o43575065), added n times | DEDUCED | the trend of the facsimile’s errors, −0.18·n·cos x units |
+| The Taylor series term by term, 5 terms; w² rounded (INR), terms truncated (IN), the ratio 2/3 rounded | RECONSTRUCTION | found by exhaustive search (`tools/ref/sin_search.py`, `sin_metoda.md`); reproduces 44 of the 45 values |
+| sin 32° comes out o,52991926o, not o,529919258 as in the facsimile | — (unexplained difference, accepted) | every variant reaching 44 misses it; the facsimile’s digits read clearly |
+| IN truncates and INR rounds half up | GUESSED, confirmed by facsimile 3 | the method found needs no change to the core |
+| Vidraru: crest at 834 m, radii 160 / 80 m, scaled columns (h/1000, N/10⁶, σ/10⁴) | GUESSED | illustrative calculation; height and thicknesses are public |
+| Romexpo: rise 24 m, φmax worked out beforehand, 32 meridians, scaled columns (r/100, c/100) | GUESSED | illustrative calculation; the diameter is public |
+| The computing programs start from 0400 with the INEX-1 routines already on the drum | — (emulator rule) | the visitor does not wait for the INEX-1 tape to be read (spec §4.2) |

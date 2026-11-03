@@ -93,3 +93,15 @@ test('help: are intrarea sound în ro și en', () => {
     assert.ok(H.entries.sound.more.includes('50'), 'zumzetul de 50 Hz');
   }
 });
+
+test('fiecare program din catalog are ajutor', () => {
+  for (const id of ['inex1', 'sinus-1962', 'vidraru', 'romexpo']) {
+    for (const H of [RO, EN]) assert.ok(H.entries[`program-${id}`], `program-${id}`);
+  }
+  for (const id of ['vidraru', 'romexpo']) {
+    const ro = RO.entries[`program-${id}`], en = EN.entries[`program-${id}`];
+    assert.match(ro.short + ro.more, /cifrele nu sunt cele reale/, id);
+    assert.match(en.short + en.more, /not the real ones/, id);
+  }
+  assert.match(RO.entries['program-sinus-1962'].more, /32°/);
+});
