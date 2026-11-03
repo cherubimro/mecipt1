@@ -331,6 +331,9 @@ TOUR = [
  ('welcome', 'desk', 'all', None, None,
   'Acesta e pupitrul de comandă al calculatorului MECIPT-1, construit la Institutul Politehnic din Timișoara și pus în funcțiune în 1961 — primul calculator electronic făcut într-o universitate din România. Avea circa 2000 de tuburi electronice. Turul vă arată, în câțiva pași, cum se lucra la el.',
   'This is the control console of MECIPT-1, built at the Polytechnic Institute of Timișoara and put into service in 1961 — the first electronic computer made at a university in Romania. It had about 2000 electron tubes. In a few steps, this tour shows how it was operated.'),
+ ('middle-panel', 'meter-0', 'middle', None, None,
+  'Panoul din mijloc are unsprezece aparate de măsură, cele mai multe voltmetre pentru tensiunile de alimentare ale tuburilor. Pe fotografiile păstrate scalele nu se pot citi, așa că ce măsura fiecare aparat e ghicit. Unul lipsește azi; aici e redesenat după vecinii lui.',
+  'The middle panel has eleven measuring instruments, most of them voltmeters for the tubes’ supply voltages. The scales cannot be read on the surviving photographs, so what each instrument measured is guessed. One is missing today; here it is redrawn after its neighbours.'),
  ('memory-drum', 'lamp-M-0', 'right', None, None,
   'Memoria era un tambur magnetic care se rotea de 50 de ori pe secundă și ținea 1024 de cuvinte. Rândul de sus, M, arată un cuvânt de 31 de biți: bec aprins = 1. Becul 0 e semnul.',
   'The memory was a magnetic drum turning 50 times a second and holding 1024 words. The top row, M, shows a 31-bit word: lamp lit = 1. Lamp 0 is the sign.'),
@@ -352,6 +355,12 @@ TOUR = [
  ('microops', 'lamp-uop-0', 'left', None, None,
   'Fiecare instrucțiune era făcută din pași mărunți, microoperații. Pe panoul stâng, fiecare are un bec cu numele ei; becurile clipesc pe măsură ce mașina lucrează.',
   'Each instruction was made of small steps, micro-operations. On the left panel each one has a lamp with its name; the lamps flicker as the machine works.'),
+ ('r2', 'lamp-R2-0', 'left', None, None,
+  'R II arată microoperația de dinaintea celei din R I, de pe panoul drept: la fiecare pas, conținutul lui R I trece în R II. Așa putea operatorul urmări microprogramul pas cu pas. Numărul pe care îl arată emulatorul aici e ghicit.',
+  'R II shows the micro-operation before the one in R I, on the right panel: at every step, the content of R I moves into R II. This let the operator follow the microprogram step by step. The number the emulator shows here is guessed.'),
+ ('generator', 'knob', 'left', None, None,
+  'Generatorul principal dădea ritmul impulsurilor care mișcau mașina: după inscripții, frecvența se regla fin sau în trepte și se putea folosi un generator extern. Ce făcea exact fiecare comutator nu se știe; în emulator nu fac nimic.',
+  'The main generator set the rhythm of the pulses that drove the machine: going by the inscriptions, the frequency was set finely or in steps, and an external generator could be used. What each switch did exactly is unknown; in the emulator they do nothing.'),
  ('tape', 'tape', 'all', None, None,
   'Programele intrau pe bandă perforată de telex: 5 canale, gaura înseamnă 0, un cuvânt ocupă 6 rânduri. Alegeți programul INEX-1 ca să vedeți banda trecând prin cititor.',
   'Programs came in on punched telex tape: 5 channels, a hole means 0, one word takes 6 rows. Choose the INEX-1 program to see the tape run through the reader.'),
@@ -364,7 +373,7 @@ TOUR = [
 ]
 
 # grupul de pe pupitru încadrat la fiecare pas (toate becurile și comutatoarele lui)
-TOUR_GROUPS = {'memory-drum': 'M', 'words': 'RI', 'rai': 'RAI', 'start-address': 'RAI', 'run': 'compute', 'microops': 'uop'}
+TOUR_GROUPS = {'middle-panel': 'meters', 'r2': 'R2', 'generator': 'generator', 'memory-drum': 'M', 'words': 'RI', 'rai': 'RAI', 'start-address': 'RAI', 'run': 'compute', 'microops': 'uop'}
 
 UOPS_EN = ['s goes into M [?]', 's goes into I', 'i goes into S', 'Logical multiplication (AND)',
  'Shift: left in S · I. goes into S.', 'Shift: right in S · zero goes into S.', 'Shift: left in I · zero goes into I.',

@@ -100,12 +100,12 @@ f.addEventListener('load', () => {
   const frameBox = () => { const f = d.querySelector('.tour-frame'); if (!f) return null; const b = f.getBoundingClientRect(); return `${Math.round(b.x)},${Math.round(b.y)},${Math.round(b.width)},${Math.round(b.height)}`; };
   d.getElementById('tour-next').click(); P.advance(50);
   const fM = frameBox();
-  if (!fM) fail('turul: pasul despre M nu încadrează rândul M');
+  if (!fM) fail('turul: pasul despre panoul din mijloc nu încadrează aparatele');
   const nM = d.querySelectorAll('.tour-frame').length;
   if (nM !== 1) fail('turul: un singur chenar pe pas, sunt ' + nM);
   d.getElementById('tour-next').click(); P.advance(50);
   const fRI = frameBox();
-  if (!fRI || fRI === fM) fail('turul: chenarul nu se mută de la M la RI: ' + fM + ' / ' + fRI);
+  if (!fRI || fRI === fM) fail('turul: chenarul nu se mută de la aparate la M: ' + fM + ' / ' + fRI);
   d.getElementById('tour-prev').click(); d.getElementById('tour-prev').click(); P.advance(50);
   while (P.tour.step() && P.tour.step().id !== 'start-address') { d.getElementById('tour-next').click(); P.advance(50); }
   if (!d.getElementById('tour-next').disabled) fail('turul: Înainte trebuie blocat cât se încarcă programul pasului');
@@ -127,8 +127,9 @@ f.addEventListener('load', () => {
   click('switch-compute-0');
   await until(() => P.tour.step() && P.tour.step().id === 'typewriter', 10000, () => 'turul nu trece mai departe: ' + (P.tour.step() || {}).id);
   P.setLang('en');
-  if (!d.getElementById('tour-text').textContent.startsWith(helpEN.tour[6].text.slice(0, 30))) fail('turul în engleză: ' + d.getElementById('tour-text').textContent);
-  if (!d.getElementById('tour-count').textContent.includes('7 / 11')) fail('numărul pasului: ' + d.getElementById('tour-count').textContent);
+  const iTw = helpEN.tour.findIndex((s) => s.id === 'typewriter');
+  if (!d.getElementById('tour-text').textContent.startsWith(helpEN.tour[iTw].text.slice(0, 30))) fail('turul în engleză: ' + d.getElementById('tour-text').textContent);
+  if (!d.getElementById('tour-count').textContent.includes(`${iTw + 1} / ${helpEN.tour.length}`)) fail('numărul pasului: ' + d.getElementById('tour-count').textContent);
   P.setLang('ro');
   d.getElementById('tour-close').click();
   if (!card.hidden || d.querySelector('.tour-target')) fail('turul nu se închide curat');

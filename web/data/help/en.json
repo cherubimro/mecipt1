@@ -592,6 +592,14 @@
    "text": "This is the control console of MECIPT-1, built at the Polytechnic Institute of Timișoara and put into service in 1961 — the first electronic computer made at a university in Romania. It had about 2000 electron tubes. In a few steps, this tour shows how it was operated."
   },
   {
+   "id": "middle-panel",
+   "target": "meter-0",
+   "view": "middle",
+   "waitFor": null,
+   "text": "The middle panel has eleven measuring instruments, most of them voltmeters for the tubes’ supply voltages. The scales cannot be read on the surviving photographs, so what each instrument measured is guessed. One is missing today; here it is redrawn after its neighbours.",
+   "group": "meters"
+  },
+  {
    "id": "memory-drum",
    "target": "lamp-M-0",
    "view": "right",
@@ -646,6 +654,22 @@
    "waitFor": null,
    "text": "Each instruction was made of small steps, micro-operations. On the left panel each one has a lamp with its name; the lamps flicker as the machine works.",
    "group": "uop"
+  },
+  {
+   "id": "r2",
+   "target": "lamp-R2-0",
+   "view": "left",
+   "waitFor": null,
+   "text": "R II shows the micro-operation before the one in R I, on the right panel: at every step, the content of R I moves into R II. This let the operator follow the microprogram step by step. The number the emulator shows here is guessed.",
+   "group": "R2"
+  },
+  {
+   "id": "generator",
+   "target": "knob",
+   "view": "left",
+   "waitFor": null,
+   "text": "The main generator set the rhythm of the pulses that drove the machine: going by the inscriptions, the frequency was set finely or in steps, and an external generator could be used. What each switch did exactly is unknown; in the emulator they do nothing.",
+   "group": "generator"
   },
   {
    "id": "tape",

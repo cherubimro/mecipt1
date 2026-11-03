@@ -592,6 +592,14 @@
    "text": "Acesta e pupitrul de comandă al calculatorului MECIPT-1, construit la Institutul Politehnic din Timișoara și pus în funcțiune în 1961 — primul calculator electronic făcut într-o universitate din România. Avea circa 2000 de tuburi electronice. Turul vă arată, în câțiva pași, cum se lucra la el."
   },
   {
+   "id": "middle-panel",
+   "target": "meter-0",
+   "view": "middle",
+   "waitFor": null,
+   "text": "Panoul din mijloc are unsprezece aparate de măsură, cele mai multe voltmetre pentru tensiunile de alimentare ale tuburilor. Pe fotografiile păstrate scalele nu se pot citi, așa că ce măsura fiecare aparat e ghicit. Unul lipsește azi; aici e redesenat după vecinii lui.",
+   "group": "meters"
+  },
+  {
    "id": "memory-drum",
    "target": "lamp-M-0",
    "view": "right",
@@ -646,6 +654,22 @@
    "waitFor": null,
    "text": "Fiecare instrucțiune era făcută din pași mărunți, microoperații. Pe panoul stâng, fiecare are un bec cu numele ei; becurile clipesc pe măsură ce mașina lucrează.",
    "group": "uop"
+  },
+  {
+   "id": "r2",
+   "target": "lamp-R2-0",
+   "view": "left",
+   "waitFor": null,
+   "text": "R II arată microoperația de dinaintea celei din R I, de pe panoul drept: la fiecare pas, conținutul lui R I trece în R II. Așa putea operatorul urmări microprogramul pas cu pas. Numărul pe care îl arată emulatorul aici e ghicit.",
+   "group": "R2"
+  },
+  {
+   "id": "generator",
+   "target": "knob",
+   "view": "left",
+   "waitFor": null,
+   "text": "Generatorul principal dădea ritmul impulsurilor care mișcau mașina: după inscripții, frecvența se regla fin sau în trepte și se putea folosi un generator extern. Ce făcea exact fiecare comutator nu se știe; în emulator nu fac nimic.",
+   "group": "generator"
   },
   {
    "id": "tape",

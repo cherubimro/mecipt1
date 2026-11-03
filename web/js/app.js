@@ -187,7 +187,9 @@ async function main() {
   let loadedFor = -1, tourLoading = null;
   // Chenarul pasului: un dreptunghi galben în jurul tuturor becurilor și comutatoarelor grupului.
   function frameGroup(g) {
-    const els = [...document.querySelectorAll(`[id^="lamp-${g}-"], [id^="switch-${g}-"]`)];
+    const sel = g === 'meters' ? '[id^="meter-"]'
+      : `[id^="lamp-${g}-"], [id^="switch-${g}-"]${g === 'generator' ? ', #knob' : ''}`;
+    const els = [...document.querySelectorAll(sel)];
     const svg = els.length && els[0].ownerSVGElement;
     if (!svg) return;
     const inv = svg.getScreenCTM().inverse();
