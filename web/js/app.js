@@ -11,6 +11,7 @@ import { Sheet, renderSheet } from './typewriter.js';
 import { S } from './strings.js';
 import { pickLang, saveLang } from './lang.js';
 import { HelpPanel } from './help.js';
+import { Tour } from './tour.js';
 import { describeValue } from './values.js';
 
 const $ = (id) => document.getElementById(id);
@@ -38,6 +39,12 @@ function setTexts() {
   $('speed-rapid').textContent = T().speedRapid;
   $('reload').textContent = T().reload;
   $('explain').textContent = T().explain;
+  $('tour-start').textContent = T().tourStart;
+  $('tour-prev').textContent = T().tourPrev;
+  $('tour-close').textContent = T().tourClose;
+  $('tour-wait').textContent = T().tourWaiting;
+  $('doc-link').textContent = T().docLink;
+  $('doc-link').href = `doc.html?lang=${lang}`;
   $('explain-banner').textContent = T().explainOn;
   $('view-label').textContent = T().view;
   for (const o of $('view').options) o.textContent = T().views[o.value];
@@ -171,6 +178,39 @@ async function main() {
   }
   $('explain').addEventListener('click', () => explainMode(!explaining));
   langListeners.push(() => { if (help.open) explain(help.target); });
+  // ---- turul ghidat ----
+  const tour = new Tour(HELP[lang].tour);
+  let loadedFor = -1;
+  function renderTour() {
+    for (const el of document.querySelectorAll('.tour-target')) el.classList.remove('tour-target');
+    const st = tour.step();
+    $('tour-card').hidden = !st;
+    if (!st) { loadedFor = -1; return; }
+    setView(st.view);
+    if (st.load && loadedFor !== tour.index) { loadedFor = tour.index; select(st.load); }
+    const el = $(st.target);
+    if (el) {
+      el.classList.add('tour-target');
+      if (el.scrollIntoView) el.scrollIntoView({ block: 'center', inline: 'nearest' });
+    }
+    $('tour-count').textContent = `${tour.index + 1} / ${tour.steps.length}`;
+    $('tour-text').textContent = st.text;
+    $('tour-wait').hidden = !st.waitFor;
+    $('tour-prev').disabled = tour.index === 0;
+    $('tour-next').disabled = !!st.waitFor;
+    $('tour-next').textContent = tour.index + 1 === tour.steps.length ? T().tourDone : T().tourNext;
+  }
+  const tourEvent = (ev) => { if (tour.onEvent(ev)) renderTour(); };
+  $('tour-start').addEventListener('click', () => { help.close(); tour.start(); renderTour(); });
+  $('tour-next').addEventListener('click', () => { tour.next(); renderTour(); });
+  $('tour-prev').addEventListener('click', () => { tour.prev(); renderTour(); });
+  $('tour-close').addEventListener('click', () => { tour.stop(); renderTour(); });
+  langListeners.push(() => { tour.steps = HELP[lang].tour; if (tour.active) renderTour(); });
+  const tourApi = {
+    start: () => { tour.start(); renderTour(); }, stop: () => { tour.stop(); renderTour(); },
+    next: () => { tour.next(); renderTour(); }, step: () => tour.step(), get active() { return tour.active; },
+  };
+
   const EXPLAINABLE = '.switch, .lamp, .knob, .meter, .decor[id], #tape, #sheet, #provenance, .panel-slot';
 
   function press(id) {
@@ -188,13 +228,14 @@ async function main() {
     const el = e.target.closest(EXPLAINABLE);
     if (!el || !el.id) return;
     if (explaining) { explain(el.id, el); return; }
-    if (el.classList.contains('switch')) press(el.id);
+    if (el.classList.contains('switch')) { press(el.id); tourEvent({ type: 'click', id: el.id }); }
     else if (!el.classList.contains('panel-slot')) explain(el.id, el);
   });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       if (explaining) explainMode(false);
-      else help.close();
+      else if (help.open) help.close();
+      else if (tour.active) { tour.stop(); renderTour(); }
       return;
     }
     const sw = e.target.closest && e.target.closest('.switch');
@@ -202,7 +243,7 @@ async function main() {
     if (e.key === '?') { e.preventDefault(); explain(sw.id, sw); return; }
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      if (explaining) explain(sw.id, sw); else press(sw.id);
+      if (explaining) explain(sw.id, sw); else { press(sw.id); tourEvent({ type: 'click', id: sw.id }); }
     }
   });
 
@@ -225,8 +266,8 @@ async function main() {
   function advance(dt) {
     const snap = runner.frame(dt);
     lastSnap = snap;
-    if (snap.typed) sheet.add(snap.typed);
-    if (snap.halted !== null) lastHalt = snap.halted;
+    if (snap.typed) { sheet.add(snap.typed); tourEvent({ type: 'typed' }); }
+    if (snap.halted !== null) { lastHalt = snap.halted; tourEvent({ type: 'halted' }); }
     const targets = lampTargets(snap, runner, uopIndex);
     for (const l of lamps) {
       l.b = glowStep(l.b, targets.get(l.id) ?? 0, Math.min(dt, 100));
@@ -254,7 +295,7 @@ async function main() {
 
   await select(catalog[0].id);
   requestAnimationFrame(frame);
-  return { runner, select, setSpeed, setView, setLang, sheet, advance, explain, explainMode, closeHelp: () => help.close() };
+  return { runner, select, setSpeed, setView, setLang, sheet, advance, explain, explainMode, closeHelp: () => help.close(), tour: tourApi };
 }
 
 const api = {};

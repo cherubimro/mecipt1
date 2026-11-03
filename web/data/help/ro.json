@@ -579,7 +579,86 @@
    "url": "doc.html#07-ce-e-sigur"
   }
  },
- "tour": [],
+ "tour": [
+  {
+   "id": "welcome",
+   "target": "desk",
+   "view": "all",
+   "waitFor": null,
+   "text": "Acesta e pupitrul de comandă al calculatorului MECIPT-1, construit la Institutul Politehnic din Timișoara și pus în funcțiune în 1961 — primul calculator electronic făcut într-o universitate din România. Avea circa 2000 de tuburi electronice. Turul vă arată, în câțiva pași, cum se lucra la el."
+  },
+  {
+   "id": "memory-drum",
+   "target": "lamp-M-0",
+   "view": "right",
+   "waitFor": null,
+   "text": "Memoria era un tambur magnetic care se rotea de 50 de ori pe secundă și ținea 1024 de cuvinte. Rândul de sus, M, arată un cuvânt de 31 de biți: bec aprins = 1. Becul 0 e semnul."
+  },
+  {
+   "id": "words",
+   "target": "lamp-RI-0",
+   "view": "right",
+   "waitFor": null,
+   "text": "Un cuvânt ține un număr sau două instrucțiuni. Fiecare instrucțiune are un cod de operație (5 biți) și o adresă (10 biți). Rândul RI arată instrucțiunea care se execută acum."
+  },
+  {
+   "id": "rai",
+   "target": "switch-RAI-0",
+   "view": "right",
+   "waitFor": null,
+   "text": "RAI ține adresa următorului cuvânt cu instrucțiuni. Cu comutatoarele de sub el, operatorul dădea adresa de la care pornește programul. (Sensul pârghiilor — sus = 1 — e ghicit.)"
+  },
+  {
+   "id": "start-address",
+   "target": "switch-RAI-0",
+   "view": "right",
+   "waitFor": null,
+   "text": "Am încărcat programul original din 6 septembrie 1962 care își retipărește propriul listing. Comutatoarele RAI arată deja adresa lui de pornire: 1477 în octal.",
+   "load": "retiparire-1962"
+  },
+  {
+   "id": "run",
+   "target": "switch-compute-0",
+   "view": "right",
+   "waitFor": "typed",
+   "text": "Acum rulăm programul: apăsați butonul CALCULEAZA AUTOMAT, marcat cu galben. Turul continuă când mașina începe să scrie."
+  },
+  {
+   "id": "typewriter",
+   "target": "sheet",
+   "view": "all",
+   "waitFor": null,
+   "text": "Mașina de scris tipărește listingul, caracter cu caracter, la viteza din 1962: cam 50 de instrucțiuni pe secundă, pentru că mașina aștepta tamburul să se rotească. Cu „rapid” se poate grăbi de 100 de ori."
+  },
+  {
+   "id": "microops",
+   "target": "lamp-uop-0",
+   "view": "left",
+   "waitFor": null,
+   "text": "Fiecare instrucțiune era făcută din pași mărunți, microoperații. Pe panoul stâng, fiecare are un bec cu numele ei; becurile clipesc pe măsură ce mașina lucrează."
+  },
+  {
+   "id": "tape",
+   "target": "tape",
+   "view": "all",
+   "waitFor": null,
+   "text": "Programele intrau pe bandă perforată de telex: 5 canale, gaura înseamnă 0, un cuvânt ocupă 6 rânduri. Alegeți programul INEX-1 ca să vedeți banda trecând prin cititor."
+  },
+  {
+   "id": "provenance",
+   "target": "provenance",
+   "view": "all",
+   "waitFor": null,
+   "text": "Această etichetă spune de unde vine programul: ORIGINAL înseamnă transcris din documente de epocă; RECONSTRUCȚIE și GHICIT marchează ce am completat noi."
+  },
+  {
+   "id": "more",
+   "target": "doc-link",
+   "view": "all",
+   "waitFor": null,
+   "text": "Pentru orice element, apăsați „Explică” și apoi elementul. Documentația conține tot: instrucțiunile, banda, pupitrul, ce e sigur și ce e ghicit, și sursele."
+  }
+ ],
  "uops": {},
  "ops": {}
 }

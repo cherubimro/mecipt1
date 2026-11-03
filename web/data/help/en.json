@@ -579,7 +579,86 @@
    "url": "doc.html?lang=en#07-ce-e-sigur"
   }
  },
- "tour": [],
+ "tour": [
+  {
+   "id": "welcome",
+   "target": "desk",
+   "view": "all",
+   "waitFor": null,
+   "text": "This is the control console of MECIPT-1, built at the Polytechnic Institute of Timișoara and put into service in 1961 — the first electronic computer made at a university in Romania. It had about 2000 electron tubes. In a few steps, this tour shows how it was operated."
+  },
+  {
+   "id": "memory-drum",
+   "target": "lamp-M-0",
+   "view": "right",
+   "waitFor": null,
+   "text": "The memory was a magnetic drum turning 50 times a second and holding 1024 words. The top row, M, shows a 31-bit word: lamp lit = 1. Lamp 0 is the sign."
+  },
+  {
+   "id": "words",
+   "target": "lamp-RI-0",
+   "view": "right",
+   "waitFor": null,
+   "text": "A word holds a number or two instructions. Each instruction has an operation code (5 bits) and an address (10 bits). The RI row shows the instruction being executed now."
+  },
+  {
+   "id": "rai",
+   "target": "switch-RAI-0",
+   "view": "right",
+   "waitFor": null,
+   "text": "RAI holds the address of the next instruction word. With the switches below it, the operator gave the address where the program starts. (The lever direction — up = 1 — is guessed.)"
+  },
+  {
+   "id": "start-address",
+   "target": "switch-RAI-0",
+   "view": "right",
+   "waitFor": null,
+   "text": "We have loaded the original program of 6 September 1962 that reprints its own listing. The RAI switches already show its start address: 1477 in octal.",
+   "load": "retiparire-1962"
+  },
+  {
+   "id": "run",
+   "target": "switch-compute-0",
+   "view": "right",
+   "waitFor": "typed",
+   "text": "Now let us run the program: press the CALCULEAZA AUTOMAT (compute: automatic) button, marked in yellow. The tour continues when the machine starts typing."
+  },
+  {
+   "id": "typewriter",
+   "target": "sheet",
+   "view": "all",
+   "waitFor": null,
+   "text": "The typewriter prints the listing, character by character, at 1962 speed: about 50 instructions a second, because the machine waited for the drum to turn. “Fast” speeds it up 100 times."
+  },
+  {
+   "id": "microops",
+   "target": "lamp-uop-0",
+   "view": "left",
+   "waitFor": null,
+   "text": "Each instruction was made of small steps, micro-operations. On the left panel each one has a lamp with its name; the lamps flicker as the machine works."
+  },
+  {
+   "id": "tape",
+   "target": "tape",
+   "view": "all",
+   "waitFor": null,
+   "text": "Programs came in on punched telex tape: 5 channels, a hole means 0, one word takes 6 rows. Choose the INEX-1 program to see the tape run through the reader."
+  },
+  {
+   "id": "provenance",
+   "target": "provenance",
+   "view": "all",
+   "waitFor": null,
+   "text": "This label says where the program comes from: ORIGINAL means transcribed from period documents; RECONSTRUCTION and GUESSED mark what we have filled in."
+  },
+  {
+   "id": "more",
+   "target": "doc-link",
+   "view": "all",
+   "waitFor": null,
+   "text": "For any element, press “Explain” and then the element. The documentation has everything: the instructions, the tape, the console, what is certain and what is guessed, and the sources."
+  }
+ ],
  "uops": {
   "0": "s goes into M [?]",
   "1": "s goes into I",

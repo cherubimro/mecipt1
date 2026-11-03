@@ -29,7 +29,9 @@
         <option value="all">tot pupitrul</option><option value="left">panoul stâng</option>
         <option value="middle">panoul din mijloc</option><option value="right">panoul drept</option>
       </select></label>
+    <button id="tour-start" type="button">Tur ghidat</button>
     <button id="explain" type="button" aria-pressed="false">Explică</button>
+    <a id="doc-link" class="doc-link" href="doc.html">Documentație</a>
     <button id="reload" type="button">Reîncarcă</button>
     <div class="lang" role="group" aria-labelledby="lang-label"><span id="lang-label" class="visually-hidden">Limba</span>
       <button id="lang-ro" type="button" lang="ro" aria-pressed="true">RO</button><button id="lang-en" type="button" lang="en" aria-pressed="false">EN</button></div>
@@ -40,7 +42,7 @@
 <p class="state"><span id="status" class="status" aria-live="polite"></span> <span id="machine-time" class="machine-time"></span></p>
 
 <main class="room">
-  <div class="desk">
+  <div class="desk" id="desk">
     <div class="frame">
       <div class="panels" id="panels" data-view="all">
         <div class="panel-slot" id="panel-left"></div>
@@ -61,6 +63,12 @@
     </section>
   </div>
 </main>
+<section id="tour-card" class="tour-card" role="dialog" aria-labelledby="tour-count" hidden>
+  <p id="tour-count" class="tour-count"></p>
+  <p id="tour-text" class="tour-text"></p>
+  <p id="tour-wait" class="tour-wait" hidden></p>
+  <div class="tour-buttons"><button id="tour-prev" type="button">Înapoi</button><button id="tour-next" type="button">Înainte</button><button id="tour-close" type="button">Închide turul</button></div>
+</section>
 <aside id="help-panel" class="help-panel" role="dialog" aria-labelledby="help-title" hidden>
   <button id="help-close" type="button" class="help-close">Închide</button>
   <h2 id="help-title" tabindex="-1"></h2>

@@ -86,6 +86,27 @@ f.addEventListener('load', () => {
   click('switch-RAI-9');                  // înapoi la 1477
   P.closeHelp();
   if (shown()) fail('panoul de explicații nu se închide');
+  stage('tur');
+  // turul ghidat: pornește, marchează ținta, supraviețuiește schimbării programului, așteaptă textul pe coală
+  const card = d.getElementById('tour-card');
+  P.tour.start();
+  P.advance(50);
+  if (card.hidden || !d.getElementById('desk').classList.contains('tour-target')) fail('turul: cardul sau ținta primului pas');
+  while (P.tour.step() && P.tour.step().id !== 'run') { d.getElementById('tour-next').click(); P.advance(50); }
+  if (!d.getElementById('switch-compute-0').classList.contains('tour-target')) fail('turul: ținta pasului run');
+  if (!d.getElementById('tour-next').disabled) fail('turul: Înainte ar trebui dezactivat cât pasul așteaptă');
+  await P.select('retiparire-1962');
+  if (!P.tour.active || P.tour.step().id !== 'run') fail('turul s-a pierdut la schimbarea programului');
+  click('switch-compute-0');
+  await until(() => P.tour.step() && P.tour.step().id === 'typewriter', 10000, () => 'turul nu trece mai departe: ' + (P.tour.step() || {}).id);
+  P.setLang('en');
+  if (!d.getElementById('tour-text').textContent.startsWith(helpEN.tour[6].text.slice(0, 30))) fail('turul în engleză: ' + d.getElementById('tour-text').textContent);
+  if (!d.getElementById('tour-count').textContent.includes('7 / 11')) fail('numărul pasului: ' + d.getElementById('tour-count').textContent);
+  P.setLang('ro');
+  d.getElementById('tour-close').click();
+  if (!card.hidden || d.querySelector('.tour-target')) fail('turul nu se închide curat');
+  await P.select('retiparire-1962');
+  P.setView('all');
   stage('impulsuri');
   // capcana IMPULSURI: mașina oprită de la pupitru spune de ce, iar Reîncarcă o repune în funcțiune
   click('switch-pulses-0');

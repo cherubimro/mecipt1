@@ -121,3 +121,19 @@ body.explaining .room, body.explaining .room * { cursor: help !important; }
 .help-sources { padding-left: 18px; font-size: 14px; }
 .help-sources a { color: #24496f; word-break: break-all; }
 @media (min-width: 1400px) { body.help-open { padding-right: 396px; } }
+
+/* ---- turul ghidat ---- */
+.doc-link { font-size: 15px; color: #24496f; }
+.tour-card { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); width: min(600px, 92vw); z-index: 15;
+  background: var(--strip); color: var(--strip-ink); border: 1px solid var(--strip-line); border-radius: 4px;
+  padding: 12px 16px; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35); font-size: 16px; line-height: 1.45; }
+.tour-count { margin: 0 0 4px; font-size: 13.5px; color: #55606a; }
+.tour-text { margin: 0 0 8px; }
+.tour-wait { margin: 0 0 8px; font-size: 14.5px; color: #5b4a1a; }
+.tour-buttons { display: flex; gap: 8px; }
+.tour-buttons #tour-close { margin-left: auto; }
+.tour-card button { font: inherit; font-size: 15px; color: var(--strip-ink); background: #f6f7f5; border: 1px solid #8f969a; border-radius: 3px; padding: 3px 10px; cursor: pointer; }
+.tour-card button:disabled { opacity: 0.45; cursor: default; }
+.tour-target:not(g) { outline: 4px solid var(--focus); outline-offset: 3px; }
+g.tour-target { filter: drop-shadow(0 0 5px #f2c230) drop-shadow(0 0 3px #f2c230); }
+.switch.tour-target .focus-ring { stroke: var(--focus); }

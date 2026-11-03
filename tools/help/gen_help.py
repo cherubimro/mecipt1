@@ -319,6 +319,45 @@ e('provenance', 'MIXT', ['baltac2011', 'semantica'],
    'Shows where each word of the program comes from: ORIGINAL (from 1962 documents), DEDUCED, RECONSTRUCTION or GUESSED.',
    '- **ORIGINAL** — transcribed from a period document, with a reference to the facsimile (e.g. facsimile 4 in V. Baltac’s book).\n- **DEDUCED** — follows from the documents but is not written in them (e.g. a digit corrected by hand).\n- **RECONSTRUCTION** — written now, following the program’s logic, because it is missing from the document (e.g. the constants read by the reprinting program).\n- **GUESSED** — needed for it to work, without a source.\n\nThe facsimile images are not reproduced here; they are in Vasile Baltac’s book.'))
 
+
+# ---------------- turul ghidat ----------------
+# (id, target, view, waitFor, load, ro, en)
+TOUR = [
+ ('welcome', 'desk', 'all', None, None,
+  'Acesta e pupitrul de comandă al calculatorului MECIPT-1, construit la Institutul Politehnic din Timișoara și pus în funcțiune în 1961 — primul calculator electronic făcut într-o universitate din România. Avea circa 2000 de tuburi electronice. Turul vă arată, în câțiva pași, cum se lucra la el.',
+  'This is the control console of MECIPT-1, built at the Polytechnic Institute of Timișoara and put into service in 1961 — the first electronic computer made at a university in Romania. It had about 2000 electron tubes. In a few steps, this tour shows how it was operated.'),
+ ('memory-drum', 'lamp-M-0', 'right', None, None,
+  'Memoria era un tambur magnetic care se rotea de 50 de ori pe secundă și ținea 1024 de cuvinte. Rândul de sus, M, arată un cuvânt de 31 de biți: bec aprins = 1. Becul 0 e semnul.',
+  'The memory was a magnetic drum turning 50 times a second and holding 1024 words. The top row, M, shows a 31-bit word: lamp lit = 1. Lamp 0 is the sign.'),
+ ('words', 'lamp-RI-0', 'right', None, None,
+  'Un cuvânt ține un număr sau două instrucțiuni. Fiecare instrucțiune are un cod de operație (5 biți) și o adresă (10 biți). Rândul RI arată instrucțiunea care se execută acum.',
+  'A word holds a number or two instructions. Each instruction has an operation code (5 bits) and an address (10 bits). The RI row shows the instruction being executed now.'),
+ ('rai', 'switch-RAI-0', 'right', None, None,
+  'RAI ține adresa următorului cuvânt cu instrucțiuni. Cu comutatoarele de sub el, operatorul dădea adresa de la care pornește programul. (Sensul pârghiilor — sus = 1 — e ghicit.)',
+  'RAI holds the address of the next instruction word. With the switches below it, the operator gave the address where the program starts. (The lever direction — up = 1 — is guessed.)'),
+ ('start-address', 'switch-RAI-0', 'right', None, 'retiparire-1962',
+  'Am încărcat programul original din 6 septembrie 1962 care își retipărește propriul listing. Comutatoarele RAI arată deja adresa lui de pornire: 1477 în octal.',
+  'We have loaded the original program of 6 September 1962 that reprints its own listing. The RAI switches already show its start address: 1477 in octal.'),
+ ('run', 'switch-compute-0', 'right', 'typed', None,
+  'Acum rulăm programul: apăsați butonul CALCULEAZA AUTOMAT, marcat cu galben. Turul continuă când mașina începe să scrie.',
+  'Now let us run the program: press the CALCULEAZA AUTOMAT (compute: automatic) button, marked in yellow. The tour continues when the machine starts typing.'),
+ ('typewriter', 'sheet', 'all', None, None,
+  'Mașina de scris tipărește listingul, caracter cu caracter, la viteza din 1962: cam 50 de instrucțiuni pe secundă, pentru că mașina aștepta tamburul să se rotească. Cu „rapid” se poate grăbi de 100 de ori.',
+  'The typewriter prints the listing, character by character, at 1962 speed: about 50 instructions a second, because the machine waited for the drum to turn. “Fast” speeds it up 100 times.'),
+ ('microops', 'lamp-uop-0', 'left', None, None,
+  'Fiecare instrucțiune era făcută din pași mărunți, microoperații. Pe panoul stâng, fiecare are un bec cu numele ei; becurile clipesc pe măsură ce mașina lucrează.',
+  'Each instruction was made of small steps, micro-operations. On the left panel each one has a lamp with its name; the lamps flicker as the machine works.'),
+ ('tape', 'tape', 'all', None, None,
+  'Programele intrau pe bandă perforată de telex: 5 canale, gaura înseamnă 0, un cuvânt ocupă 6 rânduri. Alegeți programul INEX-1 ca să vedeți banda trecând prin cititor.',
+  'Programs came in on punched telex tape: 5 channels, a hole means 0, one word takes 6 rows. Choose the INEX-1 program to see the tape run through the reader.'),
+ ('provenance', 'provenance', 'all', None, None,
+  'Această etichetă spune de unde vine programul: ORIGINAL înseamnă transcris din documente de epocă; RECONSTRUCȚIE și GHICIT marchează ce am completat noi.',
+  'This label says where the program comes from: ORIGINAL means transcribed from period documents; RECONSTRUCTION and GUESSED mark what we have filled in.'),
+ ('more', 'doc-link', 'all', None, None,
+  'Pentru orice element, apăsați „Explică” și apoi elementul. Documentația conține tot: instrucțiunile, banda, pupitrul, ce e sigur și ce e ghicit, și sursele.',
+  'For any element, press “Explain” and then the element. The documentation has everything: the instructions, the tape, the console, what is certain and what is guessed, and the sources.'),
+]
+
 UOPS_EN = ['s goes into M [?]', 's goes into I', 'i goes into S', 'Logical multiplication (AND)',
  'Shift: left in S · I. goes into S.', 'Shift: right in S · zero goes into S.', 'Shift: left in I · zero goes into I.',
  'Shift: right in I · S. goes into I.', 'Change M.', 'If M. = 1 change M into M̄', 'Change M into M̄ except M. [?]',
@@ -341,6 +380,11 @@ assert len(UOPS_EN) == 39 and len(OPS_EN) == 29
 def build(lang):
     k = 0 if lang == 'ro' else 1
     out = {'entries': {}, 'sources': {s: v[k] for s, v in SOURCES.items()}, 'tour': []}
+    for sid, target, view, wait, load, ro, en in TOUR:
+        st = {'id': sid, 'target': target, 'view': view, 'waitFor': wait, 'text': ro if lang == 'ro' else en}
+        if load:
+            st['load'] = load
+        out['tour'].append(st)
     for key, st, src, ro, en in E:
         t = ro if lang == 'ro' else en
         out['entries'][key] = {'title': t[0], 'short': t[1], 'more': t[2], 'status': st, 'sources': src}
