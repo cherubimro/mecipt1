@@ -420,6 +420,13 @@ async function main() {
     $('view').value = name;
   };
   $('view').addEventListener('change', () => setView($('view').value));
+  // pe telefon pupitrul întreg ar fi prea mic: se pornește cu panoul drept (comenzile), mărit și derulabil
+  // rama se derulează cât butonul de pornire, marcat de îndrumare, să stea la mijloc
+  if (globalThis.matchMedia && matchMedia('(max-width: 760px)').matches) {
+    setView('right');
+    const fr = document.querySelector('.frame'), b = $('switch-compute-0').getBoundingClientRect(), f = fr.getBoundingClientRect();
+    fr.scrollLeft += (b.left + b.width / 2) - (f.left + f.width / 2);
+  }
   $('program').addEventListener('change', () => select($('program').value));
   $('reload').addEventListener('click', () => select(current ? current.id : catalog[0].id));
 

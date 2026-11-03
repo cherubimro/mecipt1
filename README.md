@@ -27,7 +27,11 @@ programele originale din 1962.
   Facsimilul 5), încărcată de preîncărcătorul original; tabelul de sinus din 21.02.1962, reprodus după Facsimilul 3
   (44 din 45 de valori cifră cu cifră; diferă sin 32°); calculele ilustrative Vidraru și Romexpo, cu eticheta
   „cifrele nu sunt cele reale”. Sursele în `programs/src/`, generate cu `make programs`; referințele în `tools/ref/`.
-- Urmează: telefonul și publicarea, interfețele wx și ncurses (`docs/superpowers/plans/`).
+- **Telefonul și publicarea** (Planul 7): pe ecrane înguste un singur panou mărit, derulabil, cu butonul de pornire
+  la vedere; fără derulare orizontală la nicio lățime. Site-ul static se verifică (`tools/check_site.py`) și se
+  publică copiind `build/site/` — vezi `docs/publicare.md`.
+- **Tamburul magnetic**, desenat după fotografiile din 2015 (Muzeul Banatului).
+- Urmează: interfețele desktop (wx și ncurses, poate regândite ca o interfață Qt).
 
 Ce e sigur, ce e dedus și ce e ghicit: `docs/semantica.md` (în engleză: `docs/semantica.en.md`).
 Textele ajutorului se scriu în `tools/help/gen_help.py`, iar capitolele documentației în `web/doc/{ro,en}/`. Fiecare cuvânt de program își poartă
