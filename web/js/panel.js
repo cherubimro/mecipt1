@@ -97,24 +97,56 @@ function knob(p, id, x, y, cls = 'knob') {
 
 function meter(p, it) {
   const { x, y, r } = it;
-  const a = ((it.needle ?? -40) * Math.PI) / 180;
-  let ticks = '';
-  const arcStart = -50, arcEnd = 50;
-  for (let k = 0; k <= 10; k++) {
-    const t = ((arcStart + (k * (arcEnd - arcStart)) / 10) * Math.PI) / 180;
-    const r0 = r * (k % 5 === 0 ? 0.62 : 0.68);
-    ticks += `<line x1="${n(r0 * Math.sin(t))}" y1="${n(r * 0.25 - r0 * Math.cos(t))}" x2="${n(r * 0.76 * Math.sin(t))}" y2="${n(r * 0.25 - r * 0.76 * Math.cos(t))}" stroke="#222" stroke-width="${k % 5 === 0 ? 2.5 : 1.5}"/>`;
+  const st = it.style;
+  const a = ((it.needle ?? -35) * Math.PI) / 180;
+  // pivotul acului și raza scalei, după stil
+  const pivot = st === 'arc' || st === 'small' ? r * 0.12 : r * 0.38;
+  const R = st === 'arc' || st === 'small' ? r * 0.62 : r * 0.62;
+  let face;
+  if (st === 'arc' || st === 'small') {
+    // corp negru rotund cu fereastră în arc (scala sus)
+    const w = r * 0.72, top = -r * 0.62;
+    face = `<circle r="${r}" fill="url(#${p}-bakelite)"/><circle r="${n(r * 0.93)}" fill="none" stroke="#000" stroke-width="2"/>`
+      + `<path d="M ${n(-w)} ${n(pivot)} L ${n(-w)} ${n(top * 0.35)} Q 0 ${n(top * 1.25)} ${n(w)} ${n(top * 0.35)} L ${n(w)} ${n(pivot)} Z" fill="#efeadc"/>`;
+  } else {
+    face = `<circle r="${r}" fill="url(#${p}-bakelite)"/><circle r="${n(r * 0.86)}" fill="#f1eee2"/>`
+      + `<circle cy="${n(pivot)}" r="${n(r * 0.17)}" fill="#1a1a1a"/>`;
   }
-  const body = it.style === 'arc'
-    ? `<rect x="${-r}" y="${-r * 0.8}" width="${2 * r}" height="${1.6 * r}" rx="${r * 0.12}" fill="#1b1b1a"/><path d="M ${-r * 0.88} ${r * 0.55} L ${-r * 0.88} ${-r * 0.6} Q 0 ${-r * 0.95} ${r * 0.88} ${-r * 0.6} L ${r * 0.88} ${r * 0.55} Z" fill="#f2efe4"/>`
-    : `<circle r="${r}" fill="#1b1b1a"/><circle r="${r * 0.86}" fill="#f2efe4"/>`;
-  return `<g class="meter" id="${esc(it.id)}" data-style="${esc(it.style)}" transform="translate(${n(x)} ${n(y)})">`
-    + body + ticks
-    + `<text x="0" y="${n(r * 0.5)}" font-family="${FONT}" font-size="${n(r * 0.28)}" text-anchor="middle" fill="#222">V</text>`
-    + `<line class="needle" x1="0" y1="${n(r * 0.25)}" x2="${n(r * 0.74 * Math.sin(a))}" y2="${n(r * 0.25 - r * 0.74 * Math.cos(a))}" stroke="#111" stroke-width="2"/>`
-    + `<circle cx="0" cy="${n(r * 0.25)}" r="${n(r * 0.06)}" fill="#111"/>`
-    + `<circle r="${r}" fill="none" stroke="#fff" stroke-opacity="0.12" stroke-width="2"/>`
+  let ticks = '';
+  for (let k = 0; k <= 20; k++) {
+    const t = ((-50 + k * 5) * Math.PI) / 180;
+    const big = k % 5 === 0;
+    const r0 = R * (big ? 0.84 : 0.9);
+    ticks += `<line x1="${n(r0 * Math.sin(t))}" y1="${n(pivot - r0 * Math.cos(t))}" x2="${n(R * Math.sin(t))}" y2="${n(pivot - R * Math.cos(t))}" stroke="#222" stroke-width="${big ? 2 : 1}"/>`;
+  }
+  const L = R * 0.98;
+  return `<g class="meter" id="${esc(it.id)}" data-style="${esc(st)}" transform="translate(${n(x)} ${n(y)})">`
+    + face + ticks
+    + `<text x="0" y="${n(pivot - R * 0.38)}" font-family="${FONT}" font-size="${n(r * 0.22)}" text-anchor="middle" fill="#222">V</text>`
+    + `<line class="needle" x1="0" y1="${n(pivot)}" x2="${n(L * Math.sin(a))}" y2="${n(pivot - L * Math.cos(a))}" stroke="#111" stroke-width="${n(Math.max(1.5, r * 0.02))}"/>`
+    + `<ellipse cx="${n(-r * 0.3)}" cy="${n(-r * 0.45)}" rx="${n(r * 0.45)}" ry="${n(r * 0.22)}" fill="#fff" opacity="0.10"/>`
     + '</g>';
+}
+
+// Comenzile panoului din mijloc: decor (funcția lor nu e cunoscută), desenate la (0,0), raza ~30.
+function decor(p, it) {
+  const id = it.id ? ` id="${esc(it.id)}"` : '';
+  switch (it.t) {
+    case 'knob':
+      return `<g class="decor knob"${id}><circle r="30" fill="url(#${p}-bakelite)"/><rect x="-26" y="-5" width="52" height="10" rx="5" fill="#2a2a29" stroke="#c9c4b4" stroke-width="1.5" transform="rotate(-10)"/></g>`;
+    case 'rotary':
+      return `<g class="decor rotary"${id}><circle r="30" fill="#efece1" stroke="#111" stroke-width="3"/>`
+        + `<path d="M -6 -24 Q 0 -27 6 -24 L 9 18 Q 0 24 -9 18 Z" fill="url(#${p}-bakelite)" transform="rotate(-20)"/><circle r="9" fill="#111" transform="rotate(-20)"/></g>`;
+    case 'toggle':
+      return `<g class="decor down"${id}><rect x="-9" y="-22" width="18" height="44" rx="3" fill="#2e5f9a" stroke="#1a2c48" stroke-width="1.5"/>`
+        + `<rect x="-5" y="-12" width="10" height="24" rx="2" fill="#141414"/><rect class="lever" x="-3.5" y="0" width="7" height="12" rx="2" fill="#d9d9d4"/></g>`;
+    case 'fuse':
+      return `<g class="decor"${id}><rect x="-12" y="-26" width="24" height="52" rx="12" fill="url(#${p}-bakelite)"/><rect x="-6" y="-16" width="12" height="32" rx="6" fill="#2c2c2b"/></g>`;
+    case 'socket':
+      return `<g class="decor"${id}><rect x="-12" y="-26" width="24" height="52" rx="2" fill="#151515"/><circle cy="-10" r="4" fill="#444"/><circle cy="10" r="4" fill="#444"/></g>`;
+    default:
+      return '';
+  }
 }
 
 function item(p, it) {
@@ -127,7 +159,17 @@ function item(p, it) {
     case 'text': {
       const fit = it.w ? ` textLength="${n(it.w)}" lengthAdjust="spacing"` : '';
       const unc = it.uncertain ? ' data-uncertain="1"' : '';
-      return `<text x="${n(it.x)}" y="${n(it.y)}" font-size="${n(it.s)}" text-anchor="${it.anchor ?? 'start'}" fill="${col}"${fit}${unc}>${esc(it.text)}</text>`;
+      const cell = it.cell ? ` data-cell="${esc(it.cell.join('-'))}"` : '';
+      const lines = String(it.text).split('\n');
+      const lh = it.lh ?? it.s * 1.6;
+      const body = lines.length === 1 ? esc(it.text)
+        : lines.map((l, k) => `<tspan x="${n(it.x)}" dy="${k ? n(lh) : 0}">${esc(l)}</tspan>`).join('');
+      return `<text x="${n(it.x)}" y="${n(it.y)}" font-size="${n(it.s)}" text-anchor="${it.anchor ?? 'start'}" fill="${col}"${fit}${unc}${cell}>${body}</text>`;
+    }
+    case 'pulse': {
+      const f = it.foot ?? 8;
+      const pts = [[it.x0 - f, it.y0], [it.x0, it.y0], [it.x0, it.y1], [it.x1, it.y1], [it.x1, it.y0], [it.x1 + f, it.y0]];
+      return `<polyline points="${pts.map(([x, y]) => `${n(x)},${n(y)}`).join(' ')}" fill="none" stroke="${col}" stroke-width="${it.w ?? 3}"/>`;
     }
     case 'screw':
       return `<g transform="translate(${n(it.x)} ${n(it.y)})"><circle r="11" fill="url(#${p}-screw)" stroke="#555" stroke-width="1"/><line x1="-8" y1="-3" x2="8" y2="3" stroke="#555" stroke-width="2.5"/></g>`;
@@ -135,16 +177,8 @@ function item(p, it) {
       return `<circle cx="${n(it.x)}" cy="${n(it.y)}" r="${n(it.r ?? 8)}" fill="#141414"/>`;
     case 'meter':
       return meter(p, it);
-    case 'knob':
-      return knob(p, it.id, it.x, it.y, 'decor knob');
-    case 'rotary':
-      return `<g class="decor rotary" id="${esc(it.id)}" transform="translate(${n(it.x)} ${n(it.y)})"><circle r="${n(it.r ?? 34)}" fill="url(#${p}-bakelite)"/><rect x="-6" y="${n(-(it.r ?? 34))}" width="12" height="${n(2 * (it.r ?? 34))}" rx="5" fill="#2a2a29"/></g>`;
-    case 'toggle':
-      return toggle(p, it.id, it.x, it.y).replace('class="switch down"', 'class="decor down"').replace(' tabindex="0" role="button"', '');
-    case 'fuse':
-      return `<g class="decor" transform="translate(${n(it.x)} ${n(it.y)})"><circle r="16" fill="url(#${p}-bakelite)"/><circle r="9" fill="#3a3a38"/></g>`;
-    case 'socket':
-      return `<g class="decor" transform="translate(${n(it.x)} ${n(it.y)})"><circle r="15" fill="url(#${p}-chrome)"/><circle r="7" fill="#111"/></g>`;
+    case 'knob': case 'rotary': case 'toggle': case 'fuse': case 'socket':
+      return `<g transform="translate(${n(it.x)} ${n(it.y)}) scale(${n(it.k ?? 1)})">${decor(p, it)}</g>`;
     default:
       return '';
   }

@@ -48,3 +48,36 @@ test('SVG-ul e bine format', () => {
   assert.ok(svgR.trimEnd().endsWith('</svg>'));
   assert.ok(!/undefined|NaN/.test(svgR));
 });
+
+const ART_L = readJson('web/data/art-left.json');
+const ART_M = readJson('web/data/art-middle.json');
+const svgL = renderPanel('left', ART_L, POS, COLORS);
+const svgM = renderPanel('middle', ART_M, POS, COLORS);
+
+test('panoul stâng: 57 de becuri de microoperații, R2, generatorul', () => {
+  const ids = [...lampIds(POS), ...switchIds(POS)].filter((id) => id.split('-')[1] in POS.left);
+  assert.equal(ids.length, 76);
+  for (const id of ids) assert.ok(once(svgL, id), id);
+  assert.ok(once(svgL, 'knob'));
+  assert.match(tag(svgL, 'lamp-uop-0'), /data-color="white"/);
+  assert.match(tag(svgL, 'lamp-R2-0'), /data-color="red"/);
+  assert.ok(!/undefined|NaN/.test(svgL));
+});
+
+test('grila stângă are inscripțiile panoului', () => {
+  const t = texts(ART_L);
+  const all = t.join(' | ');
+  assert.ok(all.includes('Muta RAI') || all.includes('Mută RAI'), 'Mută RAI');
+  for (const w of ['GENERATOR PRINCIPAL', 'IMPULSURI']) assert.ok(all.includes(w), w);
+  assert.ok(all.includes('FRECVENTA') || all.includes('FRECVENȚĂ'), 'FRECVENȚĂ');
+  const cell = ART_L.items.find((it) => it.t === 'text' && it.cell && it.cell[0] === 1 && it.cell[1] === 16);
+  assert.ok(cell && cell.text.includes('RAI'), JSON.stringify(cell));
+});
+
+test('panoul din mijloc are 11 aparate', () => {
+  assert.equal(svgM.split('id="meter-').length - 1, 11);
+  assert.ok(once(svgM, 'selector'));
+  assert.ok(once(svgM, 'power'));
+  assert.ok(!/undefined|NaN/.test(svgM));
+  assert.ok(!svgM.includes('class="switch'), 'comenzile din mijloc sunt decor');
+});

@@ -1,0 +1,158 @@
+{
+"viewBox": [
+0,
+0,
+2600,
+1340
+],
+"face": "#4a7cad",
+"source": "măsurat pe fotografia din 2011 (Turbojet, CC BY-SA 4.0); scalele aparatelor nu se citesc (GHICIT)",
+"items": [
+{
+"t": "meter",
+"id": "meter-0",
+"x": 296.3,
+"y": 283.4,
+"r": 254.4,
+"style": "round-large",
+"needle": -50
+},
+{
+"t": "meter",
+"id": "meter-1",
+"x": 822.1,
+"y": 317.3,
+"r": 173.6,
+"style": "round",
+"needle": 35
+},
+{
+"t": "meter",
+"id": "meter-2",
+"x": 1272.4,
+"y": 317.3,
+"r": 173.6,
+"style": "round",
+"needle": -40
+},
+{
+"t": "meter",
+"id": "meter-3",
+"x": 1719.8,
+"y": 317.3,
+"r": 173.6,
+"style": "round",
+"needle": -35
+},
+{
+"t": "meter",
+"id": "meter-4",
+"x": 310.8,
+"y": 776.3,
+"r": 179.6,
+"style": "arc",
+"needle": -10
+},
+{
+"t": "meter",
+"id": "meter-5",
+"x": 842.5,
+"y": 779.4,
+"r": 185.6,
+"style": "arc",
+"needle": -15,
+"note": "lipsește în fotografia din 2011 (rama goală); prezent în fotografia din 1961"
+},
+{
+"t": "meter",
+"id": "meter-6",
+"x": 1295.6,
+"y": 779.4,
+"r": 176.6,
+"style": "arc",
+"needle": -5
+},
+{
+"t": "meter",
+"id": "meter-7",
+"x": 1748.8,
+"y": 776.3,
+"r": 176.6,
+"style": "arc",
+"needle": 0
+},
+{
+"t": "meter",
+"id": "meter-8",
+"x": 868.6,
+"y": 1170.6,
+"r": 113.7,
+"style": "small",
+"needle": -10
+},
+{
+"t": "meter",
+"id": "meter-9",
+"x": 1327.6,
+"y": 1167.5,
+"r": 113.7,
+"style": "small",
+"needle": 5
+},
+{
+"t": "meter",
+"id": "meter-10",
+"x": 1777.9,
+"y": 1164.4,
+"r": 110.7,
+"style": "small",
+"needle": 0
+},
+{
+"t": "knob",
+"id": "selector",
+"x": 310.8,
+"y": 1170.6,
+"k": 2.79
+},
+{
+"t": "rotary",
+"id": "power",
+"x": 2173.0,
+"y": 662.3,
+"k": 3.99
+},
+{
+"t": "fuse",
+"x": 2135.2,
+"y": 215.6,
+"k": 1.86
+},
+{
+"t": "toggle",
+"id": "toggle-0",
+"x": 2364.7,
+"y": 215.6,
+"k": 1.86
+},
+{
+"t": "toggle",
+"id": "toggle-1",
+"x": 2207.8,
+"y": 1118.2,
+"k": 1.86
+},
+{
+"t": "socket",
+"x": 2446.0,
+"y": 1118.2,
+"k": 1.86
+},
+{
+"t": "dot",
+"x": 2408.3,
+"y": 662.3,
+"r": 15.0
+}
+]
+}

@@ -6,7 +6,8 @@
 
 Pentru fiecare `line` și pentru laturile fiecărui `rect` se ia câte un punct la 4 px. Un punct
 „lovește” dacă în raza de 3 px există un pixel cu luminanța < mediana panoului − 40. Iese cu
-cod 1 dacă vreo linie are scorul (puncte lovite / puncte) sub 0,8 și le listează.
+cod 1 dacă vreo linie are scorul (puncte lovite / puncte) sub 0,8 și le listează. Liniile marcate
+"worn": true (porțiuni tocite pe panoul real, desenate întregi) nu se notează, doar se numără.
 `--overlay` desenează liniile (roșu) și textele (Barlow, albastru) peste textura estompată,
 redusă la 1000 px.
 """
@@ -23,7 +24,7 @@ STEP, RADIUS, DARK, MIN_SCORE = 4, 3, 40, 0.8
 
 def segments(art):
     for i, it in enumerate(art['items']):
-        if it['t'] == 'line':
+        if it['t'] == 'line' and not it.get('worn'):
             yield i, (it['x1'], it['y1'], it['x2'], it['y2'])
         elif it['t'] == 'rect':
             x, y, w, h = it['x'], it['y'], it['w'], it['h']
@@ -87,7 +88,8 @@ def main(argv):
     if bad:
         print('check_art: %d din %d segmente nu stau pe liniile texturii:\n  %s' % (len(bad), n, '\n  '.join(bad)))
         return 1
-    print('check_art: %d segmente, toate pe textură' % n)
+    worn = sum(1 for it in art['items'] if it.get('worn'))
+    print('check_art: %d segmente, toate pe textură (%d tocite, nenotate)' % (n, worn))
     return 0
 
 
