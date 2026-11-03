@@ -181,14 +181,22 @@ async function main() {
   langListeners.push(() => { if (help.open) explain(help.target); });
   // ---- turul ghidat ----
   const tour = new Tour(HELP[lang].tour);
-  let loadedFor = -1;
+  let loadedFor = -1, tourLoading = null;
   function renderTour() {
     for (const el of document.querySelectorAll('.tour-target')) el.classList.remove('tour-target');
     const st = tour.step();
     $('tour-card').hidden = !st;
     if (!st) { loadedFor = -1; return; }
     setView(st.view);
-    if (st.load && loadedFor !== tour.index) { loadedFor = tour.index; select(st.load); }
+    // pasul încarcă un program: „Înainte” stă blocat până se termină încărcarea, ca un AUTOMAT apăsat
+    // repede să nu fie oprit de încărcarea care vine după el
+    let loading = false;
+    if (st.load && loadedFor !== tour.index) {
+      loadedFor = tour.index;
+      loading = true;
+      tourLoading = select(st.load).finally(() => { tourLoading = null; if (tour.active) renderTour(); });
+    }
+    loading = loading || tourLoading !== null;
     const el = $(st.target);
     if (el) {
       el.classList.add('tour-target');
@@ -198,7 +206,7 @@ async function main() {
     $('tour-text').textContent = st.text;
     $('tour-wait').hidden = !st.waitFor;
     $('tour-prev').disabled = tour.index === 0;
-    $('tour-next').disabled = !!st.waitFor;
+    $('tour-next').disabled = !!st.waitFor || loading;
     $('tour-next').textContent = tour.index + 1 === tour.steps.length ? T().tourDone : T().tourNext;
   }
   const tourEvent = (ev) => { if (tour.onEvent(ev)) renderTour(); };

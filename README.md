@@ -11,10 +11,15 @@ programele originale din 1962.
 - **Pupitrul web** (Planul 2): pagina statică cu cele trei panouri redesenate vectorial, becurile
   legate de nucleu (compilat în WebAssembly), comutatoarele și butoanele funcționale, cititorul de
   bandă și mașina de scris, la viteza din 1962 sau „rapid”.
-- Urmează: atelierul (editor, tambur, perforator), ajutorul și engleza, sunetul, reconstrucțiile,
-  telefonul, interfețele wx și ncurses (`docs/superpowers/plans/`).
+- **Ajutorul** (Planul 4): turul ghidat, butonul „Explică” (explicația oricărui element, cu valoarea
+  tradusă, statutul SIGUR/DEDUS/GHICIT și sursele) și documentația pentru pasionați (`doc.html`):
+  cuvântul, setul de instrucțiuni, pupitrul, banda și mașina de scris, programele, sursele.
+  Totul în **română și engleză** (RO | EN în bară; inscripțiile pupitrului rămân în română).
+- Urmează: atelierul (editor, tambur, perforator), sunetul, reconstrucțiile, telefonul,
+  interfețele wx și ncurses (`docs/superpowers/plans/`).
 
-Ce e sigur, ce e dedus și ce e ghicit: `docs/semantica.md`. Fiecare cuvânt de program își poartă
+Ce e sigur, ce e dedus și ce e ghicit: `docs/semantica.md` (în engleză: `docs/semantica.en.md`).
+Textele ajutorului se scriu în `tools/help/gen_help.py`, iar capitolele documentației în `web/doc/{ro,en}/`. Fiecare cuvânt de program își poartă
 proveniența (ORIGINAL / DEDUS / RECONSTRUCȚIE / GHICIT), iar pagina o arată.
 
 ## Construire și rulare
@@ -25,7 +30,8 @@ pentru teste Node 20 și, opțional, Google Chrome/Chromium.
 make check        # nucleul: testele unitare și cele end-to-end
 make wasm         # build/mecipt.wasm (descarcă o dată wasi-sysroot 21, ≈ 5 MB, verificat cu sha256)
 make site         # build/site/: pagina statică completă
-make serve        # o servește pe http://127.0.0.1:8000/
+make serve        # o servește pe http://127.0.0.1:8000/ (documentația: /doc.html)
+make tables       # regenerează web/data/core-tables.json din nucleu (verificat de make check)
 make web-check    # testele Node pe WASM-ul real + scenariul din Chrome fără ecran
 ```
 

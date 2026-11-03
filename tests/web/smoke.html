@@ -92,7 +92,10 @@ f.addEventListener('load', () => {
   P.tour.start();
   P.advance(50);
   if (card.hidden || !d.getElementById('desk').classList.contains('tour-target')) fail('turul: cardul sau ținta primului pas');
-  while (P.tour.step() && P.tour.step().id !== 'run') { d.getElementById('tour-next').click(); P.advance(50); }
+  while (P.tour.step() && P.tour.step().id !== 'start-address') { d.getElementById('tour-next').click(); P.advance(50); }
+  if (!d.getElementById('tour-next').disabled) fail('turul: Înainte trebuie blocat cât se încarcă programul pasului');
+  await until(() => !d.getElementById('tour-next').disabled, 5000, 'turul: încărcarea programului nu se termină');
+  d.getElementById('tour-next').click(); P.advance(50);
   if (!d.getElementById('switch-compute-0').classList.contains('tour-target')) fail('turul: ținta pasului run');
   if (!d.getElementById('tour-next').disabled) fail('turul: Înainte ar trebui dezactivat cât pasul așteaptă');
   await P.select('retiparire-1962');
