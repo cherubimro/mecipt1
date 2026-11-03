@@ -71,3 +71,10 @@ test('memoria crescută nu strică citirile', async () => {
   assert.equal(typeof m.state().S, 'number');
   m.loadProgram(RETIPARIRE());
 });
+
+test('wordValue trece prin nucleu', async () => {
+  const m = await newMachine();
+  assert.equal(m.wordValue(0x20000000), 0.5);
+  assert.equal(m.wordValue(0x5FFFFFFF), -0.5);
+  assert.equal(m.wordValue(0x7FFFFFFF), 0);
+});

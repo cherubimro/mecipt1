@@ -142,4 +142,11 @@ TEST(test_api_provenance) {
     CHECK_EQ_S(api_prov_source(0), "");
 }
 
+TEST(test_api_word_value) {
+    CHECK(api_word_value(0x20000000u) == 0.5);
+    CHECK(api_word_value(0x10000000u) == 0.25);
+    CHECK(api_word_value(0x5FFFFFFFu) == -0.5);
+    CHECK(api_word_value(0x7FFFFFFFu) == 0.0);
+}
+
 RUN_ALL()

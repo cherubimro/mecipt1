@@ -114,4 +114,5 @@ export class Machine {
     return [...groups.values()].sort((x, y) => y.words - x.words);
   }
   uopId(grid, row, col) { return this.exports.api_uop_id(grid, row, col); }
+  wordValue(w) { return this.exports.api_word_value(w >>> 0); }
 }

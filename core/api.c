@@ -147,3 +147,4 @@ const char *api_prov_source(int addr) {
     return img.sources[img.src[addr]];
 }
 int api_uop_id(int grid, int row, int col) { return mec_uop_id(grid, row, col); }
+double api_word_value(uint32_t w) { return mec_to_double(w & MEC_MASK31); }
