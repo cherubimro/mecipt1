@@ -1,0 +1,328 @@
+; SPDX-License-Identifier: CC-BY-SA-4.0
+; GENERAT de tools/mecjoin.py din programs/inex1-preincarcator.mec + programs/src/inex1-rutine.mec + programs/src/vidraru.mec; nu editați — modificați sursa.
+
+; ======== programs/inex1-preincarcator.mec ========
+; Preîncărcătorul programului INEX-1 — MECIPT-1
+; Transcris din: V. Baltac, „MECIPT – Evocări și Documente” (2011), Facsimil 5,
+;               „INSTRUCȚIUNI LA PROGRAMUL INEX-1 — Se introduce manual”.
+; Procedura originală: „după care se pune banda INEX-1 în cititor de la primul
+; caracter perforat și se pornește calculatorul de la 0010.”
+; Alte puncte de intrare INEX-1 (din același facsimil, codul lor nu s-a păstrat):
+;   citirea benzilor de la pupitru 0040 (sau 0026); ca program 0025 (revine la V);
+;   tipăriri: format 0133, numere întregi 0134, numere subunitare 0135 (146 VF),
+;   trece peste n rânduri 0132, trece peste n spații 0136, tipărește de la A la B 0246.
+;
+; Format: AAAA  c1 a1  c2 a2   (octal, ca în facsimil)
+
+@prov ORIGINAL Facsimil 5, Baltac
+0000  00 0000  00 0000
+; Ultima cifră a cuvântului 0001 e corectată de mână în facsimil; citită „0”.
+; Doar cu 0000 instrucțiunea MS 0014 mărește corect adresa lui ME la fiecare cuvânt.
+@prov DEDUS Facsimil 5, Baltac; cifra corectată de mână citită 0
+0001  00 0001  00 0000
+
+@prov ORIGINAL Facsimil 5, Baltac
+
+0010  27 0000  02 0001
+0011  21 0005  33 0044
+0012  05 0044  16 0011
+0013  15 0014  00 0000
+0014  25 0002  01 0001
+0015  14 0014  15 0010
+
+; ======== programs/src/inex1-rutine.mec ========
+; Rutinele INEX-1 — RECONSTRUCȚIE (Planul 6), MECIPT-1
+; Din Facsimilul 5 (V. Baltac, „MECIPT – Evocări și Documente”, 2011) se știu doar preîncărcătorul și
+; punctele de intrare: citirea benzilor de la pupitru 0040 (sau 0026), ca program 0025 (revine la V);
+; tipăriri: format 0133, numere întregi 0134, numere subunitare 0135 (146 VF), trece peste n rânduri 0132,
+; trece peste n spații 0136, tipărește de la A la B 0246. Codul de mai jos e scris acum, după aceste puncte.
+;
+; Convenția de chemare (GHICIT, docs/semantica.md):
+;   - programul pune în V (0002) cuvântul „T r  CU”, unde r e locul unde continuă; argumentul în S; sare la intrare;
+;   - rutina se termină cu T 0002; strică S, I și celulele de lucru 0003–0007 (0044 e celula cititorului).
+;   - 0133: S = c1 α c2 β (α cifre pentru întregi, β zecimale pentru subunitare); după încărcare α = 3, β = 9.
+;   - 0134: S = n·2⁻³⁰; „-” dacă n < 0, apoi α cifre, zerourile din față ca spații.
+;   - 0135: „-” dacă S < 0, apoi „o,” și β zecimale (trunchiate), apoi semnul de după număr „-” (Facsimilul 3).
+;   - 0136 / 0132: S = −n·2⁻⁵; n spații / n rânduri noi.
+;   - 0246: S = 00 A 00 B; cuvintele de la A la B cu 0135, câte 5 pe rând.
+;   - 0040 (0026): de la pupitru, citește cuvinte de pe bandă (6 rânduri pe cuvânt) la adresa din ME-ul de la 0045,
+;     până la sfârșitul benzii; 0025: S = 00 A 00 n, citește n cuvinte la A, revine prin V.
+; Pe bandă intră doar m1–m30: nicio constantă de aici nu are semn. Codurile de caractere ≥ 8 au bitul m0,
+; de aceea se țin deplasate cu un bit (cod·2⁻⁴ … ) și se refac cu DS 1 înainte de AC 0136.
+; Cuvântul 0001 (constanta 1·2⁻³⁰) și 0000 (zero) sunt ale preîncărcătorului și se folosesc și aici.
+
+@prov RECONSTRUCTIE INEX-1 reconstruit (Planul 6), după punctele de intrare din Facsimil 5
+0002  O 0002  CU 0000   ; V: celula de revenire (programul pune aici T r)
+0003 = o00000000000   ; celule de lucru
+0004 = o00000000000
+0005 = o00000000000
+0006 = o00000000000
+0007 = o00000000000
+@prov GHICIT INEX-1 reconstruit: formatul implicit (α = 3, β = 9 ca în Facsimil 3)
+0016 = o00000000003   ; α: cifrele numerelor întregi
+0017 = o00000000011   ; β: zecimalele numerelor subunitare
+0020 = o00000001750   ; 10^α
+@prov RECONSTRUCTIE INEX-1 reconstruit (Planul 6), după punctele de intrare din Facsimil 5
+0021 = 0,625   ; 10/16: înmulțirea cu 10 a fracției, cifra în s0…s3 după DLS 1
+0022 = o00777777777   ; șterge s0…s3 (cifra tipărită)
+0023 = o00200000000   ; 2⁻⁵: pasul contorului de spații / rânduri
+0024 = o00000001777   ; câmpul adresei 1
+0025  T 0203  CU 0000   ; 0025: citirea unei benzi „ca program”, revine la V
+0026  T 0040  CU 0000   ; 0026: citirea benzilor de la pupitru (aceeași cu 0040)
+0027 = o05000000000   ; spațiu (codul 10, deplasat)
+0030 = o05400000000   ; virgulă
+0031 = o06000000000   ; minus — și semnul de după număr
+0032 = o06400000000   ; rând nou
+0033 = o00000000005
+0034  U 0000  T 0135   ; model pentru „U A, T 0135” (0246)
+0035  T 0262  CU 0000   ; revenirea în 0246 după 0135
+0036  ME 0000  U 0001   ; model pentru „ME A, U 0001” (0025)
+0037 = o00000000000   ; 0246: argumentul
+; ---- 0040: citirea benzilor de la pupitru (ca preîncărcătorul: santinela −1, câte 5 biți pe rând) ----
+0040  UI 0000  UN 0001   ; I ← 0; S ← −1 (santinela)
+0041  DLS 0005  CIT 0044   ; încă un rând
+0042  A 0044  TPO 0041   ; cât S < 0 (santinela n-a ajuns la semn)
+0043  T 0045  CU 0000
+0044 = o00000000000   ; 0044: rândul citit (celula cititorului, folosită și de preîncărcător)
+0045  ME 0400  U 0001   ; memorează cuvântul (adresa se schimbă de la pupitru); S ← 1
+0046  MS 0045  T 0040   ; adresa + 1; următorul cuvânt
+0047 = o00000000000   ; 0246: adresa curentă
+0050 = o00000000000   ; 0246: −(cuvinte rămase)
+0051 = o00000000000   ; 0246: V-ul chemătorului
+0052 = o00000000000   ; 0246: −(locuri rămase pe rând)
+; ---- 0135: număr subunitar ----
+0053  ME 0003  TPO 0055   ; T3 ← x; x < 0 → minus
+0054  T 0057  CU 0000
+0055  U 0031  DS 0001
+0056  AC 0136  CU 0000   ; „-”
+0057  U 0000  AC 0136   ; „o”
+0060  U 0030  DS 0001
+0061  AC 0136  UN 0017   ; „,”; S ← −β
+0062  ME 0004  CU 0000   ; contorul zecimalelor
+0063  UM 0003  IN 0021   ; S & I ← 0,625·|x|
+0064  DLS 0001  AC 0136   ; cifra în s0…s3: tipărită
+0065  IL 0022  DLS 0003   ; restul: 10·x fără cifră
+0066  ME 0003  U 0001
+0067  MS 0004  TPO 0063   ; încă o zecimală
+0070  U 0031  DS 0001
+0071  AC 0136  T 0002   ; semnul de după număr; revine la V
+; ---- 0136 / 0132: n spații / n rânduri ----
+0072  ME 0003  U 0027
+0073  ME 0006  T 0076
+0074  ME 0003  U 0032
+0075  ME 0006  T 0076
+0076  U 0003  TPO 0100   ; contor < 0 → încă unul
+0077  T 0002  CU 0000
+0100  U 0006  DS 0001
+0101  AC 0136  U 0003
+0102  A 0023  ME 0003
+0103  T 0076  CU 0000
+@prov GHICIT umplutură (celule nefolosite ale benzii INEX-1)
+0104  O 0000  O 0000
+0105  O 0000  O 0000
+0106  O 0000  O 0000
+0107  O 0000  O 0000
+0110  O 0000  O 0000
+0111  O 0000  O 0000
+0112  O 0000  O 0000
+0113  O 0000  O 0000
+0114  O 0000  O 0000
+0115  O 0000  O 0000
+0116  O 0000  O 0000
+0117  O 0000  O 0000
+0120  O 0000  O 0000
+0121  O 0000  O 0000
+0122  O 0000  O 0000
+0123  O 0000  O 0000
+0124  O 0000  O 0000
+0125  O 0000  O 0000
+0126  O 0000  O 0000
+0127  O 0000  O 0000
+0130  O 0000  O 0000
+0131  O 0000  O 0000
+@prov RECONSTRUCTIE INEX-1 reconstruit (Planul 6), după punctele de intrare din Facsimil 5
+0132  T 0074  CU 0000   ; 0132: trece peste n rânduri
+0133  T 0167  CU 0000   ; 0133: formatul
+0134  T 0137  CU 0000   ; 0134: număr întreg
+0135  T 0053  CU 0000   ; 0135: număr subunitar
+0136  T 0072  CU 0000   ; 0136: trece peste n spații
+; ---- 0134: număr întreg ----
+0137  ME 0003  TPO 0141
+0140  T 0143  CU 0000
+0141  U 0031  DS 0001
+0142  AC 0136  CU 0000   ; „-”
+0143  UM 0003  D 0020   ; I ← |n| / 10^α (fracție)
+0144  AC 0151  A 0001   ; S ← I; + 1·2⁻³⁰ (trunchierea nu pierde ultima cifră)
+0145  ME 0003  UN 0016
+0146  ME 0004  U 0001   ; contorul cifrelor ← −α
+0147  ME 0005  CU 0000   ; T5 ≠ 0: încă suntem în zerourile din față
+0150  UM 0003  IN 0021
+0151  DLS 0001  ME 0006   ; T6: cifra în s0…s3, apoi restul
+0152  DD 0033  TO 0161   ; cifra ≠ 0 → se tipărește
+0153  U 0005  TO 0155   ; zero din față?
+0154  T 0161  CU 0000
+0155  U 0004  A 0001   ; ultima cifră? (contorul ajunge la −0)
+0156  TO 0157  T 0161
+0157  U 0027  DS 0001
+0160  AC 0136  T 0163   ; zero din față → spațiu
+0161  U 0000  ME 0005   ; nu mai suntem în față
+0162  U 0006  AC 0136
+0163  U 0006  IL 0022
+0164  DLS 0003  ME 0003
+0165  U 0001  MS 0004
+0166  TPO 0150  T 0002
+; ---- 0133: formatul ----
+0167  ME 0003  IL 0024
+0170  ME 0016  U 0003   ; α
+0171  DD 0012  IL 0024
+0172  ME 0017  UN 0016   ; β; S ← −α
+0173  ME 0004  U 0001
+0174  ME 0020  CU 0000   ; 10^α ← 1
+0175  U 0020  DS 0003   ; 8p
+0176  ME 0005  U 0020
+0177  DS 0001  A 0005   ; 2p + 8p
+0200  ME 0020  U 0001
+0201  MS 0004  TPO 0175
+0202  T 0002  CU 0000
+; ---- 0025: citirea a n cuvinte la A, ca program ----
+0203  ME 0003  IL 0024
+0204  A 0036  ME 0215   ; PME ← „ME A, U 0001”
+0205  U 0003  DD 0012
+0206  IL 0024  ME 0004
+0207  UN 0004  ME 0004   ; T4 ← −n
+0210  U 0004  TPO 0212
+0211  T 0002  CU 0000
+0212  UI 0000  UN 0001
+0213  DLS 0005  CIT 0044
+0214  A 0044  TPO 0213
+0215  ME 0000  U 0001   ; (modificată de PRG)
+0216  MS 0215  U 0001
+0217  MS 0004  T 0210
+@prov GHICIT umplutură (celule nefolosite ale benzii INEX-1)
+0220  O 0000  O 0000
+0221  O 0000  O 0000
+0222  O 0000  O 0000
+0223  O 0000  O 0000
+0224  O 0000  O 0000
+0225  O 0000  O 0000
+0226  O 0000  O 0000
+0227  O 0000  O 0000
+0230  O 0000  O 0000
+0231  O 0000  O 0000
+0232  O 0000  O 0000
+0233  O 0000  O 0000
+0234  O 0000  O 0000
+0235  O 0000  O 0000
+0236  O 0000  O 0000
+0237  O 0000  O 0000
+0240  O 0000  O 0000
+0241  O 0000  O 0000
+0242  O 0000  O 0000
+0243  O 0000  O 0000
+0244  O 0000  O 0000
+0245  O 0000  O 0000
+@prov RECONSTRUCTIE INEX-1 reconstruit (Planul 6), după punctele de intrare din Facsimil 5
+0246  T 0247  CU 0000   ; 0246: tipărește de la A la B
+; ---- 0246: cuvintele de la A la B ----
+0247  ME 0037  IL 0024
+0250  ME 0047  A 0034
+0251  ME 0261  U 0037   ; RLD ← „U A, T 0135”
+0252  DD 0012  IL 0024   ; B
+0253  SC 0047  A 0001   ; B − A + 1
+0254  ME 0050  UN 0050
+0255  ME 0050  U 0002   ; RN ← −N; păstrează V-ul chemătorului
+0256  ME 0051  UN 0033
+0257  ME 0052  CU 0000
+0260  U 0035  ME 0002   ; 0135 revine la RRET
+0261  U 0000  T 0135   ; (modificată) S ← cuvântul; tipărește
+0262  U 0261  A 0001
+0263  ME 0261  U 0001
+0264  MS 0052  TPO 0270   ; mai e loc pe rând
+0265  U 0032  DS 0001
+0266  AC 0136  UN 0033
+0267  ME 0052  CU 0000
+0270  U 0001  MS 0050
+0271  TPO 0260  U 0052
+0272  A 0033  TO 0274   ; rând început → rând nou la sfârșit
+0273  T 0276  CU 0000
+0274  U 0032  DS 0001
+0275  AC 0136  CU 0000
+0276  U 0051  ME 0002
+0277  T 0002  CU 0000
+
+; ======== programs/src/vidraru.mec ========
+; Barajul Vidraru — CALCUL ILUSTRATIV, în spiritul celui efectuat pentru barajul Vidraru; cifrele nu sunt cele reale.
+; RECONSTRUCȚIE (Planul 6): nu s-au păstrat nici programul, nici datele. Ideea metodei („dimensionarea arcelor
+; încastrate”) e după articolul lui Farcaș din Buletinul IPT, 1964; aici e mult simplificată.
+; Dimensiunile publice: înălțimea 166 m, grosimea ~6 m la coronament și ~25 m la bază. GHICITE: cota coronamentului
+; (834 m) și razele arcelor (160 m sus, 80 m jos).
+; 11 arce orizontale, de la coronament (k = 0) la fundație (k = 10): adâncimea h = 16,6·k m, presiunea apei
+; p = h tf/m², raza R = 160 − 8·k m, grosimea t = 6 + 1,9·k m, forța inelară N = p·R tf/m, efortul σ = N/t tf/m².
+; Câte un rând pe arc, cu rutinele INEX-1: cota (0134), h/1000 = p/1000, N/10⁶, σ/10⁴ (0135, 6 zecimale).
+; Pornire de la 0400. Referința independentă: tools/ref/vidraru.py.
+
+@prov RECONSTRUCTIE Vidraru: calcul ilustrativ (Planul 6); cifrele nu sunt cele reale
+0400  U 0443  ME 0002
+0401  U 0464  T 0133   ; formatul: α = 3, β = 6
+0402  U 0000  ME 0454
+0403  U 0473  ME 0455
+0404  U 0475  ME 0456
+0405  UN 0467  ME 0457   ; K ← −11 (arce)
+0406  U 0454  IN 0470   ; ⌊h⌋ ca întreg: (h/1000)·1000·2⁻³⁰
+0407  ME 0460  U 0471
+0410  SC 0460  ME 0461   ; cota = 834 − ⌊h⌋
+0411  U 0454  IN 0455   ; N/10⁶ = (h/1000)·(R/1000)
+0412  ME 0462  D 0456   ; σ/10⁴ = (N/10⁶)/(t/100): câtul în I
+0413  AC 0151  ME 0463
+0414  U 0444  ME 0002
+0415  U 0461  T 0134   ; cota
+0416  U 0445  ME 0002
+0417  U 0465  T 0136
+0420  U 0446  ME 0002
+0421  U 0454  T 0135   ; p/1000
+0422  U 0447  ME 0002
+0423  U 0465  T 0136
+0424  U 0450  ME 0002
+0425  U 0462  T 0135   ; N/10⁶
+0426  U 0451  ME 0002
+0427  U 0465  T 0136
+0430  U 0452  ME 0002
+0431  U 0463  T 0135   ; σ/10⁴
+0432  U 0453  ME 0002
+0433  U 0466  T 0132   ; rând nou
+0434  U 0454  A 0472   ; arcul următor
+0435  ME 0454  U 0455
+0436  SC 0474  ME 0455
+0437  U 0456  A 0476
+0440  ME 0456  U 0001
+0441  MS 0457  TPO 0406
+0442  O 0400  O 0400   ; gata
+0443  T 0402  CU 0000   ; cuvintele de revenire (puse în V)
+0444  T 0416  CU 0000
+0445  T 0420  CU 0000
+0446  T 0422  CU 0000
+0447  T 0424  CU 0000
+0450  T 0426  CU 0000
+0451  T 0430  CU 0000
+0452  T 0432  CU 0000
+0453  T 0434  CU 0000
+0454 = o00000000000   ; h/1000
+0455 = o00000000000   ; R/1000
+0456 = o00000000000   ; t/100
+0457 = o00000000000
+0460 = o00000000000
+0461 = o00000000000
+0462 = o00000000000
+0463 = o00000000000
+0464  O 0003  O 0006
+0465 = -0,0625   ; −2·2⁻⁵: două spații
+0466 = -0,03125   ; −1·2⁻⁵: un rând
+0467 = o00000000013
+0470 = o00000001750
+@prov GHICIT Vidraru: dimensiuni publice (166 m, 6/25 m) și valori ghicite (cota, razele)
+0471 = o00000001502   ; cota coronamentului (m)
+0472 = o00103774563   ; 16,6 m / 1000, rotunjit în sus (altfel ⌊h⌋ pierde o unitate la h întreg)
+0473 = o01217270244   ; 160 m / 1000
+0474 = o00040611157   ; 8 m / 1000
+0475 = o00365605075   ; 6 m / 100
+0476 = o00115645707   ; 1,9 m / 100

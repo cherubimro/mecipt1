@@ -13,6 +13,7 @@ RUT = 'programs/src/inex1-rutine.mec'
 # (fel, ieșire, intrări)
 RECIPES = [
     ('tape', 'programs/inex1-banda.mec', [PRE, RUT]),
+    ('join', 'programs/vidraru.mec', [PRE, RUT, 'programs/src/vidraru.mec']),
 ]
 
 PRELOADER = {0o10, 0o11, 0o12, 0o13, 0o14, 0o15}
