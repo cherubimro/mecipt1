@@ -102,3 +102,22 @@ Rămân ghicite: codurile exacte ale spațiului și rândului nou (10 și 13 aic
 - Becul „2(ra) trece în RAI” se aprinde doar când saltul chiar se face.
 - Fracțiile din fișierele `.mec` se citesc cu un parser propriu (`0,5` sau `0.5`), independent de localizare; `nan`, `inf`, `0x…`, `1e…` sunt respinse.
 - Cuvântul 0001 al INEX-1 are proveniența DEDUS (cifra corectată de mână).
+
+## Pupitrul web
+Alegerile făcute pentru pagina pupitrului (`web/js/bindings.js`, `web/js/glow.js`, `web/data/`), fiecare cu statutul ei.
+
+| Alegere | Statut | Motiv / sursă |
+|---|---|---|
+| Pârghia sus = 1, jos = 0 (comutatoarele M și RAI) | GHICIT | Nicio sursă nu spune sensul; e convenția obișnuită. |
+| Momentane (revin după 150 ms): ANULEAZA, INTRODUCE, INSTRUCTIA 1/2, MEMORIE SCRIERE/CITIRE, SE OPRESTE / NU SE OPRESTE, CALCULEAZA AUTOMAT / INSTRUCTIE UNICA. Cu reținere: comutatoarele M, RAI și IMPULSURI | GHICIT | Comenzile sunt acțiuni de un moment; M și RAI țin un cuvânt / o adresă. |
+| ADUNARE 1, M+S 2, MEMORIE TAMBUR, MEMORIE FERITE, comutatoarele și butonul generatorului nu fac nimic | GHICIT | Funcția lor nu e documentată (FERITE: memoria cu ferite, neterminată în 1962–1963). |
+| IMPULSURI — INTRERUPE oprește mașina și aprinde OPRIT; încă o apăsare (RESTABILESTE) o lasă să pornească din nou | GHICIT | Din inscripție. |
+| Becurile MEMORIE (SCRIERE pătrat roșu, CITIRE pătrat albastru) clipesc la scrierea/citirea de la pupitru | GHICIT | Pe panou sunt lângă butoanele respective. |
+| Becurile INSTRUCTIA 1/2 arată faza (prima / a doua instrucțiune din cuvânt); MEMORIE TAMBUR aprins, FERITE stins | DEDUS | Inscripțiile; mașina lucra doar cu tamburul. |
+| Becurile generatorului: aprinse 1, 3, 5 (fix); cele trei becuri-martor din mijlocul panoului stâng: stinse | GHICIT | Nu se știe ce arătau. |
+| SE OPRESTE / NU SE OPRESTE aprinde becul variantei alese pentru depășire | DEDUS | Inscripția „IN CAZ DE DEPASIREA CAPACITATII REGISTRULUI”. |
+| Culorile becurilor (M verde; RI verde, verde, chihlimbar, roșu, roșu, apoi verde; R I alb, alb, apoi roșu; RA, RAI, R II roșu; microoperațiile albe; MEMORIE roșu/albastru pătrate; IMPULSURI și depășirea roșu/verde; CALCULEAZA verde) | SIGUR | Fotografia din 2011 (Turbojet, Wikimedia, CC BY-SA 4.0). |
+| Culoarea feței: panourile laterale crem (#e2dcc2), cel din mijloc albastru (#4a7cad) | SIGUR (aproximat) | Fotografia din 2011; texturile modelului 3D sunt verzui din cauza luminii. |
+| Inerția becurilor: aprindere τ = 25 ms, stingere τ = 70 ms | GHICIT | Un bec mic cu filament. |
+| Aparatul de măsură al doilea din rândul 2 (lipsă azi) e desenat | DEDUS | Rama goală din 2011; fotografia din 1961 îl arată. Scalele și acele sunt GHICITE. |
+| Un bec de microoperație se aprinde dacă microoperația a rulat cel puțin o dată de la cadrul precedent | GHICIT | Ochiul vede, la 50 instr/s, becurile pulsând; vezi și inerția. |
