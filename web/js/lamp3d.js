@@ -36,3 +36,29 @@ export function switchNodeMap(positions) {
 // semnul se alege după orientarea fiecărui obiect. Unghiul e ales după ochi.
 export const LEVER_ANGLE = 0.38;
 export const leverTilt = (up, yUp = true) => (up === yUp ? -LEVER_ANGLE : LEVER_ANGLE);
+
+// Zonele camerei în 3D: grupurile de becuri și comutatoare spre care se apropie camera (după ideea unei colege:
+// manetele sunt mici, iar o zonă le aduce aproape). panel = obiectul panoului, a cărui față dă direcția privirii.
+export const ZONES3D = [
+  { id: 'all' },
+  { id: 'compute', panel: 'Right', groups: ['compute', 'overflow', 'memory', 'pulses', 'indicators'] },
+  { id: 'commands', panel: 'Right', groups: ['commands', 'instr'] },
+  { id: 'RAI', panel: 'Right', groups: ['RAI'] },
+  { id: 'M', panel: 'Right', groups: ['M'] },
+  { id: 'registers', panel: 'Right', groups: ['RI', 'R1', 'RA'] },
+  { id: 'left', panel: 'Left', groups: ['uop', 'pilot', 'generator', 'R2'] },
+  { id: 'meters', panel: 'Center', nodes: ['Center'] },
+];
+
+// Numele obiectelor din model care alcătuiesc zona (gol pentru „tot pupitrul” sau o zonă necunoscută).
+export function zoneNodes(positions, zoneId) {
+  const z = ZONES3D.find((x) => x.id === zoneId);
+  if (!z || !(z.nodes || z.groups)) return [];
+  if (z.nodes) return [...z.nodes];
+  const out = [];
+  for (const [key, node] of Object.entries(positions.objects || {})) {
+    const m = /^(.+)\.(lamps|switches)\.\d+$/.exec(key);
+    if (m && z.groups.includes(m[1])) out.push(node);
+  }
+  return out;
+}

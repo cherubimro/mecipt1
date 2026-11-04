@@ -357,6 +357,20 @@ f.addEventListener('load', () => {
     if (!d.getElementById('switch-compute-0').classList.contains('up')) fail('3D: clicul pe manetă nu apasă comutatorul');
     await until(() => P.view3d().lit() > 5, 20000, () => '3D: becurile nu se aprind: ' + P.view3d().lit());
     await until(() => m.instructions() > nDrag, 20000, '3D: clicul pe CALCULEAZĂ nu a pornit mașina');
+    // zonele camerei: „Registrul M” aduce rândul M aproape (lat pe ecran); „Tot pupitrul” îl duce înapoi
+    if (d.getElementById('zones3d').hidden || d.querySelectorAll('#zones3d button').length !== 8) fail('3D: lipsesc butoanele zonelor');
+    const spanM = () => { const a = P.view3d().screenOf('switch-M-0'), b = P.view3d().screenOf('switch-M-30'); return Math.hypot(b.x - a.x, b.y - a.y); };
+    const wAll = spanM();
+    click('zone3d-M');
+    for (let k = 0; k < 25; k++) { P.advance(50); await sleep(50); }
+    const cvw = cv.getBoundingClientRect().width;
+    if (d.getElementById('zone3d-M').getAttribute('aria-pressed') !== 'true') fail('3D: butonul zonei M nu arată starea');
+    if (!(spanM() > 0.6 * cvw && spanM() < cvw)) fail(`3D: zona M nu încape bine pe ecran: ${spanM().toFixed(0)} din ${cvw.toFixed(0)} (înainte ${wAll.toFixed(0)})`);
+    const sM = P.view3d().screenOf('switch-M-15');
+    if (P.view3d().pickAt(sM.x, sM.y) !== 'switch-M-15') fail('3D: în zona M, maneta 15 nu se nimerește');
+    click('zone3d-all');
+    for (let k = 0; k < 25; k++) { P.advance(50); await sleep(50); }
+    if (Math.abs(spanM() - wAll) > 2) fail('3D: „Tot pupitrul” nu revine: ' + spanM().toFixed(0) + ' față de ' + wAll.toFixed(0));
     P.runner.enqueue({ op: 13 });                   // OP.OPRESTE
     P.advance(50);
   } else if (P.view3dState() === 'unavailable') {

@@ -40,7 +40,8 @@ Unsprezece voltmetre (unul lipsește azi, se vede doar rama), un selector, un co
 ## Vederea 3D
 Butonul **3D** din bara de sus arată pupitrul ca model tridimensional: „MECIPT-1” de marius0198 (Sketchfab, 2020, CC BY 4.0), modelul din care s-au redesenat panourile.
 
-- Pupitrul se rotește cu mouse-ul sau cu degetul și se apropie cu rotița sau cu două degete.
+- Pupitrul se rotește cu mouse-ul sau cu degetul și se apropie cu rotița (spre punctul arătat) sau cu două degete.
+- **Zonele** de deasupra modelului duc camera în fața unei părți: CALCULEAZĂ, Comenzi, Registrul RAI, Registrul M, RI și RA, Generatorul, Voltmetrele; „Tot pupitrul” o întoarce.
 - **Becurile modelului se aprind după mașina emulată**, la fel ca pe panourile desenate. Fiecare dintre cele 161 de becuri e legat de obiectul lui din model.
 - **Comutatoarele se apasă și în 3D**: un clic scurt (sau o atingere) pe maneta unui comutator face exact ce face clicul pe comutatorul desenat; tragerea doar rotește pupitrul. Manetele modelului se înclină în sus sau în jos după starea lor, ca în 2D. Cele 63 de comutatoare sunt legate fiecare de obiectul lui din model.
 - Selectorul de viteză, alegerea programului, cititorul de bandă și mașina de scris rămân în pagină; cu tastatura, comutatoarele se acționează în vederea 2D.

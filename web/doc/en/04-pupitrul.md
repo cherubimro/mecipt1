@@ -40,7 +40,8 @@ Eleven voltmeters (one is missing today, only its bezel remains), a selector, a 
 ## The 3D view
 The **3D** button in the top bar shows the console as a three-dimensional model: “MECIPT-1” by marius0198 (Sketchfab, 2020, CC BY 4.0), the model the panels were redrawn from.
 
-- Rotate the console with the mouse or a finger, and zoom with the wheel or two fingers.
+- Rotate the console with the mouse or a finger, and zoom with the wheel (towards the pointer) or two fingers.
+- The **zones** above the model bring the camera in front of one part: CALCULEAZĂ, Commands, RAI register, M register, RI and RA, Generator, Voltmeters; “Whole console” takes it back.
 - **The model’s lamps light up following the emulated machine**, just like on the drawn panels. Each of the 161 lamps is tied to its object in the model.
 - **The switches can be pressed in 3D too**: a short click (or a tap) on a switch lever does exactly what clicking the drawn switch does; dragging only rotates the console. The model’s levers tilt up or down following their state, as in 2D. Each of the 63 switches is tied to its object in the model.
 - The speed selector, the program choice, the tape reader and the typewriter stay on the page; with the keyboard, the switches are operated in the 2D view.

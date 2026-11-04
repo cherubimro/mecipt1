@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { lampNodeMap, lampEmissive, switchNodeMap, leverTilt } from '../../web/js/lamp3d.js';
+import { lampNodeMap, lampEmissive, switchNodeMap, leverTilt, ZONES3D, zoneNodes } from '../../web/js/lamp3d.js';
 import { lampIds, switchIds, LAMP_COLORS } from '../../web/js/panel.js';
 import { readJson } from './helpers.mjs';
 
@@ -44,4 +44,22 @@ test('3D: maneta se înclină în sus sau în jos, ca în desenul 2D, oricum ar 
   assert.ok(leverTilt(true, true) < 0 && leverTilt(false, true) > 0);   // y propriu urcă pe panou (panoul drept)
   assert.ok(leverTilt(true, false) > 0 && leverTilt(false, false) < 0); // y propriu coboară (generatorul, panoul stâng)
   assert.equal(leverTilt(true, true), -leverTilt(false, true));
+});
+
+test('3D: zonele camerei — fiecare are obiectele ei din model, pe panoul ei', () => {
+  const ids = ZONES3D.map((z) => z.id);
+  assert.deepEqual(ids, ['all', 'compute', 'commands', 'RAI', 'M', 'registers', 'left', 'meters']);
+  const names = new Set(GLTF.nodes.map((n) => n.name));
+  assert.deepEqual(zoneNodes(POS, 'all'), []);
+  for (const z of ZONES3D.filter((x) => x.id !== 'all')) {
+    const nodes = zoneNodes(POS, z.id);
+    assert.ok(nodes.length > 0, z.id);
+    for (const n of nodes) assert.ok(names.has(n), `${z.id}: ${n}`);
+    assert.ok(names.has(z.panel), `${z.id}: panoul ${z.panel}`);
+  }
+  assert.ok(zoneNodes(POS, 'compute').includes('Switch.051'));          // CALCULEAZA AUTOMAT
+  assert.equal(zoneNodes(POS, 'M').length, 62);                         // 31 de becuri + 31 de comutatoare
+  assert.ok(zoneNodes(POS, 'left').includes('Switch.020'));             // generatorul, pe panoul stâng
+  assert.deepEqual(zoneNodes(POS, 'meters'), ['Center']);
+  assert.deepEqual(zoneNodes(POS, 'nimic'), []);
 });

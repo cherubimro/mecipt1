@@ -21,6 +21,7 @@ import { catalogNote } from './catalog.js';
 import { drumSvg, drumPhase, seams, drawDrumMap } from './drum.js';
 import { cellKind } from './atelier/drum.js';
 import { createView3D } from './view3d.js';
+import { ZONES3D } from './lamp3d.js';
 
 const $ = (id) => document.getElementById(id);
 const storage = (() => { try { return window.localStorage; } catch { return null; } })();
@@ -448,6 +449,7 @@ async function main() {
     b.setAttribute('aria-label', show3d ? V.to2d : V.to3d);
     b.title = show3d ? V.to2d : V.to3d;
     $('desk-3d-msg').textContent = v3state === 'loading' ? V.loading : v3state === 'unavailable' ? V.unavailable : V.note;
+    $('zones3d').hidden = v3state !== 'ready';
   };
   const set3D = (on) => {
     show3d = on && v3state !== 'unavailable';
@@ -460,7 +462,7 @@ async function main() {
         if (explaining) explain(id, null);
         else { press(id); tourEvent({ type: 'click', id }); }
       };
-      createView3D($('desk-3d'), { positions, colors, onPick })
+      createView3D($('desk-3d'), { positions, colors, onPick, onZone: markZone })
         .then((v) => {
           view3d = v; v3state = 'ready';
           for (const el of document.querySelectorAll('.switch')) v.setLever(el.id, el.classList.contains('up'));
@@ -475,6 +477,26 @@ async function main() {
     label3d();
   };
   $('view-3d').addEventListener('click', () => { if (!explaining) set3D(!show3d); });
+  // zonele camerei: butoane deasupra modelului; în modul Explică, explică vederea 3D
+  for (const z of ZONES3D) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.id = `zone3d-${z.id}`; b.dataset.zone = z.id;
+    b.setAttribute('aria-pressed', String(z.id === 'all'));
+    $('zones3d').append(b);
+  }
+  const labelZones = () => {
+    $('zones3d').setAttribute('aria-label', T().zones3d.label);
+    for (const b of $('zones3d').children) b.textContent = T().zones3d[b.dataset.zone];
+  };
+  function markZone(id) { for (const b of $('zones3d').children) b.setAttribute('aria-pressed', String(b.dataset.zone === id)); }
+  $('zones3d').addEventListener('click', (e) => {
+    const b = e.target.closest && e.target.closest('button[data-zone]');
+    if (!b) return;
+    if (explaining) { explain('view3d', b); return; }
+    if (view3d && view3d.focus(b.dataset.zone, { instant: reducedMotion.matches })) markZone(b.dataset.zone);
+  });
+  langListeners.push(labelZones);
+  labelZones();
   langListeners.push(label3d);
   label3d();
 
