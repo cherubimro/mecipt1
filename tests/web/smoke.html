@@ -445,6 +445,7 @@ f.addEventListener('load', () => {
   mid.remove();
   stage('documentatie');
   if (!d.getElementById('doc-link').getAttribute('href').startsWith('doc.html')) fail('linkul spre documentație');
+  if (d.getElementById('doc-link').target !== '_blank') fail('documentația trebuie să se deschidă într-un tab nou (pupitrul rămâne pe loc)');
   const g = document.createElement('iframe');
   g.width = 1200; g.height = 800;
   document.body.append(g);

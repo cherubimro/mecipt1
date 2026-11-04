@@ -63,7 +63,7 @@ export const STRINGS = {
     zones3d: { label: 'Apropie camera de o parte a pupitrului', all: 'Tot pupitrul', compute: 'CALCULEAZĂ', commands: 'Comenzi',
       RAI: 'Registrul RAI', M: 'Registrul M', registers: 'RI și RA', left: 'Generatorul', meters: 'Voltmetrele' },
     view3d: { to3d: 'Arată pupitrul în 3D', to2d: 'Înapoi la pupitrul desenat (2D)', loading: 'Se încarcă modelul 3D…',
-      note: 'Vedere 3D: rotiți cu mouse-ul sau cu degetul, apropiați cu rotița sau cu două degete. Becurile urmează mașina; un clic scurt pe o manetă o apasă, ca în 2D. Model 3D: „MECIPT-1”, marius0198 (Sketchfab), CC BY 4.0.',
+      note: 'Vedere 3D: rotiți cu mouse-ul sau cu degetul, apropiați cu rotița sau cu două degete. Becurile urmează mașina; un clic scurt pe o manetă o apasă, ca în 2D.',
       unavailable: 'Vederea 3D nu merge pe acest dispozitiv (browserul nu are WebGL sau modelul nu s-a încărcat). Pupitrul desenat rămâne.' },
     drumInfo: 'Memoria mașinii: 1024 de cuvinte de 31 de biți jur-împrejurul tamburului, 50 de rotații pe secundă (în desen, încetinit). Desenat după fotografia din 2015 (Turbojet, CC BY-SA 4.0).',
     tapeEmpty: 'fără bandă',
@@ -143,7 +143,7 @@ export const STRINGS = {
     sourcesTitle: 'Surse',
     statusNames: { SIGUR: 'SIGUR', DEDUS: 'DEDUS', GHICIT: 'GHICIT', MIXT: 'SIGUR / DEDUS / GHICIT, pe părți' },
     switchLabel: switchLabel(NAMED_RO, (i) => `Comutatorul ${i} al registrului M`, (w) => `Comutatorul RAI ${w}`),
-    attribution: 'Pupitrul e redesenat după modelul 3D „MECIPT-1” (marius0198, CC BY 4.0) și fotografia din 2011 (Turbojet, CC BY-SA 4.0); tamburul, după fotografiile din 2015 (Turbojet, CC BY-SA 4.0). Conținut CC BY-SA 4.0, cod AGPL-3.0.',
+    attribution: 'Pupitrul e redesenat după modelul 3D „MECIPT-1” (marius0198, CC BY 4.0) și fotografia din 2011 (Turbojet, CC BY-SA 4.0); tamburul, după fotografiile din 2015 (Turbojet, CC BY-SA 4.0). Conținut CC BY-SA 4.0, cod AGPL-3.0. (C) 2026 Alin-Adrian Anton <alin.anton@upt.ro>.',
   },
   en: {
     title: 'MECIPT-1 — the control console',
@@ -169,7 +169,7 @@ export const STRINGS = {
     zones3d: { label: 'Bring the camera to a part of the console', all: 'Whole console', compute: 'CALCULEAZĂ', commands: 'Commands',
       RAI: 'RAI register', M: 'M register', registers: 'RI and RA', left: 'Generator', meters: 'Voltmeters' },
     view3d: { to3d: 'Show the console in 3D', to2d: 'Back to the drawn console (2D)', loading: 'Loading the 3D model…',
-      note: '3D view: rotate with the mouse or a finger, zoom with the wheel or two fingers. The lamps follow the machine; a short click on a lever presses it, as in 2D. 3D model: “MECIPT-1”, marius0198 (Sketchfab), CC BY 4.0.',
+      note: '3D view: rotate with the mouse or a finger, zoom with the wheel or two fingers. The lamps follow the machine; a short click on a lever presses it, as in 2D.',
       unavailable: 'The 3D view does not work on this device (the browser has no WebGL or the model did not load). The drawn console stays.' },
     drumInfo: 'The machine’s memory: 1024 words of 31 bits around the drum, 50 revolutions a second (slowed down in the drawing). Drawn after the 2015 photograph (Turbojet, CC BY-SA 4.0).',
     tapeEmpty: 'no tape',
@@ -250,7 +250,7 @@ export const STRINGS = {
     statusNames: { SIGUR: 'CERTAIN', DEDUS: 'DEDUCED', GHICIT: 'GUESSED', MIXT: 'CERTAIN / DEDUCED / GUESSED, in parts' },
     switchLabel: switchLabel(NAMED_EN, (i) => `M ${i} (memory register switch, bit ${i})`,
       (w) => `RAI ${w} (instruction address register switch, weight ${w})`),
-    attribution: 'The console is redrawn after the 3D model “MECIPT-1” (marius0198, CC BY 4.0) and the 2011 photograph (Turbojet, CC BY-SA 4.0); the drum after the 2015 photographs (Turbojet, CC BY-SA 4.0). Content CC BY-SA 4.0, code AGPL-3.0.',
+    attribution: 'The console is redrawn after the 3D model “MECIPT-1” (marius0198, CC BY 4.0) and the 2011 photograph (Turbojet, CC BY-SA 4.0); the drum after the 2015 photographs (Turbojet, CC BY-SA 4.0). Content CC BY-SA 4.0, code AGPL-3.0. (C) 2026 Alin-Adrian Anton <alin.anton@upt.ro>.',
   },
 };
 

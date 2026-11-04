@@ -38,7 +38,7 @@ Below the grid: **GENERATOR PRINCIPAL** (main generator: IMPULSURI, FRECVENȚĂ 
 Eleven voltmeters (one is missing today, only its bezel remains), a selector, a large rotary switch and small switches. They probably showed the supply voltages of the tubes; what each measured and the scales are GUESSED. The four top voltmeters are drawn with a 0–250 V scale (GUESSED).
 
 ## The 3D view
-The **3D** button in the top bar shows the console as a three-dimensional model: “MECIPT-1” by marius0198 (Sketchfab, 2020, CC BY 4.0), the model the panels were redrawn from.
+The **3D** button in the top bar shows the console as a three-dimensional model: “MECIPT-1” by marius0198 (Sketchfab, 2020, CC BY 4.0), the model the panels were redrawn from. The licence and the list of our changes are in chapter 8, Sources.
 
 - Rotate the console with the mouse or a finger, and zoom with the wheel (towards the pointer) or two fingers.
 - The **zones** above the model bring the camera in front of one part: CALCULEAZĂ, Commands, RAI register, M register, RI and RA, Generator, Voltmeters; “Whole console” takes it back.
