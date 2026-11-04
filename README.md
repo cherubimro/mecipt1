@@ -31,7 +31,7 @@ programele originale din 1962.
   la vedere; fără derulare orizontală la nicio lățime. Site-ul static se verifică (`tools/check_site.py`) și se
   publică copiind `build/site/` — vezi `docs/publicare.md`.
 - **Tamburul magnetic**, desenat după fotografiile din 2015 (Muzeul Banatului).
-- **Vederea 3D**: butonul 3D/2D arată modelul lui marius0198 (CC BY 4.0) cu becurile aprinse după emulator; three.js (MIT) e inclus local.
+- **Vederea 3D**: butonul 3D/2D arată modelul lui marius0198 (CC BY 4.0) cu becurile aprinse după emulator și comutatoarele apăsabile cu un clic; three.js (MIT) e inclus local.
 - Urmează: interfețele desktop (wx și ncurses, poate regândite ca o interfață Qt).
 
 Ce e sigur, ce e dedus și ce e ghicit: `docs/semantica.md` (în engleză: `docs/semantica.en.md`).

@@ -42,7 +42,8 @@ The **3D** button in the top bar shows the console as a three-dimensional model:
 
 - Rotate the console with the mouse or a finger, and zoom with the wheel or two fingers.
 - **The model’s lamps light up following the emulated machine**, just like on the drawn panels. Each of the 161 lamps is tied to its object in the model.
-- In 3D the console is only looked at: the model’s switches do not move. The controls are pressed in the 2D view (the **2D** button).
+- **The switches can be pressed in 3D too**: a short click (or a tap) on a switch lever does exactly what clicking the drawn switch does; dragging only rotates the console. The model’s levers tilt up or down following their state, as in 2D. Each of the 63 switches is tied to its object in the model.
+- The speed selector, the program choice, the tape reader and the typewriter stay on the page; with the keyboard, the switches are operated in the 2D view.
 - The model and the three.js library load only at the first press on 3D, about 4.5 MB. Without WebGL, the page stays in 2D and says why.
 
 ## The magnetic drum

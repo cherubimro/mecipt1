@@ -122,12 +122,14 @@ async function main() {
   const lamps = [...document.querySelectorAll('.lamp')].map((g) => ({ id: g.id, glow: g.querySelector('.glow'), b: 0, shown: -1 }));
   const switches = { M: new Uint8Array(31), RAI: new Uint8Array(10) };
   const LATCHING = /^switch-(M|RAI|pulses)-/;
+  let view3d = null, v3state = 'off', show3d = false;   // vederea 3D (mai jos); manetele ei urmează setLever
   const setLever = (id, up) => {
     const el = $(id);
     if (!el) return;
     el.classList.toggle('up', up);
     el.classList.toggle('down', !up);
     if (LATCHING.test(id)) el.setAttribute('aria-pressed', String(up));
+    if (view3d) view3d.setLever(id, up);       // maneta din modelul 3D urmează desenul
   };
   const labelSwitches = () => {
     for (const el of document.querySelectorAll('.switch')) el.setAttribute('aria-label', T().switchLabel(el.id));
@@ -417,7 +419,6 @@ async function main() {
   for (const x of MODES) $(`mode-${x}`).setAttribute('aria-pressed', String(x === mode));
 
   // vederea 3D: modelul se încarcă la prima cerere; becurile urmează aceeași strălucire ca în 2D
-  let view3d = null, v3state = 'off', show3d = false;
   const label3d = () => {
     const b = $('view-3d'), V = T().view3d;
     b.textContent = show3d ? '2D' : '3D';
@@ -432,8 +433,17 @@ async function main() {
     document.querySelector('#desk .frame').hidden = show3d;
     if (show3d && v3state === 'off') {
       v3state = 'loading';
-      createView3D($('desk-3d'), { positions, colors })
-        .then((v) => { view3d = v; v3state = 'ready'; label3d(); })
+      // un clic pe o manetă a modelului face exact ce face clicul pe comutatorul desenat (și în modul Explică)
+      const onPick = (id) => {
+        if (explaining) explain(id, null);
+        else { press(id); tourEvent({ type: 'click', id }); }
+      };
+      createView3D($('desk-3d'), { positions, colors, onPick })
+        .then((v) => {
+          view3d = v; v3state = 'ready';
+          for (const el of document.querySelectorAll('.switch')) v.setLever(el.id, el.classList.contains('up'));
+          label3d();
+        })
         .catch((e) => {
           console.warn('vederea 3D:', e);
           v3state = 'unavailable'; set3D(false);

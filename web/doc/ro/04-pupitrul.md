@@ -42,7 +42,8 @@ Butonul **3D** din bara de sus arată pupitrul ca model tridimensional: „MECIP
 
 - Pupitrul se rotește cu mouse-ul sau cu degetul și se apropie cu rotița sau cu două degete.
 - **Becurile modelului se aprind după mașina emulată**, la fel ca pe panourile desenate. Fiecare dintre cele 161 de becuri e legat de obiectul lui din model.
-- În 3D pupitrul doar se privește: comutatoarele modelului nu se mișcă. Comenzile se apasă în vederea 2D (butonul **2D**).
+- **Comutatoarele se apasă și în 3D**: un clic scurt (sau o atingere) pe maneta unui comutator face exact ce face clicul pe comutatorul desenat; tragerea doar rotește pupitrul. Manetele modelului se înclină în sus sau în jos după starea lor, ca în 2D. Cele 63 de comutatoare sunt legate fiecare de obiectul lui din model.
+- Selectorul de viteză, alegerea programului, cititorul de bandă și mașina de scris rămân în pagină; cu tastatura, comutatoarele se acționează în vederea 2D.
 - Modelul și biblioteca three.js se încarcă abia la prima apăsare pe 3D, cam 4,5 MB. Fără WebGL, pagina rămâne în 2D și spune de ce.
 
 ## Tamburul magnetic

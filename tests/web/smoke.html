@@ -334,8 +334,22 @@ f.addEventListener('load', () => {
     if (!d.querySelector('.frame').closest('[hidden]') && d.querySelector('.frame').offsetParent !== null) fail('3D: pupitrul 2D încă se vede');
     if (P.view3d().lampCount !== 161) fail('3D: becuri legate ' + P.view3d().lampCount);
     if (d.getElementById('view-3d').getAttribute('aria-pressed') !== 'true') fail('3D: butonul nu arată starea');
-    click('switch-compute-0');
+    if (P.view3d().switchCount !== 63) fail('3D: comutatoare legate ' + P.view3d().switchCount);
+    // un clic de mouse pe maneta CALCULEAZĂ din model pornește mașina, ca în 2D; o tragere doar rotește
+    P.advance(50);
+    const cv = d.querySelector('#desk-3d canvas'), sc = P.view3d().screenOf('switch-compute-0');
+    if (!sc || P.view3d().pickAt(sc.x, sc.y) !== 'switch-compute-0') fail('3D: maneta CALCULEAZĂ nu se nimerește: ' + JSON.stringify(sc));
+    const ptr = (type, dx = 0) => cv.dispatchEvent(new w.PointerEvent(type, { bubbles: true, clientX: sc.x + dx, clientY: sc.y,
+      pointerId: 1, pointerType: 'mouse', isPrimary: true, button: 0, buttons: type === 'pointerup' ? 0 : 1 }));
+    const nDrag = m.instructions();
+    ptr('pointerdown'); ptr('pointerup', 40);                 // tragere: nu apasă nimic
+    if (d.getElementById('switch-compute-0').classList.contains('up')) fail('3D: o tragere a ridicat CALCULEAZĂ');
+    P.advance(200);
+    if (m.instructions() !== nDrag) fail('3D: o tragere a apăsat CALCULEAZĂ');
+    ptr('pointerdown'); ptr('pointerup');
+    if (!d.getElementById('switch-compute-0').classList.contains('up')) fail('3D: clicul pe manetă nu apasă comutatorul');
     await until(() => P.view3d().lit() > 5, 20000, () => '3D: becurile nu se aprind: ' + P.view3d().lit());
+    await until(() => m.instructions() > nDrag, 20000, '3D: clicul pe CALCULEAZĂ nu a pornit mașina');
     P.runner.enqueue({ op: 13 });                   // OP.OPRESTE
     P.advance(50);
   } else if (P.view3dState() === 'unavailable') {

@@ -20,3 +20,19 @@ export function lampEmissive(lampId, colors) {
   const name = (m && colors[m[1]] && colors[m[1]][Number(m[2])]) || 'white';
   return (LAMP_COLORS[name] || LAMP_COLORS.white).on[1];
 }
+
+// Map: id-ul comutatorului din pagină („switch-compute-0”) → numele obiectului din model.
+export function switchNodeMap(positions) {
+  const map = new Map();
+  for (const [key, node] of Object.entries(positions.objects || {})) {
+    const m = /^(.+)\.switches\.(\d+)$/.exec(key);
+    if (m) map.set(`switch-${m[1]}-${m[2]}`, node);
+  }
+  return map;
+}
+
+// Înclinarea manetei (radiani, în jurul axei x proprii, de-a lungul rândului). Un unghi pozitiv duce capătul
+// manetei spre −y propriu. Pe panoul drept axa y proprie urcă pe panou (yUp), la generatorul din stânga coboară:
+// semnul se alege după orientarea fiecărui obiect. Unghiul e ales după ochi.
+export const LEVER_ANGLE = 0.38;
+export const leverTilt = (up, yUp = true) => (up === yUp ? -LEVER_ANGLE : LEVER_ANGLE);
