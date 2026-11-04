@@ -4,9 +4,16 @@
 
 Codul sursă al proiectului este sub **AGPL-3.0-or-later** (vezi `LICENSE`).
 
-Conținutul (texte, programe MECIPT-1 transcrise, grafică, sunete proprii) este sub
-**Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)** —
+Conținutul propriu al proiectului (texte, programe reconstruite, adnotările programelor, grafică, sunete proprii)
+este sub **Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)** —
 https://creativecommons.org/licenses/by-sa/4.0/
+
+**Programele originale din 1962 nu sunt ale proiectului.** Cuvintele marcate `@prov ORIGINAL` din `programs/*.mec`
+(programul de retipărire din 6.09.1962, Facsimilul 4, și preîncărcătorul INEX-1, Facsimilul 5, inclus și în benzile
+și programele de calcul ca să le încarce) sunt ale autorilor lor, colectivul MECIPT de la Institutul Politehnic din
+Timișoara. Sunt transcrise din facsimilele publicate de Vasile Baltac (2011) și arătate aici ca documente istorice,
+cu sursa numită; licența CC BY-SA de mai sus **nu** li se aplică. Nota din capul fiecărui fișier `.mec` spune același
+lucru.
 
 ## Atribuiri
 
@@ -19,7 +26,7 @@ https://creativecommons.org/licenses/by-sa/4.0/
 - **Pozițiile becurilor și comutatoarelor** (`web/data/positions.json`) — proiectate de `tools/dae_layout.py` din modelul 3D de mai sus (MECIPT-1_V4.dae), deci derivate din opera lui marius0198 (CC BY 4.0); publicate aici sub CC BY-SA 4.0.
 - **Desenul panourilor** (`web/data/art-*.json`, `web/data/lamp-colors.json`) — trasat după texturile modelului 3D de mai sus (CC BY 4.0), cu culorile becurilor și ale feței luate din fotografia din 2011 (CC BY-SA 4.0); publicat sub CC BY-SA 4.0.
 - **Fonturi** (`web/fonts/`) — Barlow Semi Condensed (The Barlow Project Authors) și Courier Prime (The Courier Prime Project Authors), ambele sub **SIL Open Font License 1.1**; textul licenței e alături, în `OFL-*.txt`.
-- **Datele paginii** (`web/data/*.json`, `web/programs/catalog.json`) — CC BY-SA 4.0. Programele oferite în pagină (`programs/*.mec`), cu proveniența fiecărui cuvânt: retipărirea (`retiparire-1962.mec`, Facsimil 4) și preîncărcătorul INEX-1 (`inex1-preincarcator.mec`, Facsimil 5) sunt transcrieri ale documentelor de epocă; banda INEX-1 (`inex1-banda.mec`), tabelul de sinus (`sinus-1962.mec`, rezultatul din Facsimil 3) și calculele ilustrative Vidraru (`vidraru.mec`) și Romexpo (`romexpo.mec`) sunt RECONSTRUCȚII scrise pentru acest proiect, CC BY-SA 4.0 (sursele în `programs/src/`). Banda de test de 3 cuvinte (`tests/data/inex-banda-3-cuvinte.mec`) e GHICITĂ și rămâne doar în teste.
+- **Datele paginii** (`web/data/*.json`, `web/programs/catalog.json`) — CC BY-SA 4.0. Programele oferite în pagină (`programs/*.mec`), cu proveniența fiecărui cuvânt: retipărirea (`retiparire-1962.mec`, Facsimil 4) și preîncărcătorul INEX-1 (`inex1-preincarcator.mec`, Facsimil 5) sunt transcrieri ale documentelor de epocă (nu sub CC BY-SA, vezi mai sus); banda INEX-1 (`inex1-banda.mec`), tabelul de sinus (`sinus-1962.mec`, rezultatul din Facsimil 3) și calculele ilustrative Vidraru (`vidraru.mec`) și Romexpo (`romexpo.mec`) sunt RECONSTRUCȚII scrise pentru acest proiect, CC BY-SA 4.0 (sursele în `programs/src/`). Banda de test de 3 cuvinte (`tests/data/inex-banda-3-cuvinte.mec`) e GHICITĂ și rămâne doar în teste.
 - **Panoul din mijloc** (`web/data/art-middle.json`) — măsurat pe fotografia din 2011 (Turbojet, CC BY-SA 4.0).
 - **Tamburul magnetic** (desenul din `web/js/drum.js`) — trasat după fotografiile „MECIPT-1 Drum memory” și „MECIPT-1 Drum memory 2” (Turbojet, Wikimedia Commons, 2015, CC BY-SA 4.0); publicat sub CC BY-SA 4.0.
 - **Modelul 3D** (`web/model3d/`: `scene.gltf`, `scene.bin`, `textures/`) — „MECIPT-1” de marius0198, Sketchfab, 2020, **CC BY 4.0** (https://sketchfab.com/3d-models/mecipt-1-62ddfc49f1c54967967d76abab5f3d2d); texturile panourilor laterale sunt convertite din PNG în JPEG; din textura panoului drept s-a scos reflexia blițului din fotografie (`tools/model3d_deglare.py`). La afișare (`web/js/view3d.js`) raftul și fața ramei primesc vopseaua albastră a modelului, metalul devine lucios, acele voltmetrelor de sus sunt reașezate și cadranul gol de pe rândul al doilea primește fața vecinului; fișierele modelului rămân altfel neschimbate. Atribuirea originală e în `web/model3d/license.txt`.

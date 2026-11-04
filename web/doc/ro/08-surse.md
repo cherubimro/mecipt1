@@ -16,6 +16,7 @@
 Emulatorul: (C) 2026 Alin-Adrian Anton <alin.anton@upt.ro>.
 
 - Codul emulatorului: **AGPL-3.0-or-later**.
-- Conținutul (programele transcrise, desenul pupitrului, datele, textele ajutorului și ale acestei documentații): **CC BY-SA 4.0**.
+- Conținutul propriu (desenul pupitrului, programele reconstruite, adnotările programelor, datele, textele ajutorului și ale acestei documentații): **CC BY-SA 4.0**.
+- **Programele originale din 1962** — cuvintele marcate ORIGINAL: programul de retipărire (Facsimilul 4) și preîncărcătorul INEX-1 (Facsimilul 5) — sunt ale autorilor lor, colectivul MECIPT de la Institutul Politehnic din Timișoara. Le-am transcris din facsimilele publicate de Vasile Baltac (2011) și le arătăm ca documente istorice, cu sursa numită; **nu sunt ale proiectului și nu sunt sub licența lui**.
 - Modelul 3D (CC BY 4.0) și fotografia (CC BY-SA 4.0) sunt folosite cu atribuire.
 - Fonturile Barlow Semi Condensed și Courier Prime: **SIL Open Font License 1.1**.

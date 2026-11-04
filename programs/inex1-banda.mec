@@ -1,4 +1,6 @@
-; SPDX-License-Identifier: CC-BY-SA-4.0
+; Licența: CC BY-SA 4.0 pentru adnotări și pentru cuvintele RECONSTRUCTIE / DEDUS / GHICIT ale proiectului.
+; Cuvintele @prov ORIGINAL sunt transcrieri ale programelor MECIPT-1 din 1962 (colectivul MECIPT, Institutul
+; Politehnic din Timișoara), după facsimilele publicate de V. Baltac; nu sunt ale proiectului și nu sunt sub această licență.
 ; GENERAT de tools/mecjoin.py din programs/inex1-preincarcator.mec + programs/src/inex1-rutine.mec; nu editați — modificați sursa.
 ; Banda INEX-1: cuvintele 0002–0277, în ordinea adreselor, câte 6 rânduri pe cuvânt.
 ; Se încarcă cu preîncărcătorul original pornit de la 0010 (ME 0002 la 0014).

@@ -66,6 +66,10 @@ adrese relative, deci merge din orice găzduire statică.
 Autor: Alin-Adrian Anton <alin.anton@upt.ro> (vezi `AUTHORS`).
 
 - Codul: (C) 2026 Alin-Adrian Anton <alin.anton@upt.ro>, sub **AGPL-3.0-or-later** (`LICENSE`).
-- Conținutul (programele transcrise, desenul pupitrului, datele, textele): (C) 2026 Alin-Adrian Anton
-  <alin.anton@upt.ro>, sub **CC BY-SA 4.0**, cu atribuirile pentru materialele preluate din `LICENSE-CONTINUT.md`.
+- Conținutul propriu (desenul pupitrului, programele reconstruite, adnotările programelor, datele, textele):
+  (C) 2026 Alin-Adrian Anton <alin.anton@upt.ro>, sub **CC BY-SA 4.0**, cu atribuirile pentru materialele preluate
+  din `LICENSE-CONTINUT.md`.
+- Programele originale din 1962 (cuvintele marcate ORIGINAL: retipărirea și preîncărcătorul INEX-1) **nu sunt ale
+  proiectului**: sunt ale colectivului MECIPT (Institutul Politehnic din Timișoara), transcrise din facsimilele
+  publicate de Vasile Baltac și arătate ca documente istorice, cu sursa numită.
 - Fonturile din `web/fonts/`: **SIL Open Font License 1.1**.
