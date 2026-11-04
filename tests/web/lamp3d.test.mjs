@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { lampNodeMap, lampEmissive, switchNodeMap, leverTilt, ZONES3D, zoneNodes } from '../../web/js/lamp3d.js';
+import { lampNodeMap, lampEmissive, switchNodeMap, leverTilt, ZONES3D, zoneNodes, wideTriangles, NEEDLES, MISSING_DIAL } from '../../web/js/lamp3d.js';
 import { lampIds, switchIds, LAMP_COLORS } from '../../web/js/panel.js';
 import { readJson } from './helpers.mjs';
 
@@ -62,4 +62,30 @@ test('3D: zonele camerei — fiecare are obiectele ei din model, pe panoul ei', 
   assert.ok(zoneNodes(POS, 'left').includes('Switch.020'));             // generatorul, pe panoul stâng
   assert.deepEqual(zoneNodes(POS, 'meters'), ['Center']);
   assert.deepEqual(zoneNodes(POS, 'nimic'), []);
+});
+
+test('3D: fețele late ale ramei (raftul, fața din jurul panourilor) se despart de fâșiile înguste de aluminiu', () => {
+  // un pătrat 1×1 (două triunghiuri) și o fâșie 1×0,03 (două triunghiuri)
+  const pos = new Float32Array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 2, 0, 1, 2, 0, 1, 2.03, 0, 0, 2.03, 0]);
+  const idx = new Uint32Array([0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7]);
+  assert.deepEqual([...wideTriangles(pos, idx, 0.095)], [1, 1, 0, 0]);
+  assert.deepEqual([...wideTriangles(pos, idx, 2)], [0, 0, 0, 0]);
+});
+
+test('3D: acele voltmetrelor de sus — fiecare pe cadranul lui, înclinat ca în fotografia din muzeu', () => {
+  const names = new Set(GLTF.nodes.map((n) => n.name));
+  assert.equal(NEEDLES.length, 4);
+  for (const nd of NEEDLES) {
+    assert.ok(names.has(nd.arrow) && names.has(nd.dial), nd.arrow);
+    assert.ok(Math.abs(nd.angle) >= 20 && Math.abs(nd.angle) <= 60, nd.arrow);
+  }
+  assert.equal(new Set(NEEDLES.map((n) => n.dial)).size, 4);
+  assert.deepEqual(NEEDLES.map((n) => Math.sign(n.angle)), [-1, 1, -1, -1]);   // al doilea arată spre dreapta
+});
+
+test('3D: voltmetrul lipsă de pe rândul al doilea se completează cu fața unui vecin de pe același rând', () => {
+  const names = new Set(GLTF.nodes.map((n) => n.name));
+  for (const k of ['copy', 'from', 'to']) assert.ok(names.has(MISSING_DIAL[k]), MISSING_DIAL[k]);
+  const pos = (nm) => GLTF.nodes.find((n) => n.name === nm);
+  assert.ok(pos(MISSING_DIAL.copy) && pos(MISSING_DIAL.to));
 });
