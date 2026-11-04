@@ -353,6 +353,7 @@ f.addEventListener('load', () => {
     if (P.view3d().lampCount !== 161) fail('3D: becuri legate ' + P.view3d().lampCount);
     if (d.getElementById('view-3d').getAttribute('aria-pressed') !== 'true') fail('3D: butonul nu arată starea');
     if (P.view3d().switchCount !== 63) fail('3D: comutatoare legate ' + P.view3d().switchCount);
+    if (!d.getElementById('cue3d').hidden) fail('3D: săgeata de pornire rămâne după ce CALCULEAZA a fost apăsat');
     // un clic de mouse pe maneta CALCULEAZĂ din model pornește mașina, ca în 2D; o tragere doar rotește
     P.advance(50);
     const cv = d.querySelector('#desk-3d canvas'), sc = P.view3d().screenOf('switch-compute-0');

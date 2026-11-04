@@ -158,6 +158,7 @@ async function main() {
     for (const el of document.querySelectorAll('.switch')) el.setAttribute('aria-label', T().switchLabel(el.id));
     const cueLabel = document.querySelector('#cue-arrow .cue-label');   // săgeata de pornire, în limba aleasă
     if (cueLabel) cueLabel.textContent = T().cuePress;
+    $('cue3d-label').textContent = T().cuePress;
   };
   labelSwitches();
   setLever('switch-pulses-0', false);
@@ -584,7 +585,15 @@ async function main() {
     const pv = machine.provVersion();
     if (pv !== lastProvVersion) { lastProvVersion = pv; describeProgram(); atelier.markDirty(); }
     atelier.onFrame(snap, dt, mode !== 'console');
-    if (show3d && view3d) { view3d.setLamps(lamps.map((l) => [l.id, l.b])); view3d.render(); }
+    if (show3d && view3d) {
+      view3d.setLamps(lamps.map((l) => [l.id, l.b]));
+      view3d.render();
+      // săgeata îndrumării și în 3D: sub maneta CALCULEAZA AUTOMAT, cât timp se vede și n-a fost apăsată
+      const a = $('switch-compute-0').classList.contains('cue') ? view3d.anchor('switch-compute-0') : null;
+      const on = !!(a && a.visible);
+      if ($('cue3d').hidden === on) $('cue3d').hidden = !on;
+      if (on) $('cue3d').style.transform = `translate(${a.x.toFixed(1)}px, ${a.y.toFixed(1)}px)`;
+    }
   }
   let last = null;
   function frame(now) {
