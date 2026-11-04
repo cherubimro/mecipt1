@@ -148,6 +148,8 @@ The sound choices (`web/js/sound/`). No recordings of MECIPT-1 exist.
 | Choice | Status | Reason / source |
 |---|---|---|
 | 3D view: marius0198’s model with lamps lit from the emulator; the switch levers are pressed with a click and tilt with their state (angle chosen by eye) | — (emulator rule) | the model is an artistic reconstruction (Sketchfab, CC BY 4.0); the lamp/switch–object link comes from `positions.json` (tools/dae_layout.py) |
+| 3D view, corrections after the museum photographs: blue shelf and frame face, polished metal, voltmeter needles from the hub below the centre | DEDUCED | photographs of the console at the Museum of Banat; the model had grey metal here and the needles near the edge |
+| 3D view: the missing voltmeter on the second row, completed with one like its neighbours | GUESSED | only the ring remains in the museum; the working machine had the voltmeter |
 | The drum drawn below the console: upright, on the gold cabinet, with the head blocks around it and the FŰTÉS / TÖRLÉS panel | CERTAIN (the look) | Turbojet’s photographs, Museum of Banat, 2015 (Wikimedia Commons, CC BY-SA 4.0); capacity and speed: Farcaș, Baltac |
 | Drum map: even addresses on one half of the ring, odd ones on the other | DEDUCED | Baltac, facsimile 8 (even and odd addresses on different halves of the drum); the map itself is an emulator tool |
 | The stripes passing over the drawn cylinder | GUESSED | they only show the rotation (slowed down); the real steel is not documented in detail |

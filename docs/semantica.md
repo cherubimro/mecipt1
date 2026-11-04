@@ -146,6 +146,8 @@ Alegerile sunetului (`web/js/sound/`). Nu există înregistrări ale MECIPT-1.
 | Alegere | Statut | Motiv / sursă |
 |---|---|---|
 | Vederea 3D: modelul lui marius0198 cu becurile aprinse după emulator; manetele comutatoarelor se apasă cu un clic și se înclină după starea lor (unghiul ales după ochi) | — (regula emulatorului) | modelul e o reconstrucție artistică (Sketchfab, CC BY 4.0); legătura bec/comutator–obiect vine din `positions.json` (tools/dae_layout.py) |
+| Vederea 3D, îndreptări după fotografiile din muzeu: raftul și fața ramei albastre, metal lucios, acele voltmetrelor din butucul de sub centru | DEDUS | fotografiile pupitrului din Muzeul Banatului; modelul avea aici metal gri și acele lângă margine |
+| Vederea 3D: voltmetrul lipsă de pe rândul al doilea, completat cu unul ca vecinii | GHICIT | în muzeu a rămas doar inelul; pe mașina în funcțiune voltmetrul exista |
 | Tamburul desenat sub pupitru: vertical, pe dulăpașul auriu, cu blocurile capetelor jur-împrejur și panoul FŰTÉS / TÖRLÉS | SIGUR (aspectul) | fotografiile lui Turbojet, Muzeul Banatului, 2015 (Wikimedia Commons, CC BY-SA 4.0); capacitatea și viteza: Farcaș, Baltac |
 | Harta tamburului: adresele pare pe o jumătate a inelului, cele impare pe cealaltă | DEDUS | Baltac, Facsimilul 8 (adresele pare și impare pe jumătăți diferite ale tamburului); harta însăși e o unealtă a emulatorului |
 | Dungile care trec pe cilindrul desenat | GHICIT | arată doar rotația (încetinită); oțelul real nu e documentat în detaliu |

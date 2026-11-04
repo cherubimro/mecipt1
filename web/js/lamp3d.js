@@ -62,3 +62,34 @@ export function zoneNodes(positions, zoneId) {
   }
   return out;
 }
+
+// Rama pupitrului e în model un singur obiect metalic („Metal_part”): ramele înguste de aluminiu, dar și raftul și
+// fața din jurul panourilor, care pe pupitrul adevărat sunt vopsite în albastrul mobilei (fotografiile din muzeu).
+// Le despărțim după lățimea fiecărui triunghi (înălțimea pe latura cea mai lungă, în coordonatele scenei):
+// pos = vârfurile (x, y, z, …), idx = triunghiurile; întoarce 1 pentru fețele late, 0 pentru fâșii.
+export function wideTriangles(pos, idx, minWidth) {
+  const out = new Uint8Array(idx.length / 3);
+  const v = (i, k) => pos[3 * idx[i] + k];
+  for (let t = 0; t < out.length; t++) {
+    const a = 3 * t, ab = [], bc = [], ca = [];
+    for (let k = 0; k < 3; k++) { ab.push(v(a + 1, k) - v(a, k)); bc.push(v(a + 2, k) - v(a + 1, k)); ca.push(v(a, k) - v(a + 2, k)); }
+    const cx = ab[1] * -ca[2] - ab[2] * -ca[1], cy = ab[2] * -ca[0] - ab[0] * -ca[2], cz = ab[0] * -ca[1] - ab[1] * -ca[0];
+    const area2 = Math.hypot(cx, cy, cz);
+    const longest = Math.max(Math.hypot(...ab), Math.hypot(...bc), Math.hypot(...ca));
+    out[t] = longest > 0 && area2 / longest >= minWidth ? 1 : 0;
+  }
+  return out;
+}
+
+// Voltmetrele din mijloc. În model, acele celor patru voltmetre de sus pornesc de lângă marginea de jos a cadranului
+// și ies peste el; în fotografia din muzeu (2020) fiecare ac pornește din butucul negru de sub centrul cadranului
+// și arată în sus, spre stânga (al doilea, spre dreapta). angle = grade față de verticala cadranului (− = stânga).
+export const NEEDLES = [
+  { arrow: 'Arrow', dial: 'Afisaj', angle: -42 },
+  { arrow: 'Arrow2', dial: 'Afisaj.001', angle: 32 },
+  { arrow: 'Arrow3', dial: 'Afisaj.002', angle: -40 },
+  { arrow: 'Arrow4', dial: 'Afisaj.003', angle: -36 },
+];
+// Al doilea voltmetru de pe rândul din mijloc lipsește în muzeu (a rămas doar inelul, Cadran.004); îl completăm
+// cu fața vecinului de pe același rând (GHICIT: un voltmetru la fel ca vecinii lui).
+export const MISSING_DIAL = { copy: 'Afisaj.005', from: 'Cadran.005', to: 'Cadran.004' };
