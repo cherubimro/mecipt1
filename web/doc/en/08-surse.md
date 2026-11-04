@@ -13,6 +13,8 @@
 - **Turbojet**, [“MECIPT-1 Drum memory”](https://commons.wikimedia.org/wiki/File:MECIPT-1_Drum_memory.jpg) and [“MECIPT-1 Drum memory 2”](https://commons.wikimedia.org/wiki/File:MECIPT-1_Drum_memory_2.jpg), Wikimedia Commons, 2015, CC BY-SA 4.0 — the magnetic drum, at the Museum of Banat.
 
 ## Licences
+The emulator: (C) 2026 Alin-Adrian Anton <alin.anton@upt.ro>.
+
 - The emulator code: **AGPL-3.0-or-later**.
 - The content (transcribed programs, console drawing, data, help and documentation texts): **CC BY-SA 4.0**.
 - The 3D model (CC BY 4.0) and the photograph (CC BY-SA 4.0) are used with attribution.

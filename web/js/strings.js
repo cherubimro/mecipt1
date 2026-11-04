@@ -143,7 +143,7 @@ export const STRINGS = {
     sourcesTitle: 'Surse',
     statusNames: { SIGUR: 'SIGUR', DEDUS: 'DEDUS', GHICIT: 'GHICIT', MIXT: 'SIGUR / DEDUS / GHICIT, pe părți' },
     switchLabel: switchLabel(NAMED_RO, (i) => `Comutatorul ${i} al registrului M`, (w) => `Comutatorul RAI ${w}`),
-    attribution: 'Pupitrul e redesenat după modelul 3D „MECIPT-1” (marius0198, CC BY 4.0) și fotografia din 2011 (Turbojet, CC BY-SA 4.0); tamburul, după fotografiile din 2015 (Turbojet, CC BY-SA 4.0). Conținut CC BY-SA 4.0, cod AGPL-3.0.',
+    attribution: 'Pupitrul e redesenat după modelul 3D „MECIPT-1” (marius0198, CC BY 4.0) și fotografia din 2011 (Turbojet, CC BY-SA 4.0); tamburul, după fotografiile din 2015 (Turbojet, CC BY-SA 4.0). Conținut CC BY-SA 4.0, cod AGPL-3.0. (C) 2026 Alin-Adrian Anton <alin.anton@upt.ro>.',
   },
   en: {
     title: 'MECIPT-1 — the control console',
@@ -250,7 +250,7 @@ export const STRINGS = {
     statusNames: { SIGUR: 'CERTAIN', DEDUS: 'DEDUCED', GHICIT: 'GUESSED', MIXT: 'CERTAIN / DEDUCED / GUESSED, in parts' },
     switchLabel: switchLabel(NAMED_EN, (i) => `M ${i} (memory register switch, bit ${i})`,
       (w) => `RAI ${w} (instruction address register switch, weight ${w})`),
-    attribution: 'The console is redrawn after the 3D model “MECIPT-1” (marius0198, CC BY 4.0) and the 2011 photograph (Turbojet, CC BY-SA 4.0); the drum after the 2015 photographs (Turbojet, CC BY-SA 4.0). Content CC BY-SA 4.0, code AGPL-3.0.',
+    attribution: 'The console is redrawn after the 3D model “MECIPT-1” (marius0198, CC BY 4.0) and the 2011 photograph (Turbojet, CC BY-SA 4.0); the drum after the 2015 photographs (Turbojet, CC BY-SA 4.0). Content CC BY-SA 4.0, code AGPL-3.0. (C) 2026 Alin-Adrian Anton <alin.anton@upt.ro>.',
   },
 };
 

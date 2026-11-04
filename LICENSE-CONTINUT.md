@@ -1,5 +1,7 @@
 # Licența conținutului
 
+(C) 2026 Alin-Adrian Anton <alin.anton@upt.ro>
+
 Codul sursă al proiectului este sub **AGPL-3.0-or-later** (vezi `LICENSE`).
 
 Conținutul (texte, programe MECIPT-1 transcrise, grafică, sunete proprii) este sub

@@ -58,6 +58,8 @@ Site-ul nu folosește nimic de pe internet la rulare: fonturile, nucleul și dat
 adrese relative, deci merge din orice găzduire statică.
 
 ## Licențe
+(C) 2026 Alin-Adrian Anton <alin.anton@upt.ro>
+
 - Codul: **AGPL-3.0-or-later** (`LICENSE`).
 - Conținutul (programele transcrise, desenul pupitrului, datele, textele): **CC BY-SA 4.0**, cu
   atribuirile din `LICENSE-CONTINUT.md`.

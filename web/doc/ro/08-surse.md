@@ -13,6 +13,8 @@
 - **Turbojet**, [„MECIPT-1 Drum memory”](https://commons.wikimedia.org/wiki/File:MECIPT-1_Drum_memory.jpg) și [„MECIPT-1 Drum memory 2”](https://commons.wikimedia.org/wiki/File:MECIPT-1_Drum_memory_2.jpg), Wikimedia Commons, 2015, CC BY-SA 4.0 — tamburul magnetic, la Muzeul Banatului.
 
 ## Licențe
+Emulatorul: (C) 2026 Alin-Adrian Anton <alin.anton@upt.ro>.
+
 - Codul emulatorului: **AGPL-3.0-or-later**.
 - Conținutul (programele transcrise, desenul pupitrului, datele, textele ajutorului și ale acestei documentații): **CC BY-SA 4.0**.
 - Modelul 3D (CC BY 4.0) și fotografia (CC BY-SA 4.0) sunt folosite cu atribuire.
