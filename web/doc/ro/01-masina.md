@@ -21,4 +21,6 @@
 Pupitrul de comandă s-a păstrat și a fost restaurat; fotografia lui din 2011 (Turbojet, Wikimedia Commons) și modelul 3D (marius0198, Sketchfab) sunt baza desenului din această pagină.
 
 ## Despre acest emulator
+Ideea vine de la calculatorul de ghidare Apollo (AGC): codul lui original pentru Apollo 11 (Comanche055 și Luminary099) e în domeniul public, a fost digitizat după listingurile de la MIT Museum de proiectul [Virtual AGC](https://www.ibiblio.org/apollo/) și poate fi citit pe [GitHub](https://github.com/chrislgarry/Apollo-11) și rulat în emulatorul yaAGC. Am vrut același lucru pentru MECIPT-1: o mașină istorică pe care o poți rula și citi azi, cu programele ei adevărate, acolo unde s-au păstrat.
+
 Emulatorul execută programele instrucțiune cu instrucțiune, cu timpii tamburului, și arată microoperațiile pe panoul stâng. Fiecare alegere fără sursă e marcată **SIGUR**, **DEDUS** sau **GHICIT** — vezi capitolul 7.

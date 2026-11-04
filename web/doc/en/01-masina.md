@@ -21,4 +21,6 @@ Teaching and engineering calculations, including those for the **Vidraru dam** a
 The control console survived and was restored; its 2011 photograph (Turbojet, Wikimedia Commons) and the 3D model (marius0198, Sketchfab) are the basis of the drawing on this page. Its inscriptions are in Romanian and stay so here; the explanations translate them.
 
 ## About this emulator
+The idea comes from the Apollo Guidance Computer (AGC): its original Apollo 11 code (Comanche055 and Luminary099) is in the public domain, was digitized from the MIT Museum listings by the [Virtual AGC](https://www.ibiblio.org/apollo/) project, and can be read on [GitHub](https://github.com/chrislgarry/Apollo-11) and run in the yaAGC emulator. We wanted the same for MECIPT-1: a historic machine you can run and read today, with its real programs, where they have survived.
+
 The emulator runs programs instruction by instruction, with the drum timing, and shows the micro-operations on the left panel. Every choice without a source is marked **CERTAIN**, **DEDUCED** or **GUESSED** — see chapter 7.
