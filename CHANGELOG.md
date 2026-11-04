@@ -31,6 +31,8 @@ Emulatorul MECIPT-1 n-are încă versiuni numerotate; schimbările sunt grupate 
   (AGC), în domeniul public, digitizat de proiectul Virtual AGC.
 
 ### Reparat
+- Licența: programele originale din 1962 (retipărirea, preîncărcătorul INEX-1) nu mai sunt trecute ca fiind
+  ale proiectului, sub CC BY-SA; sunt ale colectivului MECIPT, arătate ca documente istorice, cu sursa.
 - Lumina „de nicăieri” de pe panoul drept în 3D (era reflexia blițului din fotografia texturii).
 
 ## 2026-11-03

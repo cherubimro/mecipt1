@@ -52,15 +52,24 @@ def negative(code):
     return v.startswith('o') and len(v) == 12 and v[1] in '1'
 
 
+# Nota de licență din capul fiecărui program: CC BY-SA acoperă doar ce e al proiectului, nu cuvintele din 1962.
+NOTICE = ('; Licența: CC BY-SA 4.0 pentru adnotări și pentru cuvintele RECONSTRUCTIE / DEDUS / GHICIT ale proiectului.\n; Cuvintele @prov ORIGINAL sunt transcrieri ale programelor MECIPT-1 din 1962 (colectivul MECIPT, Institutul\n; Politehnic din Timișoara), după facsimilele publicate de V. Baltac; nu sunt ale proiectului și nu sunt sub această licență.\n')
+NOTICE_PREFIXES = ('; SPDX-License-Identifier', '; Licența:', '; Cuvintele @prov ORIGINAL', '; Politehnic din Timișoara')
+
+
+def keep(line):
+    return not line.startswith(NOTICE_PREFIXES)
+
+
 def header(inputs):
-    return ('; SPDX-License-Identifier: CC-BY-SA-4.0\n'
-            f'; GENERAT de tools/mecjoin.py din {" + ".join(inputs)}; nu editați — modificați sursa.\n')
+    return (NOTICE
+            + f'; GENERAT de tools/mecjoin.py din {" + ".join(inputs)}; nu editați — modificați sursa.\n')
 
 
 def join(inputs):
     parts = [header(inputs)]
     for rel in inputs:
-        body = '\n'.join(l for l in read(rel).split('\n') if not l.startswith('; SPDX-License-Identifier'))
+        body = '\n'.join(l for l in read(rel).split('\n') if keep(l))
         parts.append(f'\n; ======== {rel} ========\n{body.rstrip()}\n')
     return ''.join(parts)
 
@@ -89,7 +98,7 @@ def tape(pre, rut):
     return (header([pre, rut]) +
             f'; Banda INEX-1: cuvintele 0002–{top:04o}, în ordinea adreselor, câte 6 rânduri pe cuvânt.\n'
             f'; Se încarcă cu preîncărcătorul original pornit de la 0010 (ME 0002 la 0014).\n\n'
-            + '\n'.join(l for l in read(rut).split('\n') if not l.startswith('; SPDX-License-Identifier')).rstrip()
+            + '\n'.join(l for l in read(rut).split('\n') if keep(l)).rstrip()
             + '\n\n; Copiile preîncărcătorului (0014 perforat ca ME 0014, vezi mai sus)\n'
             + '@prov ORIGINAL Facsimil 5, Baltac\n' + '\n'.join(copies) + '\n')
 

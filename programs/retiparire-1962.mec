@@ -1,4 +1,6 @@
-; SPDX-License-Identifier: CC-BY-SA-4.0
+; Licența: CC BY-SA 4.0 pentru adnotări și pentru cuvintele RECONSTRUCTIE / DEDUS / GHICIT ale proiectului.
+; Cuvintele @prov ORIGINAL sunt transcrieri ale programelor MECIPT-1 din 1962 (colectivul MECIPT, Institutul
+; Politehnic din Timișoara), după facsimilele publicate de V. Baltac; nu sunt ale proiectului și nu sunt sub această licență.
 ; „Program pentru retipărirea programelor” — MECIPT-1, 6.09.1962
 ; Transcris din: V. Baltac, „MECIPT – Evocări și Documente” (2011), Facsimil 4.
 ; Tipărește la mașina de scris, în octal, cuvintele de la adresa din 1626, câte (1625)+1 cuvinte,

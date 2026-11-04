@@ -1,4 +1,6 @@
-; SPDX-License-Identifier: CC-BY-SA-4.0
+; Licența: CC BY-SA 4.0 pentru adnotări și pentru cuvintele RECONSTRUCTIE / DEDUS / GHICIT ale proiectului.
+; Cuvintele @prov ORIGINAL sunt transcrieri ale programelor MECIPT-1 din 1962 (colectivul MECIPT, Institutul
+; Politehnic din Timișoara), după facsimilele publicate de V. Baltac; nu sunt ale proiectului și nu sunt sub această licență.
 ; Tabelul de sinus 1°–45° — MECIPT-1, 21.02.1962
 ; REZULTATUL e ORIGINAL: Facsimilul 3 (V. Baltac, „MECIPT – Evocări și Documente”, 2011), „Tabel de sinus dela 1°
 ; la 45° calculat de MECIPT-1”, 45 de valori cu 9 zecimale, 5 pe rând. PROGRAMUL nu s-a păstrat: codul de mai jos e o
