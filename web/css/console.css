@@ -125,6 +125,7 @@ body:not([data-mode="atelier"]) .panels[data-view="all"] #panel-right { transfor
 .carriage { position: relative; height: 18px; background: linear-gradient(180deg, #9ea3a1, #5f6462); }
 .carriage-mark { position: absolute; top: 0; width: 1ch; height: 6px; background: #e8d36a; }
 
+.phone-tabs { display: none; }
 .credits { padding: 0 24px 24px; font-size: 13.5px; color: #9aa19c; max-width: 80ch; }
 
 /* ---- explicațiile ---- */
@@ -280,4 +281,13 @@ body[data-mode="atelier"] .desk { padding: 12px 18px 16px; }
   .help-panel { width: 100vw; }
   .tour-card { width: calc(100vw - 16px); bottom: 8px; }
   .at-editor { overflow-x: auto; }
+  /* filele de jos: duc la fiecare parte a mașinii; pagina lasă loc sub ele */
+  body { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+  .phone-tabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); position: fixed; z-index: 14; left: 0; right: 0; bottom: 0;
+    height: 60px; padding: 4px 4px max(4px, env(safe-area-inset-bottom)); box-sizing: content-box; gap: 2px;
+    background: var(--strip); border-top: 1px solid #8f969a; box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.25); }
+  .phone-tabs button { font: inherit; font-size: 12.5px; line-height: 1.15; color: var(--strip-ink); background: none; border: 0; border-radius: 3px;
+    min-height: 48px; padding: 2px; cursor: pointer; }
+  .phone-tabs button[aria-current="true"] { background: var(--strip-ink); color: var(--strip); }
+  .tour-card { bottom: 76px; }
 }

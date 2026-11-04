@@ -79,7 +79,7 @@
     </div>
   </section>
   <div class="peripherals">
-    <section class="device drum-device">
+    <section class="device drum-device" id="dev-drum">
       <h2 id="drum-label">Tamburul magnetic</h2>
       <div class="drum-pair">
         <div id="drum" class="mag-drum"></div>
@@ -90,12 +90,12 @@
       </div>
       <p id="drum-info" class="device-note"></p>
     </section>
-    <section class="device reader">
+    <section class="device reader" id="dev-reader">
       <h2 id="reader-label">Cititorul de bandă perforată</h2>
       <div id="tape" class="tape"></div>
       <p id="tape-info" class="device-note"></p>
     </section>
-    <section class="device typewriter">
+    <section class="device typewriter" id="dev-typewriter">
       <h2 id="typewriter-label">Mașina de scris</h2>
       <div id="sheet" class="sheet"></div>
     </section>
@@ -116,6 +116,13 @@
   <button id="help-more-btn" type="button" aria-expanded="false" aria-controls="help-more">Mai multe detalii</button>
   <div id="help-more" class="help-more" hidden></div>
 </aside>
+<nav id="phone-tabs" class="phone-tabs">
+  <button id="tab-desk" type="button" data-target="desk"></button>
+  <button id="tab-typewriter" type="button" data-target="dev-typewriter"></button>
+  <button id="tab-reader" type="button" data-target="dev-reader"></button>
+  <button id="tab-drum" type="button" data-target="dev-drum"></button>
+  <button id="tab-atelier" type="button" data-target="atelier"></button>
+</nav>
 <footer class="credits"><p id="attribution"></p></footer>
 <script type="module" src="js/app.js"></script>
 </body>

@@ -28,10 +28,10 @@ programele originale din 1962.
   (44 din 45 de valori cifră cu cifră; diferă sin 32°); calculele ilustrative Vidraru și Romexpo, cu eticheta
   „cifrele nu sunt cele reale”. Sursele în `programs/src/`, generate cu `make programs`; referințele în `tools/ref/`.
 - **Telefonul și publicarea** (Planul 7): pe ecrane înguste un singur panou mărit, derulabil, cu butonul de pornire
-  la vedere; fără derulare orizontală la nicio lățime. Site-ul static se verifică (`tools/check_site.py`) și se
+  la vedere și file jos (Pupitru, Mașina de scris, Bandă, Tambur, Atelier); fără derulare orizontală la nicio lățime. Site-ul static se verifică (`tools/check_site.py`) și se
   publică copiind `build/site/` — vezi `docs/publicare.md`.
-- **Tamburul magnetic**, desenat după fotografiile din 2015 (Muzeul Banatului).
-- **Vederea 3D**: butonul 3D/2D arată modelul lui marius0198 (CC BY 4.0) cu becurile aprinse după emulator și comutatoarele apăsabile cu un clic; three.js (MIT) e inclus local.
+- **Tamburul magnetic**, desenat după fotografiile din 2015 (Muzeul Banatului), cu harta celor 1024 de cuvinte, care se umple la încărcarea benzii.
+- **Vederea 3D**: butonul 3D/2D arată modelul lui marius0198 (CC BY 4.0) cu becurile aprinse după emulator, comutatoarele apăsabile cu un clic și zonele camerei; three.js (MIT) e inclus local.
 - Urmează: interfețele desktop (wx și ncurses, poate regândite ca o interfață Qt).
 
 Ce e sigur, ce e dedus și ce e ghicit: `docs/semantica.md` (în engleză: `docs/semantica.en.md`).

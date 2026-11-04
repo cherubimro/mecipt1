@@ -497,6 +497,34 @@ async function main() {
   });
   langListeners.push(labelZones);
   labelZones();
+
+  // pe telefon, filele de jos: o atingere duce la partea mașinii (Atelierul și Pupitrul schimbă și vederea);
+  // fila părții de pe ecran e marcată, oriunde ar ajunge vizitatorul derulând
+  const TABS = [...$('phone-tabs').querySelectorAll('button')];
+  const labelTabs = () => {
+    $('phone-tabs').setAttribute('aria-label', T().tabs.label);
+    for (const b of TABS) b.textContent = T().tabs[b.id.slice(4)];
+  };
+  const markTab = () => {
+    let cur = TABS[0];
+    for (const b of TABS) {
+      const el = $(b.dataset.target);
+      if (el && el.offsetParent !== null && el.getBoundingClientRect().top <= innerHeight * 0.4) cur = b;
+    }
+    for (const b of TABS) b.setAttribute('aria-current', String(b === cur));
+  };
+  $('phone-tabs').addEventListener('click', (e) => {
+    const b = e.target.closest && e.target.closest('button[data-target]');
+    if (!b) return;
+    if (b.id === 'tab-atelier' && mode === 'console') setMode('atelier');
+    if (b.id === 'tab-desk' && mode === 'atelier') setMode('console');
+    $(b.dataset.target).scrollIntoView({ block: 'start' });   // salt direct, ca la file
+  });
+  let tabFrame = 0;
+  addEventListener('scroll', () => { if (!tabFrame) tabFrame = setTimeout(() => { tabFrame = 0; markTab(); }, 80); }, { passive: true });
+  langListeners.push(labelTabs);
+  labelTabs();
+  markTab();
   langListeners.push(label3d);
   label3d();
 

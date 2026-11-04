@@ -408,6 +408,28 @@ f.addEventListener('load', () => {
   // mașina de scris înaintea tamburului; rândurile lungi (60 de caractere la sinus) se derulează pe coală
   if (pd.querySelector('.typewriter').getBoundingClientRect().top > pd.querySelector('.drum-device').getBoundingClientRect().top) fail('pe telefon, mașina de scris vine după tambur');
   if (ph.contentWindow.getComputedStyle(pd.querySelector('.sheet-paper')).overflowX !== 'auto') fail('pe telefon, coala nu se derulează orizontal');
+  // filele de jos: fixe la marginea ecranului, câte una pentru fiecare parte; o atingere duce la partea ei
+  const tabs = pd.getElementById('phone-tabs');
+  if (!tabs || ph.contentWindow.getComputedStyle(tabs).display === 'none') fail('pe telefon lipsesc filele de jos');
+  const tb = tabs.getBoundingClientRect();
+  if (Math.abs(tb.bottom - 800) > 2 || tb.height < 44) fail(`filele de jos nu stau jos: ${tb.top.toFixed(0)}–${tb.bottom.toFixed(0)}`);
+  if (tabs.querySelectorAll('button').length !== 5) fail('filele de jos: ' + tabs.querySelectorAll('button').length);
+  for (const b of tabs.querySelectorAll('button')) if (b.getBoundingClientRect().height < 44) fail('fila prea mică: ' + b.textContent);
+  pd.getElementById('tab-drum').click();
+  // tamburul vine ultimul: ajunge sus sau, la capătul paginii, se vede întreg deasupra filelor
+  const atEnd = () => ph.contentWindow.scrollY + ph.contentWindow.innerHeight >= pd.documentElement.scrollHeight - 2;
+  const dr = () => pd.querySelector('.drum-device').getBoundingClientRect();
+  await until(() => Math.abs(dr().top) < 30 || (atEnd() && dr().top >= 0 && dr().bottom <= tb.top), 5000,
+    () => 'fila Tambur nu duce la tambur: ' + pd.querySelector('.drum-device').getBoundingClientRect().top.toFixed(0));
+  await until(() => pd.getElementById('tab-drum').getAttribute('aria-current') === 'true', 3000, 'fila Tambur nu se marchează');
+  pd.getElementById('tab-atelier').click();
+  await until(() => ph.contentDocument.body.dataset.mode === 'atelier' && Math.abs(pd.getElementById('atelier').getBoundingClientRect().top) < 30, 5000, 'fila Atelier');
+  pd.getElementById('tab-desk').click();
+  await until(() => ph.contentDocument.body.dataset.mode === 'console' && pd.getElementById('desk').getBoundingClientRect().top > -30, 5000, 'fila Pupitru');
+  // ultimul rând al paginii nu rămâne sub file
+  ph.contentWindow.scrollTo(0, 1e6); ph.contentWindow.__pupitru.advance(50);
+  if (pd.querySelector('.credits').getBoundingClientRect().bottom > tb.top + 1) fail('subsolul rămâne sub filele de jos');
+  ph.contentWindow.scrollTo(0, 0);
   ph.contentWindow.__pupitru.setMode('atelier'); ph.contentWindow.__pupitru.advance(50);
   if (wide(ph) > 0) fail('pe telefon, Atelierul derulează orizontal cu ' + wide(ph) + ' px');
   ph.contentWindow.__pupitru.setMode('console');
@@ -419,6 +441,7 @@ f.addEventListener('load', () => {
     if (wide(mid) > 0) fail(`la 1280 px, vederea ${m} derulează orizontal cu ${wide(mid)} px`);
   }
   mid.contentWindow.__pupitru.setMode('console');
+  if (mid.contentWindow.getComputedStyle(mid.contentDocument.getElementById('phone-tabs')).display !== 'none') fail('la 1280 px se văd filele de telefon');
   mid.remove();
   stage('documentatie');
   if (!d.getElementById('doc-link').getAttribute('href').startsWith('doc.html')) fail('linkul spre documentație');
