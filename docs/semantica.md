@@ -145,8 +145,10 @@ Alegerile sunetului (`web/js/sound/`). Nu există înregistrări ale MECIPT-1.
 
 | Alegere | Statut | Motiv / sursă |
 |---|---|---|
-| Vederea 3D: modelul lui marius0198 cu becurile aprinse după emulator; comutatoarele modelului stau pe loc | — (regula emulatorului) | modelul e o reconstrucție artistică (Sketchfab, CC BY 4.0); legătura bec–obiect vine din `positions.json` (tools/dae_layout.py) |
+| Vederea 3D: modelul lui marius0198 cu becurile aprinse după emulator; manetele comutatoarelor se apasă cu un clic și se înclină după starea lor (unghiul ales după ochi) | — (regula emulatorului) | modelul e o reconstrucție artistică (Sketchfab, CC BY 4.0); legătura bec/comutator–obiect vine din `positions.json` (tools/dae_layout.py) |
 | Tamburul desenat sub pupitru: vertical, pe dulăpașul auriu, cu blocurile capetelor jur-împrejur și panoul FŰTÉS / TÖRLÉS | SIGUR (aspectul) | fotografiile lui Turbojet, Muzeul Banatului, 2015 (Wikimedia Commons, CC BY-SA 4.0); capacitatea și viteza: Farcaș, Baltac |
+| Harta tamburului: adresele pare pe o jumătate a inelului, cele impare pe cealaltă | DEDUS | Baltac, Facsimilul 8 (adresele pare și impare pe jumătăți diferite ale tamburului); harta însăși e o unealtă a emulatorului |
+| Dungile care trec pe cilindrul desenat | GHICIT | arată doar rotația (încetinită); oțelul real nu e documentat în detaliu |
 | Becul verde al tamburului aprins cât mașina e sub tensiune; FŰTÉS și TÖRLÉS stinse; comutatoarele lui nu fac nimic | GHICIT | funcția lor nu e documentată |
 | În desen rotația e încetinită (o rotație la 1,6 s) și continuă cât pagina e deschisă | — (regula emulatorului) | la 50 rot/s ochiul n-ar vedea decât o pată; tamburul se învârtea cât mașina era sub tensiune |
 | Zumzetul tamburului are fundamentala de 50 Hz (cu armonice) | DEDUS | Tamburul face 50 de rotații pe secundă: 1024 de timpi de cuvânt pe rotație, 51 200 pe secundă (`core/machine.h`). |

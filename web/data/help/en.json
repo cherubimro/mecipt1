@@ -504,7 +504,7 @@
   "view3d": {
    "title": "3D view",
    "short": "The 3D button shows the console as a three-dimensional model you can rotate and zoom; its lamps light up following the emulated machine, just like on the drawn panels. The 2D button takes you back to the drawn console.",
-   "more": "- **The model**: “MECIPT-1” by marius0198 (Sketchfab, 2020, CC BY 4.0), the same one the panels were redrawn from; the side panels’ textures are the model’s own.\n- The model’s **lamps** (161, one for every lamp of the emulator) light up from the same machine state and with the same inertia as in 2D. The lamp–object link comes from `positions.json`, where each lamp keeps the name of its object in the model.\n- In 3D the console is **only looked at**: the model’s switches do not move and cannot be pressed; the controls stay in the 2D view.\n- Rotate: the mouse or a finger; zoom: the wheel or two fingers.\n- The model and the three.js library (MIT) load only at the first press on 3D (about 4.5 MB). If the browser has no WebGL, the page says so and stays in 2D.",
+   "more": "- **The model**: “MECIPT-1” by marius0198 (Sketchfab, 2020, CC BY 4.0), the same one the panels were redrawn from; the side panels’ textures are the model’s own; we removed from the right panel’s texture the white spot left by the photograph’s flash, which looked like a light coming from nowhere.\n- The model’s **lamps** (161, one for every lamp of the emulator) light up from the same machine state and with the same inertia as in 2D. The lamp–object link comes from `positions.json`, where each lamp keeps the name of its object in the model.\n- **The switches can be pressed in 3D too**: a short click or a tap on a lever does exactly what clicking the drawn switch does (in Explain mode, it explains it); dragging only rotates. The levers tilt up or down following their state, as in 2D; the 63 switches are tied to their model objects through `positions.json` as well. The tilt angle is chosen by eye.\n- **Zones**: the buttons above the model (CALCULEAZĂ, Commands, RAI register, M register, RI and RA, Generator, Voltmeters) bring the camera straight in front of that part, close enough for the levers to be easy to hit; “Whole console” takes it back. Rotating by hand releases the zone button.\n- Rotate: the mouse or a finger; zoom: the wheel (towards the pointer) or two fingers.\n- The model and the three.js library (MIT) load only at the first press on 3D (about 4.5 MB). If the browser has no WebGL, the page says so and stays in 2D.",
    "status": "MIXT",
    "sources": [
     "model3d",
@@ -519,6 +519,16 @@
    "sources": [
     "photoDrum2015",
     "farcas2005",
+    "baltac2011",
+    "semantica"
+   ]
+  },
+  "drum-map": {
+   "title": "Drum map",
+   "short": "The ring next to the drum shows all 1024 words of memory, each in the colour of its provenance, as in the Workshop’s drum. When a tape loads, the ring fills up as the words reach the drum.",
+   "more": "- **The colours** are the Workshop’s: green = original, yellow-green = deduced, ochre = reconstruction, pink = guessed, purple = modified by the visitor, blue = written by the program while running; dark grey = empty.\n- **The yellow mark** shows the instruction being executed (the address in RAI), while the machine runs.\n- **Layout**: even addresses on the right half of the ring, odd ones on the left, as on the real drum, where they lay on different halves so programs did not wait a whole revolution — DEDUCED (Baltac, facsimile 8). Address 0000 is at the top.\n- The map is an **emulator tool**, not a part of the machine: on MECIPT-1 the drum’s contents were not shown anywhere.\n- The stripes passing over the drawn cylinder only show that the drum turns (slowed down: at 50 revolutions a second the eye would see only a blur); their drawing is GUESSED.",
+   "status": "MIXT",
+   "sources": [
     "baltac2011",
     "semantica"
    ]

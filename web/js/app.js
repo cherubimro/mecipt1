@@ -18,8 +18,10 @@ import { describeValue } from './values.js';
 import { formatWord, rowsFor, provLabel } from './atelier/editor.js';
 import { setupSound } from './sound/page.js';
 import { catalogNote } from './catalog.js';
-import { drumSvg, drumPhase, streaksOffset } from './drum.js';
+import { drumSvg, drumPhase, seams, drawDrumMap } from './drum.js';
+import { cellKind } from './atelier/drum.js';
 import { createView3D } from './view3d.js';
+import { ZONES3D } from './lamp3d.js';
 
 const $ = (id) => document.getElementById(id);
 const storage = (() => { try { return window.localStorage; } catch { return null; } })();
@@ -62,6 +64,8 @@ function setTexts() {
   $('typewriter-label').textContent = T().typewriter;
   $('drum-label').textContent = T().drumLabel;
   $('drum-info').textContent = T().drumInfo;
+  $('drum-map').setAttribute('aria-label', T().drumMapLabel);
+  $('drum-map-fig').dataset.help = 'drum-map';
   $('attribution').textContent = T().attribution;
   $('status').textContent = T().loading;
 }
@@ -115,19 +119,40 @@ async function main() {
   $('panel-right').innerHTML = renderPanel('right', artR, positions, colors);
   // tamburul: desenat o dată (după fotografia din 2015); la fiecare cadru oțelul se rotește, în timp real
   $('drum').innerHTML = drumSvg();
-  const drumStreaks = $('drum').querySelector('.streaks');
+  const drumSeams = [...$('drum').querySelectorAll('.seam')];
+  // harta tamburului: redesenată de câteva ori pe secundă (1024 de cuvinte citite din nucleu)
+  const drumMap = $('drum-map'), drumKinds = new Array(1024).fill('EMPTY');
+  let drumMapAge = Infinity, drumMapKey = '';
+  const refreshDrumMap = (rai, running) => {
+    let used = 0;
+    for (let a = 0; a < 1024; a++) {
+      const k = cellKind(machine.provCode(a), machine.written(a));
+      drumKinds[a] = k;
+      if (k !== 'EMPTY') used++;
+    }
+    const mark = running ? rai : -1, key = drumKinds.join() + mark;
+    if (key !== drumMapKey) {
+      drumMapKey = key;
+      const size = drumMap.width;
+      drawDrumMap(drumMap.getContext('2d'), size, drumKinds, mark);
+    }
+    const legend = T().drumMap(used, running ? rai.toString(8).padStart(4, '0') : null);
+    if ($('drum-map-legend').textContent !== legend) $('drum-map-legend').textContent = legend;
+  };
   const reducedMotion = globalThis.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
 
   // becurile: elementul de lumină și strălucirea curentă
   const lamps = [...document.querySelectorAll('.lamp')].map((g) => ({ id: g.id, glow: g.querySelector('.glow'), b: 0, shown: -1 }));
   const switches = { M: new Uint8Array(31), RAI: new Uint8Array(10) };
   const LATCHING = /^switch-(M|RAI|pulses)-/;
+  let view3d = null, v3state = 'off', show3d = false;   // vederea 3D (mai jos); manetele ei urmează setLever
   const setLever = (id, up) => {
     const el = $(id);
     if (!el) return;
     el.classList.toggle('up', up);
     el.classList.toggle('down', !up);
     if (LATCHING.test(id)) el.setAttribute('aria-pressed', String(up));
+    if (view3d) view3d.setLever(id, up);       // maneta din modelul 3D urmează desenul
   };
   const labelSwitches = () => {
     for (const el of document.querySelectorAll('.switch')) el.setAttribute('aria-label', T().switchLabel(el.id));
@@ -417,7 +442,6 @@ async function main() {
   for (const x of MODES) $(`mode-${x}`).setAttribute('aria-pressed', String(x === mode));
 
   // vederea 3D: modelul se încarcă la prima cerere; becurile urmează aceeași strălucire ca în 2D
-  let view3d = null, v3state = 'off', show3d = false;
   const label3d = () => {
     const b = $('view-3d'), V = T().view3d;
     b.textContent = show3d ? '2D' : '3D';
@@ -425,6 +449,7 @@ async function main() {
     b.setAttribute('aria-label', show3d ? V.to2d : V.to3d);
     b.title = show3d ? V.to2d : V.to3d;
     $('desk-3d-msg').textContent = v3state === 'loading' ? V.loading : v3state === 'unavailable' ? V.unavailable : V.note;
+    $('zones3d').hidden = v3state !== 'ready';
   };
   const set3D = (on) => {
     show3d = on && v3state !== 'unavailable';
@@ -432,8 +457,17 @@ async function main() {
     document.querySelector('#desk .frame').hidden = show3d;
     if (show3d && v3state === 'off') {
       v3state = 'loading';
-      createView3D($('desk-3d'), { positions, colors })
-        .then((v) => { view3d = v; v3state = 'ready'; label3d(); })
+      // un clic pe o manetă a modelului face exact ce face clicul pe comutatorul desenat (și în modul Explică)
+      const onPick = (id) => {
+        if (explaining) explain(id, null);
+        else { press(id); tourEvent({ type: 'click', id }); }
+      };
+      createView3D($('desk-3d'), { positions, colors, onPick, onZone: markZone })
+        .then((v) => {
+          view3d = v; v3state = 'ready';
+          for (const el of document.querySelectorAll('.switch')) v.setLever(el.id, el.classList.contains('up'));
+          label3d();
+        })
         .catch((e) => {
           console.warn('vederea 3D:', e);
           v3state = 'unavailable'; set3D(false);
@@ -443,6 +477,54 @@ async function main() {
     label3d();
   };
   $('view-3d').addEventListener('click', () => { if (!explaining) set3D(!show3d); });
+  // zonele camerei: butoane deasupra modelului; în modul Explică, explică vederea 3D
+  for (const z of ZONES3D) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.id = `zone3d-${z.id}`; b.dataset.zone = z.id;
+    b.setAttribute('aria-pressed', String(z.id === 'all'));
+    $('zones3d').append(b);
+  }
+  const labelZones = () => {
+    $('zones3d').setAttribute('aria-label', T().zones3d.label);
+    for (const b of $('zones3d').children) b.textContent = T().zones3d[b.dataset.zone];
+  };
+  function markZone(id) { for (const b of $('zones3d').children) b.setAttribute('aria-pressed', String(b.dataset.zone === id)); }
+  $('zones3d').addEventListener('click', (e) => {
+    const b = e.target.closest && e.target.closest('button[data-zone]');
+    if (!b) return;
+    if (explaining) { explain('view3d', b); return; }
+    if (view3d && view3d.focus(b.dataset.zone, { instant: reducedMotion.matches })) markZone(b.dataset.zone);
+  });
+  langListeners.push(labelZones);
+  labelZones();
+
+  // pe telefon, filele de jos: o atingere duce la partea mașinii (Atelierul și Pupitrul schimbă și vederea);
+  // fila părții de pe ecran e marcată, oriunde ar ajunge vizitatorul derulând
+  const TABS = [...$('phone-tabs').querySelectorAll('button')];
+  const labelTabs = () => {
+    $('phone-tabs').setAttribute('aria-label', T().tabs.label);
+    for (const b of TABS) b.textContent = T().tabs[b.id.slice(4)];
+  };
+  const markTab = () => {
+    let cur = TABS[0];
+    for (const b of TABS) {
+      const el = $(b.dataset.target);
+      if (el && el.offsetParent !== null && el.getBoundingClientRect().top <= innerHeight * 0.4) cur = b;
+    }
+    for (const b of TABS) b.setAttribute('aria-current', String(b === cur));
+  };
+  $('phone-tabs').addEventListener('click', (e) => {
+    const b = e.target.closest && e.target.closest('button[data-target]');
+    if (!b) return;
+    if (b.id === 'tab-atelier' && mode === 'console') setMode('atelier');
+    if (b.id === 'tab-desk' && mode === 'atelier') setMode('console');
+    $(b.dataset.target).scrollIntoView({ block: 'start' });   // salt direct, ca la file
+  });
+  let tabFrame = 0;
+  addEventListener('scroll', () => { if (!tabFrame) tabFrame = setTimeout(() => { tabFrame = 0; markTab(); }, 80); }, { passive: true });
+  langListeners.push(labelTabs);
+  labelTabs();
+  markTab();
   langListeners.push(label3d);
   label3d();
 
@@ -479,7 +561,13 @@ async function main() {
     if (Math.abs(snap.tapePos - smoothTape) < 0.01) smoothTape = snap.tapePos;
     renderTape($('tape'), tapeRows, snap.tapePos, smoothTape);
     renderSheet($('sheet'), sheet);
-    drumStreaks.setAttribute('transform', `translate(${streaksOffset(drumPhase(performance.now(), { reducedMotion: reducedMotion.matches })).toFixed(2)} 0)`);
+    const ph = drumPhase(performance.now(), { reducedMotion: reducedMotion.matches });
+    seams(ph).forEach((s, i) => {
+      const el = drumSeams[i];
+      el.setAttribute('x', s.x.toFixed(2)); el.setAttribute('width', s.w.toFixed(2)); el.setAttribute('opacity', s.op.toFixed(3));
+    });
+    drumMapAge += dt;
+    if (drumMapAge >= 250) { drumMapAge = 0; refreshDrumMap(snap.state.RAI, runner.mode === 'automat'); }
     const st = runner.pulsesOff ? T().pulsesOff
       : runner.mode === 'automat' ? T().running
         : lastHalt !== null && lastHalt !== HALT.OK ? T().halt[lastHalt] : T().idle;

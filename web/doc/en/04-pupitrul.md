@@ -40,9 +40,11 @@ Eleven voltmeters (one is missing today, only its bezel remains), a selector, a 
 ## The 3D view
 The **3D** button in the top bar shows the console as a three-dimensional model: “MECIPT-1” by marius0198 (Sketchfab, 2020, CC BY 4.0), the model the panels were redrawn from.
 
-- Rotate the console with the mouse or a finger, and zoom with the wheel or two fingers.
+- Rotate the console with the mouse or a finger, and zoom with the wheel (towards the pointer) or two fingers.
+- The **zones** above the model bring the camera in front of one part: CALCULEAZĂ, Commands, RAI register, M register, RI and RA, Generator, Voltmeters; “Whole console” takes it back.
 - **The model’s lamps light up following the emulated machine**, just like on the drawn panels. Each of the 161 lamps is tied to its object in the model.
-- In 3D the console is only looked at: the model’s switches do not move. The controls are pressed in the 2D view (the **2D** button).
+- **The switches can be pressed in 3D too**: a short click (or a tap) on a switch lever does exactly what clicking the drawn switch does; dragging only rotates the console. The model’s levers tilt up or down following their state, as in 2D. Each of the 63 switches is tied to its object in the model.
+- The speed selector, the program choice, the tape reader and the typewriter stay on the page; with the keyboard, the switches are operated in the 2D view.
 - The model and the three.js library load only at the first press on 3D, about 4.5 MB. Without WebGL, the page stays in 2D and says why.
 
 ## The magnetic drum
@@ -55,6 +57,8 @@ Below the console, next to the tape reader and the typewriter, the magnetic drum
   - the brass oil cup;
   - the panel with the **FŰTÉS** (“heating”) and **TÖRLÉS** (“erase”) lamps, the green lamp and the rotary switch.
 - **GUESSED**: the green lamp is lit while the machine is powered and the other two are off. The rotation is slowed down: at 50 revolutions a second the eye would see only a blur.
+- **The drum map**, next to the drawing: a ring with all 1024 words, coloured by provenance as in the Workshop. When a tape loads, the ring fills up; while the machine runs, a yellow mark shows the current instruction (RAI). Even addresses lie on the right half, odd ones on the left, as on the real drum (DEDUCED, Baltac). The map is an emulator tool: on the machine the drum’s contents were not visible.
+- The stripes passing over the cylinder show the rotation, slowed down; their drawing is GUESSED.
 
 ## Sound
 No recordings of MECIPT-1 exist, so the console sounds are **reconstructed** (GUESSED) and synthesised in the browser. They follow exactly what the emulated machine does:

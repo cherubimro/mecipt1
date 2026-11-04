@@ -188,10 +188,17 @@ f.addEventListener('load', () => {
     () => `INEX: HIRTIA ${glow('lamp-indicators-1')}, banda ${P.runner.machine.tapePos()}, mod ${P.runner.mode}`);
   stage('tambur');
   // tamburul magnetic: desenat după fotografie, se rotește, are ajutor
-  const cells = () => d.querySelector('#drum .streaks').getAttribute('transform');
+  const cells = () => [...d.querySelectorAll('#drum .seam')].map((s) => s.getAttribute('x')).join();
   if (!d.querySelector('#drum svg .head-block')) fail('tamburul nu e desenat');
   const c0 = cells(); await new Promise((r) => setTimeout(r, 150)); P.advance(16);
   if (cells() === c0) fail('tamburul nu se rotește: ' + c0);
+  // harta tamburului: după banda INEX-1 (190 de cuvinte, 0002–0277) inelul e plin în dreptul lor
+  P.advance(300);
+  const nMap = Number((d.getElementById('drum-map-legend').textContent.match(/\d+/) || [0])[0]);
+  if (nMap < 190) fail('harta tamburului după INEX: ' + d.getElementById('drum-map-legend').textContent);
+  const px = d.getElementById('drum-map').getContext('2d').getImageData(0, 0, 320, 320).data;
+  let lit = 0; for (let i = 0; i < px.length; i += 4) if (px[i + 3] > 0 && px[i] > 150) lit++;
+  if (lit < 500) fail('harta tamburului e goală pe ecran: ' + lit);
   d.getElementById('drum').click();
   if (d.getElementById('help-title').textContent !== helpRO.entries.drum.title) fail('ajutorul tamburului: ' + d.getElementById('help-title').textContent);
   d.getElementById('help-close').click();
@@ -334,8 +341,36 @@ f.addEventListener('load', () => {
     if (!d.querySelector('.frame').closest('[hidden]') && d.querySelector('.frame').offsetParent !== null) fail('3D: pupitrul 2D încă se vede');
     if (P.view3d().lampCount !== 161) fail('3D: becuri legate ' + P.view3d().lampCount);
     if (d.getElementById('view-3d').getAttribute('aria-pressed') !== 'true') fail('3D: butonul nu arată starea');
-    click('switch-compute-0');
+    if (P.view3d().switchCount !== 63) fail('3D: comutatoare legate ' + P.view3d().switchCount);
+    // un clic de mouse pe maneta CALCULEAZĂ din model pornește mașina, ca în 2D; o tragere doar rotește
+    P.advance(50);
+    const cv = d.querySelector('#desk-3d canvas'), sc = P.view3d().screenOf('switch-compute-0');
+    if (!sc || P.view3d().pickAt(sc.x, sc.y) !== 'switch-compute-0') fail('3D: maneta CALCULEAZĂ nu se nimerește: ' + JSON.stringify(sc));
+    const ptr = (type, dx = 0) => cv.dispatchEvent(new w.PointerEvent(type, { bubbles: true, clientX: sc.x + dx, clientY: sc.y,
+      pointerId: 1, pointerType: 'mouse', isPrimary: true, button: 0, buttons: type === 'pointerup' ? 0 : 1 }));
+    const nDrag = m.instructions();
+    ptr('pointerdown'); ptr('pointerup', 40);                 // tragere: nu apasă nimic
+    if (d.getElementById('switch-compute-0').classList.contains('up')) fail('3D: o tragere a ridicat CALCULEAZĂ');
+    P.advance(200);
+    if (m.instructions() !== nDrag) fail('3D: o tragere a apăsat CALCULEAZĂ');
+    ptr('pointerdown'); ptr('pointerup');
+    if (!d.getElementById('switch-compute-0').classList.contains('up')) fail('3D: clicul pe manetă nu apasă comutatorul');
     await until(() => P.view3d().lit() > 5, 20000, () => '3D: becurile nu se aprind: ' + P.view3d().lit());
+    await until(() => m.instructions() > nDrag, 20000, '3D: clicul pe CALCULEAZĂ nu a pornit mașina');
+    // zonele camerei: „Registrul M” aduce rândul M aproape (lat pe ecran); „Tot pupitrul” îl duce înapoi
+    if (d.getElementById('zones3d').hidden || d.querySelectorAll('#zones3d button').length !== 8) fail('3D: lipsesc butoanele zonelor');
+    const spanM = () => { const a = P.view3d().screenOf('switch-M-0'), b = P.view3d().screenOf('switch-M-30'); return Math.hypot(b.x - a.x, b.y - a.y); };
+    const wAll = spanM();
+    click('zone3d-M');
+    for (let k = 0; k < 25; k++) { P.advance(50); await sleep(50); }
+    const cvw = cv.getBoundingClientRect().width;
+    if (d.getElementById('zone3d-M').getAttribute('aria-pressed') !== 'true') fail('3D: butonul zonei M nu arată starea');
+    if (!(spanM() > 0.6 * cvw && spanM() < cvw)) fail(`3D: zona M nu încape bine pe ecran: ${spanM().toFixed(0)} din ${cvw.toFixed(0)} (înainte ${wAll.toFixed(0)})`);
+    const sM = P.view3d().screenOf('switch-M-15');
+    if (P.view3d().pickAt(sM.x, sM.y) !== 'switch-M-15') fail('3D: în zona M, maneta 15 nu se nimerește');
+    click('zone3d-all');
+    for (let k = 0; k < 25; k++) { P.advance(50); await sleep(50); }
+    if (Math.abs(spanM() - wAll) > 2) fail('3D: „Tot pupitrul” nu revine: ' + spanM().toFixed(0) + ' față de ' + wAll.toFixed(0));
     P.runner.enqueue({ op: 13 });                   // OP.OPRESTE
     P.advance(50);
   } else if (P.view3dState() === 'unavailable') {
@@ -373,6 +408,28 @@ f.addEventListener('load', () => {
   // mașina de scris înaintea tamburului; rândurile lungi (60 de caractere la sinus) se derulează pe coală
   if (pd.querySelector('.typewriter').getBoundingClientRect().top > pd.querySelector('.drum-device').getBoundingClientRect().top) fail('pe telefon, mașina de scris vine după tambur');
   if (ph.contentWindow.getComputedStyle(pd.querySelector('.sheet-paper')).overflowX !== 'auto') fail('pe telefon, coala nu se derulează orizontal');
+  // filele de jos: fixe la marginea ecranului, câte una pentru fiecare parte; o atingere duce la partea ei
+  const tabs = pd.getElementById('phone-tabs');
+  if (!tabs || ph.contentWindow.getComputedStyle(tabs).display === 'none') fail('pe telefon lipsesc filele de jos');
+  const tb = tabs.getBoundingClientRect();
+  if (Math.abs(tb.bottom - 800) > 2 || tb.height < 44) fail(`filele de jos nu stau jos: ${tb.top.toFixed(0)}–${tb.bottom.toFixed(0)}`);
+  if (tabs.querySelectorAll('button').length !== 5) fail('filele de jos: ' + tabs.querySelectorAll('button').length);
+  for (const b of tabs.querySelectorAll('button')) if (b.getBoundingClientRect().height < 44) fail('fila prea mică: ' + b.textContent);
+  pd.getElementById('tab-drum').click();
+  // tamburul vine ultimul: ajunge sus sau, la capătul paginii, se vede întreg deasupra filelor
+  const atEnd = () => ph.contentWindow.scrollY + ph.contentWindow.innerHeight >= pd.documentElement.scrollHeight - 2;
+  const dr = () => pd.querySelector('.drum-device').getBoundingClientRect();
+  await until(() => Math.abs(dr().top) < 30 || (atEnd() && dr().top >= 0 && dr().bottom <= tb.top), 5000,
+    () => 'fila Tambur nu duce la tambur: ' + pd.querySelector('.drum-device').getBoundingClientRect().top.toFixed(0));
+  await until(() => pd.getElementById('tab-drum').getAttribute('aria-current') === 'true', 3000, 'fila Tambur nu se marchează');
+  pd.getElementById('tab-atelier').click();
+  await until(() => ph.contentDocument.body.dataset.mode === 'atelier' && Math.abs(pd.getElementById('atelier').getBoundingClientRect().top) < 30, 5000, 'fila Atelier');
+  pd.getElementById('tab-desk').click();
+  await until(() => ph.contentDocument.body.dataset.mode === 'console' && pd.getElementById('desk').getBoundingClientRect().top > -30, 5000, 'fila Pupitru');
+  // ultimul rând al paginii nu rămâne sub file
+  ph.contentWindow.scrollTo(0, 1e6); ph.contentWindow.__pupitru.advance(50);
+  if (pd.querySelector('.credits').getBoundingClientRect().bottom > tb.top + 1) fail('subsolul rămâne sub filele de jos');
+  ph.contentWindow.scrollTo(0, 0);
   ph.contentWindow.__pupitru.setMode('atelier'); ph.contentWindow.__pupitru.advance(50);
   if (wide(ph) > 0) fail('pe telefon, Atelierul derulează orizontal cu ' + wide(ph) + ' px');
   ph.contentWindow.__pupitru.setMode('console');
@@ -384,6 +441,7 @@ f.addEventListener('load', () => {
     if (wide(mid) > 0) fail(`la 1280 px, vederea ${m} derulează orizontal cu ${wide(mid)} px`);
   }
   mid.contentWindow.__pupitru.setMode('console');
+  if (mid.contentWindow.getComputedStyle(mid.contentDocument.getElementById('phone-tabs')).display !== 'none') fail('la 1280 px se văd filele de telefon');
   mid.remove();
   stage('documentatie');
   if (!d.getElementById('doc-link').getAttribute('href').startsWith('doc.html')) fail('linkul spre documentație');

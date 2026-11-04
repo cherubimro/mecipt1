@@ -40,9 +40,11 @@ Unsprezece voltmetre (unul lipsește azi, se vede doar rama), un selector, un co
 ## Vederea 3D
 Butonul **3D** din bara de sus arată pupitrul ca model tridimensional: „MECIPT-1” de marius0198 (Sketchfab, 2020, CC BY 4.0), modelul din care s-au redesenat panourile.
 
-- Pupitrul se rotește cu mouse-ul sau cu degetul și se apropie cu rotița sau cu două degete.
+- Pupitrul se rotește cu mouse-ul sau cu degetul și se apropie cu rotița (spre punctul arătat) sau cu două degete.
+- **Zonele** de deasupra modelului duc camera în fața unei părți: CALCULEAZĂ, Comenzi, Registrul RAI, Registrul M, RI și RA, Generatorul, Voltmetrele; „Tot pupitrul” o întoarce.
 - **Becurile modelului se aprind după mașina emulată**, la fel ca pe panourile desenate. Fiecare dintre cele 161 de becuri e legat de obiectul lui din model.
-- În 3D pupitrul doar se privește: comutatoarele modelului nu se mișcă. Comenzile se apasă în vederea 2D (butonul **2D**).
+- **Comutatoarele se apasă și în 3D**: un clic scurt (sau o atingere) pe maneta unui comutator face exact ce face clicul pe comutatorul desenat; tragerea doar rotește pupitrul. Manetele modelului se înclină în sus sau în jos după starea lor, ca în 2D. Cele 63 de comutatoare sunt legate fiecare de obiectul lui din model.
+- Selectorul de viteză, alegerea programului, cititorul de bandă și mașina de scris rămân în pagină; cu tastatura, comutatoarele se acționează în vederea 2D.
 - Modelul și biblioteca three.js se încarcă abia la prima apăsare pe 3D, cam 4,5 MB. Fără WebGL, pagina rămâne în 2D și spune de ce.
 
 ## Tamburul magnetic
@@ -55,6 +57,8 @@ Sub pupitru, lângă cititorul de bandă și mașina de scris, e desenat tamburu
   - ungătoarea de alamă;
   - panoul cu becurile **FŰTÉS** („încălzire”) și **TÖRLÉS** („ștergere”), becul verde și comutatorul rotativ.
 - **GHICIT**: becul verde e aprins cât mașina e sub tensiune, iar celelalte două sunt stinse. Rotația e încetinită: la 50 de rotații pe secundă ochiul n-ar vedea decât o pată.
+- **Harta tamburului**, lângă desen: un inel cu toate cele 1024 de cuvinte, colorate după proveniență ca în Atelier. Când se încarcă banda, inelul se umple; cât rulează mașina, un semn galben arată instrucțiunea curentă (RAI). Adresele pare stau pe jumătatea dreaptă, cele impare pe cea stângă, ca pe tamburul adevărat (DEDUS, Baltac). Harta e o unealtă a emulatorului: pe mașină conținutul tamburului nu se vedea.
+- Dungile care trec pe cilindru arată rotația, încetinită; desenul lor e GHICIT.
 
 ## Sunetul
 Nu există înregistrări ale MECIPT-1, așa că sunetele pupitrului sunt **reconstruite** (GHICIT) și sintetizate în browser. Ele urmează exact ce face mașina emulată:

@@ -97,6 +97,11 @@ body:not([data-mode="atelier"]) .panels[data-view="all"] #panel-right { transfor
 
 /* ---- perifericele ---- */
 .desk-3d { position: relative; height: min(62vh, 640px); min-height: 320px; background: var(--wall); border-radius: 3px; overflow: hidden; }
+.zones3d { position: absolute; z-index: 1; left: 10px; right: 10px; top: 10px; display: flex; flex-wrap: wrap; gap: 6px; pointer-events: none; }
+.zones3d button { pointer-events: auto; font: inherit; font-size: 14px; min-height: 34px; padding: 3px 11px; color: var(--strip-ink);
+  background: rgba(236, 238, 234, 0.92); border: 1px solid #8f969a; border-radius: 3px; cursor: pointer; }
+.zones3d button[aria-pressed="true"] { background: var(--strip-ink); color: var(--strip); }
+.zones3d[hidden] { display: none; }
 .desk-3d canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
 .desk-3d-msg { position: absolute; left: 12px; bottom: 8px; right: 12px; margin: 0; font-size: 14px; color: var(--wall-text);
   text-shadow: 0 1px 2px #000; pointer-events: none; }
@@ -107,6 +112,10 @@ body:not([data-mode="atelier"]) .panels[data-view="all"] #panel-right { transfor
 .device-note { margin: 6px 0 0; font-size: 14px; color: #c4c8c4; }
 .tape svg { display: block; width: 100%; height: auto; border-radius: 2px; }
 .mag-drum svg { display: block; width: 100%; height: auto; border-radius: 2px; }
+.drum-pair { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 12px; align-items: center; }
+.drum-map-fig { margin: 0; }
+.drum-map { display: block; width: 100%; height: auto; aspect-ratio: 1; }
+.drum-map-legend { margin: 6px 0 0; font-size: 13px; line-height: 1.35; color: #c4c8c4; text-align: center; }
 
 .typewriter { background: #3e4245; }
 .sheet { position: relative; --sheet-pad: 1.5ch; font-family: 'Courier Prime', 'Courier New', monospace; font-size: 15px; }
@@ -116,6 +125,7 @@ body:not([data-mode="atelier"]) .panels[data-view="all"] #panel-right { transfor
 .carriage { position: relative; height: 18px; background: linear-gradient(180deg, #9ea3a1, #5f6462); }
 .carriage-mark { position: absolute; top: 0; width: 1ch; height: 6px; background: #e8d36a; }
 
+.phone-tabs { display: none; }
 .credits { padding: 0 24px 24px; font-size: 13.5px; color: #9aa19c; max-width: 80ch; }
 
 /* ---- explicațiile ---- */
@@ -271,4 +281,13 @@ body[data-mode="atelier"] .desk { padding: 12px 18px 16px; }
   .help-panel { width: 100vw; }
   .tour-card { width: calc(100vw - 16px); bottom: 8px; }
   .at-editor { overflow-x: auto; }
+  /* filele de jos: duc la fiecare parte a mașinii; pagina lasă loc sub ele */
+  body { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+  .phone-tabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); position: fixed; z-index: 14; left: 0; right: 0; bottom: 0;
+    height: 60px; padding: 4px 4px max(4px, env(safe-area-inset-bottom)); box-sizing: content-box; gap: 2px;
+    background: var(--strip); border-top: 1px solid #8f969a; box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.25); }
+  .phone-tabs button { font: inherit; font-size: 12.5px; line-height: 1.15; color: var(--strip-ink); background: none; border: 0; border-radius: 3px;
+    min-height: 48px; padding: 2px; cursor: pointer; }
+  .phone-tabs button[aria-current="true"] { background: var(--strip-ink); color: var(--strip); }
+  .tour-card { bottom: 76px; }
 }

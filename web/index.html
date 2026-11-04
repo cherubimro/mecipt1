@@ -54,7 +54,7 @@
 
 <main class="room">
   <div class="desk" id="desk">
-    <div id="desk-3d" class="desk-3d" hidden><p id="desk-3d-msg" class="desk-3d-msg"></p></div>
+    <div id="desk-3d" class="desk-3d" hidden><div id="zones3d" class="zones3d" role="group"></div><p id="desk-3d-msg" class="desk-3d-msg"></p></div>
     <div class="frame">
       <div class="panels" id="panels" data-view="all">
         <div class="panel-slot" id="panel-left"></div>
@@ -79,17 +79,23 @@
     </div>
   </section>
   <div class="peripherals">
-    <section class="device drum-device">
+    <section class="device drum-device" id="dev-drum">
       <h2 id="drum-label">Tamburul magnetic</h2>
-      <div id="drum" class="mag-drum"></div>
+      <div class="drum-pair">
+        <div id="drum" class="mag-drum"></div>
+        <figure class="drum-map-fig" id="drum-map-fig">
+          <canvas id="drum-map" class="drum-map" width="320" height="320" role="img"></canvas>
+          <figcaption id="drum-map-legend" class="drum-map-legend" aria-live="off"></figcaption>
+        </figure>
+      </div>
       <p id="drum-info" class="device-note"></p>
     </section>
-    <section class="device reader">
+    <section class="device reader" id="dev-reader">
       <h2 id="reader-label">Cititorul de bandă perforată</h2>
       <div id="tape" class="tape"></div>
       <p id="tape-info" class="device-note"></p>
     </section>
-    <section class="device typewriter">
+    <section class="device typewriter" id="dev-typewriter">
       <h2 id="typewriter-label">Mașina de scris</h2>
       <div id="sheet" class="sheet"></div>
     </section>
@@ -110,6 +116,13 @@
   <button id="help-more-btn" type="button" aria-expanded="false" aria-controls="help-more">Mai multe detalii</button>
   <div id="help-more" class="help-more" hidden></div>
 </aside>
+<nav id="phone-tabs" class="phone-tabs">
+  <button id="tab-desk" type="button" data-target="desk"></button>
+  <button id="tab-typewriter" type="button" data-target="dev-typewriter"></button>
+  <button id="tab-reader" type="button" data-target="dev-reader"></button>
+  <button id="tab-drum" type="button" data-target="dev-drum"></button>
+  <button id="tab-atelier" type="button" data-target="atelier"></button>
+</nav>
 <footer class="credits"><p id="attribution"></p></footer>
 <script type="module" src="js/app.js"></script>
 </body>

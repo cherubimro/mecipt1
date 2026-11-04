@@ -147,8 +147,10 @@ The sound choices (`web/js/sound/`). No recordings of MECIPT-1 exist.
 
 | Choice | Status | Reason / source |
 |---|---|---|
-| 3D view: marius0198’s model with lamps lit from the emulator; the model’s switches stay still | — (emulator rule) | the model is an artistic reconstruction (Sketchfab, CC BY 4.0); the lamp–object link comes from `positions.json` (tools/dae_layout.py) |
+| 3D view: marius0198’s model with lamps lit from the emulator; the switch levers are pressed with a click and tilt with their state (angle chosen by eye) | — (emulator rule) | the model is an artistic reconstruction (Sketchfab, CC BY 4.0); the lamp/switch–object link comes from `positions.json` (tools/dae_layout.py) |
 | The drum drawn below the console: upright, on the gold cabinet, with the head blocks around it and the FŰTÉS / TÖRLÉS panel | CERTAIN (the look) | Turbojet’s photographs, Museum of Banat, 2015 (Wikimedia Commons, CC BY-SA 4.0); capacity and speed: Farcaș, Baltac |
+| Drum map: even addresses on one half of the ring, odd ones on the other | DEDUCED | Baltac, facsimile 8 (even and odd addresses on different halves of the drum); the map itself is an emulator tool |
+| The stripes passing over the drawn cylinder | GUESSED | they only show the rotation (slowed down); the real steel is not documented in detail |
 | The drum’s green lamp lit while the machine is powered; FŰTÉS and TÖRLÉS off; its switches do nothing | GUESSED | their function is not documented |
 | In the drawing the rotation is slowed down (one turn every 1.6 s) and goes on while the page is open | — (emulator rule) | at 50 rev/s the eye would see only a blur; the drum spun while the machine was powered |
 | The drum hum has a 50 Hz fundamental (with harmonics) | DEDUCED | The drum turns 50 times a second: 1024 word times per turn, 51,200 a second (`core/machine.h`). |

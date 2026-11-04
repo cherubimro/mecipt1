@@ -99,6 +99,7 @@ export class Machine {
   console(op, arg = 0) {
     if (this.exports.api_console(op, arg | 0) < 0) throw new Error(`operație de pupitru necunoscută: ${op}`);
   }
+  provCode(addr) { return this.exports.api_prov(addr); }   // doar codul (indice în PROV), fără textul sursei
   provenance(addr) {
     return { kind: PROV[this.exports.api_prov(addr)] ?? 'NONE', source: this.cstr(this.exports.api_prov_source(addr)) };
   }
