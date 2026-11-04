@@ -8,7 +8,7 @@
 - **Dan D. Farcaș**, *MECIPT, o istorie subiectivă*, 2005.
 - **Ștefan Mărușter**, *Povestea unei lucrări*.
 - **Vasile Baltac**, *Key Aspects of the History of Computing in Romania*.
-- **marius0198**, modelul 3D [„MECIPT-1”](https://sketchfab.com/3d-models/mecipt-1-62ddfc49f1c54967967d76abab5f3d2d), Sketchfab, 2020, CC BY 4.0 — texturile panourilor și pozițiile becurilor.
+- **marius0198**, modelul 3D [„MECIPT-1”](https://sketchfab.com/3d-models/mecipt-1-62ddfc49f1c54967967d76abab5f3d2d), Sketchfab, 2020, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) — texturile panourilor și pozițiile becurilor, plus vederea 3D. Modificat de noi: texturile panourilor laterale convertite în JPEG, reflexia blițului scoasă din textura panoului drept; la afișare, raftul și fața ramei vopsite în albastrul modelului, metalul lucios, acele voltmetrelor de sus reașezate, voltmetrul lipsă completat, manetele înclinate după starea comutatoarelor.
 - **Turbojet**, [„MECIPT-1 Control desk”](https://commons.wikimedia.org/wiki/File:MECIPT-1_Control_desk.jpg), Wikimedia Commons, 2011, CC BY-SA 4.0 — aspectul și culorile pupitrului restaurat.
 - **Turbojet**, [„MECIPT-1 Drum memory”](https://commons.wikimedia.org/wiki/File:MECIPT-1_Drum_memory.jpg) și [„MECIPT-1 Drum memory 2”](https://commons.wikimedia.org/wiki/File:MECIPT-1_Drum_memory_2.jpg), Wikimedia Commons, 2015, CC BY-SA 4.0 — tamburul magnetic, la Muzeul Banatului.
 

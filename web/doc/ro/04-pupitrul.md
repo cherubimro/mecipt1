@@ -38,7 +38,7 @@ Sub grilă: **GENERATOR PRINCIPAL** (IMPULSURI, FRECVENȚĂ FIN, FRECVENȚĂ TRE
 Unsprezece voltmetre (unul lipsește azi, se vede doar rama), un selector, un comutator rotativ mare și comutatoare mici. Arătau, probabil, tensiunile de alimentare ale tuburilor; ce măsura fiecare și scalele sunt GHICITE. Cele patru voltmetre de sus sunt desenate cu scala 0–250 V (GHICIT).
 
 ## Vederea 3D
-Butonul **3D** din bara de sus arată pupitrul ca model tridimensional: „MECIPT-1” de marius0198 (Sketchfab, 2020, CC BY 4.0), modelul din care s-au redesenat panourile.
+Butonul **3D** din bara de sus arată pupitrul ca model tridimensional: „MECIPT-1” de marius0198 (Sketchfab, 2020, CC BY 4.0), modelul din care s-au redesenat panourile. Licența și lista modificărilor noastre sunt în capitolul 8, Surse.
 
 - Pupitrul se rotește cu mouse-ul sau cu degetul și se apropie cu rotița (spre punctul arătat) sau cu două degete.
 - **Zonele** de deasupra modelului duc camera în fața unei părți: CALCULEAZĂ, Comenzi, Registrul RAI, Registrul M, RI și RA, Generatorul, Voltmetrele; „Tot pupitrul” o întoarce.
