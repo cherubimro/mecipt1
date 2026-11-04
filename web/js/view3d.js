@@ -46,7 +46,8 @@ export async function createView3D(container, { positions, colors, model = 'mode
   };
   glow(18, 6, 3.2, 0, 5.9, 0, Math.PI / 2, 0);          // plafonul
   glow(14, 5, 2.4, 0, 2, 14.9, 0, 0);                   // fereastra, în spatele vizitatorului
-  glow(6, 4, 1.6, -14.9, 2, 0, 0, Math.PI / 2);         // un perete luminat, din stânga
+  glow(6, 4, 1.6, -14.9, 2, 0, 0, Math.PI / 2);         // pereții luminați din stânga și din dreapta: fiecare panou
+  glow(6, 4, 1.6, 14.9, 2, 0, 0, -Math.PI / 2);         // lateral oglindește peretele din fața lui, la fel
   scene.environment = pmrem.fromScene(room, 0.04).texture;
   pmrem.dispose();
 
@@ -69,19 +70,14 @@ export async function createView3D(container, { positions, colors, model = 'mode
     g.addGroup(a.length, b.length, 1);
     o.material = [blue[0], o.material];
   });
-  // Vopseaua albastră (dulapurile, fața din mijloc, raftul): mată, ca să nu oglindească încăperea.
+  // Vopseaua albastră (dulapurile, fața din mijloc, raftul) își păstrează luciul din model: oglindește încăperea.
   // Metalul (manetele comutatoarelor, soclurile butoanelor, ramele): aluminiu și crom lucios. Textura modelului e
   // gri închis (în medie 72/255) și modelul adaugă un cenușiu propriu; un metal real oglindește aproape tot.
   root.traverse((o) => {
     if (!o.isMesh) return;
     for (const m of Array.isArray(o.material) ? o.material : [o.material]) {
       if (m.userData.tuned) continue;
-      if (m.name === 'Blue_Plastic') {
-        m.userData.tuned = true;
-        m.metalness = 0;
-        m.roughness = 0.62;
-        m.envMapIntensity = 0.45;
-      } else if (m.name === 'Metal_Part') {
+      if (m.name === 'Metal_Part') {
         m.userData.tuned = true;
         m.emissive.setRGB(0, 0, 0);
         m.color.setScalar(2.7);
