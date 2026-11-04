@@ -4,6 +4,11 @@ Emulatorul primului calculator universitar din România, **MECIPT-1** (Institutu
 Timișoara, 1961), pentru vizitatorii unui muzeu: pupitrul de comandă așa cum arată azi, viu, cu
 programele originale din 1962.
 
+Inspirat de publicarea codului sursă original al calculatorului de ghidare Apollo (AGC) — Comanche055 și
+Luminary099, zborul Apollo 11 — în domeniul public, digitizat după listingurile de la MIT Museum de proiectul
+Virtual AGC (https://github.com/chrislgarry/Apollo-11, https://github.com/virtualagc/virtualagc): o mașină istorică
+pe care o poți rula și citi azi, cu programele ei adevărate.
+
 ## Starea proiectului
 - **Nucleul** (Planul 1): mașina în C — tamburul de 1024 de cuvinte, registrele, setul de
   instrucțiuni, microoperațiile panoului stâng, cititorul de bandă și mașina de scris. Rulează

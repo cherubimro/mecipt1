@@ -27,6 +27,8 @@ Emulatorul MECIPT-1 n-are încă versiuni numerotate; schimbările sunt grupate 
 - Autorul, (C) 2026 Alin-Adrian Anton <alin.anton@upt.ro>, apare în subsolul paginii, în documentație, în README și
   în `LICENSE-CONTINUT.md`.
 - Documentația se deschide într-un tab nou, ca pupitrul să rămână pe loc.
+- README și documentația (capitolul 1) spun de unde vine ideea: codul original al calculatorului de ghidare Apollo
+  (AGC), în domeniul public, digitizat de proiectul Virtual AGC.
 
 ### Reparat
 - Lumina „de nicăieri” de pe panoul drept în 3D (era reflexia blițului din fotografia texturii).
