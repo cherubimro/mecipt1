@@ -229,6 +229,26 @@ export async function createView3D(container, { positions, colors, model = 'mode
     }
     return best;
   };
+  // Unde e maneta în fereastra modelului (pentru săgeata îndrumării, desenată în pagină peste model) și dacă se
+  // vede: în fața camerei, în cadru și neascunsă de alt obiect (o rază spre ea nu lovește altceva întâi).
+  const sightRay = new THREE.Raycaster();
+  const anchor = (id) => {
+    const l = levers.get(id);
+    if (!l) return null;
+    const c = container.getBoundingClientRect();
+    const s = toScreen(l.obj, canvas.getBoundingClientRect());
+    const x = s.x - c.left, y = s.y - c.top;
+    let visible = s.z < 1 && x >= 0 && y >= 0 && x <= c.width && y <= c.height;
+    if (visible) {
+      const p = l.obj.getWorldPosition(new THREE.Vector3());
+      const dir = p.sub(camera.position), dist = dir.length();
+      sightRay.set(camera.position, dir.normalize());
+      sightRay.far = dist;
+      const hit = sightRay.intersectObject(root, true)[0];
+      if (hit && !hit.object.userData.switchId && hit.distance < dist - span * 0.01) visible = false;
+    }
+    return { x, y, visible };
+  };
   // clic = apăsare și ridicare aproape în același loc; altfel e o rotire a pupitrului
   let down = null;
   canvas.addEventListener('pointerdown', (e) => { down = { x: e.clientX, y: e.clientY, t: performance.now() }; });
@@ -259,6 +279,7 @@ export async function createView3D(container, { positions, colors, model = 'mode
     switchCount: levers.size,
     setLever,
     pickAt,
+    anchor,
     // centrul manetei pe ecran (coordonatele ferestrei), pentru încercări
     screenOf(id) { const l = levers.get(id); return l ? toScreen(l.obj, canvas.getBoundingClientRect()) : null; },
     // pairs: [id, strălucire 0…1], ca becurile din 2D (aceeași inerție)
