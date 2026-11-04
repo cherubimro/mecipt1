@@ -15,7 +15,7 @@
 - Programele intrau pe **bandă perforată** de telex, iar rezultatele ieșeau pe o **mașină de scris** electrică (capitolul 5).
 
 ## La ce a folosit
-În procesul didactic și pentru calcule de inginerie, între care cele pentru **barajul Vidraru** și pentru pavilionul (cupola) **Romexpo** din București (Wikipedia RO; Farcaș; Baltac). Codul acelor programe nu s-a păstrat; emulatorul le va arăta doar ca reconstrucții ilustrative, marcate ca atare.
+În procesul didactic și pentru calcule de inginerie, între care cele pentru **barajul Vidraru** și pentru pavilionul (cupola) **Romexpo** din București (Wikipedia RO; Farcaș; Baltac). Codul acelor programe nu s-a păstrat; emulatorul le arată doar ca reconstrucții ilustrative, marcate ca atare (capitolul 6).
 
 ## Pupitrul de azi
 Pupitrul de comandă s-a păstrat și a fost restaurat; fotografia lui din 2011 (Turbojet, Wikimedia Commons) și modelul 3D (marius0198, Sketchfab) sunt baza desenului din această pagină.

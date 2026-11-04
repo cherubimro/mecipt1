@@ -15,7 +15,7 @@
 - Programs came in on **punched telex tape**, and results came out on an electric **typewriter** (chapter 5).
 
 ## What it was used for
-Teaching and engineering calculations, including those for the **Vidraru dam** and the **Romexpo** pavilion (dome) in Bucharest (Romanian Wikipedia; Farcaș; Baltac). The code of those programs has not survived; the emulator will only show them as illustrative reconstructions, clearly marked.
+Teaching and engineering calculations, including those for the **Vidraru dam** and the **Romexpo** pavilion (dome) in Bucharest (Romanian Wikipedia; Farcaș; Baltac). The code of those programs has not survived; the emulator only shows them as illustrative reconstructions, clearly marked (chapter 6).
 
 ## The console today
 The control console survived and was restored; its 2011 photograph (Turbojet, Wikimedia Commons) and the 3D model (marius0198, Sketchfab) are the basis of the drawing on this page. Its inscriptions are in Romanian and stay so here; the explanations translate them.
