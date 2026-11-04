@@ -56,6 +56,8 @@ Below the console, next to the tape reader and the typewriter, the magnetic drum
   - the brass oil cup;
   - the panel with the **FŰTÉS** (“heating”) and **TÖRLÉS** (“erase”) lamps, the green lamp and the rotary switch.
 - **GUESSED**: the green lamp is lit while the machine is powered and the other two are off. The rotation is slowed down: at 50 revolutions a second the eye would see only a blur.
+- **The drum map**, next to the drawing: a ring with all 1024 words, coloured by provenance as in the Workshop. When a tape loads, the ring fills up; while the machine runs, a yellow mark shows the current instruction (RAI). Even addresses lie on the right half, odd ones on the left, as on the real drum (DEDUCED, Baltac). The map is an emulator tool: on the machine the drum’s contents were not visible.
+- The stripes passing over the cylinder show the rotation, slowed down; their drawing is GUESSED.
 
 ## Sound
 No recordings of MECIPT-1 exist, so the console sounds are **reconstructed** (GUESSED) and synthesised in the browser. They follow exactly what the emulated machine does:

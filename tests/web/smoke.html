@@ -188,10 +188,17 @@ f.addEventListener('load', () => {
     () => `INEX: HIRTIA ${glow('lamp-indicators-1')}, banda ${P.runner.machine.tapePos()}, mod ${P.runner.mode}`);
   stage('tambur');
   // tamburul magnetic: desenat după fotografie, se rotește, are ajutor
-  const cells = () => d.querySelector('#drum .streaks').getAttribute('transform');
+  const cells = () => [...d.querySelectorAll('#drum .seam')].map((s) => s.getAttribute('x')).join();
   if (!d.querySelector('#drum svg .head-block')) fail('tamburul nu e desenat');
   const c0 = cells(); await new Promise((r) => setTimeout(r, 150)); P.advance(16);
   if (cells() === c0) fail('tamburul nu se rotește: ' + c0);
+  // harta tamburului: după banda INEX-1 (190 de cuvinte, 0002–0277) inelul e plin în dreptul lor
+  P.advance(300);
+  const nMap = Number((d.getElementById('drum-map-legend').textContent.match(/\d+/) || [0])[0]);
+  if (nMap < 190) fail('harta tamburului după INEX: ' + d.getElementById('drum-map-legend').textContent);
+  const px = d.getElementById('drum-map').getContext('2d').getImageData(0, 0, 320, 320).data;
+  let lit = 0; for (let i = 0; i < px.length; i += 4) if (px[i + 3] > 0 && px[i] > 150) lit++;
+  if (lit < 500) fail('harta tamburului e goală pe ecran: ' + lit);
   d.getElementById('drum').click();
   if (d.getElementById('help-title').textContent !== helpRO.entries.drum.title) fail('ajutorul tamburului: ' + d.getElementById('help-title').textContent);
   d.getElementById('help-close').click();

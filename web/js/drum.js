@@ -17,7 +17,6 @@ const W = 420, H = 470;
 const CX = 210;                     // axa tamburului
 const DX0 = 132, DX1 = 288;         // cilindrul de oțel
 const DY0 = 108, DY1 = 196;
-export const STREAK_PERIOD = 26;    // pasul zgârieturilor de pe oțel: lucirea care trece arată rotația
 const HEAD_BLOCKS = [[104, 128], [146, 178], [190, 216], [232, 264], [292, 316]];   // blocurile capetelor, din față
 
 function headBlock([x0, x1], i) {
@@ -36,11 +35,10 @@ function headBlock([x0, x1], i) {
 // Desenul, o singură dată. Clasele: surface/streaks (oțelul care se rotește), head-block (capetele), lamp-green
 // (becul verde, aprins cât mașina e sub tensiune — GHICIT), lamp-futes / lamp-torles (stinse: nu se știe când se aprindeau).
 export function drumSvg() {
-  let streaks = '';
-  for (let x = DX0 - STREAK_PERIOD; x <= DX1 + STREAK_PERIOD; x += STREAK_PERIOD) {
-    for (const [dx, wd, op] of [[0, 1.5, 0.35], [7, 3, 0.18], [15, 1.5, 0.28]]) {
-      streaks += `<rect x="${x + dx}" y="${DY0}" width="${wd}" height="${DY1 - DY0}" fill="#fff" opacity="${op}"/>`;
-    }
+  // dungile oțelului: mutate la fiecare cadru după seams(faza); aici doar locul lor
+  let seamRects = '';
+  for (let k = 0; k < SEAMS; k++) {
+    seamRects += `<rect class="seam" x="${CX}" y="${DY0}" width="1" height="${DY1 - DY0}" fill="${k % 3 ? '#fff' : '#1c1d1b'}" opacity="0"/>`;
   }
   const t = (x, y, s) => `<text x="${x}" y="${y}" font-size="7.5" text-anchor="middle" fill="#222" font-family="sans-serif">${s}</text>`;
   return `<svg class="mag-drum-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img">
@@ -63,7 +61,7 @@ export function drumSvg() {
 <ellipse cx="${CX}" cy="206" rx="132" ry="14" fill="#8a6222" stroke="#5a3d10"/>
 <ellipse cx="${CX}" cy="203" rx="118" ry="11" fill="#4a4a40"/>
 <rect x="${DX0}" y="${DY0}" width="${DX1 - DX0}" height="${DY1 - DY0}" fill="url(#dr-steel)"/>
-<g class="surface" clip-path="url(#dr-clip)"><g class="streaks">${streaks}</g></g>
+<g class="surface" clip-path="url(#dr-clip)">${seamRects}</g>
 <ellipse cx="${CX}" cy="${DY0}" rx="${(DX1 - DX0) / 2}" ry="13" fill="#6d5650" stroke="#c9c6bd" stroke-width="3"/>
 <rect x="176" y="62" width="68" height="46" fill="url(#dr-bronze)"/>
 <ellipse cx="${CX}" cy="108" rx="34" ry="6" fill="#8e7068"/>
@@ -96,5 +94,57 @@ export function drumPhase(nowMs, { reducedMotion = false } = {}) {
   return (((nowMs % DRUM.drawnCycleMs) + DRUM.drawnCycleMs) % DRUM.drawnCycleMs) / DRUM.drawnCycleMs;
 }
 
-// Deplasarea lucirii (spre dreapta) pentru o fază: o perioadă întreagă a modelului, deci fără salt.
-export const streaksOffset = (phase) => phase * STREAK_PERIOD;
+// Dungile de pe cilindru (zgârieturi și îmbinări ale oțelului — GHICIT; arată doar rotația), văzute din față:
+// o dungă la unghiul θ stă la x = CX + R·sin θ și se vede doar pe jumătatea din față (cos θ > 0), lată și
+// deschisă la mijloc, îngustă și ștearsă spre margini. Așa ochiul vede un cilindru care se rotește, nu o bandă.
+export const SEAMS = 14;
+export function seams(phase) {
+  const R = (DX1 - DX0) / 2, out = [];
+  for (let k = 0; k < SEAMS; k++) {
+    const th = 2 * Math.PI * (k / SEAMS + phase), c = Math.cos(th);
+    const visible = c > 0.04;
+    const w = visible ? Math.max(0.5, (k % 3 ? 3.2 : 2.2) * c) : 0;
+    out.push({ x: CX + R * Math.sin(th) - w / 2, w, op: visible ? (k % 3 ? 0.16 : 0.32) * (0.35 + 0.65 * c) : 0, visible });
+  }
+  return out;
+}
+
+// ---- Harta tamburului: cele 1024 de cuvinte pe un inel, colorate după proveniență ca în Atelier ----
+// Adresele pare stau pe o jumătate a tamburului, cele impare pe cealaltă (DEDUS, Baltac, Facsimilul 8):
+// pe inel, jumătatea dreaptă (de sus în jos) are adresele pare, cea stângă pe cele impare.
+export const drumSlot = (addr) => (addr % 2 === 0 ? addr / 2 : 512 + (addr - 1) / 2);
+// Sectorul unei poziții de pe inel (unghiuri canvas, de sus, în sensul acelor de ceas).
+export function mapSector(slot) {
+  const step = 2 * Math.PI / DRUM.words;
+  return { a0: -Math.PI / 2 + slot * step, a1: -Math.PI / 2 + (slot + 1) * step };
+}
+// Aceleași culori ca .kind-* din css/console.css (tamburul din Atelier).
+export const MAP_COLORS = {
+  EMPTY: '#3d4245', ORIGINAL: '#b9d3b0', DEDUS: '#d6dca6', RECONSTRUCTIE: '#e7cf9c',
+  GHICIT: '#e6b3a9', MODIFICAT: '#d2b4dc', WRITTEN: '#a9c4de',
+};
+
+// Desenează harta pe un canvas pătrat: kinds[addr] = felul cuvântului (cellKind), rai = adresa instrucțiunii curente
+// (sau -1). Pur în afară de ctx.
+export function drawDrumMap(ctx, size, kinds, rai) {
+  const c = size / 2, r1 = size * 0.47, r0 = size * 0.33;
+  ctx.clearRect(0, 0, size, size);
+  for (let a = 0; a < DRUM.words; a++) {
+    const { a0, a1 } = mapSector(drumSlot(a));
+    ctx.beginPath();
+    ctx.arc(c, c, r1, a0, a1 + 0.0015);
+    ctx.arc(c, c, r0, a1 + 0.0015, a0, true);
+    ctx.closePath();
+    ctx.fillStyle = MAP_COLORS[kinds[a]] || MAP_COLORS.EMPTY;
+    ctx.fill();
+  }
+  if (rai >= 0) {                                  // instrucțiunea curentă: un semn galben, mai lung decât inelul
+    const { a0, a1 } = mapSector(drumSlot(rai)), m = (a0 + a1) / 2;
+    ctx.strokeStyle = '#ffc93a';
+    ctx.lineWidth = Math.max(2, size / 110);
+    ctx.beginPath();
+    ctx.moveTo(c + Math.cos(m) * r0 * 0.9, c + Math.sin(m) * r0 * 0.9);
+    ctx.lineTo(c + Math.cos(m) * size * 0.5, c + Math.sin(m) * size * 0.5);
+    ctx.stroke();
+  }
+}

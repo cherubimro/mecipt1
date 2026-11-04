@@ -18,7 +18,8 @@ import { describeValue } from './values.js';
 import { formatWord, rowsFor, provLabel } from './atelier/editor.js';
 import { setupSound } from './sound/page.js';
 import { catalogNote } from './catalog.js';
-import { drumSvg, drumPhase, streaksOffset } from './drum.js';
+import { drumSvg, drumPhase, seams, drawDrumMap } from './drum.js';
+import { cellKind } from './atelier/drum.js';
 import { createView3D } from './view3d.js';
 
 const $ = (id) => document.getElementById(id);
@@ -62,6 +63,8 @@ function setTexts() {
   $('typewriter-label').textContent = T().typewriter;
   $('drum-label').textContent = T().drumLabel;
   $('drum-info').textContent = T().drumInfo;
+  $('drum-map').setAttribute('aria-label', T().drumMapLabel);
+  $('drum-map-fig').dataset.help = 'drum-map';
   $('attribution').textContent = T().attribution;
   $('status').textContent = T().loading;
 }
@@ -115,7 +118,26 @@ async function main() {
   $('panel-right').innerHTML = renderPanel('right', artR, positions, colors);
   // tamburul: desenat o dată (după fotografia din 2015); la fiecare cadru oțelul se rotește, în timp real
   $('drum').innerHTML = drumSvg();
-  const drumStreaks = $('drum').querySelector('.streaks');
+  const drumSeams = [...$('drum').querySelectorAll('.seam')];
+  // harta tamburului: redesenată de câteva ori pe secundă (1024 de cuvinte citite din nucleu)
+  const drumMap = $('drum-map'), drumKinds = new Array(1024).fill('EMPTY');
+  let drumMapAge = Infinity, drumMapKey = '';
+  const refreshDrumMap = (rai, running) => {
+    let used = 0;
+    for (let a = 0; a < 1024; a++) {
+      const k = cellKind(machine.provCode(a), machine.written(a));
+      drumKinds[a] = k;
+      if (k !== 'EMPTY') used++;
+    }
+    const mark = running ? rai : -1, key = drumKinds.join() + mark;
+    if (key !== drumMapKey) {
+      drumMapKey = key;
+      const size = drumMap.width;
+      drawDrumMap(drumMap.getContext('2d'), size, drumKinds, mark);
+    }
+    const legend = T().drumMap(used, running ? rai.toString(8).padStart(4, '0') : null);
+    if ($('drum-map-legend').textContent !== legend) $('drum-map-legend').textContent = legend;
+  };
   const reducedMotion = globalThis.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
 
   // becurile: elementul de lumină și strălucirea curentă
@@ -489,7 +511,13 @@ async function main() {
     if (Math.abs(snap.tapePos - smoothTape) < 0.01) smoothTape = snap.tapePos;
     renderTape($('tape'), tapeRows, snap.tapePos, smoothTape);
     renderSheet($('sheet'), sheet);
-    drumStreaks.setAttribute('transform', `translate(${streaksOffset(drumPhase(performance.now(), { reducedMotion: reducedMotion.matches })).toFixed(2)} 0)`);
+    const ph = drumPhase(performance.now(), { reducedMotion: reducedMotion.matches });
+    seams(ph).forEach((s, i) => {
+      const el = drumSeams[i];
+      el.setAttribute('x', s.x.toFixed(2)); el.setAttribute('width', s.w.toFixed(2)); el.setAttribute('opacity', s.op.toFixed(3));
+    });
+    drumMapAge += dt;
+    if (drumMapAge >= 250) { drumMapAge = 0; refreshDrumMap(snap.state.RAI, runner.mode === 'automat'); }
     const st = runner.pulsesOff ? T().pulsesOff
       : runner.mode === 'automat' ? T().running
         : lastHalt !== null && lastHalt !== HALT.OK ? T().halt[lastHalt] : T().idle;

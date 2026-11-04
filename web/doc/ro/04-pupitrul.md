@@ -56,6 +56,8 @@ Sub pupitru, lângă cititorul de bandă și mașina de scris, e desenat tamburu
   - ungătoarea de alamă;
   - panoul cu becurile **FŰTÉS** („încălzire”) și **TÖRLÉS** („ștergere”), becul verde și comutatorul rotativ.
 - **GHICIT**: becul verde e aprins cât mașina e sub tensiune, iar celelalte două sunt stinse. Rotația e încetinită: la 50 de rotații pe secundă ochiul n-ar vedea decât o pată.
+- **Harta tamburului**, lângă desen: un inel cu toate cele 1024 de cuvinte, colorate după proveniență ca în Atelier. Când se încarcă banda, inelul se umple; cât rulează mașina, un semn galben arată instrucțiunea curentă (RAI). Adresele pare stau pe jumătatea dreaptă, cele impare pe cea stângă, ca pe tamburul adevărat (DEDUS, Baltac). Harta e o unealtă a emulatorului: pe mașină conținutul tamburului nu se vedea.
+- Dungile care trec pe cilindru arată rotația, încetinită; desenul lor e GHICIT.
 
 ## Sunetul
 Nu există înregistrări ale MECIPT-1, așa că sunetele pupitrului sunt **reconstruite** (GHICIT) și sintetizate în browser. Ele urmează exact ce face mașina emulată:

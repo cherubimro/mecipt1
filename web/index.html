@@ -81,7 +81,13 @@
   <div class="peripherals">
     <section class="device drum-device">
       <h2 id="drum-label">Tamburul magnetic</h2>
-      <div id="drum" class="mag-drum"></div>
+      <div class="drum-pair">
+        <div id="drum" class="mag-drum"></div>
+        <figure class="drum-map-fig" id="drum-map-fig">
+          <canvas id="drum-map" class="drum-map" width="320" height="320" role="img"></canvas>
+          <figcaption id="drum-map-legend" class="drum-map-legend" aria-live="off"></figcaption>
+        </figure>
+      </div>
       <p id="drum-info" class="device-note"></p>
     </section>
     <section class="device reader">
