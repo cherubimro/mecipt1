@@ -84,6 +84,17 @@ function toggle(p, id, x, y) {
     + '</g>';
 }
 
+// Săgeata îndrumării: sub comutatorul de pornire, arată în sus spre el și pulsează (CSS .cue-bob), cu o etichetă.
+// Coordonatele sunt ale panoului (pixelii texturii); pe tot pupitrul panoul e micșorat de ~5 ori, deci săgeata e mare.
+export function cueArrow(x, y, label) {
+  const arrow = '0,38 -62,112 -24,112 -24,196 24,196 24,112 62,112';
+  return `<g id="cue-arrow" class="cue-arrow" transform="translate(${n(x)} ${n(y)})" pointer-events="none">`
+    + '<g class="cue-bob">'
+    + `<polygon points="${arrow}" fill="#f2c230" stroke="#3b2e05" stroke-width="3" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`
+    + `<text x="0" y="262" text-anchor="middle" font-size="58" font-weight="600" fill="#f2c230" stroke="#2b2205" stroke-width="10" paint-order="stroke" class="cue-label">${esc(label)}</text>`
+    + '</g></g>';
+}
+
 function hex(r) {
   const pts = [];
   for (let k = 0; k < 6; k++) {

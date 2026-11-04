@@ -4,7 +4,7 @@ import { loadMecipt, HALT, OP } from './mecipt.js';
 import { setupAtelier } from './atelier/page.js';
 import { Clock } from './clock.js';
 import { Runner } from './runner.js';
-import { renderPanel } from './panel.js';
+import { renderPanel, cueArrow } from './panel.js';
 import { lampTargets, uopIndexForGrid, actionFor, isMomentary } from './bindings.js';
 import { glowStep } from './glow.js';
 import { renderTape } from './tape.js';
@@ -156,10 +156,15 @@ async function main() {
   };
   const labelSwitches = () => {
     for (const el of document.querySelectorAll('.switch')) el.setAttribute('aria-label', T().switchLabel(el.id));
+    const cueLabel = document.querySelector('#cue-arrow .cue-label');   // săgeata de pornire, în limba aleasă
+    if (cueLabel) cueLabel.textContent = T().cuePress;
   };
   labelSwitches();
   setLever('switch-pulses-0', false);
   $('switch-compute-0').classList.add('cue');   // îndrumarea arată butonul de pornire până la prima apăsare
+  // și o săgeată care pulsează spre el, mare cât să se vadă și pe tot pupitrul
+  const [cx, cy] = positions.right.compute.switches[0];
+  $('panel-right').querySelector('svg').insertAdjacentHTML('beforeend', cueArrow(cx, cy, T().cuePress));
   const showSwitchWord = (group, bits) => bits.forEach((v, i) => setLever(`switch-${group}-${i}`, v === 1));
 
   for (const p of catalog) {
@@ -349,7 +354,7 @@ async function main() {
 
   function press(id) {
     sound.control(id);
-    if (id === 'switch-compute-0') $(id).classList.remove('cue');
+    if (id === 'switch-compute-0') { $(id).classList.remove('cue'); $('cue-arrow')?.setAttribute('display', 'none'); }
     const a = actionFor(id, switches);
     if (id.startsWith('switch-M-')) showSwitchWord('M', switches.M);
     else if (id.startsWith('switch-RAI-')) showSwitchWord('RAI', switches.RAI);

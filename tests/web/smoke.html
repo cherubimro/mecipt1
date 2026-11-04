@@ -49,6 +49,16 @@ f.addEventListener('load', () => {
   if (/\d/.test(status.textContent)) fail('starea anunțată conține timpul: ' + status.textContent);
   // indiciul vizibil pe butonul din îndrumare și mărirea unui panou
   if (!d.getElementById('switch-compute-0').classList.contains('cue')) fail('AUTOMAT nu e marcat de îndrumare');
+  // săgeata care pulsează spre CALCULEAZA AUTOMAT: se vede de departe (pe tot pupitrul, panoul e micșorat)
+  const arrow = d.getElementById('cue-arrow');
+  if (!arrow || arrow.getAttribute('display') === 'none') fail('lipsește săgeata spre CALCULEAZA');
+  else {
+    const ab = arrow.getBoundingClientRect(), sb = d.getElementById('switch-compute-0').getBoundingClientRect();
+    if (ab.height < 30) fail('săgeata e prea mică: ' + ab.height.toFixed(0) + ' px');
+    if (Math.abs((ab.left + ab.right) / 2 - (sb.left + sb.right) / 2) > sb.width) fail('săgeata nu arată spre comutator');
+    if (ab.top < sb.bottom - 2) fail('săgeata acoperă comutatorul');
+    if (!arrow.textContent.includes('Apăsați aici')) fail('săgeata fără „Apăsați aici”: ' + arrow.textContent);
+  }
   P.setView('right');
   const wR = d.getElementById('switch-compute-0').getBoundingClientRect().width;
   if (wR < 24) fail('panoul drept mărit: comutatorul are ' + wR.toFixed(1) + ' px');
@@ -148,6 +158,7 @@ f.addEventListener('load', () => {
   P.advance(50);
   if (!status.textContent.includes('IMPULSURI')) fail('impulsuri întrerupte, starea: ' + status.textContent);
   if (d.getElementById('switch-compute-0').classList.contains('cue')) fail('marcajul rămâne după apăsare');
+  if (d.getElementById('cue-arrow') && d.getElementById('cue-arrow').getAttribute('display') !== 'none') fail('săgeata rămâne după apăsare');
   await P.select('retiparire-1962');
   if (P.runner.pulsesOff || d.getElementById('switch-pulses-0').getAttribute('aria-pressed') !== 'false')
     fail('Reîncarcă nu readuce impulsurile');

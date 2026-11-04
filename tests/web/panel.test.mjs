@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { renderPanel, lampIds, switchIds } from '../../web/js/panel.js';
+import { renderPanel, lampIds, switchIds, cueArrow } from '../../web/js/panel.js';
 import { readJson } from './helpers.mjs';
 
 const POS = readJson('web/data/positions.json');
@@ -97,4 +97,16 @@ test('voltmetrele de sus au scala 0–250 V', () => {
 test('the bar over M̄ is a real overline in the SVG', () => {
   assert.ok(!svgL.includes('\u0304'), 'accentul combinat nu se vede în Barlow');
   assert.ok(svgL.includes('text-decoration="overline"'));
+});
+
+test('săgeata spre CALCULEAZA AUTOMAT: sub comutator, în panou, cu eticheta, fără să prindă clicurile', () => {
+  const svg = cueArrow(1414.3, 1405.4, 'Apăsați aici');
+  assert.match(svg, /^<g id="cue-arrow" class="cue-arrow" transform="translate\(1414\.3 1405\.4\)"/);
+  assert.match(svg, /pointer-events="none"/);
+  assert.match(svg, /class="cue-bob"/);                    // partea care pulsează
+  assert.match(svg, />Apăsați aici</);
+  const ys = [...svg.matchAll(/(?:^|[ ,"])(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/g)].map((m) => Number(m[2]));
+  assert.ok(Math.min(...ys) >= 30, 'vârful stă sub comutator (raza 15 și maneta)');
+  assert.ok(1405.4 + 290 <= 372 + 1340, 'încape în panou');
+  assert.match(cueArrow(0, 0, 'a<b'), />a&lt;b</);
 });

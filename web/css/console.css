@@ -92,6 +92,10 @@ body:not([data-mode="atelier"]) .panels[data-view="all"] #panel-right { transfor
 .switch.cue .focus-ring { stroke: var(--focus); stroke-dasharray: 4 3; animation: cue 1.6s linear infinite; }
 @keyframes cue { to { stroke-dashoffset: -14; } }
 @media (prefers-reduced-motion: reduce) { .switch.cue .focus-ring { animation: none; } }
+/* săgeata spre butonul de pornire: urcă spre el și se întoarce, cât timp așteaptă prima apăsare */
+.cue-arrow .cue-bob { animation: cue-bob 1.1s ease-in-out infinite; }
+@keyframes cue-bob { 0%, 100% { transform: translateY(26px); } 50% { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .cue-arrow .cue-bob { animation: none; } }
 .lamp .glow { transition: none; }
 @media (prefers-reduced-motion: reduce) { .switch .lever { transition: none; } }
 
