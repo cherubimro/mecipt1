@@ -95,7 +95,11 @@ a.ico { text-decoration: none; }
 .txt[aria-pressed="true"] { color: #fff; background: var(--ui-dark); }
 .spacer { flex: 1 1 8px; }
 .sep { width: 1px; height: 28px; margin: 0 3px; background: var(--ui-hair); flex: none; }
-.bar-inline, .bar-learn { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.bar-inline, .bar-learn, .bar-extra { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+/* vederea pe panouri și reîncărcarea stau în bară; „Mai multe” apare doar pe telefon, unde nu încap */
+.view-pick select { min-height: 44px; padding: 0 8px; border-radius: 14px; border: 0; cursor: pointer;
+  font-weight: 500; font-size: 13.5px; color: var(--ui-ink2); background: rgba(32, 44, 60, 0.075); }
+.view-pick select:hover { color: var(--ui-ink); }
 
 .go { display: flex; align-items: center; gap: 8px; flex: none; height: 46px; padding: 0 19px 0 15px; border-radius: 15px;
   color: #fff; font-weight: 600; font-size: 13.5px; background: var(--ui-dark);
@@ -111,7 +115,8 @@ body.running .go .i-run { display: none; }
 /* ---- foile care se deschid din bară: programul și „Mai multe” ---- */
 .sheet-pop { position: absolute; z-index: 20; top: calc(100% + 8px); max-width: calc(100vw - 32px);
   padding: 14px 16px; border-radius: 20px; background: var(--ui-card); box-shadow: var(--ui-card-shadow), 0 24px 48px -24px rgba(24, 38, 58, 0.5); }
-.sheet-pop[hidden] { display: none; }
+/* `display` pus pe un id bate `.sheet-pop[hidden]`, așa că foile închise se ascund cu aceeași greutate */
+#program-sheet[hidden], #more-menu[hidden] { display: none; }
 .sheet-pop h2 { margin: 0 0 8px; font-size: 13px; font-weight: 600; }
 #program-sheet { left: 0; width: min(520px, calc(100vw - 32px)); }
 #program-sheet select { width: 100%; min-height: 44px; padding: 6px 10px; border-radius: 12px;
@@ -120,8 +125,12 @@ body.running .go .i-run { display: none; }
 #more-menu .txt, #more-menu .ico { width: 100%; justify-content: flex-start; display: flex; align-items: center; gap: 10px; text-align: left; }
 #more-menu .seg { align-self: stretch; }
 #more-menu label { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; color: var(--ui-ink2); }
+#more-menu .bar-extra { flex-direction: column; align-items: stretch; }
+#more-menu .view-pick select { width: 100%; }
+#more-menu #reload { width: 100%; justify-content: flex-start; }
 #more-menu select { min-height: 44px; padding: 6px 10px; border-radius: 12px; border: 1px solid var(--ui-hair); background: #fff; color: var(--ui-ink); }
 .pop-wrap { position: relative; display: flex; min-width: 0; }
+.more-wrap { display: none; }   /* „Mai multe” apare doar pe telefon, unde comenzile nu încap în bară */
 
 /* proveniența: aceleași culori ca înainte, pe fundal deschis */
 .provenance { margin: 8px 0 0; font-size: 13px; line-height: 1.5; color: var(--ui-ink2); }
@@ -146,36 +155,42 @@ body.running .go .i-run { display: none; }
 .scene { position: absolute; inset: 0; perspective: 1900px; perspective-origin: 50% 30%; }
 .camera { position: absolute; left: 50%; top: 0; width: 0; height: 0; transform-style: preserve-3d; transform-origin: 0 0;
   transition: transform 0.95s cubic-bezier(0.2, 0.75, 0.15, 1); }
-.shadow { position: absolute; left: -60px; top: 318px; width: 1498px; height: 96px; transition: opacity 0.4s;
+.shadow { position: absolute; transition: opacity 0.4s;
+  left: calc(-60px * var(--k)); top: calc(318px * var(--k)); width: calc(1498px * var(--k)); height: calc(96px * var(--k));
   background: radial-gradient(closest-side, rgba(24, 40, 66, 0.16), rgba(24, 40, 66, 0)); }
 
-.panels { position: absolute; left: 0; top: 0; display: flex; align-items: flex-start; gap: 10px;
+/* Blocul pupitrului e desenat la rezoluția texturii din care vin panourile (--k ori mărimea din machetă),
+   iar camera îl micșorează. Așa inscripțiile rămân tăiate în vector și când camera se apropie: un strat
+   cu transformare 3D se rasterizează o dată, și mărit ar ieși neclar. Toate măsurile blocului se scalează
+   cu --k, ca masa, rama și umbra să rămână în aceleași proporții. */
+.panels { position: absolute; left: 0; top: 0; display: flex; align-items: flex-start;
   transform-style: preserve-3d; transition: transform 0.95s cubic-bezier(0.2, 0.75, 0.15, 1);
-  --plate-h: 262px; --bez: 8px; }
+  --k: 5; --plate-h: calc(262px * var(--k)); --bez: calc(8px * var(--k)); gap: calc(10px * var(--k)); }
 .wing { position: relative; flex: none; transform-style: preserve-3d; transition: transform 0.95s cubic-bezier(0.2, 0.75, 0.15, 1); }
 #wing-left { transform-origin: 100% 50%; }
 #wing-right { transform-origin: 0 50%; }
-.face { position: relative; box-sizing: border-box; padding: var(--bez); border-radius: 7px;
-  background: #d6d9dd url(../img/brushed.webp); background-size: 220px auto;
-  box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 rgba(60, 70, 80, 0.5), 0 1px 2px rgba(20, 30, 45, 0.2); }
+.face { position: relative; box-sizing: border-box; padding: var(--bez); border-radius: calc(7px * var(--k));
+  background: #d6d9dd url(../img/brushed.webp); background-size: calc(220px * var(--k)) auto;
+  box-shadow: inset 0 calc(1px * var(--k)) 0 #fff, inset 0 calc(-1px * var(--k)) 0 rgba(60, 70, 80, 0.5),
+    0 calc(1px * var(--k)) calc(2px * var(--k)) rgba(20, 30, 45, 0.2); }
 #wing-left .face, #wing-right .face { width: calc(var(--plate-h) * 2048 / 1340 + 2 * var(--bez)); }
 #wing-middle .face { width: calc(var(--plate-h) * 2600 / 1340 + 2 * var(--bez)); }
-.panel-slot { position: relative; height: var(--plate-h); overflow: hidden; border-radius: 2px;
-  box-shadow: 0 0 0 1px rgba(40, 50, 60, 0.35); background: none; padding: 0; }
+.panel-slot { position: relative; height: var(--plate-h); overflow: hidden; border-radius: calc(2px * var(--k));
+  box-shadow: 0 0 0 calc(1px * var(--k)) rgba(40, 50, 60, 0.35); background: none; padding: 0; }
 .panel-slot svg { display: block; width: 100%; height: 100%; }
 /* luciul alb care vine de pe muchia din afară a panourilor laterale (interpretare, vezi documentația) */
-#wing-left .face::after, #wing-right .face::after { content: ''; position: absolute; inset: var(--bez); pointer-events: none; border-radius: 2px; }
+#wing-left .face::after, #wing-right .face::after { content: ''; position: absolute; inset: var(--bez); pointer-events: none; border-radius: calc(2px * var(--k)); }
 #wing-left .face::after { background: linear-gradient(100deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 42%); }
 #wing-right .face::after { background: linear-gradient(260deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 42%); }
 
 /* masa: aluminiu satinat deschis, cu dunga albastră istorică în spate și un fir de cyan pe buza din față */
-.shelf { position: absolute; left: 0; right: 0; top: 100%; height: 150px; transform-origin: 50% 0; transform: rotateX(70deg);
+.shelf { position: absolute; left: 0; right: 0; top: 100%; height: calc(150px * var(--k)); transform-origin: 50% 0; transform: rotateX(70deg);
   transition: opacity 0.4s; pointer-events: none;
   background: linear-gradient(180deg, #2f5c8c 0, #3a6a9c 4%, #dfe4ea 4%, #eef1f4 40%, #fbfcfd 88%, #bcc4cc 88%, #e6eaee 100%); }
-#wing-middle .shelf { left: -30px; right: -30px; }
-.shelf::after { content: ''; position: absolute; left: 4%; right: 4%; top: 87%; height: 1.5px; opacity: 0.5; transition: opacity 0.4s;
+#wing-middle .shelf { left: calc(-30px * var(--k)); right: calc(-30px * var(--k)); }
+.shelf::after { content: ''; position: absolute; left: 4%; right: 4%; top: 87%; height: calc(1.5px * var(--k)); opacity: 0.5; transition: opacity 0.4s;
   background: linear-gradient(90deg, transparent, var(--ui-accent) 30%, var(--ui-accent) 70%, transparent); }
-body.running .shelf::after { opacity: 1; box-shadow: 0 0 10px var(--ui-accent); }
+body.running .shelf::after { opacity: 1; box-shadow: 0 0 calc(10px * var(--k)) var(--ui-accent); }
 
 /* panorama: aripile se deschid spre vizitator; apropiată, camera le aplatizează ca inscripțiile să se citească */
 .desk[data-zone="all"] .panels { transform: rotateX(5deg); }
@@ -379,7 +394,9 @@ body[data-mode="atelier"] .zones { display: none; }
   body.console-page { padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
   .topbar { margin: 10px; min-height: 66px; padding: 0 9px 0 14px; border-radius: 23px; gap: 4px; flex-wrap: nowrap; }
   .topbar .trace { display: none; }   /* pe telefon bara „se execută acum” face treaba firului */
-  .brand, .bar-inline, .sep, .spacer { display: none; }
+  .brand, .bar-inline, .sep, .spacer, .bar-extra { display: none; }
+  .more-wrap { display: flex; }
+  #more-menu .bar-extra { display: flex; }
   .bar-learn { flex: none; gap: 0; }
   .bar-learn > :not(#tour-start) { display: none; }   /* restul comenzilor stau în „Mai multe” */
   #tour-start { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border-radius: 14px; color: var(--ui-ink2); }

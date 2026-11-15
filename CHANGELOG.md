@@ -39,11 +39,22 @@ Emulatorul MECIPT-1 n-are încă versiuni numerotate; schimbările sunt grupate 
 - Culorile, tipografia și cartonașele paginii: fundal deschis, text pe Geist, numerele pe Geist Mono; cyanul e folosit
   numai ca lumină, niciodată pentru text.
 
+### Schimbat (bara)
+- **Vederea pe panouri și reîncărcarea programului stau acum la vedere, în bară**, nu ascunse sub „⋯”.
+  „Mai multe” rămâne doar pe telefon, unde comenzile nu încap altfel.
+- **Pupitrul e așezat la rezoluția texturii din care vin panourile** (de cinci ori mărimea din machetă) și
+  micșorat de cameră: un strat cu transformare 3D se rasterizează o dată, așa că mărit ieșea neclar. Acum
+  camera doar micșorează, iar inscripțiile rămân tăiate în vector la orice apropiere.
+
 ### Scos
 - **Săgeata galbenă** care pulsa spre CALCULEAZA AUTOMAT, în 2D și în 3D: pornirea se face acum și din
   butonul Pornește al barei, iar săgeata acoperea pupitrul. În locul ei, maneta poartă un inel subțire de
   cyan până la prima apăsare, care dispare cât timp mașina calculează.
 - Foile din bară (programul și „Mai multe”) se închid singure după ce vizitatorul a ales ceva din ele.
+
+### Corectat (bara)
+- Foaia „Mai multe” stătea deschisă peste pupitru: `display` pus pe id bătea regula `[hidden]`, așa că
+  butonul o deschidea și o închidea doar în atribut, nu și pe ecran.
 
 ### Corectat
 - Așezarea câmpurilor în cuvânt, pentru becurile grupate ale registrului M: m0 · m1–m5 codul 2 · m6–m10 codul 1 ·

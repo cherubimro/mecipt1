@@ -58,6 +58,15 @@ f.addEventListener('load', () => {
   const wR = d.getElementById('switch-compute-0').getBoundingClientRect().width;
   if (wR < 24) fail('panoul drept mărit: comutatorul are ' + wR.toFixed(1) + ' px');
   P.setView('all');
+  // bara: vederea și reîncărcarea stau la vedere, iar foile care se deschid din ea chiar stau închise
+  for (const id of ['view', 'reload']) if (d.getElementById(id).offsetParent === null) fail('lipsește din bară: ' + id);
+  const shownPop = (id) => w.getComputedStyle(d.getElementById(id)).display !== 'none';
+  if (shownPop('more-menu') || shownPop('program-sheet')) fail('o foaie a barei stă deschisă de la pornire');
+  click('program-card');
+  if (!shownPop('program-sheet')) fail('cartonașul programului nu deschide foaia');
+  if (!d.getElementById('provenance').textContent.includes('ORIGINAL')) fail('foaia programului fără proveniență');
+  d.body.dispatchEvent(new w.MouseEvent('click', { bubbles: true }));
+  if (shownPop('program-sheet')) fail('foaia programului nu se închide la un clic în afară');
   stage('explicatii');
   // explicațiile: modul Explică nu acționează comutatoarele; valoarea se actualizează; limba se schimbă pe loc
   const helpRO = await (await fetch('../data/help/ro.json')).json();
@@ -71,8 +80,10 @@ f.addEventListener('load', () => {
   if (!shown() || !d.getElementById('help-title').textContent.includes('RAI')) fail('Explică pe RAI 9: ' + d.getElementById('help-title').textContent);
   if (rai9.getAttribute('aria-pressed') !== pressed0) fail('în modul Explică comutatorul s-a mișcat');
   await sleep(1100);                      // panoul strânge pagina: camera se refigurează, tot lin
-  const pr = panel.getBoundingClientRect(), ra9 = d.getElementById('lamp-RA-9');
-  if (ra9.getBoundingClientRect().right > pr.left) fail('panoul de explicații acoperă pupitrul');
+  // Scena decupează pupitrul, deci ea e cea care nu trebuie să ajungă sub panou. (Un bec nu se poate
+  // măsura aici: pentru SVG-ul dintr-un strat rotit în 3D, browserul dă dreptunghiuri neproiectate.)
+  const pr = panel.getBoundingClientRect(), stageBox = d.getElementById('stage').getBoundingClientRect();
+  if (stageBox.right > pr.left) fail(`panoul de explicații acoperă pupitrul: scena până la ${stageBox.right.toFixed(0)}, panoul de la ${pr.left.toFixed(0)}`);
   if (!d.getElementById('explain-banner') || d.getElementById('explain-banner').hidden) fail('rândul „Mod explicații” lipsește');
   d.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
   if (d.getElementById('explain').getAttribute('aria-pressed') !== 'false') fail('Esc nu iese din modul Explică');

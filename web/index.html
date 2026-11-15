@@ -64,17 +64,20 @@
     <div class="seg" id="lang" role="group" aria-labelledby="lang-label"><span id="lang-label" class="visually-hidden">Limba</span><button id="lang-ro" type="button" lang="ro" aria-pressed="true">RO</button><button id="lang-en" type="button" lang="en" aria-pressed="false">EN</button></div>
   </div>
 
+  <div class="bar-extra" id="bar-extra">
+    <label class="view-pick" for="view"><span id="view-label" class="visually-hidden">Vedere</span>
+      <select id="view">
+        <option value="all">tot pupitrul</option><option value="left">panoul stâng</option>
+        <option value="middle">panoul din mijloc</option><option value="right">panoul drept</option>
+      </select></label>
+    <button class="ico" id="reload" type="button"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-.9 4M20 5v6h-6"></path></svg><span class="btn-label visually-hidden"></span></button>
+  </div>
+
   <div class="pop-wrap more-wrap">
     <button class="ico" id="more" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="more-menu"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h.01M12 12h.01M18 12h.01"></path></svg></button>
     <div class="sheet-pop" id="more-menu" role="dialog" aria-labelledby="more-label" hidden>
       <h2 id="more-label">Mai multe</h2>
       <div class="more-slot" id="more-slot"></div>
-      <label for="view"><span id="view-label">Vedere</span>
-        <select id="view">
-          <option value="all">tot pupitrul</option><option value="left">panoul stâng</option>
-          <option value="middle">panoul din mijloc</option><option value="right">panoul drept</option>
-        </select></label>
-      <button class="txt" id="reload" type="button"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-.9 4M20 5v6h-6"></path></svg><span class="btn-label">Reîncarcă</span></button>
     </div>
   </div>
 

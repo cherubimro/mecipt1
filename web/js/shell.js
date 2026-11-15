@@ -54,7 +54,7 @@ export function setupShell(cb) {
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePops(null); });
 
   // ---- mutarea comenzilor între bară și „Mai multe”, după lățimea ecranului ----
-  const MOVABLE = ['mode', 'speed', 'step', 'explain', 'doc-link', 'view-3d', 'sound', 'lang'];
+  const MOVABLE = ['mode', 'speed', 'step', 'explain', 'doc-link', 'view-3d', 'sound', 'lang', 'bar-extra'];
   const home = new Map();
   for (const id of [...MOVABLE, 'statebar']) {
     const el = $(id);

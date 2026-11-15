@@ -10,8 +10,10 @@ export const VIEWBOX = {
   right: [0, 372, 2048, 1340],
 };
 
-// Placa unui panou în blocul pupitrului, în pixeli (aceeași măsură ca `--plate-h` din css/ui.css).
-export const PLATE_H = 262;
+// Placa unui panou în blocul pupitrului, în pixeli (aceeași măsură ca `--plate-h` din css/ui.css:
+// 262 px din machetă × --k). Pupitrul e așezat mare și micșorat de cameră, ca desenul să rămână
+// tăiat în vector și când camera se apropie; socoteala de mai jos nu depinde de mărimea asta.
+export const PLATE_H = 1310;
 export const plateWidth = (panel) => (PLATE_H * VIEWBOX[panel][2]) / VIEWBOX[panel][3];
 // Câți pixeli de ecran are o unitate de viewBox, la camera oprită.
 export const unitPx = (panel) => plateWidth(panel) / VIEWBOX[panel][2];
