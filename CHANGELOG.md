@@ -39,6 +39,16 @@ Emulatorul MECIPT-1 n-are încă versiuni numerotate; schimbările sunt grupate 
 - Culorile, tipografia și cartonașele paginii: fundal deschis, text pe Geist, numerele pe Geist Mono; cyanul e folosit
   numai ca lumină, niciodată pentru text.
 
+### Schimbat (aerul paginii, după schița de design)
+- **Panorama nu mai umple scena de la margine la margine**: pupitrul stă pe vreo 84 % din lățime, ceva mai
+  sus de mijloc, cu masa și aer sub el — tot pupitrul se vede dintr-o privire, ca în schiță.
+- **Cartonașul tamburului, simplificat**: inelul celor 1024 de cuvinte cu un rând lângă el, desenul mașinii
+  mic alături și o singură propoziție dedesubt. Atribuirea fotografiei din 2015 rămâne în subsol și în
+  explicația tamburului.
+- Mai mult aer între scenă și cartonașele perifericelor, și în ele.
+- **Pictograma documentației** era un dreptunghi rotunjit care semăna cu un telefon; e acum o foaie cu colț
+  îndoit și rânduri de text.
+
 ### Schimbat (bara)
 - **Vederea pe panouri și reîncărcarea programului stau acum la vedere, în bară**, nu ascunse sub „⋯”.
   „Mai multe” rămâne doar pe telefon, unde comenzile nu încap altfel.

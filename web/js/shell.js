@@ -131,10 +131,14 @@ export function setupShell(cb) {
       : (T().zoneNote[zoneId] || T().hint);
   }
 
-  // Caseta în care încape camera, în pixelii scenei.
+  // Caseta în care încape camera, în pixelii scenei. În panoramă pupitrul nu umple scena de la margine
+  // la margine: stă pe vreo 84 % din lățime, ceva mai sus de mijloc, cu masa și aer sub el (ca în schiță).
+  // Apropiată de o zonă, camera umple scena, că acolo contează mărimea inscripțiilor.
   function fitBox(w, h, isPhone, wide) {
     if (isPhone) return { x0: 6, y0: 96, x1: w - 6, y1: h - 62 };
-    return wide ? { x0: 28, y0: 24, x1: w - 28, y1: h - 108 } : { x0: 22, y0: 18, x1: w - 22, y1: h - 76 };
+    if (!wide) return { x0: 22, y0: 18, x1: w - 22, y1: h - 76 };
+    const px = Math.max(28, w * 0.08);
+    return { x0: px, y0: h * 0.06, x1: w - px, y1: h * 0.64 };
   }
 
   function applyCamera() {
