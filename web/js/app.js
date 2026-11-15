@@ -22,10 +22,12 @@ import { drumSvg, drumPhase, seams, drawDrumMap } from './drum.js';
 import { cellKind } from './atelier/drum.js';
 import { createView3D } from './view3d.js';
 import { ZONES3D } from './lamp3d.js';
+import { setupShell } from './shell.js';
 
 const $ = (id) => document.getElementById(id);
 const storage = (() => { try { return window.localStorage; } catch { return null; } })();
 let lang = pickLang(location.search, storage);
+let shell = null;                 // rama modernă (bara, scena, filele, vederea Live): js/shell.js
 const T = () => S(lang);
 const getJson = async (url) => (await fetchOk(url)).json();
 const getText = async (url) => (await fetchOk(url)).text();
@@ -35,10 +37,19 @@ async function fetchOk(url) {
   return r;
 }
 
+// Butoanele barei poartă o pictogramă: textul stă în `.btn-label`, ca eticheta să nu șteargă desenul.
+// Pe butoanele cu pictogramă singură, eticheta e ascunsă vizual și rămâne numele pentru cititorul de ecran.
+function setLabel(el, text) {
+  const span = el.querySelector('.btn-label');
+  if (span) span.textContent = text; else el.textContent = text;
+  el.setAttribute('aria-label', text);
+  el.title = text;
+}
+
 function setTexts() {
   document.documentElement.lang = lang;
   document.title = T().title;
-  $('title').textContent = T().title;
+  $('title').textContent = T().brand;
   $('lang-label').textContent = T().langLabel;
   for (const l of ['ro', 'en']) $(`lang-${l}`).setAttribute('aria-pressed', String(l === lang));
   $('subtitle').textContent = T().subtitle;
@@ -46,16 +57,17 @@ function setTexts() {
   $('speed-label').textContent = T().speed;
   $('speed-epoca').textContent = T().speedEpoca;
   $('speed-rapid').textContent = T().speedRapid;
-  $('reload').textContent = T().reload;
-  $('explain').textContent = T().explain;
-  $('tour-start').textContent = T().tourStart;
+  setLabel($('reload'), T().reload);
+  setLabel($('explain'), T().explain);
+  setLabel($('tour-start'), T().tourStart);
   for (const m of ['console', 'atelier', 'both']) $(`mode-${m}`).textContent = T().modes[m];
   $('mode-label').textContent = T().modes.label;
   $('tour-prev').textContent = T().tourPrev;
   $('tour-close').textContent = T().tourClose;
   $('tour-wait').textContent = T().tourWaiting;
-  $('doc-link').textContent = T().docLink;
+  setLabel($('doc-link'), T().docLink);
   $('doc-link').href = `doc.html?lang=${lang}`;
+  $('learn-doc').href = `doc.html?lang=${lang}`;
   $('explain-banner').textContent = T().explainOn;
   $('view-label').textContent = T().view;
   for (const o of $('view').options) o.textContent = T().views[o.value];
@@ -68,6 +80,7 @@ function setTexts() {
   $('drum-map-fig').dataset.help = 'drum-map';
   $('attribution').textContent = T().attribution;
   $('status').textContent = T().loading;
+  if (shell) shell.setTexts();
 }
 
 function provenanceLabel(machine, tapeSource, foreign, removed, prog) {
@@ -143,6 +156,7 @@ async function main() {
 
   // becurile: elementul de lumină și strălucirea curentă
   const lamps = [...document.querySelectorAll('.lamp')].map((g) => ({ id: g.id, glow: g.querySelector('.glow'), b: 0, shown: -1 }));
+  const lampGlow = new Map();        // id → strălucire, pentru fereastra mică din vederea Live
   const switches = { M: new Uint8Array(31), RAI: new Uint8Array(10) };
   const LATCHING = /^switch-(M|RAI|pulses)-/;
   let view3d = null, v3state = 'off', show3d = false;   // vederea 3D (mai jos); manetele ei urmează setLever
@@ -219,6 +233,14 @@ async function main() {
       const p = catalog.find((c) => c.id === o.value);
       o.textContent = lang === 'en' && p.title_en ? p.title_en : p.title;
     }
+    // cartonașul din bară: titlul programului și, pe scurt, din ce e făcut (desfășurat, în foaia lui)
+    if (shell) {
+      const title = foreign ? T().foreignFile : (lang === 'en' && current.title_en ? current.title_en : current.title);
+      const byKind = new Map();
+      for (const p of machine.provenanceSummary()) byKind.set(p.kind, (byKind.get(p.kind) ?? 0) + p.words);
+      const parts = [...byKind].sort((a, b) => b[1] - a[1]).map(([k, n]) => `${n} ${T().prov[k] ?? k}`);
+      shell.setProgram(title, parts);
+    }
   }
   function setLang(l) {
     if (l !== 'ro' && l !== 'en') return;
@@ -239,7 +261,9 @@ async function main() {
   const help = new HelpPanel({
     panel: $('help-panel'), title: $('help-title'), status: $('help-status'), short: $('help-short'),
     value: $('help-value'), moreBtn: $('help-more-btn'), more: $('help-more'), close: $('help-close'),
-  }, { render: renderMarkdown, onClose: () => document.body.classList.remove('help-open') });
+  }, { render: renderMarkdown,
+    // panoul de explicații strânge pagina pe ecrane late: scena se îngustează, deci camera se refigurează
+    onClose: () => { document.body.classList.remove('help-open'); if (shell) shell.applyCamera(); } });
   let helpEl = null;
   // Explicația unui cuvânt din Atelier: adresa, cuvântul în cele două citiri și proveniența.
   const atelierValue = (addr) => {
@@ -248,13 +272,14 @@ async function main() {
     const label = r.prov === 0 && !r.written ? T().drum.empty : provLabel(r, T());
     return `${addr.toString(8).padStart(4, '0')} (${addr}): ${f.ins} · ${f.oct} · = ${f.frac} · ${label}`;
   };
+  // Efectul codului în engleză: traducerea efectului real când diferă de tabelul Geier (vezi semantica).
+  const opTextEn = (c) => (helpEn.ops_real && helpEn.ops_real[String(c)] && tables.ops[c] && machine.opEffect(c) !== tables.ops[c].effect_ro
+    ? helpEn.ops_real[String(c)] : helpEn.ops[String(c)]);
   const valueOf = (id) => ((id === 'atelier-cell' || id === 'atelier-row') && helpEl && helpEl.dataset.addr
     ? atelierValue(Number(helpEl.dataset.addr)) : lastSnap ? describeValue(id, lastSnap.state, {
     tables, wordValue: (w) => machine.wordValue(w), uopIndex, uops: lastSnap.uops, lang,
     mode: runner.mode, pulsesOff: runner.pulsesOff,
-    uopName: (i) => helpEn.uops[String(i)], opEffect: (c) => machine.opEffect(c),
-    opText: (c) => (helpEn.ops_real && helpEn.ops_real[String(c)] && tables.ops[c] && machine.opEffect(c) !== tables.ops[c].effect_ro
-      ? helpEn.ops_real[String(c)] : helpEn.ops[String(c)]),
+    uopName: (i) => helpEn.uops[String(i)], opEffect: (c) => machine.opEffect(c), opText: opTextEn,
   }) : null);
   function explain(id, from = null) {
     helpEl = from;
@@ -262,6 +287,7 @@ async function main() {
     if (id === 'provenance' && current && !foreign && HELP[lang].entries[`program-${current.id}`]) id = `program-${current.id}`;
     help.show(id, HELP[lang], T(), valueOf(id), from);
     document.body.classList.add('help-open');   // pe ecrane late pagina se strânge, ca panoul să nu acopere pupitrul
+    if (shell) shell.applyCamera();
   }
   function explainMode(on) {
     explaining = on;
@@ -504,50 +530,44 @@ async function main() {
   langListeners.push(labelZones);
   labelZones();
 
-  // pe telefon, filele de jos: o atingere duce la partea mașinii (Atelierul și Pupitrul schimbă și vederea);
-  // fila părții de pe ecran e marcată, oriunde ar ajunge vizitatorul derulând
-  const TABS = [...$('phone-tabs').querySelectorAll('button')];
-  const labelTabs = () => {
-    $('phone-tabs').setAttribute('aria-label', T().tabs.label);
-    for (const b of TABS) b.textContent = T().tabs[b.id.slice(4)];
-  };
-  const markTab = () => {
-    let cur = TABS[0];
-    for (const b of TABS) {
-      const el = $(b.dataset.target);
-      if (el && el.offsetParent !== null && el.getBoundingClientRect().top <= innerHeight * 0.4) cur = b;
-    }
-    for (const b of TABS) b.setAttribute('aria-current', String(b === cur));
-  };
-  $('phone-tabs').addEventListener('click', (e) => {
-    const b = e.target.closest && e.target.closest('button[data-target]');
-    if (!b) return;
-    if (b.id === 'tab-atelier' && mode === 'console') setMode('atelier');
-    if (b.id === 'tab-desk' && mode === 'atelier') setMode('console');
-    $(b.dataset.target).scrollIntoView({ block: 'start' });   // salt direct, ca la file
-  });
-  let tabFrame = 0;
-  addEventListener('scroll', () => { if (!tabFrame) tabFrame = setTimeout(() => { tabFrame = 0; markTab(); }, 80); }, { passive: true });
-  langListeners.push(labelTabs);
-  labelTabs();
-  markTab();
   langListeners.push(label3d);
   label3d();
 
   const setView = (name) => {
     $('panels').dataset.view = name;
     $('view').value = name;
+    if (shell) shell.onView(name);
   };
   $('view').addEventListener('change', () => setView($('view').value));
-  // pe telefon pupitrul întreg ar fi prea mic: se pornește cu panoul drept (comenzile), mărit și derulabil
-  // rama se derulează cât butonul de pornire, marcat de îndrumare, să stea la mijloc
-  if (globalThis.matchMedia && matchMedia('(max-width: 760px)').matches) {
-    setView('right');
-    const fr = document.querySelector('.frame'), b = $('switch-compute-0').getBoundingClientRect(), f = fr.getBoundingClientRect();
-    fr.scrollLeft += (b.left + b.width / 2) - (f.left + f.width / 2);
-  }
   $('program').addEventListener('change', () => select($('program').value));
   $('reload').addEventListener('click', () => select(current ? current.id : catalog[0].id));
+
+  // „Pornește / Pauză” și pasul din bară fac exact ce fac manetele CALCULEAZA de pe panoul drept:
+  // AUTOMAT, INSTRUCTIE UNICA și oprirea de la pupitru.
+  const isRunning = () => runner.mode === 'automat' && !runner.pulsesOff;
+  const toggleRun = () => {
+    if (explaining) { explain('switch-compute-0', $('switch-compute-0')); return; }
+    if (isRunning()) { sound.control('switch-compute-0'); runner.enqueue({ ui: 'stop' }); }
+    else { press('switch-compute-0'); tourEvent({ type: 'click', id: 'switch-compute-0' }); }
+  };
+  $('run').addEventListener('click', toggleRun);
+  $('nowbar-run').addEventListener('click', toggleRun);
+  $('step').addEventListener('click', () => {
+    if (explaining) { explain('switch-compute-1', $('switch-compute-1')); return; }
+    press('switch-compute-1');
+    tourEvent({ type: 'click', id: 'switch-compute-1' });
+  });
+
+  // rama modernă: bara, camera scenei, filele de pe telefon și vederea Live
+  shell = setupShell({
+    T, lang: () => lang,
+    press, sheet: () => sheet,
+    setView, viewOf: () => $('panels').dataset.view,
+    setMode, modeOf: () => mode,
+    startTour, explainMode,
+  });
+  langListeners.push(() => shell.setTexts());
+  shell.start(positions, colors);
 
   // Un cadru: acțiuni, mașină, becuri, bandă, coală. Bucla rAF îl cheamă la fiecare imagine;
   // testul de fum îl cheamă direct (în Chrome cu timp virtual rAF nu rulează).
@@ -562,6 +582,7 @@ async function main() {
       l.b = glowStep(l.b, targets.get(l.id) ?? 0, Math.min(dt, 100));
       const v = Math.round(l.b * 50) / 50;
       if (v !== l.shown) { l.glow.style.opacity = String(v); l.shown = v; }
+      lampGlow.set(l.id, l.b);
     }
     smoothTape += (snap.tapePos - smoothTape) * (1 - Math.exp(-dt / 60));
     if (Math.abs(snap.tapePos - smoothTape) < 0.01) smoothTape = snap.tapePos;
@@ -580,6 +601,14 @@ async function main() {
     if ($('status').textContent !== st) $('status').textContent = st;   // anunțat doar la schimbare
     const t = `${T().machineTime}: ${machine.seconds().toFixed(1)} s`;
     if ($('machine-time').textContent !== t) $('machine-time').textContent = t;
+    if (shell) {
+      shell.setStatusLine(`${st} · ${t}`);
+      shell.onFrame(snap, lampGlow, {
+        tables, lang, mode: runner.mode, pulsesOff: runner.pulsesOff,
+        halted: lastHalt !== null && lastHalt !== HALT.OK,
+        uopName: (i) => helpEn.uops[String(i)], opText: opTextEn, opEffect: (c) => machine.opEffect(c),
+      });
+    }
     if (help.open) help.setValue(valueOf(help.target));
     // eticheta din bară urmează proveniența în orice vedere (MEMORIE SCRIERE, banda vizitatorului, editorul)
     const pv = machine.provVersion();

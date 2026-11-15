@@ -47,42 +47,9 @@ body { background: var(--wall); color: var(--wall-text); font-family: var(--ui);
 .provenance .kind-RECONSTRUCTIE { color: #7a4a10; }
 .provenance .kind-GHICIT { color: #8a2c2c; }
 .bar-controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
-.speed { border: 0; margin: 0; padding: 0; display: flex; gap: 12px; align-items: center; font-size: 15px; }
-.speed legend { float: left; padding: 0 6px 0 0; }
-.speed label { cursor: pointer; }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 
-.hint { margin: 14px 24px 0; font-size: 16px; color: var(--wall-text); max-width: 110ch; }
-.state { margin: 4px 24px 0; font-size: 16px; }
-.status { color: #e7e2c9; }
-.machine-time { color: #aab1ac; margin-left: 0.6em; }
-.view { font-size: 15px; display: flex; gap: 6px; align-items: center; }
-.panels[data-view="left"], .panels[data-view="middle"], .panels[data-view="right"] { grid-template-columns: 1fr; }
-.panels[data-view="left"] .panel-slot:not(#panel-left),
-.panels[data-view="middle"] .panel-slot:not(#panel-middle),
-.panels[data-view="right"] .panel-slot:not(#panel-right) { display: none; }
 
-/* ---- masa și panourile ---- */
-.room { padding: 14px 24px 28px; }
-.desk { background: linear-gradient(180deg, var(--desk) 0%, var(--desk-dark) 100%); padding: 22px 26px 34px;
-  border-radius: 4px 4px 2px 2px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35); }
-.frame { padding: 10px; background: linear-gradient(180deg, var(--alu-hi), var(--alu-lo) 55%, #b4b9b6);
-  border-radius: 3px; box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 #6d7270; }
-.panels { display: grid; grid-template-columns: 2048fr 2600fr 2048fr; gap: 10px; }
-.panel-slot { background: #6d7270; padding: 2px; }
-.panel-slot svg { display: block; width: 100%; height: auto; }
-/* Perspectiva pupitrului întreg: panoul cu voltmetrele stă pe mijloc, puțin mai sus și mai în spate;
-   panourile laterale vin spre vizitator din stânga și din dreapta (GHICIT, după forma mesei în fotografie). */
-body:not([data-mode="atelier"]) .panels[data-view="all"] { perspective: 2200px; perspective-origin: 50% 40%;
-  align-items: end; padding: 10px 0 4px; }
-body:not([data-mode="atelier"]) .panels[data-view="all"] #panel-middle { transform: translateY(-18px); }
-/* în perspectivă fiecare panou își poartă rama de aluminiu, ca rama să urmeze unghiul panoului */
-body:not([data-mode="atelier"]) .frame:has(.panels[data-view="all"]) { background: none; box-shadow: none; padding: 10px 0; }
-body:not([data-mode="atelier"]) .panels[data-view="all"] .panel-slot { padding: 8px;
-  background: linear-gradient(180deg, var(--alu-hi), var(--alu-lo) 55%, #b4b9b6);
-  box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 #6d7270, 0 6px 14px rgba(0, 0, 0, 0.35); border-radius: 3px; }
-body:not([data-mode="atelier"]) .panels[data-view="all"] #panel-left { transform-origin: 100% 50%; transform: rotateY(var(--wing, 16deg)); }
-body:not([data-mode="atelier"]) .panels[data-view="all"] #panel-right { transform-origin: 0% 50%; transform: rotateY(calc(-1 * var(--wing, 16deg))); }
 
 .switch { cursor: pointer; outline: none; }
 .switch .lever { transition: transform 70ms linear; }
@@ -107,44 +74,8 @@ body:not([data-mode="atelier"]) .panels[data-view="all"] #panel-right { transfor
 .lamp .glow { transition: none; }
 @media (prefers-reduced-motion: reduce) { .switch .lever { transition: none; } }
 
-/* ---- perifericele ---- */
-.desk-3d { position: relative; height: min(62vh, 640px); min-height: 320px; background: var(--wall); border-radius: 3px; overflow: hidden; }
-.zones3d { position: absolute; z-index: 1; left: 10px; right: 10px; top: 10px; display: flex; flex-wrap: wrap; gap: 6px; pointer-events: none; }
-.zones3d button { pointer-events: auto; font: inherit; font-size: 14px; min-height: 34px; padding: 3px 11px; color: var(--strip-ink);
-  background: rgba(236, 238, 234, 0.92); border: 1px solid #8f969a; border-radius: 3px; cursor: pointer; }
-.zones3d button[aria-pressed="true"] { background: var(--strip-ink); color: var(--strip); }
-.zones3d[hidden] { display: none; }
-.desk-3d canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
-.desk-3d-msg { position: absolute; left: 12px; bottom: 8px; right: 12px; margin: 0; font-size: 14px; color: var(--wall-text);
-  text-shadow: 0 1px 2px #000; pointer-events: none; }
-#view-3d[aria-pressed="true"] { background: var(--strip-ink); color: var(--strip); }
-.peripherals { display: grid; grid-template-columns: minmax(200px, 0.55fr) 1fr 1fr; gap: 24px; margin-top: 24px; align-items: start; }
-.device { background: #4a4f52; border-radius: 4px; padding: 12px 16px 14px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); }
-.device h2 { margin: 0 0 8px; font-size: 17px; font-weight: 500; color: #e3e5e2; }
-.device-note { margin: 6px 0 0; font-size: 14px; color: #c4c8c4; }
-.tape svg { display: block; width: 100%; height: auto; border-radius: 2px; }
-.mag-drum svg { display: block; width: 100%; height: auto; border-radius: 2px; }
-.drum-pair { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 12px; align-items: center; }
-.drum-map-fig { margin: 0; }
-.drum-map { display: block; width: 100%; height: auto; aspect-ratio: 1; }
-.drum-map-legend { margin: 6px 0 0; font-size: 13px; line-height: 1.35; color: #c4c8c4; text-align: center; }
-
-.typewriter { background: #3e4245; }
-.sheet { position: relative; --sheet-pad: 1.5ch; font-family: 'Courier Prime', 'Courier New', monospace; font-size: 15px; }
-.sheet-paper { background: var(--paper); color: #1d1d1b; padding: 10px var(--sheet-pad) 6px; height: calc(16 * 1.35em + 16px);
-  overflow: hidden; box-shadow: inset 0 8px 10px -8px rgba(0, 0, 0, 0.35); }
-.sheet-text { margin: 0; font: inherit; line-height: 1.35em; white-space: pre; }
-.carriage { position: relative; height: 18px; background: linear-gradient(180deg, #9ea3a1, #5f6462); }
-.carriage-mark { position: absolute; top: 0; width: 1ch; height: 6px; background: #e8d36a; }
-
-.phone-tabs { display: none; }
-.credits { padding: 0 24px 24px; font-size: 13.5px; color: #9aa19c; max-width: 80ch; }
 
 /* ---- explicațiile ---- */
-#sound { min-width: 2.4em; font-size: 1.05em; line-height: 1; }
-#sound:disabled { opacity: 0.55; cursor: not-allowed; }
-#explain[aria-pressed="true"] { background: var(--strip-ink); color: var(--strip); }
-.explain-banner { margin: 6px 24px 0; padding: 6px 10px; background: #e8d36a; color: #1f2a33; border-radius: 3px; max-width: 110ch; }
 body.explaining .room, body.explaining .room * { cursor: help !important; }
 .help-panel { position: fixed; top: 0; right: 0; width: min(380px, 92vw); height: 100vh; overflow-y: auto; z-index: 20;
   background: var(--strip); color: var(--strip-ink); border-left: 1px solid var(--strip-line); padding: 16px 18px 24px;
@@ -163,7 +94,6 @@ body.explaining .room, body.explaining .room * { cursor: help !important; }
 .help-more td, .help-more th { border: 1px solid #b4b9b6; padding: 2px 6px; text-align: left; }
 .help-sources { padding-left: 18px; font-size: 14px; }
 .help-sources a { color: #24496f; word-break: break-all; }
-@media (min-width: 1400px) { body.help-open { padding-right: 396px; } }
 
 /* ---- turul ghidat ---- */
 .doc-link { font-size: 15px; color: #24496f; }
@@ -210,19 +140,6 @@ body.doc-page { min-width: 0; background: #e9ebe8; color: #1f2a33; }
 .tour-frame { fill: none; stroke: var(--focus); stroke-width: 4px; vector-effect: non-scaling-stroke; pointer-events: none; }
 
 /* ---- vederile și Atelierul ---- */
-.mode { display: flex; }
-.mode button { border-radius: 0; }
-.mode button:first-of-type { border-radius: 3px 0 0 3px; }
-.mode button:last-of-type { border-radius: 0 3px 3px 0; }
-.mode button + button { border-left: 0; }
-.mode button[aria-pressed="true"] { background: var(--strip-ink); color: var(--strip); }
-body[data-mode="console"] #atelier { display: none; }
-body[data-mode="atelier"] #panels { grid-template-columns: 1fr; }
-body[data-mode="atelier"] #panels .panel-slot:not(#panel-right) { display: none; }
-body[data-mode="atelier"] #panel-right { display: block; }
-body[data-mode="atelier"] #panel-right svg { max-height: 34vh; width: auto; max-width: 100%; margin: 0 auto; }
-body[data-mode="atelier"] .view { display: none; }
-body[data-mode="atelier"] .desk { padding: 12px 18px 16px; }
 .atelier { margin-top: 18px; background: #e3e5e1; color: var(--strip-ink); border-radius: 4px; padding: 12px 16px 16px; }
 .atelier button { font: inherit; font-size: 14.5px; color: var(--strip-ink); background: #f6f7f5; border: 1px solid #8f969a; border-radius: 3px; padding: 2px 9px; cursor: pointer; }
 .atelier button:disabled { opacity: 0.45; cursor: default; }
@@ -268,38 +185,3 @@ body[data-mode="atelier"] .desk { padding: 12px 18px 16px; }
 .pu-tape svg { max-height: 120px; }
 @media (max-width: 1100px) { .at-tools { grid-template-columns: minmax(0, 1fr); } }
 
-/* ---- ecrane mai înguste: comenzile moderne trec pe rândul lor ---- */
-@media (max-width: 1599px) {
-  .bar { grid-template-columns: auto minmax(0, 1fr); row-gap: 8px; }
-  .bar-controls { grid-column: 1 / -1; }
-}
-
-/* ---- telefonul: un singur panou, mărit, care se derulează în rama lui; aparatele unul sub altul ---- */
-@media (max-width: 760px) {
-  .bar { grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 8px 12px; }
-  .bar h1 { font-size: 19px; white-space: normal; }
-  .bar-program { grid-template-columns: minmax(0, 1fr); }
-  .bar select { max-width: 100%; }
-  .bar-controls { gap: 8px 10px; }
-  .bar button, .bar select, .speed label { min-height: 36px; }
-  .hint, .state { margin-left: 12px; margin-right: 12px; }
-  .room { padding: 10px 8px 20px; }
-  .desk { padding: 8px; }
-  .frame { overflow-x: auto; overscroll-behavior-x: contain; }
-  .panels:not([data-view="all"]) { width: 1200px; }
-  .peripherals { grid-template-columns: minmax(0, 1fr); gap: 14px; }
-  .typewriter { order: 1; } .reader { order: 2; } .drum-device { order: 3; }   /* ce tipărește mașina, întâi */
-  .sheet-paper { overflow-x: auto; overflow-y: hidden; }
-  .help-panel { width: 100vw; }
-  .tour-card { width: calc(100vw - 16px); bottom: 8px; }
-  .at-editor { overflow-x: auto; }
-  /* filele de jos: duc la fiecare parte a mașinii; pagina lasă loc sub ele */
-  body { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
-  .phone-tabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); position: fixed; z-index: 14; left: 0; right: 0; bottom: 0;
-    height: 60px; padding: 4px 4px max(4px, env(safe-area-inset-bottom)); box-sizing: content-box; gap: 2px;
-    background: var(--strip); border-top: 1px solid #8f969a; box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.25); }
-  .phone-tabs button { font: inherit; font-size: 12.5px; line-height: 1.15; color: var(--strip-ink); background: none; border: 0; border-radius: 3px;
-    min-height: 48px; padding: 2px; cursor: pointer; }
-  .phone-tabs button[aria-current="true"] { background: var(--strip-ink); color: var(--strip); }
-  .tour-card { bottom: 76px; }
-}

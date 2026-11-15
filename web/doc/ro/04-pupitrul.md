@@ -37,6 +37,26 @@ Sub grilă: **GENERATOR PRINCIPAL** (IMPULSURI, FRECVENȚĂ FIN, FRECVENȚĂ TRE
 ## Panoul din mijloc — aparatele de măsură
 Unsprezece voltmetre (unul lipsește azi, se vede doar rama), un selector, un comutator rotativ mare și comutatoare mici. Arătau, probabil, tensiunile de alimentare ale tuburilor; ce măsura fiecare și scalele sunt GHICITE. Cele patru voltmetre de sus sunt desenate cu scala 0–250 V (GHICIT).
 
+## Camera: cum vă apropiați de pupitru
+La 1600 px lățime, inscripțiile unui panou au vreo 5 px: nu se citesc. De aceea scena are o **cameră**,
+iar butoanele din colțul ei o duc în fața unei părți a pupitrului: Tot pupitrul · Microoperații ·
+Voltmetre · Registre · Comenzi. Când camera se apropie, aripile laterale se aplatizează, ca inscripțiile
+să stea drept în față, iar masa și umbra se sting.
+
+Pe telefon opririle camerei sunt altele, potrivite degetului: CALCULEAZA · Comenzi · RAI · M · RI·RA ·
+Voltmetre · Tot pupitrul. Registrele late se citesc **pe pagini de biți** (M în patru pagini, RAI în două),
+ca între două manete vecine să rămână cel puțin cât un deget. Harta mică din colț arată ce parte a
+pupitrului se vede acum.
+
+## Vederea Live (pe telefon)
+Treizeci și unu de becuri nu se citesc pe un ecran de telefon. Cât timp mașina calculează, fila **Live**
+spune în cuvinte ce face: adresa din RAI în octal, cele două instrucțiuni din cuvânt (cea în execuție
+încercuită), codul și adresa din RI cu efectul lor din tabelul din 1961, cuvântul din M în notația
+listingurilor și microoperația în curs, cu inscripția ei românească de pe panoul stâng. Comutatorul
+**Citit / Becuri** ascunde numerele și lasă doar becurile, așa cum le vedea operatorul.
+
+Pe celelalte file, o bară jos arată mereu ce se execută acum și oprește mașina.
+
 ## Vederea 3D
 Butonul **3D** din bara de sus arată pupitrul ca model tridimensional: „MECIPT-1” de marius0198 (Sketchfab, 2020, CC BY 4.0), modelul din care s-au redesenat panourile. Licența și lista modificărilor noastre sunt în capitolul 8, Surse.
 

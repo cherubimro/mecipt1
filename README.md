@@ -32,12 +32,19 @@ pe care o poți rula și citi azi, cu programele ei adevărate.
   Facsimilul 5), încărcată de preîncărcătorul original; tabelul de sinus din 21.02.1962, reprodus după Facsimilul 3
   (44 din 45 de valori cifră cu cifră; diferă sin 32°); calculele ilustrative Vidraru și Romexpo, cu eticheta
   „cifrele nu sunt cele reale”. Sursele în `programs/src/`, generate cu `make programs`; referințele în `tools/ref/`.
-- **Telefonul și publicarea** (Planul 7): pe ecrane înguste un singur panou mărit, derulabil, cu butonul de pornire
-  la vedere și file jos (Pupitru, Mașina de scris, Bandă, Tambur, Atelier); fără derulare orizontală la nicio lățime. Site-ul static se verifică (`tools/check_site.py`) și se
+- **Interfața web redesenată** (prima dintre interfețele proiectului): o ramă modernă în jurul unui obiect istoric —
+  bară de sticlă cu cartonașul programului și butonul Pornește, o scenă în perspectivă cu o **cameră** care se
+  apropie de o parte a pupitrului (microoperații, voltmetre, registre, comenzi) ca inscripțiile să se poată citi, și
+  cartonașele perifericelor sub ea. Comenzile moderne nu imită hardware de epocă; pupitrul rămâne fidel fotografiei
+  din 2011. Îndrumarul de design: `mecipt-handoff/HANDOFF.md`.
+- **Telefonul și publicarea** (Planul 7): pagina se deschide apropiată de CALCULEAZA AUTOMAT, cu opriri ale camerei
+  de atins cu degetul și pagini de biți pentru registrele late; file jos (Pupitru, Live, Tipăritura, Atelier,
+  Învață) și o vedere **Live** care spune în cuvinte ce face mașina, fiindcă 31 de becuri nu se citesc pe telefon;
+  fără derulare orizontală la nicio lățime. Site-ul static se verifică (`tools/check_site.py`) și se
   publică copiind `build/site/` — vezi `docs/publicare.md`.
 - **Tamburul magnetic**, desenat după fotografiile din 2015 (Muzeul Banatului), cu harta celor 1024 de cuvinte, care se umple la încărcarea benzii.
 - **Vederea 3D**: butonul 3D/2D arată modelul lui marius0198 (CC BY 4.0) cu becurile aprinse după emulator, comutatoarele apăsabile cu un clic și zonele camerei; three.js (MIT) e inclus local.
-- Urmează: interfețele desktop (wx și ncurses, poate regândite ca o interfață Qt).
+- Urmează: celelalte interfețe ale proiectului — desktop (wx și ncurses, poate regândite ca o interfață Qt).
 
 Ce e sigur, ce e dedus și ce e ghicit: `docs/semantica.md` (în engleză: `docs/semantica.en.md`).
 Textele ajutorului se scriu în `tools/help/gen_help.py`, iar capitolele documentației în `web/doc/{ro,en}/`. Fiecare cuvânt de program își poartă
@@ -72,4 +79,4 @@ Autor: Alin-Adrian Anton <alin.anton@upt.ro> (vezi `AUTHORS`).
 - Programele originale din 1962 (cuvintele marcate ORIGINAL: retipărirea și preîncărcătorul INEX-1) **nu sunt ale
   proiectului**: sunt ale colectivului MECIPT (Institutul Politehnic din Timișoara), transcrise din facsimilele
   publicate de Vasile Baltac și arătate ca documente istorice, cu sursa numită.
-- Fonturile din `web/fonts/`: **SIL Open Font License 1.1**.
+- Fonturile din `web/fonts/` (Barlow Semi Condensed, Courier Prime, Geist, Geist Mono): **SIL Open Font License 1.1**.

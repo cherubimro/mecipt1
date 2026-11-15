@@ -127,6 +127,11 @@ Alegerile făcute pentru pagina pupitrului (`web/js/bindings.js`, `web/js/glow.j
 | Un bec de microoperație se aprinde dacă microoperația a rulat cel puțin o dată de la cadrul precedent | GHICIT | Ochiul vede, la 50 instr/s, becurile pulsând; vezi și inerția. |
 | Încărcarea unui program (și Reîncarcă) readuce impulsurile (IMPULSURI pe RESTABILESTE) | GHICIT | O pornire curată; altfel vizitatorul rămâne cu mașina oprită fără să știe de ce. |
 | Comutatoarele M și RAI țin poziția și pun tot cuvântul în registru la fiecare mutare | GHICIT, în tensiune cu sursele | Existența butoanelor ANULEAZA M / RAI și introducerea „cu trei degete” sugerează că, poate, comutatoarele adăugau biți într-un registru golit înainte. De hotărât înainte ca turul ghidat (Planul 4) să predea procedura de lucru. |
+| Masa de sub pupitru: aluminiu satinat deschis, cu o dungă din albastrul istoric (#2f5c8c) în spate | GHICIT | Fotografia din 2011 arată corpul albastru al mobilei; suprafața deschisă și firul de lumină de pe buză sunt interpretare modernă, nu urme ale obiectului. |
+| În panoramă aripile laterale stau rotite ±17°, iar pupitrul e înclinat 5°; camera le aplatizează când se apropie de o zonă | GHICIT | Forma mesei din fotografie; unghiul e ales ca inscripțiile să rămână lizibile când camera se apropie. |
+| Luciul alb de pe muchia din afară a panourilor laterale și banda de lumină de pe emailul albastru | GHICIT | Interpretarea luminii din sală; nu sunt zgârieturi sau patină inventate. |
+| În vederea Live, jumătatea cuvântului care se execută e cea care se potrivește cu RI; când cele două jumătăți sunt identice, hotărăște faza | DEDUS | RI ține codul și adresa instrucțiunii în execuție (`core/machine.c`). |
+| Becurile registrului M se grupează după câmpurile cuvântului: m0, m1–m5 codul 2, m6–m10 codul 1, m11–m20 adresa 2, m21–m30 adresa 1 | SIGUR | Lucrarea de laborator 7, p. 1 (`core/isa.h`). |
 
 ## Atelierul
 Alegerile Atelierului (`web/js/atelier/`, nucleul: `PROV_MODIFICAT`, `written`, `visitor_tape`).

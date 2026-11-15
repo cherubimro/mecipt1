@@ -73,9 +73,26 @@ function lamp(p, id, x, y, color, square, r = LAMP_R) {
     + '</g>';
 }
 
-function toggle(p, id, x, y) {
+// Suprafața de atins a unui comutator, în unitățile panoului: cât de mare încape fără să se
+// suprapună peste vecinul ei. Pe telefon, cu camera apropiată, iese peste 44 px (secțiunea 8 din
+// îndrumarul de design); pe tot pupitrul nu contează, că oricum nu se nimerește cu degetul.
+export const HIT_MIN = 21, HIT_MAX = 36;
+export function hitRadius(switches) {
+  let d = Infinity;
+  for (let i = 0; i < switches.length; i++) {
+    for (let j = i + 1; j < switches.length; j++) {
+      d = Math.min(d, Math.hypot(switches[i][0] - switches[j][0], switches[i][1] - switches[j][1]));
+    }
+  }
+  if (!isFinite(d)) return HIT_MAX;
+  return Math.max(HIT_MIN, Math.min(HIT_MAX, Math.round(d / 2 - 1)));
+}
+
+function toggle(p, id, x, y, hit = SWITCH_R + 13) {
   const r = SWITCH_R;
   return `<g class="switch down" id="${id}" tabindex="0" role="button" transform="translate(${n(x)} ${n(y)})">`
+    // suprafața de atins, mai mare decât maneta desenată: pe telefon degetul nimerește comutatorul
+    + `<circle r="${n(hit)}" fill="transparent" class="hit"/>`
     + `<circle r="${r + 6}" fill="none" class="focus-ring"/>`
     + `<polygon points="${hex(r)}" fill="url(#${p}-chrome)" stroke="#555" stroke-width="1"/>`
     + `<circle r="${r * 0.62}" fill="#2b2c2b"/><circle r="${r * 0.5}" fill="url(#${p}-chrome)"/>`
@@ -224,7 +241,8 @@ export function renderPanel(side, art, positions, colors) {
       // becurile grilei de microoperații sunt mai mici, ca pe panou: inscripția (cu bara lui M̄) rămâne vizibilă
       parts.push(lamp(p, `lamp-${g}-${i}`, x, y, color, shape[g] === 'square', g === 'uop' ? 14 : LAMP_R));
     });
-    (grp.switches || []).forEach(([x, y], i) => parts.push(toggle(p, `switch-${g}-${i}`, x, y)));
+    const hit = hitRadius(grp.switches || []);
+    (grp.switches || []).forEach(([x, y], i) => parts.push(toggle(p, `switch-${g}-${i}`, x, y, hit)));
     if (grp.knob) parts.push(knob(p, 'knob', grp.knob[0], grp.knob[1]));
   }
   // umbra și luciul discret al emailului, ca în fotografie

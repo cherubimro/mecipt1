@@ -49,6 +49,10 @@ export class Runner {
           const h = m.step();
           if (h !== HALT.OK) halted = h;
         }
+      } else if (a.ui === 'stop') {
+        // „Pauză” din bară: mașina se oprește ca de la pupitru (becul OPRIT se aprinde)
+        this.mode = 'idle';
+        m.console(OP.OPRESTE);
       } else if (a.ui === 'toggle-pulses') {
         this.pulsesOff = !this.pulsesOff;
         if (this.pulsesOff) {

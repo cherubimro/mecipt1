@@ -37,6 +37,26 @@ Below the grid: **GENERATOR PRINCIPAL** (main generator: IMPULSURI, FRECVENȚĂ 
 ## Middle panel — the measuring instruments
 Eleven voltmeters (one is missing today, only its bezel remains), a selector, a large rotary switch and small switches. They probably showed the supply voltages of the tubes; what each measured and the scales are GUESSED. The four top voltmeters are drawn with a 0–250 V scale (GUESSED).
 
+## The camera: how you come close to the console
+At 1600 px wide the inscriptions of a panel are about 5 px tall: unreadable. The stage therefore has a
+**camera**, and the buttons in its corner bring it in front of one part of the console: Whole console ·
+Micro-operations · Voltmeters · Registers · Controls. As the camera comes close the side wings flatten,
+so the inscriptions face you squarely, and the desk and its shadow fade out.
+
+On a phone the camera stops are different, sized for a finger: CALCULEAZA · Commands · RAI · M · RI·RA ·
+Voltmeters · Whole console. The wide registers are read **in pages of bits** (M in four pages, RAI in two),
+so that neighbouring levers stay at least a fingertip apart. The small map in the corner shows which part
+of the console is in view.
+
+## The live view (on a phone)
+Thirty-one lamps cannot be read on a phone screen. While the machine computes, the **Live** tab says in
+words what it is doing: the RAI address in octal, the two instructions of the word (the one being executed
+outlined), the code and address in RI with their effect from the 1961 table, the word in M in the notation
+of the listings, and the micro-operation under way, with its Romanian inscription from the left panel. The
+**Decoded / Lamps** switch hides the numbers and leaves only the lamps, the way the operator saw them.
+
+On the other tabs a bar at the bottom always shows what is executing now, and stops the machine.
+
 ## The 3D view
 The **3D** button in the top bar shows the console as a three-dimensional model: “MECIPT-1” by marius0198 (Sketchfab, 2020, CC BY 4.0), the model the panels were redrawn from. The licence and the list of our changes are in chapter 8, Sources.
 

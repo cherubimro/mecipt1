@@ -3,6 +3,49 @@
 Emulatorul MECIPT-1 n-are încă versiuni numerotate; schimbările sunt grupate pe zile și pe planurile din
 `docs/superpowers/plans/`. Detaliile sunt în istoricul git.
 
+## 2026-11-15
+
+### Adăugat
+- **Interfața redesenată a pupitrului web** (prima dintre interfețele proiectului), după îndrumarul de design din
+  `mecipt-handoff/HANDOFF.md`: o ramă modernă în jurul unui obiect istoric. Pupitrul rămâne fidel fotografiei din 2011
+  și desenat vectorial; comenzile din jur sunt de azi și nu imită hardware de epocă.
+- **Bara de sticlă**: numele mașinii, cartonașul programului (titlul plus rezumatul provenienței, cu desfășurarea în
+  foaia lui), Pupitru / Atelier / Ambele, 1962 / ×100, **Pas** și **Pornește / Pauză** (aceleași acțiuni ca manetele
+  CALCULEAZA), turul, Explică, documentația, 3D, sunetul, RO/EN și „Mai multe” (vederea pe panouri, reîncărcarea).
+  Un fir de cyan pe muchia de jos se aprinde cât timp mașina calculează.
+- **Scena cu cameră**: pupitrul stă în perspectivă, cu aripile deschise și masa de aluminiu satinat sub el, iar
+  butoanele **Tot pupitrul · Microoperații · Voltmetre · Registre · Comenzi** duc camera în fața unei părți a
+  pupitrului, aplatizând aripile ca inscripțiile să se citească. Eticheta de stare spune ce face mașina și ce se vede.
+- **Telefonul**: pagina se deschide apropiată de CALCULEAZA AUTOMAT, cu opriri ale camerei de atins cu degetul și
+  **pagini de biți** pentru registrele late (M în patru, RAI în două), ca între două manete să rămână peste 44 px.
+  Harta mică din colț arată ce parte a pupitrului se vede.
+- **Vederea Live** pe telefon: cât timp mașina calculează, RAI în octal, cele două instrucțiuni ale cuvântului (cea în
+  execuție încercuită), codul și adresa din RI cu efectul lor din tabelul din 1961, cuvântul din M în notația
+  listingurilor și microoperația în curs; comutatorul **Citit / Becuri** lasă doar becurile. O fereastră mică arată
+  registrele de pe panoul drept, vii, și duce la ele pe pupitru.
+- **Bara „se execută acum”** pe celelalte file, cu adresa, instrucțiunile și pauza; **Tipăritura** pe tot ecranul, cu
+  buton de copiere; fila **Învață** adună turul ghidat, Explică și documentația.
+- Fonturile **Geist** și **Geist Mono** (SIL OFL 1.1), găzduite local ca tot restul paginii.
+- Teste noi: `tests/web/camera.test.mjs` (socoteala camerei și distanța dintre manete pe un ecran de 375 px) și
+  `tests/web/live.test.mjs` (citirea cuvântului, a registrelor și a microoperației).
+
+### Schimbat
+- Filele de pe telefon sunt acum **Pupitru · Live · Tipăritura · Atelier · Învață**; banda și tamburul nu mai sunt file,
+  ci se văd ca rânduri de stare în Live și ca aparate sub pupitru.
+- Select-ul „Vedere” a trecut în „Mai multe”: opririle camerei îi iau locul, iar vederea pe un singur panou rămâne
+  dedesubt (turul ghidat o folosește mai departe).
+- Pe telefon pupitrul nu se mai derulează ca un panou de 1200 px într-o ramă de 343 px: camera îl aduce aproape.
+- Suprafața de atins a unei manete e un cerc nevăzut, cât încape între manetele vecine.
+- Culorile, tipografia și cartonașele paginii: fundal deschis, text pe Geist, numerele pe Geist Mono; cyanul e folosit
+  numai ca lumină, niciodată pentru text.
+
+### Corectat
+- Așezarea câmpurilor în cuvânt, pentru becurile grupate ale registrului M: m0 · m1–m5 codul 2 · m6–m10 codul 1 ·
+  m11–m20 adresa 2 · m21–m30 adresa 1 (`core/isa.h`, Lucrarea de laborator 7, p. 1). Macheta de design presupunea
+  „bitul în plus, apoi codul 1, adresa 1, codul 2, adresa 2”, ceea ce nu se potrivește cu nucleul.
+- Înțelesul instrucțiunii din RI nu mai e un loc gol în machetă: vine din tabelul nucleului
+  (`web/data/core-tables.json`), în română din nucleu și în engleză din traducerea ajutorului.
+
 ## 2026-11-04
 
 ### Adăugat

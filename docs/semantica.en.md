@@ -129,6 +129,11 @@ The choices made for the console page (`web/js/bindings.js`, `web/js/glow.js`, `
 | A micro-operation lamp lights if the micro-operation ran at least once since the previous frame | GUESSED | At 50 instr/s the eye sees the lamps pulsing; see also the inertia. |
 | Loading a program (and Reload) restores the pulses (IMPULSURI on RESTABILESTE) | GUESSED | A clean start; otherwise the visitor is left with a stopped machine without knowing why. |
 | The M and RAI switches latch and put the whole word into the register at every move | GUESSED, in tension with the sources | The ANULEAZA M / RAI (clear) buttons and “three-finger” entry suggest that the switches may have added bits into a register cleared beforehand. To be decided before the guided tour (Plan 4) teaches the operating procedure. |
+| The desk under the console: pale satin aluminium, with a strip of the historical blue (#2f5c8c) at the back | GUESSED | The 2011 photograph shows the blue body of the furniture; the pale surface and the light along its front lip are a modern interpretation, not traces of the object. |
+| In the overview the side wings are turned ±17° and the console is tilted 5°; the camera flattens them when it moves close to a zone | GUESSED | The shape of the desk in the photograph; the angle is chosen so the inscriptions stay readable when the camera comes close. |
+| The white sheen on the outer edge of the side panels and the band of light on the blue enamel | GUESSED | An interpretation of the light in the room; no invented scratches or patina. |
+| In the live view, the half of the word being executed is the one that matches RI; when the two halves are identical, the phase decides | DEDUCED | RI holds the code and address of the instruction being executed (`core/machine.c`). |
+| The M register lamps are grouped by the fields of the word: m0, m1–m5 code 2, m6–m10 code 1, m11–m20 address 2, m21–m30 address 1 | CERTAIN | Laboratory work 7, p. 1 (`core/isa.h`). |
 
 ## The workshop
 The workshop’s choices (`web/js/atelier/`, the core: `PROV_MODIFICAT`, `written`, `visitor_tape`).
