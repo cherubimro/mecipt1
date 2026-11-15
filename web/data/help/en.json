@@ -801,7 +801,7 @@
    "target": "switch-compute-0",
    "view": "right",
    "waitFor": "typed",
-   "text": "Now let us run the program: press the CALCULEAZA AUTOMAT (compute: automatic) button, marked in yellow. The tour continues when the machine starts typing.",
+   "text": "Now let us run the program: press the CALCULEAZA AUTOMAT (compute: automatic) lever, ringed on the right-hand panel, or the Run button in the bar. The tour continues when the machine starts typing.",
    "group": "compute"
   },
   {

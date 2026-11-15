@@ -801,7 +801,7 @@
    "target": "switch-compute-0",
    "view": "right",
    "waitFor": "typed",
-   "text": "Acum rulăm programul: apăsați butonul CALCULEAZA AUTOMAT, marcat cu galben. Turul continuă când mașina începe să scrie.",
+   "text": "Acum rulăm programul: apăsați maneta CALCULEAZA AUTOMAT, încercuită pe panoul din dreapta, sau butonul Pornește din bară. Turul continuă când mașina începe să scrie.",
    "group": "compute"
   },
   {

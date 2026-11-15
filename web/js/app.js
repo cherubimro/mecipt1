@@ -4,7 +4,7 @@ import { loadMecipt, HALT, OP } from './mecipt.js';
 import { setupAtelier } from './atelier/page.js';
 import { Clock } from './clock.js';
 import { Runner } from './runner.js';
-import { renderPanel, cueArrow } from './panel.js';
+import { renderPanel } from './panel.js';
 import { lampTargets, uopIndexForGrid, actionFor, isMomentary } from './bindings.js';
 import { glowStep } from './glow.js';
 import { renderTape } from './tape.js';
@@ -170,16 +170,12 @@ async function main() {
   };
   const labelSwitches = () => {
     for (const el of document.querySelectorAll('.switch')) el.setAttribute('aria-label', T().switchLabel(el.id));
-    const cueLabel = document.querySelector('#cue-arrow .cue-label');   // săgeata de pornire, în limba aleasă
-    if (cueLabel) cueLabel.textContent = T().cuePress;
-    $('cue3d-label').textContent = T().cuePress;
   };
   labelSwitches();
   setLever('switch-pulses-0', false);
-  $('switch-compute-0').classList.add('cue');   // îndrumarea arată butonul de pornire până la prima apăsare
-  // și o săgeată care pulsează spre el, mare cât să se vadă și pe tot pupitrul
-  const [cx, cy] = positions.right.compute.switches[0];
-  $('panel-right').querySelector('svg').insertAdjacentHTML('beforeend', cueArrow(cx, cy, T().cuePress));
+  // îndrumarea: un inel de cyan în jurul manetei CALCULEAZA AUTOMAT, până la prima apăsare.
+  // Pornirea se poate face și din butonul Pornește al barei, așa că inelul rămâne discret.
+  $('switch-compute-0').classList.add('cue');
   const showSwitchWord = (group, bits) => bits.forEach((v, i) => setLever(`switch-${group}-${i}`, v === 1));
 
   for (const p of catalog) {
@@ -381,7 +377,7 @@ async function main() {
 
   function press(id) {
     sound.control(id);
-    if (id === 'switch-compute-0') { $(id).classList.remove('cue'); $('cue-arrow')?.setAttribute('display', 'none'); }
+    if (id === 'switch-compute-0') $(id).classList.remove('cue');
     const a = actionFor(id, switches);
     if (id.startsWith('switch-M-')) showSwitchWord('M', switches.M);
     else if (id.startsWith('switch-RAI-')) showSwitchWord('RAI', switches.RAI);
@@ -617,11 +613,6 @@ async function main() {
     if (show3d && view3d) {
       view3d.setLamps(lamps.map((l) => [l.id, l.b]));
       view3d.render();
-      // săgeata îndrumării și în 3D: sub maneta CALCULEAZA AUTOMAT, cât timp se vede și n-a fost apăsată
-      const a = $('switch-compute-0').classList.contains('cue') ? view3d.anchor('switch-compute-0') : null;
-      const on = !!(a && a.visible);
-      if ($('cue3d').hidden === on) $('cue3d').hidden = !on;
-      if (on) $('cue3d').style.transform = `translate(${a.x.toFixed(1)}px, ${a.y.toFixed(1)}px)`;
     }
   }
   let last = null;

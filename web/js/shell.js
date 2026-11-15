@@ -44,7 +44,11 @@ export function setupShell(cb) {
       pop.hidden = !open;
       btn.setAttribute('aria-expanded', String(open));
     });
-    pop.addEventListener('click', (e) => e.stopPropagation());
+    // foaia se închide singură după ce vizitatorul a ales ceva din ea; un clic pe fundalul ei nu o închide
+    pop.addEventListener('click', (e) => {
+      if (e.target.closest('button, a')) closePops(null); else e.stopPropagation();
+    });
+    pop.addEventListener('change', () => closePops(null));
   }
   document.addEventListener('click', () => closePops(null));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePops(null); });

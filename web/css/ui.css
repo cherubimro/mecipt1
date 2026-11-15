@@ -186,6 +186,14 @@ body.running .shelf::after { opacity: 1; box-shadow: 0 0 10px var(--ui-accent); 
 .panels[data-view="middle"] #wing-left, .panels[data-view="middle"] #wing-right,
 .panels[data-view="right"] #wing-left, .panels[data-view="right"] #wing-middle { display: none; }
 
+/* Îndrumarea de pornire: un inel de cyan în jurul manetei CALCULEAZA AUTOMAT, până la prima apăsare.
+   Fără săgeți și fără pulsații: pornirea se poate face și din butonul Pornește al barei, iar cât timp
+   mașina calculează inelul dispare cu totul. */
+.switch.cue .focus-ring { stroke: var(--ui-accent); stroke-width: 4px; }
+.switch.cue { filter: drop-shadow(0 0 3px var(--ui-accent)); }
+body.running .switch.cue .focus-ring { stroke: none; }
+body.running .switch.cue { filter: none; }
+
 /* ---- eticheta de stare și zonele camerei ---- */
 .stage-cap { position: absolute; z-index: 4; left: 16px; right: 16px; bottom: 12px;
   display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; pointer-events: none; }

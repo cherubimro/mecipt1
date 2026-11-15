@@ -39,6 +39,12 @@ Emulatorul MECIPT-1 n-are încă versiuni numerotate; schimbările sunt grupate 
 - Culorile, tipografia și cartonașele paginii: fundal deschis, text pe Geist, numerele pe Geist Mono; cyanul e folosit
   numai ca lumină, niciodată pentru text.
 
+### Scos
+- **Săgeata galbenă** care pulsa spre CALCULEAZA AUTOMAT, în 2D și în 3D: pornirea se face acum și din
+  butonul Pornește al barei, iar săgeata acoperea pupitrul. În locul ei, maneta poartă un inel subțire de
+  cyan până la prima apăsare, care dispare cât timp mașina calculează.
+- Foile din bară (programul și „Mai multe”) se închid singure după ce vizitatorul a ales ceva din ele.
+
 ### Corectat
 - Așezarea câmpurilor în cuvânt, pentru becurile grupate ale registrului M: m0 · m1–m5 codul 2 · m6–m10 codul 1 ·
   m11–m20 adresa 2 · m21–m30 adresa 1 (`core/isa.h`, Lucrarea de laborator 7, p. 1). Macheta de design presupunea
