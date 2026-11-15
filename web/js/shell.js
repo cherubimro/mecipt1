@@ -136,7 +136,7 @@ export function setupShell(cb) {
   // Apropiată de o zonă, camera umple scena, că acolo contează mărimea inscripțiilor.
   function fitBox(w, h, isPhone, wide) {
     if (isPhone) return { x0: 6, y0: 96, x1: w - 6, y1: h - 62 };
-    if (!wide) return { x0: 22, y0: 18, x1: w - 22, y1: h - 76 };
+    if (!wide) return { x0: 22, y0: 18, x1: w - 22, y1: h - 96 };   // loc pentru eticheta de stare
     const px = Math.max(28, w * 0.08);
     return { x0: px, y0: h * 0.06, x1: w - px, y1: h * 0.64 };
   }
@@ -383,8 +383,13 @@ export function setupShell(cb) {
       buildStrip(positions, colors);
       setLiveMode(false);
       setTexts();
+      // prima așezare a camerei nu se mișcă lin: pagina se deschide direct pe locul ei, nu alunecând
+      desk.classList.add('no-tween');
       layout();
       if (phone()) setZone('compute');
+      const tween = () => desk.classList.remove('no-tween');
+      requestAnimationFrame(tween);
+      setTimeout(tween, 100);
       addEventListener('resize', () => { layout(); applyCamera(); }, { passive: true });
       // scena se îngustează și fără redimensionarea ferestrei (panoul de explicații strânge pagina):
       // camera se refigurează, ca pupitrul să rămână în ramă

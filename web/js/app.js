@@ -153,6 +153,7 @@ async function main() {
     if ($('drum-map-legend').textContent !== legend) $('drum-map-legend').textContent = legend;
   };
   const reducedMotion = globalThis.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  const narrow = globalThis.matchMedia ? matchMedia('(max-width: 760px)') : { matches: false };
 
   // becurile: elementul de lumină și strălucirea curentă
   const lamps = [...document.querySelectorAll('.lamp')].map((g) => ({ id: g.id, glow: g.querySelector('.glow'), b: 0, shown: -1 }));
@@ -595,7 +596,8 @@ async function main() {
       : runner.mode === 'automat' ? T().running
         : lastHalt !== null && lastHalt !== HALT.OK ? T().halt[lastHalt] : T().idle;
     if ($('status').textContent !== st) $('status').textContent = st;   // anunțat doar la schimbare
-    const t = `${T().machineTime}: ${machine.seconds().toFixed(1)} s`;
+    // pe telefon eticheta de stare are un rând: timpul rămâne doar numărul („Mașina așteaptă. 0,0 s”)
+    const t = narrow.matches ? `${machine.seconds().toFixed(1)} s` : `${T().machineTime}: ${machine.seconds().toFixed(1)} s`;
     if ($('machine-time').textContent !== t) $('machine-time').textContent = t;
     if (shell) {
       shell.setStatusLine(`${st} · ${t}`);

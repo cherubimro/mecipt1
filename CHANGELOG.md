@@ -49,6 +49,18 @@ Emulatorul MECIPT-1 n-are încă versiuni numerotate; schimbările sunt grupate 
 - **Pictograma documentației** era un dreptunghi rotunjit care semăna cu un telefon; e acum o foaie cu colț
   îndoit și rânduri de text.
 
+### Corectat (cum arată, văzut cu ochii)
+- **Pupitrul ieșea din scenă, cu aripile umflate.** Blocul fusese așezat de cinci ori mai mare, dar
+  adâncimea perspectivei rămăsese 1900 px: muchiile apropiate ale aripilor se măreau cu o pătrime și
+  panourile laterale erau tăiate de marginile ferestrei (mai tare în Firefox decât în Chromium).
+  Perspectiva crește acum odată cu blocul, iar proiecția iese la fel indiferent cât de mare e desenat.
+- **Butonul Pornește nu era întunecat.** Resetul `.console-page button` (o clasă și un tip) bătea `.go`,
+  `.prog` și `.ico` (o clasă), așa că butonul rămânea fără fundal și lua culoarea textului. Resetul trece
+  prin `:where()`, care nu adaugă greutate.
+- **Camera aluneca la deschiderea paginii**: prima ei așezare se face acum dintr-o dată, fără mișcare.
+- Pe telefon, eticheta de stare intră pe un rând: timpul de mașină rămâne doar numărul.
+- Apropiată de o zonă, camera lasă loc dedesubt pentru eticheta de stare.
+
 ### Schimbat (bara)
 - **Vederea pe panouri și reîncărcarea programului stau acum la vedere, în bară**, nu ascunse sub „⋯”.
   „Mai multe” rămâne doar pe telefon, unde comenzile nu încap altfel.
