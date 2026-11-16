@@ -49,6 +49,18 @@ Emulatorul MECIPT-1 n-are încă versiuni numerotate; schimbările sunt grupate 
 - **Pictograma documentației** era un dreptunghi rotunjit care semăna cu un telefon; e acum o foaie cu colț
   îndoit și rânduri de text.
 
+### Adăugat (cele trei aparate se deschid ca niște meniuri)
+- **Mașina de scris, tamburul și banda stau iar pe un rând**, sub pupitru, și fiecare se deschide și se
+  închide dintr-un antet. Închise, antetul lor e chiar starea: ultimul rând tipărit, unde a ajuns tamburul,
+  la ce rând e banda, cu un punct de cyan cât timp se mișcă. Așa încap toate pe ecran, fără derulare.
+- **Coala se deschide singură** când mașina tipărește prima oară — e rostul mașinii. Dacă vizitatorul o
+  închide el, nu se mai deschide singură în vizita aceea.
+- Ce e deschis se ține minte între vizite, ca vederea și sunetul.
+- **Banda se vede mărită**, cât să se distingă perforațiile, cu capul de citire în mijloc și rândul de
+  stare sub ea.
+- Scena ia ce rămâne din înălțimea ferestrei după bară și un cartonaș deschis, deci un aparat deschis
+  încape mereu pe ecran.
+
 ### Schimbat (ce se vede fără să derulezi)
 - **Scena s-a strâns** (de la 660 la cel mult 500 px, cu mai puțin aer deasupra și sub pupitru), ca
   tipăritura să intre în ecran fără derulare. Coala arată zece rânduri în loc de șaisprezece.

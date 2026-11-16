@@ -110,7 +110,7 @@
       <div class="stage-cap">
         <p class="state" id="statebar"><b><span class="dot" aria-hidden="true"></span><span id="status" class="status" aria-live="polite"></span> <span id="machine-time" class="machine-time"></span></b><span class="hint" id="hint"></span></p>
         <div class="nowbar" id="nowbar" hidden>
-          <button class="open" id="nowbar-open" type="button"><i aria-hidden="true"></i><span><span class="mono" id="nowbar-text"></span><small id="nowbar-sub"></small></span></button>
+          <button class="open" id="nowbar-open" type="button"><i aria-hidden="true"></i><span><span class="mono" id="nowbar-text"></span></span></button>
           <button class="ico" id="nowbar-run" type="button"><svg class="i i-run" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14l12-7z"></path></svg><svg class="i i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14M15 5v14"></path></svg></button>
         </div>
         <div class="zones" id="zones" role="group"></div>
@@ -176,27 +176,31 @@
 
   <div class="peripherals">
     <section class="device typewriter" id="dev-typewriter">
-      <div class="out-head">
-        <h2 id="typewriter-label">Mașina de scris</h2>
-        <button class="copy" id="copy-listing" type="button" hidden><svg class="i" style="width:18px;height:18px" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"></path></svg><span id="copy-listing-label"></span></button>
+      <h2 class="dev-head"><button class="dev-toggle" id="toggle-typewriter" type="button" aria-expanded="false" aria-controls="body-typewriter"><svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"></path></svg><span class="dev-title" id="typewriter-label">Mașina de scris</span><span class="dev-mark" id="typewriter-mark"></span></button></h2>
+      <div class="dev-body" id="body-typewriter" hidden>
+        <div id="sheet" class="sheet"></div>
+        <button class="copy" id="copy-listing" type="button"><svg class="i" style="width:18px;height:18px" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"></path></svg><span id="copy-listing-label"></span></button>
       </div>
-      <div id="sheet" class="sheet"></div>
     </section>
     <section class="device drum-device" id="dev-drum">
-      <h2 id="drum-label">Tamburul magnetic</h2>
-      <div class="drum-pair">
-        <div id="drum" class="mag-drum"></div>
-        <figure class="drum-map-fig" id="drum-map-fig">
-          <canvas id="drum-map" class="drum-map" width="320" height="320" role="img"></canvas>
-          <figcaption id="drum-map-legend" class="drum-map-legend" aria-live="off"></figcaption>
-        </figure>
+      <h2 class="dev-head"><button class="dev-toggle" id="toggle-drum" type="button" aria-expanded="false" aria-controls="body-drum"><svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"></path></svg><span class="dev-title" id="drum-label">Tamburul magnetic</span><span class="dev-mark" id="drum-mark"></span></button></h2>
+      <div class="dev-body" id="body-drum" hidden>
+        <div class="drum-pair">
+          <div id="drum" class="mag-drum"></div>
+          <figure class="drum-map-fig" id="drum-map-fig">
+            <canvas id="drum-map" class="drum-map" width="320" height="320" role="img"></canvas>
+            <figcaption id="drum-map-legend" class="drum-map-legend" aria-live="off"></figcaption>
+          </figure>
+        </div>
+        <p id="drum-info" class="device-note"></p>
       </div>
-      <p id="drum-info" class="device-note"></p>
     </section>
     <section class="device reader" id="dev-reader">
-      <h2 id="reader-label">Cititorul de bandă perforată</h2>
-      <div id="tape" class="tape"></div>
-      <p id="tape-info" class="device-note"></p>
+      <h2 class="dev-head"><button class="dev-toggle" id="toggle-reader" type="button" aria-expanded="false" aria-controls="body-reader"><svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"></path></svg><span class="dev-title" id="reader-label">Cititorul de bandă perforată</span><span class="dev-mark" id="reader-mark"></span></button></h2>
+      <div class="dev-body" id="body-reader" hidden>
+        <div id="tape" class="tape"></div>
+        <p id="tape-info" class="device-note"></p>
+      </div>
     </section>
   </div>
 

@@ -146,7 +146,7 @@ body.running .go .i-run, body.running .nowbar .i-run { display: none; }
      aripilor se umflă, iar pupitrul dă pe dinafara scenei. */
   --k: 5; }
 .frame { position: relative; overflow: hidden; border-radius: 20px;
-  height: clamp(320px, 32vw, 500px);
+  height: max(300px, min(32vw, 560px, calc(100vh - 470px)));
   background: radial-gradient(1100px 420px at 50% 20%, #fff 0, #f6f8fa 55%, #eceff3 100%); }
 .frame[hidden] { display: none; }
 .floor { position: absolute; left: -30%; right: -30%; top: 54%; height: 70%; transform-origin: 50% 0;
@@ -254,7 +254,7 @@ body.running .state .dot { background: var(--ui-accent); box-shadow: 0 0 9px var
   border-radius: 3px; transition: left 0.9s, width 0.9s; }
 
 /* ---- vederea 3D ---- */
-.desk-3d { position: relative; height: clamp(320px, 32vw, 500px); border-radius: 20px; overflow: hidden; background: #262c33; }
+.desk-3d { position: relative; height: max(300px, min(32vw, 560px, calc(100vh - 470px))); border-radius: 20px; overflow: hidden; background: #262c33; }
 .desk-3d[hidden] { display: none; }
 .zones3d { position: absolute; z-index: 1; left: 10px; right: 10px; top: 10px; display: flex; flex-wrap: wrap; gap: 6px; pointer-events: none; }
 .zones3d button { pointer-events: auto; border: 0; cursor: pointer; min-height: 40px; padding: 0 13px; border-radius: 13px;
@@ -266,15 +266,31 @@ body.running .state .dot { background: var(--ui-accent); box-shadow: 0 0 9px var
   color: #dfe3e8; text-shadow: 0 1px 2px #000; pointer-events: none; }
 
 /* ---- cartonașele perifericelor ---- */
-.peripherals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
+.peripherals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 14px; align-items: start; }
 .device { box-sizing: border-box; padding: 18px 20px; border-radius: 20px; background: var(--ui-card); box-shadow: var(--ui-card-shadow); }
 .device h2 { margin: 0 0 9px; font-size: 13px; font-weight: 600; color: var(--ui-ink); }
 .device-note { margin: 8px 0 0; font-size: 13px; line-height: 19px; color: var(--ui-ink2); }
-.typewriter { grid-column: 1 / -1; background: var(--ui-card); }
-/* tamburul și banda: lângă mașina de scris contează mai puțin, deci stau pe un rând scund */
-.drum-device, .reader { padding: 12px 18px; }
-.drum-device h2, .reader h2 { margin-bottom: 6px; }
+.typewriter { background: var(--ui-card); }
 #dev-reader.no-tape .tape { display: none; }
+
+/* Cele trei aparate se deschid ca niște meniuri. Închise, antetul lor e chiar starea: ultimul rând
+   tipărit, unde a ajuns tamburul, la ce rând e banda. Deschise, au aceeași înălțime. */
+.device { padding: 0; }
+.dev-head { margin: 0; font-size: 13px; font-weight: 600; }
+.dev-toggle { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 52px; padding: 8px 18px;
+  border: 0; background: none; border-radius: 20px; cursor: pointer; text-align: left; color: inherit; font: inherit; }
+.dev-toggle:hover { background: rgba(32, 44, 60, 0.04); }
+.dev-toggle .chev { width: 18px; height: 18px; color: var(--ui-ink2); transition: transform 0.2s; }
+.dev-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+.dev-title { flex: none; }
+.dev-mark { flex: 1 1 auto; min-width: 0; text-align: right; font-weight: 400; font-size: 12px;
+  color: var(--ui-ink2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dev-mark.live::before { content: ''; display: inline-block; width: 6px; height: 6px; margin-right: 6px;
+  border-radius: 50%; background: var(--ui-accent); box-shadow: 0 0 6px var(--ui-accent); vertical-align: 1px; }
+.dev-mark.mono { font-family: var(--ui-mono); font-variant-numeric: tabular-nums; }
+.dev-body { padding: 0 18px 16px; }
+.dev-body[hidden] { display: none; }
+@media (min-width: 761px) { .dev-body { min-height: calc(var(--sheet-lines, 10) * 1.45em + 76px); } }
 .sheet { position: relative; --sheet-pad: 1.5ch; font-family: 'Courier Prime', 'Courier New', monospace; font-size: 14.5px; }
 .sheet-paper { background: #fbf9f1; color: #23201a; padding: 8px var(--sheet-pad) 6px;
   height: calc(var(--sheet-lines, 10) * 1.45em + 14px);
@@ -282,7 +298,12 @@ body.running .state .dot { background: var(--ui-accent); box-shadow: 0 0 9px var
 .sheet-text { margin: 0; font: inherit; line-height: 1.45em; white-space: pre; }
 .carriage { position: relative; height: 10px; border-radius: 0 0 9px 9px; background: linear-gradient(180deg, #cfd5db, #9aa3ac); }
 .carriage-mark { position: absolute; top: 0; width: 1ch; height: 4px; background: var(--ui-accent); }
-.tape svg, .mag-drum svg { display: block; width: 100%; height: auto; border-radius: 9px; }
+.mag-drum svg { display: block; width: 100%; height: auto; border-radius: 9px; }
+/* banda: fereastra desenată are 880 × 150, cu capul de citire la 35 % din lățime; mărită de --tape-zoom ori
+   și trasă înapoi cu (zoom × 0,35 − 0,5) / zoom, capul rămâne în mijlocul cartonașului */
+.tape { --tape-zoom: 2.4; overflow: hidden; border-radius: 9px; }
+.tape svg { display: block; width: calc(var(--tape-zoom) * 100%); height: auto;
+  transform: translateX(calc((0.5 - var(--tape-zoom) * 0.35) / var(--tape-zoom) * 100%)); }
 /* tamburul, pe scurt: inelul celor 1024 de cuvinte cu un rând lângă el, iar desenul mașinii mic alături */
 .drum-pair { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .drum-map-fig { order: -1; flex: 1 1 190px; margin: 0; display: flex; align-items: center; gap: 12px; }

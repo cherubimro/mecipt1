@@ -46,6 +46,14 @@ function setLabel(el, text) {
   el.title = text;
 }
 
+// Antetul închis al unui aparat: textul lui, un punct de cyan cât timp se mișcă, cifrele pe mono.
+function mark(id, text, live, mono = false) {
+  const el = $(id);
+  if (el.textContent !== text) el.textContent = text;
+  el.classList.toggle('live', !!live);
+  el.classList.toggle('mono', !!mono);
+}
+
 function setTexts() {
   document.documentElement.lang = lang;
   document.title = T().title;
@@ -151,7 +159,9 @@ async function main() {
     }
     const legend = T().drumMap(used, running ? rai.toString(8).padStart(4, '0') : null);
     if ($('drum-map-legend').textContent !== legend) $('drum-map-legend').textContent = legend;
+    drumUsed = used;
   };
+  let drumUsed = 0;
   const reducedMotion = globalThis.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
   const narrow = globalThis.matchMedia ? matchMedia('(max-width: 760px)') : { matches: false };
 
@@ -574,7 +584,7 @@ async function main() {
     const snap = runner.frame(dt);
     lastSnap = snap;
     sound.onFrame(snap, dt);
-    if (snap.typed) { sheet.add(snap.typed); tourEvent({ type: 'typed' }); }
+    if (snap.typed) { sheet.add(snap.typed); tourEvent({ type: 'typed' }); if (shell) shell.noteOutput(); }
     if (snap.halted !== null) { lastHalt = snap.halted; tourEvent({ type: 'halted' }); }
     const targets = lampTargets(snap, runner, uopIndex);
     for (const l of lamps) {
@@ -601,6 +611,13 @@ async function main() {
     // pe telefon eticheta de stare are un rând: timpul rămâne doar numărul („Mașina așteaptă. 0,0 s”)
     const t = narrow.matches ? `${machine.seconds().toFixed(1)} s` : `${T().machineTime}: ${machine.seconds().toFixed(1)} s`;
     if ($('machine-time').textContent !== t) $('machine-time').textContent = t;
+    // antetele închise ale celor trei aparate arată chiar starea lor
+    const lines = sheet.lines().filter((l) => l !== '');
+    mark('typewriter-mark', lines.length ? lines[lines.length - 1] : T().typewriterIdle, lines.length > 0, true);
+    const atWord = runner.mode === 'automat' ? snap.state.RAI.toString(8).padStart(4, '0') : null;
+    mark('drum-mark', T().drumMark(drumUsed, atWord), !!atWord);
+    mark('reader-mark', tapeRows.length ? T().tapeMark(snap.tapePos, tapeRows.length) : T().tapeEmpty,
+      tapeRows.length > 0 && runner.mode === 'automat');
     if (shell) {
       shell.onFrame(snap, lampGlow, {
         tables, lang, mode: runner.mode, pulsesOff: runner.pulsesOff,

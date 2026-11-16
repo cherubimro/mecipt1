@@ -223,7 +223,7 @@ export function setupShell(cb) {
     tab = id;
     document.body.dataset.tab = id;
     for (const t of TABS) $(`tab-${t}`).setAttribute('aria-current', String(t === id));
-    $('copy-listing').hidden = !(id === 'typewriter' && phone());
+    if (id === 'typewriter') setCard('typewriter', true);
     if (id === 'atelier' && cb.modeOf() === 'console') cb.setMode('atelier');
     if (id === 'desk' && cb.modeOf() === 'atelier') cb.setMode('console');
     if (id === 'desk') applyCamera();
@@ -256,6 +256,32 @@ export function setupShell(cb) {
 
   $('learn-tour').addEventListener('click', () => { setTab('desk'); cb.startTour(); });
   $('learn-explain').addEventListener('click', () => { setTab('desk'); cb.explainMode(true); });
+
+  // ---- cele trei aparate, care se deschid ca niște meniuri ----
+  const CARDS = ['typewriter', 'drum', 'reader'];
+  const CARD_KEY = 'mecipt.cards';
+  const store = (() => { try { return globalThis.localStorage; } catch { return null; } })();
+  const openCards = (() => {
+    try { const v = JSON.parse(store && store.getItem(CARD_KEY)); return v && typeof v === 'object' ? v : {}; }
+    catch { return {}; }
+  })();
+  const closedByHand = {};        // ce a închis vizitatorul azi nu se mai deschide singur
+
+  function paintCard(id) {
+    const on = !!openCards[id];
+    $(`body-${id}`).hidden = !on;
+    $(`toggle-${id}`).setAttribute('aria-expanded', String(on));
+  }
+  function setCard(id, on, byHand = false) {
+    openCards[id] = on;
+    if (byHand && !on) closedByHand[id] = true;
+    if (byHand && on) delete closedByHand[id];
+    paintCard(id);
+    if (byHand) { try { if (store) store.setItem(CARD_KEY, JSON.stringify(openCards)); } catch { /* fereastră privată */ } }
+  }
+  for (const id of CARDS) $(`toggle-${id}`).addEventListener('click', () => setCard(id, !openCards[id], true));
+  // mașina a tipărit ceva: coala se deschide singură, dacă vizitatorul n-a închis-o el
+  function noteOutput() { if (!openCards.typewriter && !closedByHand.typewriter) setCard('typewriter', true); }
 
   // ---- cartonașul programului ----
   function setProgram(title, parts) {
@@ -332,7 +358,6 @@ export function setupShell(cb) {
         const dd = decodeLive(snap.state, ctx);
         const txt = `${dd.rai.oct} · ${dd.halves[0].text} · ${dd.halves[1].text}`;
         if ($('nowbar-text').textContent !== txt) $('nowbar-text').textContent = txt;
-        paintNowSub();
       }
       return;
     }
@@ -359,7 +384,6 @@ export function setupShell(cb) {
     $('live-uop-gloss').textContent = d.uop.gloss || '';
     $('nowbar-text').textContent = `${d.rai.oct} · ${d.halves[0].text} · ${d.halves[1].text}`;
     $('live-peek-chip').textContent = T().live.drumAt(d.rai.oct);   // de unde citește tamburul acum
-    paintNowSub();
     paintPeek();
   }
   function paintPeek() {
@@ -374,11 +398,7 @@ export function setupShell(cb) {
   }
   // Câte rânduri de coală se desenează: zece peste tot, mai multe pe fila Tipăritura de pe telefon.
   function sheetLines() { return phone() && tab === 'typewriter' ? 18 : 10; }
-  function paintNowSub() {
-    const lines = cb.sheet().lines().filter((l) => l !== '');
-    const last = lines.length ? lines[lines.length - 1] : '';
-    if ($('nowbar-sub').textContent !== last) $('nowbar-sub').textContent = last;
-  }
+
 
   // ---- pornirea ----
   function layout() {
@@ -386,7 +406,7 @@ export function setupShell(cb) {
     relocate(isPhone);
     buildZones();
     if (isPhone && !document.body.dataset.tab) setTab('desk');
-    if (!isPhone) { document.body.removeAttribute('data-tab'); $('copy-listing').hidden = true; }
+    if (!isPhone) document.body.removeAttribute('data-tab');
     const list = zoneList();
     if (!list.some((z) => z.id === zoneId)) zoneId = isPhone ? 'compute' : 'all';
     setZone(zoneId, { keepPage: true });
@@ -397,6 +417,7 @@ export function setupShell(cb) {
     start(positions, colors) {
       buildStrip(positions, colors);
       setLiveMode(false);
+      for (const id of CARDS) paintCard(id);
       setTexts();
       // prima așezare a camerei nu se mișcă lin: pagina se deschide direct pe locul ei, nu alunecând
       desk.classList.add('no-tween');
@@ -406,18 +427,8 @@ export function setupShell(cb) {
       requestAnimationFrame(tween);
       setTimeout(tween, 100);
       addEventListener('resize', () => { layout(); applyCamera(); }, { passive: true });
-      // scena se îngustează și fără redimensionarea ferestrei (panoul de explicații strânge pagina):
-      // camera se refigurează, ca pupitrul să rămână în ramă
-      if (globalThis.ResizeObserver) {
-        let lastW = stage.clientWidth;
-        new ResizeObserver(() => {
-          if (stage.clientWidth === lastW) return;
-          lastW = stage.clientWidth;
-          applyCamera();
-        }).observe(stage);
-      }
     },
-    setTexts, onFrame, setProgram, onView, applyCamera, setTab, sheetLines, layout,
+    setTexts, onFrame, setProgram, onView, applyCamera, setTab, sheetLines, layout, noteOutput,
     zone: () => zoneId,
     tab: () => tab,
   };
