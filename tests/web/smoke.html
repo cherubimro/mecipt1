@@ -58,8 +58,11 @@ f.addEventListener('load', () => {
   const wR = d.getElementById('switch-compute-0').getBoundingClientRect().width;
   if (wR < 24) fail('panoul drept mărit: comutatorul are ' + wR.toFixed(1) + ' px');
   P.setView('all');
-  // bara: vederea și reîncărcarea stau la vedere, iar foile care se deschid din ea chiar stau închise
-  for (const id of ['view', 'reload']) if (d.getElementById(id).offsetParent === null) fail('lipsește din bară: ' + id);
+  // bara: reîncărcarea stă la vedere; „Vedere” a ieșit din bară (opririle camerei o înlocuiesc), dar
+  // select-ul rămâne în pagină pentru turul ghidat. Foile care se deschid din bară chiar stau închise.
+  if (d.getElementById('reload').offsetParent === null) fail('lipsește din bară: reload');
+  if (d.getElementById('view').offsetParent !== null) fail('select-ul „Vedere” se dublează cu opririle camerei');
+  if (!d.getElementById('doc-link').textContent.trim()) fail('legătura spre documentație n-are text');
   const shownPop = (id) => w.getComputedStyle(d.getElementById(id)).display !== 'none';
   if (shownPop('more-menu') || shownPop('program-sheet')) fail('o foaie a barei stă deschisă de la pornire');
   click('program-card');

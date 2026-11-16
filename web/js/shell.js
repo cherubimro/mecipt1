@@ -56,7 +56,7 @@ export function setupShell(cb) {
   // ---- mutarea comenzilor între bară și „Mai multe”, după lățimea ecranului ----
   const MOVABLE = ['mode', 'speed', 'step', 'explain', 'doc-link', 'view-3d', 'sound', 'lang', 'bar-extra'];
   const home = new Map();
-  for (const id of [...MOVABLE, 'statebar']) {
+  for (const id of [...MOVABLE, 'statebar', 'nowbar']) {
     const el = $(id);
     if (el) home.set(id, [el.parentNode, el.nextSibling]);
   }
@@ -68,9 +68,11 @@ export function setupShell(cb) {
       if (isPhone) { if (el.parentNode !== slot) slot.append(el); }
       else { const [p, next] = home.get(id); if (el.parentNode !== p) p.insertBefore(el, next); }
     }
-    const sb = $('statebar');
-    if (isPhone) { if (sb.parentNode !== document.body) document.body.insertBefore(sb, $('topbar').nextSibling); }
-    else { const [p, next] = home.get('statebar'); if (sb.parentNode !== p) p.insertBefore(sb, next); }
+    for (const id of ['statebar', 'nowbar']) {
+      const el = $(id);
+      if (isPhone) { if (el.parentNode !== document.body) document.body.append(el); }
+      else { const [p, next] = home.get(id); if (el.parentNode !== p) p.insertBefore(el, next); }
+    }
   }
 
   // ---- zonele camerei ----
@@ -240,7 +242,7 @@ export function setupShell(cb) {
     $('live-lamps').setAttribute('aria-pressed', String(on));
   }
   function paintNowbar() {
-    $('nowbar').hidden = !(phone() && tab !== 'live' && running);
+    $('nowbar').hidden = !(running && (!phone() || tab !== 'live'));
   }
 
   $('copy-listing').addEventListener('click', async () => {
@@ -324,7 +326,16 @@ export function setupShell(cb) {
       paintZones();
       paintNowbar();
     }
-    if (!phone()) return;
+    if (!phone()) {
+      // pe ecran lat nu se desenează vederea Live, dar bara din scenă arată ce se execută acum
+      if (running) {
+        const dd = decodeLive(snap.state, ctx);
+        const txt = `${dd.rai.oct} · ${dd.halves[0].text} · ${dd.halves[1].text}`;
+        if ($('nowbar-text').textContent !== txt) $('nowbar-text').textContent = txt;
+        paintNowSub();
+      }
+      return;
+    }
     for (const l of stripLamps) {
       const b = lamps.get(l.id) ?? 0;
       const v = Math.round(b * 20) / 20;
@@ -348,6 +359,7 @@ export function setupShell(cb) {
     $('live-uop-gloss').textContent = d.uop.gloss || '';
     $('nowbar-text').textContent = `${d.rai.oct} · ${d.halves[0].text} · ${d.halves[1].text}`;
     $('live-peek-chip').textContent = T().live.drumAt(d.rai.oct);   // de unde citește tamburul acum
+    paintNowSub();
     paintPeek();
   }
   function paintPeek() {
@@ -360,9 +372,12 @@ export function setupShell(cb) {
     while (el.children.length < classes.length) el.append(document.createElement('span'));
     classes.forEach((c, i) => { if (el.children[i].className !== c) el.children[i].className = c; });
   }
-  function setStatusLine(text) {
-    const sub = $('nowbar-sub');
-    if (sub.textContent !== text) sub.textContent = text;
+  // Câte rânduri de coală se desenează: zece peste tot, mai multe pe fila Tipăritura de pe telefon.
+  function sheetLines() { return phone() && tab === 'typewriter' ? 18 : 10; }
+  function paintNowSub() {
+    const lines = cb.sheet().lines().filter((l) => l !== '');
+    const last = lines.length ? lines[lines.length - 1] : '';
+    if ($('nowbar-sub').textContent !== last) $('nowbar-sub').textContent = last;
   }
 
   // ---- pornirea ----
@@ -402,7 +417,7 @@ export function setupShell(cb) {
         }).observe(stage);
       }
     },
-    setTexts, onFrame, setProgram, onView, applyCamera, setTab, setStatusLine, layout,
+    setTexts, onFrame, setProgram, onView, applyCamera, setTab, sheetLines, layout,
     zone: () => zoneId,
     tab: () => tab,
   };

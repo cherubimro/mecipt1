@@ -49,6 +49,20 @@ Emulatorul MECIPT-1 n-are încă versiuni numerotate; schimbările sunt grupate 
 - **Pictograma documentației** era un dreptunghi rotunjit care semăna cu un telefon; e acum o foaie cu colț
   îndoit și rânduri de text.
 
+### Schimbat (ce se vede fără să derulezi)
+- **Scena s-a strâns** (de la 660 la cel mult 500 px, cu mai puțin aer deasupra și sub pupitru), ca
+  tipăritura să intre în ecran fără derulare. Coala arată zece rânduri în loc de șaisprezece.
+- **Bara „se execută acum” și pe ecran lat**, în colțul scenei, lângă eticheta de stare: adresa și cele
+  două instrucțiuni în execuție, iar dedesubt ultimul rând tipărit. Cauza și efectul stau împreună, fără
+  să cobori la cartonașul mașinii de scris.
+- **Mașina de scris ia toată lățimea**, iar tamburul și banda trec pe un rând scund sub ea: sunt părți
+  importante, dar nu trebuie să se bată cu pupitrul pentru atenție.
+- **Cititorul fără bandă spune de ce e gol** („programul de acum rulează de pe tambur; perforați una în
+  Atelier”), în loc să arate un locaș negru. Dintre cele cinci programe, doar INEX-1 vine cu bandă.
+- **Select-ul „Vedere” a ieșit din bară**: opririle camerei îl înlocuiau deja: „Microoperații” e panoul
+  stâng, „Registre” și „Comenzi” sunt părți din cel drept. Rămâne în pagină, nevăzut, pentru turul ghidat.
+- **Documentația e un buton cu text**, ca „Tur ghidat” și „3D”; pictograma singură nu invita pe nimeni.
+
 ### Corectat (cum arată, văzut cu ochii)
 - **Pupitrul ieșea din scenă, cu aripile umflate.** Blocul fusese așezat de cinci ori mai mare, dar
   adâncimea perspectivei rămăsese 1900 px: muchiile apropiate ale aripilor se măreau cu o pătrime și

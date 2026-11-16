@@ -58,7 +58,7 @@
   <div class="bar-learn" id="bar-learn">
     <button class="txt" id="tour-start" type="button"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m15.5 8.5-2 5-5 2 2-5z"></path></svg><span class="btn-label"></span></button>
     <button class="ico" id="explain" type="button" aria-pressed="false"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M9.6 9.4a2.5 2.5 0 1 1 3.7 2.2c-.8.5-1.3 1-1.3 1.9M12 17h.01"></path></svg><span class="btn-label visually-hidden"></span></button>
-    <a class="ico doc-link" id="doc-link" href="doc.html" target="_blank" rel="noopener"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7z"></path><path d="M14 3v4h4"></path><path d="M9.5 13h5M9.5 16.5h3.5"></path></svg><span class="btn-label visually-hidden"></span></a>
+    <a class="txt doc-link" id="doc-link" href="doc.html" target="_blank" rel="noopener"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7z"></path><path d="M14 3v4h4"></path><path d="M9.5 13h5M9.5 16.5h3.5"></path></svg><span class="btn-label"></span></a>
     <button class="txt" id="view-3d" type="button" aria-pressed="false" data-help="view3d">3D</button>
     <button class="ico sound" id="sound" type="button" aria-pressed="true" data-help="sound"><span aria-hidden="true">🔊</span></button>
     <div class="seg" id="lang" role="group" aria-labelledby="lang-label"><span id="lang-label" class="visually-hidden">Limba</span><button id="lang-ro" type="button" lang="ro" aria-pressed="true">RO</button><button id="lang-en" type="button" lang="en" aria-pressed="false">EN</button></div>
@@ -109,6 +109,10 @@
       </div>
       <div class="stage-cap">
         <p class="state" id="statebar"><b><span class="dot" aria-hidden="true"></span><span id="status" class="status" aria-live="polite"></span> <span id="machine-time" class="machine-time"></span></b><span class="hint" id="hint"></span></p>
+        <div class="nowbar" id="nowbar" hidden>
+          <button class="open" id="nowbar-open" type="button"><i aria-hidden="true"></i><span><span class="mono" id="nowbar-text"></span><small id="nowbar-sub"></small></span></button>
+          <button class="ico" id="nowbar-run" type="button"><svg class="i i-run" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14l12-7z"></path></svg><svg class="i i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14M15 5v14"></path></svg></button>
+        </div>
         <div class="zones" id="zones" role="group"></div>
       </div>
     </div>
@@ -208,11 +212,6 @@
     </div>
   </section>
 </main>
-
-<div class="nowbar" id="nowbar" hidden>
-  <button class="open" id="nowbar-open" type="button"><i aria-hidden="true"></i><span><span class="mono" id="nowbar-text"></span><small id="nowbar-sub"></small></span></button>
-  <button class="ico" id="nowbar-run" type="button"><svg class="i i-run" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14l12-7z"></path></svg><svg class="i i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14M15 5v14"></path></svg></button>
-</div>
 
 <section id="tour-card" class="tour-card" role="dialog" aria-labelledby="tour-count" tabindex="-1" hidden>
   <p id="tour-count" class="tour-count"></p>

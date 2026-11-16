@@ -225,7 +225,9 @@ async function main() {
     if (!current) return;
     provenanceLabel(machine, tapeSource, foreign, atelier ? atelier.removedCount() : 0, current);
     $('tape-info').textContent = tapeSource === 'catalog' ? `${T().tapeRows(tapeRows.length)} · ${catalogNote(current, 'tape_note', lang) ?? T().tapeTest}`
-      : tapeSource === 'visitor' ? `${T().tapeRows(tapeRows.length)} · ${T().visitorTape}` : T().tapeEmpty;
+      : tapeSource === 'visitor' ? `${T().tapeRows(tapeRows.length)} · ${T().visitorTape}` : T().tapeNone;
+    // fără bandă, cititorul nu arată un locaș gol, ci spune de ce e gol (programul rulează de pe tambur)
+    $('dev-reader').classList.toggle('no-tape', !tapeSource);
     for (const o of $('program').options) {
       const p = catalog.find((c) => c.id === o.value);
       o.textContent = lang === 'en' && p.title_en ? p.title_en : p.title;
@@ -584,7 +586,7 @@ async function main() {
     smoothTape += (snap.tapePos - smoothTape) * (1 - Math.exp(-dt / 60));
     if (Math.abs(snap.tapePos - smoothTape) < 0.01) smoothTape = snap.tapePos;
     renderTape($('tape'), tapeRows, snap.tapePos, smoothTape);
-    renderSheet($('sheet'), sheet);
+    renderSheet($('sheet'), sheet, shell ? shell.sheetLines() : 10);
     const ph = drumPhase(performance.now(), { reducedMotion: reducedMotion.matches });
     seams(ph).forEach((s, i) => {
       const el = drumSeams[i];
@@ -600,7 +602,6 @@ async function main() {
     const t = narrow.matches ? `${machine.seconds().toFixed(1)} s` : `${T().machineTime}: ${machine.seconds().toFixed(1)} s`;
     if ($('machine-time').textContent !== t) $('machine-time').textContent = t;
     if (shell) {
-      shell.setStatusLine(`${st} · ${t}`);
       shell.onFrame(snap, lampGlow, {
         tables, lang, mode: runner.mode, pulsesOff: runner.pulsesOff,
         halted: lastHalt !== null && lastHalt !== HALT.OK,
